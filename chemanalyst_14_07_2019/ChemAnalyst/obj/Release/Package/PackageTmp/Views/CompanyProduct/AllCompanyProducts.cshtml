@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ChemAnalyst.Models.SA_Product>
+@{
+    ViewBag.Title = "All Company Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="update-profile-wrapper">
+
+
+        <div class="white-wrapper" style="padding-top:10px">
+
+            <div class="data-detail-wrapper table-responsive">
+
+               <table class="table table-bordered">
+                   <thead>
+                       <tr>
+                           <th>@Html.DisplayNameFor(p => p.ProductName)</th>
+                           <th>@Html.DisplayNameFor(p => p.ProductDiscription)</th>
+                           <th>@Html.DisplayNameFor(p => p.Meta)</th>
+                           <th>@Html.DisplayNameFor(p => p.MetaDiscription)</th>
+                           <th>@Html.DisplayNameFor(p => p.CreatedTime)</th>
+                           <th>Action</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       @foreach (var companyProduct in Model)
+                       {
+                           <tr>
+                               <td>@companyProduct.ProductName</td>
+                               <td>@companyProduct.ProductDiscription</td>
+                               <td>@companyProduct.Meta</td>
+                               <td>@companyProduct.MetaDiscription</td>
+                               <td>@companyProduct.CreatedTime</td>
+                               <td>
+                                   @Html.ActionLink("Edit", "Edit", "CompanyProduct", new { id = companyProduct.id }, new { @class = "btn btn-primary btn-xs" })
+                               </td>
+                           </tr>
+                       }
+                   </tbody>
+               </table>
+
+            </div>
+
+        </div>
+
+    </div>

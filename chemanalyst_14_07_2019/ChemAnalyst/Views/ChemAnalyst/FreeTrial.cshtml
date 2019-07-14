@@ -1,0 +1,186 @@
+﻿@model ChemAnalyst.ViewModel.IndustryViewModel
+@{
+    ViewBag.Title = "Free Trail";
+    Layout = "~/Views/Shared/_LayoutUser4.cshtml";
+}
+<div class="inner-banner">
+    <img src="~/images/about-banner.jpg">
+    <h1>Free Trail</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Free Trail</li>
+    </ol>
+</div>
+<div class="page-content">
+    <div class="static-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="filter-form-checkbox-btn">
+                        <p>Free Trail we give you 24 hours free access to our website. Just full the registeration form  and our team will actiate your access. What you get</p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="filter-chk-list">
+                                    <label class="c-lbl">
+                                        Daily/Monthly/Yearly Price Update
+                                        <input type="checkbox" checked="checked">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="filter-chk-list">
+                                    <label class="c-lbl">
+                                        Complete Product Analysis
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="filter-chk-list">
+                                    <label class="c-lbl">
+                                        Company Profile of Leading Companies
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="filter-chk-list">
+                                    <label class="c-lbl">
+                                        Major development and top deaiss
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="static-desc contact-blue-box mt-0">
+                        <div id="quotationForm" class="eq-form mt-0">
+                            @*Cnt find Studs controller*@
+                            @*@using (Html.BeginForm("Save", "Studs", FormMethod.Post))*@
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input id="txtName" name="form_name" class="form-control" type="text" placeholder="Name" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input id="txtCorpEmail" name="form_email" class="inputtype form-control required email" type="email" placeholder="Corporate Email " required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input id="txtOrganisation" name="form_phone" class="inputtype form-control required" type="text" placeholder="Company / Organisation" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input id="txtCountry" name="form_phone" class="inputtype form-control required" type="text" placeholder="Country" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input id="txtState" name="form_phone" class="inputtype form-control required" type="text" placeholder="State" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input id="txtPhone" name="form_phone" class="inputtype form-control required" type="text" placeholder="Phone" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input id="txtAreaInterest" name="form_phone" class="inputtype form-control required" type="text" placeholder="Area of Interest" aria-required="true">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input id="txtUserType" name="form_user" class="inputtype form-control required" type="text" placeholder="User Type" aria-required="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input id="txtSubject" name="subject" class="inputtype form-control required" type="text" placeholder="Subject" aria-required="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="txtQuery" name="form_message" class="inputtype form-control required" rows="5" placeholder="Query" aria-required="true"></textarea>
+                            </div>
+                            <div class="form-group mt30">
+                                <input name="form_botcheck" class="form-control" type="hidden" value="">
+                                <button id="btnSave" type="submit" class="common-btn" data-loading-text="Please wait...">Submit</button>
+                            </div>
+                            @*}*@
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <aside>
+                        <div class="side-news-feed">
+                            <h3><i class="fa fa-bell-o"></i> News</h3>
+                            @foreach (var item in Model.NewsList)
+                            {
+                                <div class="news-feed-col">
+                                    <a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">
+                                        @if (item.NewsImg != string.Empty)
+                                        {
+                                            <div class="left-news-pic"><img src="~/ProductImages/@item.NewsImg" alt=""></div>
+                                            <div class="right-news-desc">
+                                                <p>@(item.NewsDiscription.Length > 50 ? (item.NewsDiscription.Substring(0, 50)) : item.NewsDiscription)...</p>
+                                                <p><i class="fa fa-clock-o"></i>@item.CreatedTime.ToShortDateString()</p>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="right-newsdesc">
+                                                <p>@(item.NewsDiscription.Length > 50 ? (item.NewsDiscription.Substring(0, 50)) : item.NewsDiscription)...</p>
+                                                <p><i class="fa fa-clock-o"></i>@item.CreatedTime.ToShortDateString()</p>
+                                            </div>
+                                        }
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                        <div class="side-news-feed mt-4">
+                            <h3><i class="fa fa-thumbs-up"></i> Top Deals</h3>
+                            @foreach (var item in Model.DealsList)
+                                {
+                                    <div class="news-feed-col">
+                                        <a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">
+                                            @if (item.DealsImg != string.Empty)
+                                            {
+                                                <div class="left-news-pic"><img src="~/ProductImages/@item.DealsImg" alt=""></div>
+                                                <div class="right-news-desc">
+                                                    <p>@(item.DealsDiscription.Length > 50 ? (item.DealsDiscription.Substring(0, 50)) : item.DealsDiscription)...</p>
+                                                    <p><i class="fa fa-clock-o"></i>@item.CreatedTime.Value.ToShortDateString()</p>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="right-newsdesc">
+                                                    <p>@(item.DealsDiscription.Length > 50 ? (item.DealsDiscription.Substring(0, 50)) : item.DealsDiscription)...</p>
+                                                    <p><i class="fa fa-clock-o"></i>@item.CreatedTime.Value.ToShortDateString()</p>
+                                                </div>
+                                            }
+
+                                        </a>
+                                    </div>
+                                }
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

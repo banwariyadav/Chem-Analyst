@@ -1,0 +1,620 @@
+﻿@*@model ChemAnalyst.Models.SA_NewsViewModel*@
+@using ChemAnalyst.ViewModel
+@model List<ChemAnalyst.ViewModel.MA_StackViewModel>
+
+
+@{
+    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.FirstOrDefault().LstData.Select(x => x.MDimensionOne).ToList());
+    var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.LstData.Select(w => w.Quantity)).ToList());
+    var label2 = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.MStackedDimensionOne).ToList());
+    var Product = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.Product).FirstOrDefault());
+    var ChartType = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.MChartType).FirstOrDefault());
+    var range = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.MRange).FirstOrDefault());
+}
+
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
+
+    <title>Chem Analyst</title>
+
+    <link href="~/css/oswald-font.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/style.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/animate.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome-font-awesome.min.css">
+    <link rel="shortcut icon" href="~/images/favicon.ico">
+    <!-- Owl Stylesheets -->
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/css/custom.css" type="text/css" />
+    <link href="~/css/style.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <header>
+
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4"><div class="logo"><a href="/"><img src="~/images/logo.png" alt=""></a></div></div>
+                <div class="col-md-8 ml-auto">
+                    <div class="top-con-bar">
+                        <div class="row justify-content-end">
+
+                            <div class="col-sm-3">
+                                <div class="icon"><i class="fa fa-phone"></i></div>
+                                <div class="top-bt-txt">
+                                    <h4>Telephone</h4>
+                                    <p>012078765</p>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="icon"><i class="fa fa-envelope"></i></div>
+                                <div class="top-bt-txt">
+                                    <h4>Email Address</h4>
+                                    <p>info@chemanalyst.com </p>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="icon"><i class="fa fa-map-marker"></i></div>
+                                <div class="top-bt-txt">
+                                    <h4>Office Address</h4>
+                                    <p>B-44 sec-57 noida </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="main-nav">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg p-0" id="mainNav">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"><span class="fa fa-bars 2x"></span> Menu</button>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav">
+                           
+                            <li class="nav-item active"><a class="nav-link" href="@Url.Action("MarketbycompanyChart", "MarketAnalysis")">Analysis </a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("ChecmPriceChart", "ChemicalPricing")">Chemical Pricing</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("IndustryReport", "Industry")">Industry Reports</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Company Profile</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("NewsHome", "NewsAndDeals")">News</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("DealsHome", "NewsAndDeals")">Deals</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Contact", "ChemAnalyst")">Contact Us</a></li>
+
+                        </ul>
+                    </div>
+
+                    <div class="book-demo-b">
+                        <a href="@Url.Action("FreeTrail", "ChemAnalyst")"><i class="fa fa-shopping-cart"></i> Free Trail</a>
+                        <a href="@Url.Action("Index", "Admin")"><i class="fa fa-user"></i> Login</a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+    </header>
+
+    <div class="inner-banner">
+        <img src="~/images/about-banner.jpg">
+        <h1>Market Analysis</h1>
+
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Market Analysis</li>
+        </ol>
+
+    </div>
+
+
+    <div class="page-content">
+        <div class="static-page">
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-md-9">
+
+                        <div class="common-desc">
+                            <p>
+                                @foreach (string Discription in (Model.Select(x => x.Discription).FirstOrDefault()))
+                                {
+                                    @Discription
+                                }
+                        </p>
+                    </div>
+
+
+
+                    <div class="filter-category side-news-feed">
+                        <h3 style="margin-bottom: 20px"><i class="fa fa-list"></i> Category</h3>
+                        <div class="row">
+                            <div class="col-md-4"><div class="filter-btn"><a href="#"><i class="fa fa-link"></i> Feedstock</a></div></div>
+                            <div class="col-md-4"><div class="filter-btn"><a href="#"><i class="fa fa-link"></i> Polymer & Resin</a></div></div>
+                            <div class="col-md-4"><div class="filter-btn"><a href="#"><i class="fa fa-link"></i> Petrochemical</a></div></div>
+                            <div class="col-md-4"><div class="filter-btn"><a href="#"><i class="fa fa-link"></i> Elastomer</a></div></div>
+                            <div class="col-md-4"><div class="filter-btn"><a href="#"><i class="fa fa-link"></i> Bulk chemical & fertilizer</a></div></div>
+                            <div class="col-md-4"><div class="filter-btn"><a href="#"><i class="fa fa-link"></i> Specialty chemicals</a></div></div>
+                        </div>
+                    </div>
+
+                    <div class="filter-checkbox-btn">
+
+
+                        <ul>
+                            @foreach (string item in (Model.FirstOrDefault().LstData.Select(x => x.MDimensionOne).ToList()))
+                            {
+                                <li><a href="#">@item <i class="fa fa-close"></i></a></li>
+                            }
+
+                            @*<li><a href="#">Extrusion Coating <i class="fa fa-close"></i></a></li>
+                                <li><a href="#">High Film Grade <i class="fa fa-close"></i></a></li>
+                                <li><a href="#">Rotational Molding Grade<i class="fa fa-close"></i></a></li>*@
+                        </ul>
+
+                    </div>
+
+                    <div class="filter-chart-type">
+                        @using (Html.BeginForm("ShowChart", "MarketAnalysis", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <div class="row">
+                                <div class="col-md-4 pl-0">
+                                    <p>
+                                        <i class="fa fa-compress"></i> Product
+                                    </p>
+                                    @Html.DropDownList("ddlProduct", new SelectList(ViewBag.ProductList, "Value", "Text"), "Please select Product", new { @id = "ddlProduct", @class = "btn btn-primary width100" })
+
+                                </div>
+
+                                <div class="col-md-3">
+                                    <p><i class="fa fa-bar-chart"></i> Chart Types</p>
+
+                                    @Html.DropDownList("ddlChart", new SelectList(Enum.GetValues(typeof(ChartType))), "Select Chart", new { @class = "btn btn-primary width100" })
+
+                                    @*<select class="btn btn-primary width100" id="drowchart">
+                                            <option value="line">Line Chart</option>
+                                            <option value="bar">Bar Chart</option>
+                                            <option value="pie">Pie Chart</option>
+                                        </select>*@
+                                </div>
+                                <div class="col-md-3 pl-0">
+                                    <p><i class="fa fa-random"></i> Range</p>
+                                    @Html.DropDownList("ddlMRange", new SelectList(Enum.GetValues(typeof(MRange))), "Select Range", new { @class = "btn btn-primary width100" })
+                                </div>
+
+
+                                <div class="col-md-2 pl-0">
+                                    <button type="submit" class="btn btn-green mt34">
+                                        <i class="fa fa-refresh"></i>
+                                        Vew Chart
+                                    </button>
+                                </div>
+
+                            </div>
+                        }
+                    </div>
+
+
+
+
+                    <canvas id="canvas"></canvas>
+
+
+
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <aside>
+
+
+                        <div class="side-news-feed">
+
+                            <h3><i class="fa fa-bell-o"></i> News</h3>
+                            @*@foreach (var item in Model.News)
+                                {
+                                    <div class="news-feed-col">
+                                        <a href="#">
+
+                                            <div class="right-news-desc2">
+                                                <p>@(item.NewsDiscription.Length > 60 ? (item.NewsDiscription.Substring(0, 60)) : item.NewsDiscription)</p>
+                                                <p><i class="fa fa-clock-o"></i>@item.CreatedTime.Value.ToShortDateString()</p>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                }*@
+                        </div>
+
+                        <div class="side-news-feed mt-4">
+
+                            <h3><i class="fa fa-thumbs-up"></i> Top Deals</h3>
+                            @*@foreach (var i in Model.Deals)
+                                {
+
+                                    <div class="news-feed-col">
+                                        <a href="#">
+
+                                            <div class="right-news-desc2">
+                                                <p>@(i.DealsDiscription.Length > 60 ? (i.DealsDiscription.Substring(0, 60)) : i.DealsDiscription) </p>
+                                                <p><i class="fa fa-clock-o"></i>@i.CreatedTime.Value.ToShortDateString()</p>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                }*@
+                        </div>
+
+
+                    </aside>
+
+                </div>
+
+                <div class="col-md-12">
+
+                    <div style="height:30px">
+
+                    </div>
+                    <div class="custom-table">
+
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr class="table-primary">
+                                    <th>2010</th>
+                                    <th>2011</th>
+                                    <th>2012</th>
+                                    <th>2013</th>
+                                    <th>2014</th>
+                                    <th>2015</th>
+                                    <th>2016</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1111</td>
+                                    <td>2222</td>
+                                    <td>3333</td>
+                                    <td>4444</td>
+                                    <td>5555</td>
+                                    <td>6666</td>
+                                    <td>7777</td>
+                                </tr>
+                                <tr>
+                                    <td>1111</td>
+                                    <td>2222</td>
+                                    <td>3333</td>
+                                    <td>4444</td>
+                                    <td>5555</td>
+                                    <td>6666</td>
+                                    <td>7777</td>
+                                </tr>
+                                <tr>
+                                    <td>1111</td>
+                                    <td>2222</td>
+                                    <td>3333</td>
+                                    <td>4444</td>
+                                    <td>5555</td>
+                                    <td>6666</td>
+                                    <td>7777</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<footer>
+    <div class="container-fluid">
+
+        <div class="footer-bottom">
+
+            <div class="row">
+
+                <div class="col-lg-4">
+
+
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+
+                    <div class="footer-social">
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                        <a href="#"><i class="fa fa-linkedin"></i></a>
+                    </div>
+
+
+                </div>
+
+                <div class="col-lg-2">
+                    <h3>Useful links</h3>
+                    <div class="foot-links">
+                        <p><a href="#">About Us</a></p>
+                        <p><a href="#">Privacy Policy</a></p>
+                        <p><a href="#">FAQs</a></p>
+                    </div>
+                </div>
+
+                <div class="col-lg-2">
+                    <h3>Our Services</h3>
+                    <div class="foot-links">
+                        <p><a href="#">About Us</a></p>
+                        <p><a href="#">Privacy Policy</a></p>
+                        <p><a href="#">FAQs</a></p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3">
+                    <h3>Recent News & Deals</h3>
+                    <div class="foot-links">
+                        <p>
+                            <a href="#">
+                                Test with Nursing Implications
+                                <br>August 8, 2018
+                            </a>
+                        </p>
+                        <p>
+                            <a href="#">
+                                Test with Nursing Implications
+                                <br>August 8, 2018
+                            </a>
+                        </p>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="copyright text-center">
+                <p>Copyright 2019. Chem Analyst. All Rights Reservered. </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+<script src="~/js/jquery-3.3.1.slim.min.js"></script>
+<script src="~/js/popper.min.js"></script>
+<script src="~/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+
+
+<script src="~/js/owl.carousel.js"></script>
+<script src="~/js/wow.min.js"></script>
+<script src="~/js/honey-custom.js"></script>
+<script src="~/js/Chart.min.js"></script>
+<script src="~/js/utils.js"></script>
+
+<script>
+
+        function Drowchart(id, d) {
+            var XLabels = @Html.Raw(XLabels);
+            var YValues = @Html.Raw(YValues);
+            var label = @Html.Raw(label2);
+            var aux = 0;
+            var barChartData = {
+                labels: @Html.Raw(label2),
+                datasets: []
+            }
+            XLabels.forEach(function(a, i) {
+                var data = [];
+                YValues.forEach(function(a, i) {
+                    data.push(a[aux]);
+                });
+                barChartData.datasets.push({
+                    label: XLabels[aux],
+                    fill: false,
+                    backgroundColor: random_rgba(),
+                    borderColor: Bcolor,
+                    data: data
+                });
+                aux++;
+            });
+
+            var  options= {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Market Analysis Chart'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: false,
+                            labelString: 'Month'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: false,
+                            labelString: 'Value'
+                        },
+                        ticks: {
+                            min: 0,
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+            var Bcolor;
+            function random_rgba() {
+
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                Bcolor=color;
+                return color;
+                //var o = Math.round,
+                //    r = Math.random,
+                //    s = 100;
+                //return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
+            }
+
+            var ctx = document.getElementById(id).getContext('2d');
+            window.myLine =  new Chart(ctx, {      options: options,
+                data: barChartData,
+                type: d
+            });
+            // window.myLine = new Chart(ctx, config);
+        }
+
+
+    window.onload = function () {
+        var Product = @Html.Raw(Product);
+        var ChartType = @Html.Raw(ChartType);
+        var range = @Html.Raw(range);
+        debugger;
+        $('#ddlProduct').val(Product);
+        $('#ddlChart').val(ChartType);
+        $('#ddlMRange').val(range);
+        Drowchart('canvas', ChartType);
+        //Drowchart('canvas2','bar');
+    };
+
+
+        document.getElementById('drowchart').addEventListener('change', function () {
+            var d = document.getElementById('drowchart').value;
+            //alert(d);
+            Drowchart('canvas', d);
+        });
+
+
+
+        document.getElementById('randomizeData').addEventListener('click', function () {
+            config.data.datasets.forEach(function (dataset) {
+                dataset.data = dataset.data.map(function () {
+                    return randomScalingFactor();
+                });
+
+            });
+
+            window.myLine.update();
+        });
+
+        var colorNames = Object.keys(window.chartColors);
+        document.getElementById('addDataset').addEventListener('click', function () {
+            var colorName = colorNames[config.data.datasets.length % colorNames.length];
+            var newColor = window.chartColors[colorName];
+            var newDataset = {
+                label: 'Dataset ' + config.data.datasets.length,
+                backgroundColor: newColor,
+                borderColor: newColor,
+                data: [],
+                fill: false
+            };
+
+            for (var index = 0; index < config.data.labels.length; ++index) {
+                newDataset.data.push(randomScalingFactor());
+            }
+
+            config.data.datasets.push(newDataset);
+            window.myLine.update();
+        });
+
+        document.getElementById('addData').addEventListener('click', function () {
+            if (config.data.datasets.length > 0) {
+                var month = MONTHS[config.data.labels.length % MONTHS.length];
+                config.data.labels.push(month);
+
+                config.data.datasets.forEach(function (dataset) {
+                    dataset.data.push(randomScalingFactor());
+                });
+
+                window.myLine.update();
+            }
+        });
+
+        document.getElementById('removeDataset').addEventListener('click', function () {
+            config.data.datasets.splice(0, 1);
+            window.myLine.update();
+        });
+
+        document.getElementById('removeData').addEventListener('click', function () {
+            config.data.labels.splice(-1, 1); // remove the label first
+
+            config.data.datasets.forEach(function (dataset) {
+                dataset.data.pop();
+            });
+
+            window.myLine.update();
+        });
+
+
+
+
+        $(document).ready(function () {
+            $("#Marketanalysis").validate({
+                debug: true,
+                rules: {
+                    ddlProduct: {
+                        required: function () {
+                            if ($("#ddlProduct option[value='0']")) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    },
+                    ddlChart: {
+                required: function () {
+                    if ($("#ddlChart option[value='0']")) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                    }, ddlRange: {
+                        required: function () {
+                            if ($("#ddlMRange option[value='0']")) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                },
+                messages: {
+                    ddlRange: "range Required",
+                },
+            });
+        })
+
+</script>
+
+</html>

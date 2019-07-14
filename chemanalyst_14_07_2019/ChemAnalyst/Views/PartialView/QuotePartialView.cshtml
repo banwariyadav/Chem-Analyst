@@ -1,0 +1,64 @@
+﻿
+
+@model IEnumerable<ChemAnalyst.Models.SA_Quote>
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-4 mb9-0"><img id="quoteimg" src="~/images/client-1.jpg"></div>
+
+        <div class="col-md-8">
+
+            <div class="row">
+                <div class="col-sm-8">
+                    <h3>What <strong id="desc">Speak People</strong></h3>
+                </div>
+
+                @*<div class="col-sm-4"><a href="#" class="common-btn">View All </a></div>*@
+
+            </div>
+
+            <div id="testimonials" class="owl-carousel">
+                @foreach (var item in Model)
+                {
+                   
+                <div class="item">
+                    <div style="visibility:hidden" id="quoteid" data="@item.id"></div>
+
+                    <blockquote class="themestek-testimonial-text">@item.QuoteDiscription</blockquote>
+
+                    <div class="themestek-box-title"><p class="themestek-author-name"><a href="#">@item.QuoteBy</a></p><span class="themestek-box-footer">@item.QuoteDes</span></div>
+
+                </div>
+                }
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+<script src="~/js/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+           var  model= @Html.Raw(Json.Encode(Model));
+       
+        $("#testimonials").on('changed.owl.carousel', function (el) {
+             $.each(model, function (i, e) {
+            if ((model[i].id)+1 == el.item.index)
+            {
+                $("#quoteimg").prop('src', '~/ProductImages/' + model[i].QuoteImg);
+            }
+        });
+        
+         });
+    })
+
+</script>
+
+

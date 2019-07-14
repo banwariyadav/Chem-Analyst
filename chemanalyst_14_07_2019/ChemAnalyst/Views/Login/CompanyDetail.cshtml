@@ -1,0 +1,279 @@
+﻿@model ChemAnalyst.ViewModel.CustCompanyVM
+
+@{
+    if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
+    {
+        Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutUser5.cshtml";
+    }
+
+}
+<style>
+    /*------------------Start custome css for industry-tabs---------------------*/
+    .industry-text {
+        margin-bottom: 30px;
+    }
+
+        .industry-text h3 {
+            font-size: 24px;
+            color: #3368c6;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+            .industry-text h3:after {
+                position: absolute;
+                content: "";
+                bottom: 0;
+                left: 0;
+                background: #3368c6;
+                width: 40px;
+                height: 2px;
+            }
+
+        .industry-text p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+    .mains-indus-tabs .tab-content p {
+        line-height: 20px;
+    }
+
+    ul.nav-tabs li.nav-item {
+        background: #7db11a;
+        border-radius: 0;
+        border-right: 1px solid #fff;
+    }
+
+        ul.nav-tabs li.nav-item .nav-link.active {
+            background: #3368c6;
+            color: #fff;
+        }
+
+    .mains-indus-tabs .nav-tabs {
+        border: 0;
+    }
+
+    ul.nav-tabs li.nav-item a {
+        color: #fff;
+    }
+
+    .mains-indus-tabs .tab-pane.active {
+        background: #fbffeb;
+    }
+
+    .mains-indus-tabs .tab-pane {
+        float: left;
+    }
+
+    aside .subscription-btn {
+        text-align: center;
+    }
+
+        aside .subscription-btn a {
+            background: #3368c6;
+            display: block;
+            border-radius: 5px;
+            color: #fff;
+            padding: 15px 10px;
+            margin-bottom: 30px;
+        }
+
+    .side-news-feed {
+        background: #f5f5f5;
+    }
+
+        .side-news-feed h3 {
+            background: #3368c6;
+            color: #fff;
+            font-size: 20px;
+            padding: 10px 15px;
+            margin-bottom: 0px;
+        }
+
+        .side-news-feed .left-news-pic {
+            width: 20%;
+            margin-right: 10px;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .side-news-feed .right-news-desc {
+            width: 70%;
+            display: inline-block;
+        }
+
+            .side-news-feed .right-news-desc p {
+                font-size: 11px;
+                margin-bottom: 8px;
+            }
+
+                .side-news-feed .right-news-desc p:last-child {
+                    margin-bottom: 0;
+                }
+
+    .news-feed-col {
+        padding: 10px 15px;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 3px;
+    }
+
+        .news-feed-col:hover {
+            background: #fff;
+        }
+
+    .static-desc {
+        background: #fbffeb;
+        padding: 30px;
+    }
+
+        .static-desc p {
+            line-height: 20px;
+        }
+
+    .filter-category {
+        margin-bottom: 15px;
+    }
+
+        .filter-category .filter-btn a {
+            background: #3368c6;
+            padding-right: 10px;
+            color: #fff;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+            .filter-category .filter-btn a i {
+                background: #7db11a;
+                padding: 10px;
+                font-size: 19px;
+                margin-right: 10px;
+            }
+
+    .common-desc {
+        margin-bottom: 20px;
+    }
+
+        .common-desc p {
+            font-size: 14px;
+            line-height: 20px;
+        }
+
+    .tab-content > .active {
+        display: block !important;
+    }
+
+    .fade {
+        transition: opacity .15s linear !important;
+        opacity: 1;
+    }
+
+    .page-content {
+        margin: 30px 0;
+    }
+    /*------------------End custome css for industry report--------------*/
+
+</style>
+
+<body>
+    <div class="page-content">
+        <div class="update-profile-wrapper">
+
+            <div class="white-wrapper padbox">
+
+                <div class="data-detail-wrapper">
+
+                    <div class="company-profile">
+
+                        <div class="com-top-3col">
+                            <div class="row">
+
+                                <div class="col-md-3 col-lg-3">
+                                    <div class="ind-map-col">
+                                        <img src="~/ProductImages/@Model.Logo" class="img-responsive" style="width:201px; height:201px">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-9 col-lg-9">
+                                    <div class="info-text-col">
+                                        <h4>@Model.Name</h4>
+                                        <p>@Model.Description</p>
+                                    </div>
+                                </div>
+                                <div class="clearfix" style="height: 30px;clear: both;"></div>
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="cm-detail-table">
+
+                                        <h3>Basic Detail</h3>
+                                        <table class="table table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Founded Year</td>
+                                                    <td>@Model.CreatedTime</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Employee Count</td>
+                                                    <td>@Model.NOE</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Headquater</td>
+                                                    <td>@Model.Address</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Key Contact Person</td>
+                                                    <td>@Model.CEO</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Email</td>
+                                                    <td>@Model.EmailId</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Phone</td>
+                                                    <td>@Model.phoneNo</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Website</td>
+                                                    <td>@Model.website</td>
+                                                </tr>
+
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="cm-detail-table cm-detail-table2">
+
+                                        <h3>Financial</h3>
+                                        <table class="table table-bordered">
+                                            <tbody>
+                                                @foreach (var item in Model.lstFinacialData)
+                                                {
+                                                    <tr>
+                                                        <td>Revenue - @item.FinacialYear</td>
+                                                        <td>@item.Revenue INR</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>% Growth - @item.FinacialYear</td>
+                                                        <td>@item.Growth %</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

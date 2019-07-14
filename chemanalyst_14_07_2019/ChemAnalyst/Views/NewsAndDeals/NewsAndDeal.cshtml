@@ -1,0 +1,300 @@
+﻿@model ChemAnalyst.ViewModel.IndustryViewModel
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
+
+    <title>Chem Analyst</title>
+
+
+    <link href="https://fonts.googleapis.com/css?family=Oswald|Roboto+Condensed:400,700|Work+Sans&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+
+    <link rel="stylesheet" href="~/css/animate.css" type="text/css" />
+
+    @*<link href="~/css/bootstrap.min.css" rel="stylesheet" />*@
+    <link rel="stylesheet" href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome-font-awesome.min.css">
+
+    <link rel="shortcut icon" href="~/images/favicon.ico">
+
+    <!-- Owl Stylesheets -->
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="~/css/custom.css" type="text/css" />
+
+</head>
+
+<body>
+
+    <header>
+
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4"><div class="logo"><a href="#"><img src="~/images/logo.png" alt=""></a></div></div>
+                <div class="col-md-8 ml-auto">
+                    <div class="top-con-bar">
+                        <div class="row justify-content-end">
+
+                            <div class="col-sm-3">
+                                <div class="icon"><i class="fa fa-phone"></i></div>
+                                <div class="top-bt-txt">
+                                    <h4>Telephone</h4>
+                                    <p>012078765</p>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="icon"><i class="fa fa-envelope"></i></div>
+                                <div class="top-bt-txt">
+                                    <h4>Email Address</h4>
+                                    <p>info@chemanalyst.com </p>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="icon"><i class="fa fa-map-marker"></i></div>
+                                <div class="top-bt-txt">
+                                    <h4>Office Address</h4>
+                                    <p>B-44 sec-57 noida </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="main-nav">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg p-0" id="mainNav">
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"><span class="fa fa-bars 2x"></span> Menu</button>
+
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "ChemAnalyst")">Analysis </a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("ChecmPriceYearlyChart", "ChemicalPricing")">Chemical Pricing</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("IndustryReport", "Industry")">Industry Reports</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Company Profile</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("NewsAndDeal", "NewsAndDeals")">News & Deals</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Contact", "ChemAnalyst")">Contact Us</a></li>
+
+                        </ul>
+                    </div>
+
+                    <div class="book-demo-b">
+                        <a href="@Url.Action("FreeTrail", "ChemAnalyst")"><i class="fa fa-shopping-cart"></i> Free Trail</a>
+                        <a href="@Url.Action("Index", "Admin")"><i class="fa fa-user"></i> Login</a>
+                    </div>
+
+
+                </nav>
+            </div>
+        </div>
+
+    </header>
+
+    <div class="inner-banner">
+        <img src="images/about-banner.jpg">
+        <h1>News And Deals</h1>
+
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">News And Deals</li>
+        </ol>
+
+    </div>
+
+
+    <div class="page-content">
+        <div class="static-page">
+            <div class="container">
+
+                <div class="blog-list">
+
+                    <div class="row">
+                        @foreach (var item in Model.News)
+                        {
+                        <div class="col-md-6 col-sm-6">
+
+                            <div class="post-item clearfix">
+
+                                <div class="row">
+
+                                    <div class="col-md-4 col-sm-4 themestek-box-img-left">
+                                        <div class="news-pic">
+                                            <img src="~/ProductImages/@item.NewsImg" alt="">
+                                        </div>
+                                    </div>
+
+                                    <div class="themestek-box-content col-md-8 col-sm-8">
+                                        <div class="news-text">
+                                            <h4>@item.NewsName</h4>
+                                            <p>@item.NewsDiscription</p>
+
+                                            <div class="row mt-3">
+                                                <div class="col-8"><a href="#">Read More <i class="fa fa-arrow-right"></i></a></div>
+                                                <div class="col-4 text-right"><i class="fa fa-commenting"></i> 0 </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        }
+
+                        @foreach (var item2 in Model.Deals)
+                        {
+                        <div class="col-md-6 col-sm-6">
+
+                            <div class="post-item clearfix">
+
+                                <div class="row">
+
+                                    <div class="col-md-4 col-sm-4 themestek-box-img-left">
+                                        <div class="news-pic">
+                                            <img src="~/ProductImages/@item2.DealsImg" alt="">
+                                        </div>
+                                    </div>
+
+                                    <div class="themestek-box-content col-md-8 col-sm-8">
+                                        <div class="news-text">
+                                            <h4>@item2.DealsName</h4>
+                                            <p>@item2.DealsDiscription.Substring(0,90)...</p>
+
+                                            <div class="row mt-3">
+                                                <div class="col-8"><a href="#">Read More <i class="fa fa-arrow-right"></i></a></div>
+                                                <div class="col-4 text-right"><i class="fa fa-commenting"></i> 0 </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        }
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <footer>
+        <div class="container-fluid">
+
+            <div class="footer-bottom">
+
+                <div class="row">
+
+                    <div class="col-lg-4">
+
+
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+
+                        <div class="footer-social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-lg-2">
+                        <h3>Useful links</h3>
+                        <div class="foot-links">
+                            <p><a href="#">About Us</a></p>
+                            <p><a href="#">Privacy Policy</a></p>
+                            <p><a href="#">FAQs</a></p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <h3>Our Services</h3>
+                        <div class="foot-links">
+                            <p><a href="#">About Us</a></p>
+                            <p><a href="#">Privacy Policy</a></p>
+                            <p><a href="#">FAQs</a></p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <h3>Recent News & Deals</h3>
+                        <div class="foot-links">
+                            <p>
+                                <a href="#">
+                                    Test with Nursing Implications
+                                    <br>August 8, 2018
+                                </a>
+                            </p>
+                            <p>
+                                <a href="#">
+                                    Test with Nursing Implications
+                                    <br>August 8, 2018
+                                </a>
+                            </p>
+
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+
+
+                <div class="copyright text-center">
+                    <p>Copyright 2019. Chem Analyst. All Rights Reservered. </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+    </footer>
+
+    <script src="~/js/jquery.js"></script>
+    <script src="~/js/jquery-3.3.1.slim.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    @*<script src="http://cdnjs.cloudflare.com/ajax/libs/simplelightbox/1.17.1/simple-lightbox.js"></script>*@
+    <script src="~/js/owl.carousel.js"></script>
+    <script src="~/js/wow.min.js"></script>
+    <script src="~/js/honey-custom.js"></script>
+
+</body>
+</html>

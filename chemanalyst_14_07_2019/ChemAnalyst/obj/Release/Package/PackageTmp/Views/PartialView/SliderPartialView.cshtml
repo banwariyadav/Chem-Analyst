@@ -1,0 +1,19 @@
+﻿@model IEnumerable<ChemAnalyst.Models.SA_Slider>
+
+<div id="slider" class="owl-carousel" style="display:block !important">  
+    @foreach (var item in Model)
+    {
+    <div class="item">
+        <div class="banner_containt">
+            <h1>@item.Category</h1>
+            <div class="banner-blue">
+                <h2>@item.Title</h2>
+                <p>@(item.Discription.Length > 150 ? (item.Discription.Substring(0, 150)) : item.Discription)</p>
+                
+
+            </div>
+        </div>
+        <img src="~/ProductImages/@item.Img" title="@item.Meta" alt="@item.MetaDiscription" class="img-responsive">
+    </div><!--item-->
+    }
+</div>

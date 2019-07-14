@@ -1,0 +1,149 @@
+﻿@model IEnumerable<ChemAnalyst.Models.SA_Company>
+@{
+    ViewBag.Title = "CompanyProfile";
+    Layout = "~/Views/Shared/_LayoutUser7.cshtml";
+}
+
+<div class="inner-banner">
+    <img src="/images/about-banner.jpg">
+    <h1>Company Profile</h1>
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Company Profile</li>
+    </ol>
+
+</div>
+<div class="page-content">
+    <div class="static-page">
+        <div class="container">
+
+            <div class="company-profile">
+
+                <div class="com-top-3col">
+                    <div class="row">
+                        @foreach (var item in Model)
+                        {
+                        <div class="col-md-2 col-lg-2">
+                            <div class="ind-map-col">
+                                <img src="~/ProductImages/@item.Logo" class="img-responsive">
+                            </div>
+                        </div>
+
+                        <div class="col-md-10 col-lg-10">
+                            <div class="info-text-col">
+                                <h4>@item.Name</h4>
+                                <p>@item.Description</p>
+     
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-6">
+                            <div class="cm-detail-table">
+
+                                <h3>Basic Detail</h3>
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td>Name of the Company</td>
+                                            <td>@item.Name</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Registration Date</td>
+                                            <td>@item.RegDate.ToShortDateString()</td>
+                                        </tr>
+                                        <tr>
+                                            <td>CIN</td>
+                                            <td>@item.CIN</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Category/Sub-Category of Company</td>
+                                            <td>@item.Category</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Addtess</td>
+                                            <td>@item.Address</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Contact Details</td>
+                                            <td>Website:<Span>@item.website</span>
+                                                Email:<Span>@item.EmailId</Span>
+                                                fax:<Span>@item.fax</Span>
+                                                Phone No:<Span>@item.phoneNo</Span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Number of Employee</td>
+                                            <td>@item.NOE</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Managing Director/CEO</td>
+                                            <td>@item.CEO</td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-6">
+                            <div class="cm-detail-table cm-detail-table2">
+
+                                <h3>Financial</h3>
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td>Revenue</td>
+                                            <td>2000 INR</td>
+                                        </tr>
+                                        <tr>
+                                            <td>% Growth</td>
+                                            <td>4%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>PBT</td>
+                                            <td>50 INR</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%Margin</td>
+                                            <td>2%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>PAT</td>
+                                            <td>10</td>
+                                        </tr>
+                                        <tr>
+                                            <td>% Margin</td>
+                                            <td>10%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Liabilities</td>
+                                            <td>10%</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+
+                        }
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

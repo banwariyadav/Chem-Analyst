@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+<title>Chem Analyst file list </title>
+<head>
+    <script src="~/js/jquery.js"></script>
+    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+    <script src="https//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+    <script>
+
+        $(document).ready(function () {
+            $('#FileList').DataTable({
+                "ajax": {
+                    "url": "GetCustCompaniesList",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                fields: [{
+                    label: 'RegDate:',
+
+                }],
+
+                "columns": [
+                   //{ "data": "id" },
+                    { "data": "Name", "autoWidth": true },
+                    { "data": "EmailId", "autoWidth": true },
+                    { "data": "RegDate", "autoWidth": true },
+                   
+                      {
+
+                        "render": function (data, type, row, meta) { return '<a href="../Login/CompanyDetail/' + row.id + '"><i class="fa fa-eye"></i></a>'; }
+                    },
+
+
+                ]
+            });
+        });
+
+
+    </script>
+</head>
+
+<div class="update-profile-wrapper">
+
+    <div class="white-wrapper">
+
+        <div class="data-detail-wrapper table-responsive">
+
+            <table id="FileList" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Created</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+
+            </table>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewBag.Title = "Lead Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@model IEnumerable<ChemAnalyst.Models.Lead_Master>
+<head>
+    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            function convertJsonDateToShortDate(data) {
+                // This function converts a json date to a short date
+                // e.g. /Date(1538377200000)/ to 10/1/2018
+                const dateValue = new Date(parseInt(data.substr(6)));
+                return dateValue.toLocaleDateString();
+            }
+
+            $('#Leadlist').DataTable({
+                "ajax": {
+                    "url": "../SubsManagement/GetLeadManagementList",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+
+                "columnDefs": [
+
+                    {
+                        "targets": [0],
+                        "visible": false
+                    }
+                ],
+                "columns": [
+
+
+                    //{
+
+                    //    "render": function (data, type, row, meta)
+                    //    { return '<input id="selectall" class="styled" type="checkbox">' }
+                    //},
+                    { "data": "Id" },
+                    { "data": "Name", "autoWidth": true },
+                    { "data": "Phone", "autoWidth": true },
+                    { "data": "CorpEmail", "autoWidth": true },
+                    { "data": "Organisation", "autoWidth": true },
+                    { "data": "AssignTo", "autoWidth": true },
+                     { "data": "IPAddress", "autoWidth": true },
+                    {
+                        "data": "CreatedDate", "render": function (data) {
+                            return convertJsonDateToShortDate(data);
+                        }
+                    },
+                    {
+                        "render": function (data, type, row, meta) {
+                            var isCoBrowse = $("#sessionInput").val();
+
+                            if (isCoBrowse != "Admin") {
+                                return '<a href="../Subscription/AddPackage/' + row.Id + '" class="label label-primary"><i class="fa fa-plus"></i> ADD  </a>';
+                            }
+                            //else
+                            //{
+                            //  fnSetColumnVis( 7, false, false );
+                            //}
+                        }
+                    },
+
+                    {
+                        "data": "Status", "render": function (data, type, row, meta) { return '<span class="label label-success">' + data + '</span>'; }
+                    },
+                    {
+                        data: null, render: function (data, type, row) {
+                            //return '<a href="/Admin/DeleteUser/' + row.id + '"><i class="fa fa-trash-o fa-lg"></i></a>';
+                            return '<a class="label label-info" href="../SubsManagement/ViewDetails/' + row.Id + '"> VIEW DETAILS</a>';
+                        }
+                    },
+                    //{
+                    //    data: null, render: function (data, type, row) {
+                    //        return '<a class="label label-default" href="/CustomerAndProduct/AddCustomerAndProduct/' + row.Id + '"> MANAGE</a>';
+                    //    }
+                    //},
+                ]
+            });
+        });
+    </script>
+</head>
+
+
+
+<input id="sessionInput" type="hidden" value='@Session["User"]' />
+<div class="update-profile-wrapper">
+    <div class="white-wrapper" style="padding-top:10px">
+        <div class="data-detail-wrapper table-responsive">
+
+            <table id="Leadlist" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Organization</th>
+                        <th>Assign To</th>
+                        <th>IP Address</th>
+                        <th>Date</th>
+                        <th>Package</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                        @*<th>Process</th>*@
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+

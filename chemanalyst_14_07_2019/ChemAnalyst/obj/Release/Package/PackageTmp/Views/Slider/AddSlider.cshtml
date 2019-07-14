@@ -1,0 +1,130 @@
+﻿
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@model ChemAnalyst.Models.SA_Slider
+<div class="update-profile-wrapper">
+
+    <h3><a href="@Url.Action( "Slider","Slider" )"><i class="fa fa-list"></i> Slider List</a></h3>
+
+    <div class="white-wrapper">
+
+        <div class="col-md-6 col-lg-7 col-md-offset-2">
+
+            <div class="eq-form">
+
+
+                <div class="change">
+                    <img src="~/images/change-img.jpg" alt="" />
+                    <p>Add New Slider</p>
+                </div>
+
+                <div class="eq-form-box">
+                    @using (Html.BeginForm("SaveSlider", "Slider", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+
+                        @Html.AntiForgeryToken()
+                        <div style="visibility:hidden">
+                            @Html.TextBoxFor(model => model.id, new { @class = "form-control", @placeholder = "Title * ", required = "required" })
+                        </div>
+                        <div class="col-md-4 col-lg-12 form-group">
+                            @*<textarea rows="4" class="form-control" placeholder="Meta Title"></textarea>*@
+                            @Html.TextBoxFor(model => model.Category, new { @class = "form-control", @placeholder = "Title 1 * ", required = "required" })
+
+
+                        </div>
+
+                        <div class="col-md-4 col-lg-12 form-group">
+                            @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = "Title 2* ", required = "required" })
+
+
+                            @*<input type="text" value="" size="40" class="form-control" placeholder="Title">*@
+                        </div>
+
+
+
+                        <div class="col-md-4 col-lg-12 form-group">
+                            @*<textarea rows="10" class="form-control" placeholder="Description"></textarea>*@
+                            @Html.TextAreaFor(model => model.Discription, new { @class = "form-control", @rows = 4, @placeholder = "Discription * ", required = "required" })
+
+
+                        </div>
+
+
+
+
+                        <div class="col-md-4 col-lg-12 form-group">
+                            @*<textarea rows="4" class="form-control" placeholder="Meta Title"></textarea>*@
+                            @Html.TextBoxFor(model => model.Meta, new { @class = "form-control", @placeholder = "Image Title * ", required = "required" })
+
+
+                        </div>
+
+                        <div class="col-md-4 col-lg-12 form-group">
+                            @*<textarea rows="4" class="form-control" placeholder="Meta Description"></textarea>*@
+                            @Html.TextAreaFor(model => model.MetaDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Alt Description * ", required = "required" })
+
+
+                        </div>
+
+
+
+
+                        @*<div class="col-sm-6 col-lg-12">
+                <div class="form-group">
+
+                    @Html.DropDownListFor(m => m.Product, Model.ProductList, "Select Product", new { @class = "form-control" })
+
+
+            </div>*@
+
+                        <div class="col-sm-6 col-lg-12">
+                            <div class="form-group">
+                                <input type="file" name="file" class="form-control" />
+
+
+                            </div>
+                        </div>
+
+                        <div class="btn-wrapper">
+
+                            <a class="gray-btn" href="@Url.Action("Slider","Slider")">Cancel</a>
+                            <input type="submit" class="blue-btn" value="Save">
+
+                        </div>
+
+                    }
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+<script>
+
+$(document).on('click', '.browse', function(){
+  var file = $(this).parent().parent().parent().find('.file');
+  file.trigger('click');
+});
+$(document).on('change', '.file', function(){
+  $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+});
+
+
+</script>
+

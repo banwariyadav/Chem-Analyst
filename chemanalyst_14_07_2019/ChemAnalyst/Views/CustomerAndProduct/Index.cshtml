@@ -1,0 +1,52 @@
+﻿@model IEnumerable<ChemAnalyst.Models.Lead_Master>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+
+<div class="update-profile-wrapper">
+
+
+    <div class="white-wrapper" style="padding-top:10px">
+
+        <div class="data-detail-wrapper table-responsive">
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>@Html.DisplayNameFor(c => c.CorpEmail)</th>
+                        <th>@Html.DisplayNameFor(c => c.Organisation)</th>
+                        <th>@Html.DisplayNameFor(c => c.Country)</th>
+                        <th>@Html.DisplayNameFor(c => c.State)</th>
+                        <th>@Html.DisplayNameFor(c => c.Phone)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.CorpEmail</td>
+                            <td>@item.Organisation</td>
+                            <td>@item.Country</td>
+                            <td>@item.State</td>
+                            <td>@item.Phone</td>
+                            <td>
+                                @Html.ActionLink("Add Product", "AddCustomerAndProduct", new { id = item.Id }, new { @class = "btn btn-primary btn-xs" }) |
+                                @Html.ActionLink("Manage", "ManageCustomerAndProduct", new { id = item.Id }, new { @class = "btn btn-info btn-xs" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,30 @@
+﻿@model ChemAnalyst.ViewModel.CompanyProductFormViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+    <div class="update-profile-wrapper">
+
+
+        <div class="white-wrapper" style="padding-top:10px">
+
+            <div class="data-detail-wrapper table-responsive">
+
+                @using (Html.BeginForm("Import", "CompanyProduct", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="from-group">
+                        @Html.DisplayNameFor(e => e.excelFile)
+                        <input type="file" name="excelFile" class="form-control" />
+                        <p class="text-danger">@Html.Raw(ViewBag.ErrorMessage)</p>
+                    </div>
+                    <input type="submit" value="Import" class="btn btn-success" />
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+

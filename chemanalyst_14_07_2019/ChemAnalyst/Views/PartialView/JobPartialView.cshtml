@@ -1,0 +1,37 @@
+﻿@model IEnumerable<ChemAnalyst.Models.SA_Job>
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        @foreach (var item in Model.Select((value, i) => new { i, value }))
+        {
+
+            if (item.i == 0)
+            {
+                <div class="col-md-6 @item.i blue-bg">
+                    <div class="job-col ml-auto">
+                        <h3>@item.value.JobName</h3>
+                        <p> @item.value.JobDiscription </p>
+                        <div class="elementor-button-text"><a href="@Url.Action("FreeTrail", "ChemAnalyst")">Send Request <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-6 @item.i green-bg">
+                    <div class="job-col ml-auto">
+                        <h3>@item.value.JobName</h3>
+                        <p> @item.value.JobDiscription </p>
+                        <div class="elementor-button-text"><a href="@Url.Action("FreeTrail", "ChemAnalyst")">Send Request <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></div>
+                    </div>
+                </div>
+            }
+
+
+        }
+
+
+    </div>
+
+</div>

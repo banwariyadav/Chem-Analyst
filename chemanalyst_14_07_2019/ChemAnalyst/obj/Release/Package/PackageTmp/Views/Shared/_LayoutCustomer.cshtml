@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <title>Chem Analyst - Add New Category </title>
+    <link rel="stylesheet" href="~/css/bootstrap-admin.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/style.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/build.css" type="text/css" />
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+    <script src="~/js/jquery.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <section class="top-wrapper">
+        <div class="side-left">
+            <span>
+                <img src="~/images/icon01.png" alt="" />
+            </span>
+            <h2>Chem Analyst</h2>
+        </div>
+        <div class="top-inner">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="top-left">
+                            <span>
+                                <i class="fa fa-bars"></i>
+                            </span>
+                            <h2>User Management</h2>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="top-right">
+                            <img src="~/@Session["UserImg"].ToString()" alt="" />
+                            <h4>@Session["User"].ToString()</h4>
+                            <div class="dropdown">
+                                <button class="dropbtn"> <i class="fa fa-cogs" aria-hidden="true"></i></button>
+
+
+                                <div class="dropdown-content">
+                                    <a href="@Url.Action("UpdateProfile", "User")"><i class="fa fa-pencil-square-o"></i>Profile Update</a>
+                                    <a href="@Url.Action("ChangePassword", "User")"><i class="fa fa-lock"></i>Change Password</a>
+                                    <a href="@Url.Action("LogOut", "User")"><i class="fa fa-sign-out"></i>Logout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    @{
+        List<ChemAnalyst.Models.CustWiseAccess> objAccess = (List<ChemAnalyst.Models.CustWiseAccess>)@Session["Access"];
+        <div class="side-wrapper">
+            <ul>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-tachometer"></i>Dashboard
+                    </a>
+                </li>
+                @if ((objAccess.Where(page => page.Pageid == 1).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+                {
+                    <li>
+                        <a href="~/ChemicalPricing/ChecmPriceChartuser">
+                            <i class="fa fa-tachometer"></i>Chemical Pricing
+                        </a>
+                    </li>
+                }
+                @if ((objAccess.Where(page => page.Pageid == 2).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+                {
+                    <li>
+                        <a href="~/MarketAnalysis/MarketAnalysisChartUser">
+                            <i class="fa fa-tachometer"></i>Market Analysis
+                        </a>
+                    </li>
+                }
+                @*OROGINALY  PAGE ID WAS 3, I HAVE CHANGED IT*@
+                @if ((objAccess.Where(page => page.Pageid ==3).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+                {
+                    //HERE I HAVE ADDED THE LINK, PASS LEAD_MASTER ID FROM HERE
+            <li>
+                @*<a href="@Url.Action("CustomerAndProduct","CustomerAndProduct", new { id = 1004 })">*@
+                <a href="@Url.Action("CustCompaniesList","Login")">
+                    <i class="fa fa-tachometer"></i> Company Profile
+                </a>
+                @*<a href="#">
+            <i class="fa fa-tachometer"></i> Company Profile
+        </a>*@
+            </li>
+                }
+                @if ((objAccess.Where(page => page.Pageid == 4).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+                {
+                    <li>
+                        <a href="@Url.Action("CustIndustryList","Login")">
+                            <i class="fa fa-tachometer"></i>Industry Report
+                        </a>
+                    </li>
+                }
+                @if ((objAccess.Where(page => page.Pageid == 5).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+                {
+                    <li>
+                        <a href="~/NewsAndDeals/NewsHome">
+                            <i class="fa fa-tachometer"></i>News
+                        </a>
+                    </li>
+                }
+                @if ((objAccess.Where(page => page.Pageid == 6).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+                {
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-tachometer"></i>Deals
+                        </a>
+                    </li>
+                }
+
+            </ul>
+        </div>
+    }
+    <div class="right-contant-bar">
+        @RenderBody()
+    </div>
+    <div class="clearfix fillbluedark"></div>
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                @*DATE TIME SHOULD BE*@
+                <p>Copyright © @DateTime.Now.Year Chem Analyst Pvt. Ltd. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    @RenderSection("scripts", required: false)
+    @RenderSection("script", required: false)
+</body>
+</html>

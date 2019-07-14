@@ -1,0 +1,134 @@
+﻿using ChemAnalyst.DAL;
+using ChemAnalyst.Models;
+using ChemAnalyst.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+
+namespace ChemAnalyst.Controllers
+{
+    public class ChemAnalystController : Controller
+    {
+        // GET: Home
+        public ActionResult Index()
+        {
+            return View("ChemAnalyst");
+        }
+        public ActionResult Contact()
+        {
+            return View("Contact");
+        }
+
+        public ActionResult Products()
+        {
+            NewsDataStore Obj = new NewsDataStore();
+            DealsDataStore d = new DealsDataStore();
+            IndustryViewModel model = new IndustryViewModel();
+            List<SA_News> NewsList = Obj.GetNewsList();
+            model.NewsList = NewsList;
+            List<SA_Deals> DealList = d.GetDealsList();
+            model.DealsList = DealList;
+            return View("products",model);
+        }
+        public ActionResult FreeTrail()
+        {
+            NewsDataStore Obj = new NewsDataStore();
+            DealsDataStore d = new DealsDataStore();
+            IndustryViewModel model = new IndustryViewModel();
+            List<SA_News> NewsList = Obj.GetNewsList();
+            model.NewsList = NewsList;
+            List<SA_Deals> DealList = d.GetDealsList();
+            model.DealsList = DealList;
+            return View("FreeTrial", model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SaveFreeTrialAsync(Lead_Master lead)
+        {
+            bool result = false;
+            try
+            {
+                lead.CreatedDate = DateTime.Now;
+                lead.Status = "New";
+                FreeTrialDal Obj = new FreeTrialDal();
+                if (ModelState.IsValid) //checking model is valid or not  
+                {
+                    result = await Obj.AddFreeTrial(lead);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return Json(new { result = result, JsonRequestBehavior.AllowGet });
+        }
+
+        public ActionResult AdvisoryList()
+        {
+            AdvisoryDataStore Obj = new AdvisoryDataStore();
+            List<SA_Advisory> NewsList = Obj.GetAdvisoryList();
+
+            return PartialView("~/Views/PartialView/AdvisoryPartialView.cshtml", NewsList);
+
+        }
+        public ActionResult QuoteList()
+        {
+            QuoteDataStore Obj = new QuoteDataStore();
+            List<SA_Quote> NewsList = Obj.GetQuoteList();
+
+            return PartialView("~/Views/PartialView/QuotePartialView.cshtml", NewsList);
+
+        }
+        public ActionResult JobList()
+        {
+            JobDataStore Obj = new JobDataStore();
+            List<SA_Job> NewsList = Obj.GetJobList();
+
+            return PartialView("~/Views/PartialView/JobPartialView.cshtml", NewsList);
+
+        }
+        public ActionResult CategoryList()
+        {
+            CategoryDataStore Obj = new CategoryDataStore();
+            List<SA_Category> NewsList = Obj.GetCategoryList();
+
+            return PartialView("~/Views/PartialView/CategoryPartialView.cshtml", NewsList);
+
+        }
+        public ActionResult NewsList()
+        {
+            NewsDataStore Obj = new NewsDataStore();
+            List<SA_News> NewsList = Obj.GetNewsList();
+            var model = NewsList.OrderByDescending(x => x.CreatedTime).ToList();
+            model.Take(3);
+            return PartialView("~/Views/PartialView/NewPartialView.cshtml", model);
+
+        }
+        public ActionResult SliderList()
+        {
+            SliderDataStore Obj = new SliderDataStore();
+            List<SA_Slider> NewsList = Obj.GetSliderList();
+            return PartialView("~/Views/PartialView/SliderPartialView.cshtml", NewsList);
+
+        }
+        public ActionResult WorldList()
+        {
+            WorldDataStore Obj = new WorldDataStore();
+            SA_World NewsList = Obj.GetWorldByid(1);
+            return PartialView("~/Views/PartialView/WorldPartialView.cshtml", NewsList);
+
+        }
+        public ActionResult ChemContentList()
+        {
+            ChemContentDataStore Obj = new ChemContentDataStore();
+            SA_ChemContent NewsList = Obj.GetChemContentByid(1);
+            return PartialView("~/Views/PartialView/ChemContentPartialView.cshtml", NewsList);
+
+        }
+		  
+
+    }
+}

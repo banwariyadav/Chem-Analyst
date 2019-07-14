@@ -1,0 +1,50 @@
+﻿@model IEnumerable<ChemAnalyst.Models.SA_Category>
+
+<div class="container">
+
+    <div class="title">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h2>Market <strong>Analysis</strong></h2>
+            </div>
+
+            <div class="col-md-4 text-right"><a href="@Url.Action("ProductList", "ChemAnalyst")" class="common-btn">Browse 400+ Chemicals</a></div>
+        </div>
+    </div>
+
+
+    <div class="row">
+       
+            <div class="col-md-3">
+                <div class="mrket-list">
+                    <ul>
+                        @foreach (var item in Model)
+                        {
+                            <li><a href="#"><strong>@item.CategoryName</strong></a>
+                                <p>@(item.CategoryDiscription.Length > 65 ? (item.CategoryDiscription.Substring(0, 65)) : item.CategoryDiscription)</p>
+                        </li>
+                        }
+                    </ul>
+                        
+                </div>
+            </div>
+
+            <div class="col-md-9 market-pic">
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                    <div class="col-md-4">
+                        <a href="#">
+                            <img src="~/ProductImages/@item.CategoryImg" alt="">
+                            <p>@item.CategoryName</p>
+                        </a>
+                    </div>
+                    }
+                </div>
+            </div>
+
+
+
+        
+    </div>
+</div>

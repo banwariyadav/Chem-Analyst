@@ -1,0 +1,42 @@
+﻿@model IEnumerable<ChemAnalyst.Models.CompanyAndProductRelation>
+@{
+    ViewBag.Title = "Product Relation Records";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="update-profile-wrapper">
+
+
+        <div class="white-wrapper" style="padding-top:10px">
+
+            <div class="data-detail-wrapper table-responsive">
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(r => r.SA_Company.Name)</th>
+                            <th>@Html.DisplayNameFor(r => r.SA_Product.ProductName)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach(var item in Model)
+                        {
+                        <tr>
+                            <td>@item.SA_Company.Name</td>
+                            <td>@item.SA_Product.ProductName</td>
+                            <td>
+                                @Html.ActionLink("Delete", "Delete", "CompanyAndProductRelation", new { id = item.Id }, new { @class = "btn btn-danger btn-xs" })
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+            </div>
+
+        </div>
+
+    </div>

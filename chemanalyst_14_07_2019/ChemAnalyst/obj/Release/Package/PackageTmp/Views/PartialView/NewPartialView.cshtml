@@ -1,0 +1,26 @@
+﻿@model IEnumerable<ChemAnalyst.Models.SA_News>
+
+<div class="container">
+
+    <div class="text-center"><h2>Latest News & Deals</h2></div>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+        <div class="col-md-4">
+            <div class="news-col">
+                <div class="news-text">
+                    <h4><a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">@item.NewsName</a></h4>
+                    <p>@(item.NewsDiscription.Length > 150 ? (item.NewsDiscription.Substring(0, 150)) : item.NewsDiscription)...</p>
+                    <div class="row">
+                        <div class="col-8"><a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">Read More <i class="fa fa-arrow-right"></i></a></div>
+                        @*./NewsAndDeals/NewsDetails/@Model.First().id*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+
+
+</div>

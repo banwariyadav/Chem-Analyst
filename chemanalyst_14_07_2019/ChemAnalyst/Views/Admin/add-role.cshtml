@@ -1,0 +1,110 @@
+﻿
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model ChemAnalyst.Models.SA_RoleViewModel
+
+
+
+
+
+
+<div class="update-profile-wrapper">
+
+    <h3><a href="@Url.Action("Role","Admin")" class="btn btn-info"><i class="fa fa-list"></i> Role List</a></h3>
+
+    <div class="white-wrapper">
+
+        <div class="col-md-6 col-lg-7 col-md-offset-2">
+
+            <div class="eq-form">
+
+                <div class="change">
+                    <img src="~/images/change-img.jpg" alt="" />
+                    <p>Add New Role</p>
+                </div>
+
+                <div class="eq-form-box">
+                    @using (Html.BeginForm("SaveRole", "Admin", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+
+                        @Html.AntiForgeryToken()
+                        <div style="visibility:hidden">
+                            @Html.TextBoxFor(model => model.id, new { @class = "form-control", @placeholder = "Title * " })
+                        </div>
+                        <div class="col-md-4 col-lg-12 form-group">
+
+                            @Html.TextBoxFor(model => model.Role, new { @class = "form-control", @placeholder = "Title * ", required = "required" })
+                            @*<input type="text" name="role" value="" size="40" class="form-control" placeholder="Title">*@
+                        </div>
+
+
+
+                        <div class="col-md-4 col-lg-12 form-group">
+                            @*<textarea rows="7"  name="RoleDiscription"class="form-control" placeholder="Description"></textarea>*@
+                            @Html.TextBoxFor(model => model.RoleDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Description * ", required = "required" })
+
+
+                        </div>
+
+                        <div class="col-sm-6 col-lg-12">
+                            <fieldset>
+                                <legend>Access Level</legend>
+                                <div class="col-sm-6col-lg-12">
+
+                                    @Html.CheckBoxFor(m => m.ChemicalPricing)
+                                    <label for="inlineCheckbox2">Chemical Pricing </label>
+
+                                    <div class="clearfix"></div>
+
+                                    @Html.CheckBoxFor(m => m.MarketAnalysis)
+                                    <label for="inlineCheckbox2">Market Analysis </label>
+
+                                    <div class="clearfix"></div>
+
+                                    @Html.CheckBoxFor(m => m.CompanyProfile)
+                                    <label for="inlineCheckbox2">Company Profile </label>
+
+                                    <div class="clearfix"></div>
+
+                                    @Html.CheckBoxFor(m => m.IndustryReports)
+                                    <label for="inlineCheckbox2">Industry Reports </label>
+
+                                    <div class="clearfix"></div>
+
+                                    @Html.CheckBoxFor(m => m.News)
+                                    <label for="inlineCheckbox2">News </label>
+
+                                    <div class="clearfix"></div>
+
+                                    @Html.CheckBoxFor(m => m.Deals)
+                                    <label for="inlineCheckbox2">Deals </label>
+
+                                    <div class="clearfix"></div>
+
+                                    @Html.CheckBoxFor(m => m.SubscriptionManagement)
+                                    <label for="inlineCheckbox2">Subscription Management </label>
+                                </div>
+
+                            </fieldset>
+                        </div>
+
+                        <div class="btn-wrapper">
+
+                            <a class="gray-btn" href="@Url.Action("Role","Admin")">Cancle</a>
+                            <input type="submit" class="blue-btn" value="Save">
+
+                        </div>
+
+                    }
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

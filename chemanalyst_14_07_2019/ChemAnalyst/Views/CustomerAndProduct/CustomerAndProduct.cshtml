@@ -1,0 +1,79 @@
+﻿@model IEnumerable<ChemAnalyst.Models.SA_Product>
+@{
+    if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
+    {
+        Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutUser1.cshtml";
+    }
+
+}
+
+    <body>
+
+
+        @if (Session["UserRole"] == null)
+        {
+            <div class="inner-banner">
+                <img src="~/images/about-banner.jpg">
+                <h1>News</h1>
+
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">News</li>
+                </ol>
+
+            </div>
+        }
+
+        <div class="page-content">
+            <div class="static-page">
+                <div class="container">
+
+                    <div class="bloglist">
+
+                        <div class="row">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(c => c.ProductName)</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.ProductName</td>
+                                            <td>
+                                                @Html.ActionLink("View Details", "CompanyAndProductRelation", new { id = item.id }, new { @class = "btn btn-primary btn-xs" })
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <script src="~/js/jquery.js"></script>
+        <script src="~/js/jquery-3.3.1.slim.min.js"></script>
+        <script src="~/js/popper.min.js"></script>
+        <script src="~/js/bootstrap.min.js"></script>
+        @*<script src="http://cdnjs.cloudflare.com/ajax/libs/simplelightbox/1.17.1/simple-lightbox.js"></script>*@
+        <script src="~/js/owl.carousel.js"></script>
+        <script src="~/js/wow.min.js"></script>
+        <script src="~/js/honey-custom.js"></script>
+
+    </body>
+

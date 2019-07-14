@@ -1,0 +1,79 @@
+﻿@model ChemAnalyst.Models.SA_Product
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="update-profile-wrapper">
+
+
+    <div class="white-wrapper" style="padding-top:10px">
+
+        <div class="data-detail-wrapper table-responsive">
+
+            @using (Html.BeginForm("SaveCompanyProduct", "CompanyProduct", FormMethod.Post))
+            {
+                <div class="form-group">
+                    @Html.DisplayNameFor(p => p.ProductName)
+                    @Html.TextBoxFor(p => p.ProductName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.ProductName)
+                </div>
+                <div class="form-group">
+                    @Html.DisplayNameFor(p => p.ProductDiscription)
+                    @Html.TextBoxFor(p => p.ProductDiscription, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.ProductDiscription)
+                </div>
+                <div class="form-group">
+                    @Html.DisplayNameFor(p => p.Meta)
+                    @Html.TextBoxFor(p => p.Meta, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.Meta)
+                </div>
+                <div class="form-group">
+                    @Html.DisplayNameFor(p => p.MetaDiscription)
+                    @Html.TextBoxFor(p => p.MetaDiscription, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.MetaDiscription)
+                </div>
+                <div class="form-group">
+                    @Html.DisplayNameFor(p => p.status)
+                    @Html.TextBoxFor(p => p.status, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.status)
+                </div>
+                <div class="form-group">
+                    @Html.DisplayNameFor(p => p.CreatedTime)
+                    @Html.TextBoxFor(p => p.CreatedTime, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.CreatedTime)
+                </div>
+                <div class="form-group">
+                    @Html.DisplayNameFor(p => p.ProductImg)
+                    @Html.TextBoxFor(p => p.ProductImg, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.ProductImg)
+                </div>
+                <div class="form-group">
+                    @Html.DisplayNameFor(p => p.Category)
+                    @Html.TextBoxFor(p => p.Category, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.Category)
+                </div>
+                @Html.HiddenFor(p => p.id)
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-success">Save</button>
+            }
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+@section scripts
+{
+    <script src="~/scripts/jquery.validate-vsdoc.js"></script>
+    <script src="~/scripts/jquery.validate.js"></script>
+    <script src="~/scripts/jquery.validate.min.js"></script>
+    <script src="~/scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/scripts/jquery.validate.unobtrusive.min.js"></script>
+
+}
+

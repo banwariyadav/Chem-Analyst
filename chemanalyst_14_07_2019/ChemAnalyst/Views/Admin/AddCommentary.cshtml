@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<script src="..\ckeditor/ckeditor.js" type="text/javascript"></script>*@
+    <script src="~\ckeditor/ckeditor.js" type="text/javascript"></script>
+@model ChemAnalyst.Models.SA_Commentary
+<div class="update-profile-wrapper">
+
+    <h3><a href="@Url.Action( "ShowCommentaryList","Admin" )"><i class="fa fa-list"></i>Commentary List</a></h3>
+
+    <div class="white-wrapper">
+
+        <div class="col-md-6 col-lg-7 col-md-offset-2">
+
+            <div class="eq-form">
+                <div class="change">
+                    <img src="~/images/change-img.jpg" alt="" />
+                    <p>Add New Commentary</p>
+                </div>
+
+                <div class="eq-form-box">
+                    @using (Html.BeginForm("SaveCommentary", "Admin", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+
+                        @Html.AntiForgeryToken()
+                        <div style="visibility:hidden">
+                            @Html.TextBoxFor(model => model.id, new { @class = "form-control", @placeholder = "Title * ", required = "required" })
+                        </div>
+
+                        <div class="col-sm-4 col-lg-12 form-group">
+
+                            @Html.DropDownListFor(m => m.Product, ChemAnalyst.DAL.ProductDataStore.GetProduct(), "Select Product", new { @class = "form-control", required = "required" })
+
+                        </div>
+
+                        <div class="col-md-4 col-lg-12 form-group">
+                            @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = "Title * ", required = "required" })
+
+
+                            @*<input type="text" value="" size="40" class="form-control" placeholder="Title">*@
+                        </div>
+
+
+
+                        <div class="col-md-4 col-lg-12 form-group">
+                            @*<textarea rows="10" class="form-control" placeholder="Description"></textarea>*@
+                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @rows = 200, @placeholder = "Description * ", id = "Desc", required = "required" })
+
+
+                        </div>
+                        
+                       
+                       
+                        <script>
+
+                            CKEDITOR.replace("Desc");
+
+                        </script>
+          
+
+
+
+
+                        <div class="col-md-4 col-lg-12 form-group">
+                            @*<textarea rows="4" class="form-control" placeholder="Meta Title"></textarea>*@
+                            @Html.TextBoxFor(model => model.Meta, new { @class = "form-control", @placeholder = "Meta Title * ", required = "required" })
+
+
+                        </div>
+                      
+
+                        <div class="col-md-4 col-lg-12 form-group">
+                            @*<textarea rows="4" class="form-control" placeholder="Meta Description"></textarea>*@
+                            @Html.TextAreaFor(model => model.MetaDescription, new { @class = "form-control", @rows = 4, @placeholder = "Meta Description * ", required = "required" })
+
+
+                        </div>
+
+                                             
+
+                        <div class="btn-wrapper">
+
+                            @*<a class="gray-btn" href="@Url.Action("Job","Job")">Cancel</a>*@
+                            <input type="submit" class="btn btn-primary" value="Save">
+
+                        </div>
+
+                    }
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<script type="text/javascript">
+    $(function () {
+        $('#Desc').ckeditor({
+            toolbar: 'Full',
+            enterMode: CKEDITOR.ENTER_BR,
+            shiftEnterMode: CKEDITOR.ENTER_P
+        });
+    });
+</script>
+
+
+<script>
+
+    $(document).on('click', '.browse', function () {
+        var file = $(this).parent().parent().parent().find('.file');
+        file.trigger('click');
+    });
+    $(document).on('change', '.file', function () {
+        $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+    });
+
+
+</script>
+

@@ -1,0 +1,4915 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using System.IO;
+using System.Data;
+using ChemAnalyst.DAL;
+using System.Configuration;
+using System.Data.SqlClient;
+using ChemAnalyst.ViewModel;
+using ChemAnalyst.Models;
+using OfficeOpenXml;
+
+
+namespace ChemAnalyst.Controllers
+{
+    public class MarketAnalysisController : Controller
+    {
+        ProductDataStore ObjProduct = new ProductDataStore();
+        MarketAnalysis Marketanalysisobj;
+        // GET: MarketAnalysis
+        public MarketAnalysisController()
+        {
+            Marketanalysisobj = new DAL.MarketAnalysis();
+        }
+        // GET: MarketAnalysis
+        public ActionResult MarketAnalysisList()
+        {
+            return View("Market-FileList");
+        }
+
+        public ActionResult MarketAnalysisChart()
+        {
+            string product = null;
+            string ChartType = null;
+            string Range = null;
+            string CompareProject = null;
+            bool Customer = false;
+            return RedirectToAction("MarketbycompanyChart", "MarketAnalysis", new
+            {
+                product,
+                ChartType,
+                Range,
+                CompareProject,
+                Customer
+            });
+
+        }
+
+        public ActionResult MarketAnalysisChartUser()
+        {
+            string product = null;
+            string ChartType = null;
+            string Range = null;
+            string CompareProject = null;
+            bool Customer = true;
+            return RedirectToAction("MarketbycompanyChart", "MarketAnalysis", new
+            {
+                product,
+                ChartType,
+                Range,
+                CompareProject,
+                Customer
+            });
+
+        }
+
+        public JsonResult GetFileList()
+        {
+
+            List<SA_MarketFileList> fileList = Marketanalysisobj.GetallUploadFile();
+
+            return Json(new { data = fileList }, JsonRequestBehavior.AllowGet);
+
+        }
+        public ActionResult Index()
+        {
+            ViewBag.ProductList = ObjProduct.ProductList();
+
+            return View("marketanalysisimport");
+        }
+
+        public ActionResult ShowChart(FormCollection FilterObject)
+        {
+            string product = FilterObject["ddlProduct"];
+            string ChartType = FilterObject["ddlChart"];
+            string Range = FilterObject["ddlRange"];
+            string CompareProject = FilterObject["example-getting-started"];
+            bool Customer = false;
+            if (Range == "Company")
+            {
+                return RedirectToAction("MarketbycompanyChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+                // ChecmPriceYearlyChartUser(product, ChartType, Range);
+            }
+            else if (Range == "Location")
+            {
+                return RedirectToAction("MarketbylocationChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range
+                });
+            }
+
+            return RedirectToAction("index");
+        }
+        public ActionResult ShowUserChart(FormCollection FilterObject)
+        {
+            string product = FilterObject["ddlProduct"];
+            string ChartType = FilterObject["ddlChart"];
+            string Range = FilterObject["ddlRange"];
+            string CompareProject = FilterObject["example-getting-started"];
+            bool Customer = true;
+
+            if (Range == "Company")
+            {
+                return RedirectToAction("MarketbycompanyChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+                // ChecmPriceYearlyChartUser(product, ChartType, Range);
+            }
+            else if (Range == "Location")
+            {
+                return RedirectToAction("MarketbylocationChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Technology")
+            {
+                return RedirectToAction("MarketbyTechnologyChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Process")
+            {
+                return RedirectToAction("MarketbyProcessChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Production")
+            {
+                return RedirectToAction("MarketbyProductionChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Operating Efficiency")
+            {
+                return RedirectToAction("MarketbyEfficiencyChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Demand By EndUse(%)")
+            {
+                return RedirectToAction("MarketbyEndUsePercentChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Demand By EndUse(%)")
+            {
+                return RedirectToAction("MarketbyEndUsePercentChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Demand By EndUse(T)")
+            {
+                return RedirectToAction("MarketbyEndUseTonneChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Demand By Grade(%)")
+            {
+                return RedirectToAction("MarketbyGradePercentChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Demand By Grade(T)")
+            {
+                return RedirectToAction("MarketbyGradeTonneChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Demand By Type(%)")
+            {
+                return RedirectToAction("MarketbyTypePercentChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Demand By Type(T)")
+            {
+                return RedirectToAction("MarketbyTypeTonneChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Demand By SalesChannel(T)")
+            {
+                return RedirectToAction("MarketbySalesChannelTonneChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Demand By SalesChannel(%)")
+            {
+                return RedirectToAction("MarketbySalesChannelPercentChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Demand By GradePricing")
+            {
+                return RedirectToAction("MarketbyGradePricingChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Demand By Region(%)")
+            {
+                return RedirectToAction("MarketbyRegionPercentChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Demand By Region(T)")
+            {
+                return RedirectToAction("MarketbyRegionTonneChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Demand By TradeExport")
+            {
+                return RedirectToAction("MarketbyTradeExportChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Demand By TradeImport")
+            {
+                return RedirectToAction("MarketbyTradeImportChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Demand Supply Gap")
+            {
+                return RedirectToAction("MarketbySupplyGapChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Demand By CompanyShares(%)")
+            {
+                return RedirectToAction("MarketbyCompanySharesPercentChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+            else if (Range == "Demand By CompanyShares(T)")
+            {
+                return RedirectToAction("MarketbyCompanySharesTonneChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+            }
+
+
+            return RedirectToAction("MarketbycompanyChart");
+        }
+
+
+        public ActionResult CompanyUpload(FormCollection formcollection)
+
+        {
+            ProductDataStore ObjProduct = new ProductDataStore();
+
+            System.Data.DataTable dt = new System.Data.DataTable();
+            string product = formcollection["hdproductid"];
+            string ImportType = formcollection["Typelist"];
+            string UploadFileDiscription = formcollection["UploadFileDiscription"];
+            bool ReplaceData = Convert.ToBoolean(formcollection["ReplaceData"].Split(',')[0]);
+            string path = string.Empty;
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                var file = Request.Files[i];
+
+                if (file != null && file.ContentLength > 0)
+                {
+
+                    var fileName = Path.GetFileName(file.FileName);
+                    if (ReplaceData)
+                    {
+                        int data = Marketanalysisobj.CheckExistingdata(fileName, ImportType);
+                    }
+                    else
+                    {
+                        int data = Marketanalysisobj.CheckFileuploadStatus(fileName, ImportType);
+                        if (data == 1)
+                        {
+                            ViewBag.ProductList = ObjProduct.ProductList();
+                            ViewBag.Messge = "File is already uploaded.";
+                            return View("marketanalysisreport");
+                        }
+
+                    }
+                    path = Path.Combine(Server.MapPath("~/MarketAnalysisImportfile"), fileName);
+                    file.SaveAs(path);
+                    if (ImportType == "Company")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToDataTable();
+                        if (InsertCompExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName) == true)
+                        {
+                            ViewBag.ProductList = ObjProduct.ProductList();
+                            ViewBag.Messge = "Data already Imported .";
+                            return View("marketanalysisimport");
+                        }
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Location")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToLocDataTable();
+                        InsertLocExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Technology")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToLocDataTable();
+                        InsertTechnologyExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Process")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToLocDataTable();
+                        InsertProcessExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Demand By GradePricing")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToLocDataTable();
+                        InsertGradepricingExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Demand By TradeExport")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToLocDataTable();
+                        InsertDemandByTradeExportExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Demand By TradeImport")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToLocDataTable();
+                        InsertDemandByTradeImportExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Production")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToDataTable();
+                        InsertProductionExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Demand By CompanyShares(%)")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToDataTable();
+                        InsertCompanySharepercentExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Demand By CompanyShares(T)")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToDataTable();
+                        InsertCompanySharetonnesExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Operating Efficiency")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToDataTable();
+                        InsertEfficiencyExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Demand By EndUse(%)")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToDataTable();
+                        InsertEndUsepercentExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Demand By EndUse(T)")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToDataTable();
+                        InsertEndUsetonnesExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Demand By Grade(%)")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToDataTable();
+                        InsertGradepercentExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Demand By Grade(T)")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToDataTable();
+                        InsertGradetonnesExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Demand By Region(%)")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToDataTable();
+                        InsertRegionpercentExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Demand By Region(T)")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToDataTable();
+                        InsertRegiontonnesExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Demand By SalesChannel(%)")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToDataTable();
+                        InsertSalespercentExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Demand By SalesChannel(T)")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToDataTable();
+                        InsertSalestonnesExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Demand By Type(%)")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToDataTable();
+                        InsertTypepercentExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Demand By Type(T)")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToDataTable();
+                        InsertTypetonnesExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Demand Supply Gap")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToDataTable();
+                        InsertDemandsupplyExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Messge = "Data Imported successfully.";
+                        return View("marketanalysisimport");
+                    }
+
+                }
+            }
+            ViewBag.ProductList = ObjProduct.ProductList();
+            ViewBag.Messge = "Data Imported successfully.";
+            return RedirectToAction("Index");
+        }
+
+        #region Insert data function from admin upload
+
+        private bool InsertCompExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+
+            try
+            {
+                // string connStr = ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString;
+
+                // string constr = string.Format(connStr, path);
+                //  ExcelConn(_path);  C:\Users\AVI Nishad\Desktop\test1.xlsx
+                //string constr = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";" + @"Extended Properties='Excel 12.0;HDR=Yes;'";
+                // OleDbConnection Econ = new OleDbConnection(constr);
+                // string Query = string.Format("Select [Product Name],[Year],[count] FROM [{0}]", "Sheet1$");
+                // OleDbCommand Ecom = new OleDbCommand(Query, Econ);
+                //Econ.Open();
+
+                // DataSet ds = new DataSet();
+                //OleDbDataAdapter oda = new OleDbDataAdapter(Query, Econ);
+                //Econ.Close();
+                //oda.Fill(ds);
+                //System.Data.DataTable Exceldt = ds.Tables[0];
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Company"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["Company"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                //if (Chempriceobj.CheckExistingdata(product, year) > 0)
+                //{
+                //    return true;
+                //}
+                //inserting Datatable Records to DataBase   
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+                sqlConnection.ConnectionString = connectionString;//Connection Details  
+                                                                  //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyComp";
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Company]", "Company");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+                //  MessageBox.Show("Data has been Imported successfully.", "Imported", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            catch (Exception ex)
+            {
+                //  MessageBox.Show(string.Format("Data has not been Imported due to :{0}", ex.Message), "Not Imported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+
+
+            }
+            return false;
+
+        }
+
+        private bool InsertProductionExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Producer"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["Producer"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details  
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyProducer";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Producer]", "Producer");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+
+        private bool InsertCompanySharepercentExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Company"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["Company"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details  
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyCompanySharepercent";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Company]", "Company");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+
+        private bool InsertCompanySharetonnesExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Company"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["Company"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details  
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyCompanySharetonnes";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Company]", "Company");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+
+        private bool InsertEfficiencyExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Producer"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["Producer"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details  
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyEfficiency";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Producer]", "Producer");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+
+        private bool InsertEndUsepercentExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Enduse"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["Enduse"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details  
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyEndUsepercent";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Enduse]", "Enduse");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+
+        private bool InsertEndUsetonnesExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Enduse"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["Enduse"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details  
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyEndUsetonnes";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Enduse]", "Enduse");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+
+        private bool InsertGradepercentExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Grade"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["Grade"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details  
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyGradepercent";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Grade]", "Grade");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+
+        private bool InsertGradetonnesExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Grade"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["Grade"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details  
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyGradetonnes";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Grade]", "Grade");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+
+        private bool InsertRegionpercentExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Region"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["Region"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details  
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyRegionpercent";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Region]", "Region");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+
+        private bool InsertRegiontonnesExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Region"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["Region"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details  
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyRegiontonnes";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Region]", "Region");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+
+        private bool InsertSalespercentExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Channel"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["Channel"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details  
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbySalespercent";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Channel]", "Channel");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+
+        private bool InsertSalestonnesExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Channel"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["Channel"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details  
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbySalestonnes";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Channel]", "Channel");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+
+        private bool InsertTypepercentExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["type"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["type"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details  
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyTypepercent";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[type]", "type");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+
+        private bool InsertTypetonnesExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["type"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["type"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details  
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyTypetonnes";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[type]", "type");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+
+        private bool InsertDemandsupplyExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["DemandSupply"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["DemandSupply"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details  
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyDemandsupply";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[DemandSupply]", "DemandSupply");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+
+
+
+        private bool InsertLocExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+
+            try
+            {
+                // string connStr = ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString;
+
+                // string constr = string.Format(connStr, path);
+                //  ExcelConn(_path);  C:\Users\AVI Nishad\Desktop\test1.xlsx
+                //string constr = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";" + @"Extended Properties='Excel 12.0;HDR=Yes;'";
+                // OleDbConnection Econ = new OleDbConnection(constr);
+                // string Query = string.Format("Select [Product Name],[Year],[count] FROM [{0}]", "Sheet1$");
+                // OleDbCommand Ecom = new OleDbCommand(Query, Econ);
+                //Econ.Open();
+
+                // DataSet ds = new DataSet();
+                //OleDbDataAdapter oda = new OleDbDataAdapter(Query, Econ);
+                //Econ.Close();
+                //oda.Fill(ds);
+                //System.Data.DataTable Exceldt = ds.Tables[0];
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Company"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["Company"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                //if (Chempriceobj.CheckExistingdata(product, year) > 0)
+                //{
+                //    return true;
+                //}
+                //inserting Datatable Records to DataBase   
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+                sqlConnection.ConnectionString = connectionString;//Connection Details  
+                                                                  //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyLoc";
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Company]", "Company");
+                objbulk.ColumnMappings.Add("[Location]", "Location");
+                objbulk.ColumnMappings.Add("[States]", "States");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+                //  MessageBox.Show("Data has been Imported successfully.", "Imported", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            catch (Exception ex)
+            {
+                //  MessageBox.Show(string.Format("Data has not been Imported due to :{0}", ex.Message), "Not Imported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+
+
+            }
+            return false;
+
+        }
+
+        private bool InsertTechnologyExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Company"] == DBNull.Value || Exceldt.Rows[i]["Technology"] == DBNull.Value || Exceldt.Rows[i]["Liscensor"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["Company"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyTech";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Company]", "Company");
+                objbulk.ColumnMappings.Add("[Technology]", "Technology");
+                objbulk.ColumnMappings.Add("[Liscensor]", "Liscensor");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+                //  MessageBox.Show("Data has been Imported successfully.", "Imported", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                //  MessageBox.Show(string.Format("Data has not been Imported due to :{0}", ex.Message), "Not Imported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            return false;
+        }
+
+        private bool InsertProcessExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Company"] == DBNull.Value || Exceldt.Rows[i]["Process"] == DBNull.Value || Exceldt.Rows[i]["Liscensor"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["Company"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyProcess";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Company]", "Company");
+                objbulk.ColumnMappings.Add("[Process]", "Process");
+                objbulk.ColumnMappings.Add("[Liscensor]", "Liscensor");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+                //  MessageBox.Show("Data has been Imported successfully.", "Imported", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                //  MessageBox.Show(string.Format("Data has not been Imported due to :{0}", ex.Message), "Not Imported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            return false;
+        }
+
+        private bool InsertGradepricingExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Productsv"] == DBNull.Value || Exceldt.Rows[i]["Grade"] == DBNull.Value || Exceldt.Rows[i]["Application"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                // string productid = Exceldt.Rows[0]["Company"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyGradepricing";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Productsv]", "Productsv");
+                objbulk.ColumnMappings.Add("[Application]", "Application");
+                objbulk.ColumnMappings.Add("[Grade]", "Grade");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+                //  MessageBox.Show("Data has been Imported successfully.", "Imported", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                //  MessageBox.Show(string.Format("Data has not been Imported due to :{0}", ex.Message), "Not Imported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            return false;
+        }
+
+        private bool InsertDemandByTradeExportExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Country"] == DBNull.Value || Exceldt.Rows[i]["value"] == DBNull.Value || Exceldt.Rows[i]["volume"] == DBNull.Value || Exceldt.Rows[i]["year"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                // string productid = Exceldt.Rows[0]["Company"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyTradeExport";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Country]", "Country");
+                objbulk.ColumnMappings.Add("[value]", "value");
+                objbulk.ColumnMappings.Add("[volume]", "volume");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+                //  MessageBox.Show("Data has been Imported successfully.", "Imported", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                //  MessageBox.Show(string.Format("Data has not been Imported due to :{0}", ex.Message), "Not Imported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            return false;
+        }
+
+        private bool InsertDemandByTradeImportExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Country"] == DBNull.Value || Exceldt.Rows[i]["value"] == DBNull.Value || Exceldt.Rows[i]["volume"] == DBNull.Value || Exceldt.Rows[i]["year"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                // string productid = Exceldt.Rows[0]["Company"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyTradeImport";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Country]", "Country");
+                objbulk.ColumnMappings.Add("[value]", "value");
+                objbulk.ColumnMappings.Add("[volume]", "volume");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+                //  MessageBox.Show("Data has been Imported successfully.", "Imported", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                //  MessageBox.Show(string.Format("Data has not been Imported due to :{0}", ex.Message), "Not Imported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            return false;
+        }
+
+
+
+
+
+
+
+
+        #endregion
+
+
+        #region Front end functions
+
+        public ActionResult MarketbycompanyChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyComp> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetCompanyWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetCompanyWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyComp> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Company,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+               
+            }
+
+
+
+        }
+
+        public ActionResult MarketbylocationChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyLoc> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetLocationWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetLocationWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyLoc> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Location,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+        public ActionResult MarketbyTechnologyChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyTech> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetTechnologyWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetTechnologyWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyTech> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Technology,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+        public ActionResult MarketbyProcessChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyProcess> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetProcessWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetProcessWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyProcess> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Process,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+        public ActionResult MarketbyProductionChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyProducer> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetProducerWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetProducerWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyProducer> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Producer,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+        public ActionResult MarketbyEfficiencyChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyEfficiency> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetEfficiencyWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetEfficiencyWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyEfficiency> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Producer,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+        public ActionResult MarketbyEndUsePercentChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyEndUsepercent> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetEndUsepercentWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetEndUsepercentWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyEndUsepercent> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Enduse,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+        public ActionResult MarketbyEndUseTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyEndUsetonnes> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetEndUsetonnesWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetEndUsetonnesWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyEndUsetonnes> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Enduse,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+        public ActionResult MarketbyGradePercentChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyGradepercent> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetGradepercentWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetGradepercentWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyGradepercent> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Grade,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+        public ActionResult MarketbyGradeTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyGradetonnes> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetGradetonnesWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetGradetonnesWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyGradetonnes> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Grade,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+        public ActionResult MarketbyTypePercentChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyTypepercent> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetTypepercentWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetTypepercentWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyTypepercent> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.type,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+        public ActionResult MarketbyTypeTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyTypetonnes> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetTypetonnesWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetTypetonnesWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyTypetonnes> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.type,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+        public ActionResult MarketbySalesChannelPercentChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbySalespercent> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetSalespercentWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetSalespercentWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbySalespercent> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Channel,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+        public ActionResult MarketbySalesChannelTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbySalestonnes> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetSalestonnesWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetSalestonnesWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbySalestonnes> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Channel,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+         public ActionResult MarketbyGradePricingChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyGradepricing> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetGradepricingWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetGradepricingWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyGradepricing> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Grade,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+         public ActionResult MarketbyRegionPercentChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyRegionpercent> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetRegionpercentWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetRegionpercentWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyRegionpercent> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Region,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+        public ActionResult MarketbyRegionTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyRegiontonnes> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetRegiontonnesWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetRegiontonnesWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyRegiontonnes> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Region,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+        public ActionResult MarketbyTradeExportChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyTradeExport> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetTradeExportWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetTradeExportWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyTradeExport> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Country,
+                        Quantity = item.value                              
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+        public ActionResult MarketbyTradeImportChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyTradeImport> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetTradeImportWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetTradeImportWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyTradeImport> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Country,
+                        Quantity = item.value
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+        public ActionResult MarketbySupplyGapChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyDemandsupply> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetDemandsupplyWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetDemandsupplyWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyDemandsupply> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.DemandSupply,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+        public ActionResult MarketbyCompanySharesPercentChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyCompanySharepercent> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetCompanySharepercentWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetCompanySharepercentWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyCompanySharepercent> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Company,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+
+        public ActionResult MarketbyCompanySharesTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        {
+            MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            int custid = 0;
+            if (product == null && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ChartType = "line";
+
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(0);
+                return View("market-AnalysisDataUser");
+
+            }
+            if (Customer == true)
+            {
+                custid = int.Parse(Session["LoginUser"].ToString());
+
+            }
+
+            List<SA_MarketbyCompanySharetonnes> obj = null;
+            string compare = string.Empty;
+            if (CompareProject != null)
+            {
+                compare = CompareProject;
+                CompareProject = CompareProject + "," + product;
+                string[] values = CompareProject.Split(',');
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = values[i].Trim();
+                }
+                //   values[values.Length] = CompareProject;
+
+                obj = Objdal.GetCompanySharetonnesWiseProductListwithCompare(values);
+
+            }
+            else
+                obj = Objdal.GetCompanySharetonnesWiseProductList(product);
+            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<MA_StackViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_MarketbyCompanySharetonnes> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //sales of product sales by quarter  
+                MA_StackViewModel Report = new MA_StackViewModel();
+                Report.MStackedDimensionOne = Year[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Compare = compare;
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+                foreach (var item in Chartdata)
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        MDimensionOne = item.Company,
+                        Quantity = item.count
+                    };
+                    QuantityList.Add(Quantity);
+                }
+                Report.LstData = QuantityList;
+                if (product == null)
+                {
+                    Report.MChartType = "line";
+                    Report.MRange = "Yearly";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.MChartType = chartType;
+                    Report.MRange = Range;
+                }
+                lstModel.Add(Report);
+            }
+
+
+            if (lstModel.Count() <= 0 && Customer == false)
+            {
+
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(0);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                return View("market-AnalysisData", d);
+
+            }
+            else if (lstModel.Count() <= 0 && Customer == true)
+            {
+                ViewBag.product = product;
+                ViewBag.ChartType = chartType;
+                ViewBag.range = Range;
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
+                return View("market-AnalysisDataUser");
+
+            }
+            else if (Customer == true)
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                return View("marketanalysisUser", lstModel);
+            }
+            else
+            {
+                ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                NewsDataStore Obj2 = new NewsDataStore();
+                DealsDataStore Obj = new DealsDataStore();
+                DealsDetailsViewModel d = new DealsDetailsViewModel();
+                d.NewsList = Obj2.GetNewsList();
+                d.DealList = Obj.GetDealsList();
+                lstModel[0].NewsDetailsViewModel = d;
+                return View("marketanalysis", lstModel);
+            }
+
+
+
+        }
+        #endregion
+
+    }
+}

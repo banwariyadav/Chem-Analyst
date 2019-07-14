@@ -1,0 +1,720 @@
+﻿@using ChemAnalyst.ViewModel
+@model List<ChemAnalyst.ViewModel.StackedViewModel>
+
+
+
+
+
+
+
+@{
+    var XLabels1 = "";
+    var YValues1 = "";
+    var label21 = "";
+    var fValue = Model.FirstOrDefault().FirstValue;
+    var lValue = Model.FirstOrDefault().LastValues;
+    var SelectedValues = Model.FirstOrDefault().SelectedValues;
+
+    if (SelectedValues == null)
+    {
+        SelectedValues = "Empty";
+
+    }
+
+    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList());
+    var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.LstData.Select(w => w.Quantity)).ToList());
+    var label2 = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.StackedDimensionOne).ToList());
+    var Product = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.Product).FirstOrDefault());
+    var ChartType = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.ChartType).FirstOrDefault());
+    var range = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.range).FirstOrDefault());
+    var Category = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.category).FirstOrDefault());
+}
+
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
+
+    <title>Chem Analyst</title>
+
+    <link href="~/css/oswald-font.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/animate.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome-font-awesome.min.css">
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <!-- Owl Stylesheets -->
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/css/bootstrap-multiselect.css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="~/css/custom.css" type="text/css" />
+    <style>
+        .rangeSlider .slidecontainer {
+            width: 100%;
+        }
+
+        .rangeSlider {
+            margin-left: 30px;
+        }
+
+            .rangeSlider .slider {
+                -webkit-appearance: none;
+                width: 96%;
+                height: 10px;
+                border-radius: 7px;
+                background: #1478e4;
+                outline: none;
+                opacity: 0.7;
+                -webkit-transition: .2s;
+                transition: opacity .2s;
+            }
+
+                .rangeSlider .slider:hover {
+                    opacity: 1;
+                }
+
+                .rangeSlider .slider::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    width: 25px;
+                    height: 25px;
+                    border-radius: 50%;
+                    background: #7db11a;
+                    cursor: pointer;
+                }
+
+                .rangeSlider .slider::-moz-range-thumb {
+                    width: 25px;
+                    height: 25px;
+                    border-radius: 50%;
+                    background: #7db11a;
+                    cursor: pointer;
+                }
+    </style>
+</head>
+
+<body>
+
+    <div class="page-content">
+        <div class="static-page">
+            <div class="container">
+
+                <div class="row">
+
+
+                    @using (Html.BeginForm("SubmitAction1", "ChemicalPricing", FormMethod.Post))
+                    {
+                        <input type="hidden" name="TxtUrl" value="http://localhost:49123/ChemicalPricing/ChecmPriceYearlyChart1?product=5&ChartType=line&Range=Yearly&Customer=False" />
+                        <input type="submit" id="btnSubmit" value="Export" />
+                    }
+
+                    <div class="col-md-9" >
+
+                        
+
+                        
+
+                       
+
+                        <canvas id="canvas"></canvas>
+                        <div style="height:20px"></div>
+                        <div class="rangeSlider col-lg-12">
+                            <div class="slidecontainer" style="display:none" id="slidecontainer1">
+                                <input type="range" min="" max="" value="" class="slider" id="myRange">
+                                <div style="height:10px"></div>
+                                <p>Value: <span id="demo"></span></p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div style="height:30px"></div>
+                            <div class="common-desc">
+                                <h4 style="border-bottom: 1px solid #ccc">Description</h4>
+                                <p>
+
+                                    @foreach (string Discription in (Model.Select(x => x.Discription).FirstOrDefault()))
+                                    {
+                                        @Discription
+                                    }
+                                </p>
+                            </div>
+                            <div style="height:30px"></div>
+                            <div class="custom-table" id="Grid">
+
+                                <table class="table table-hover table-bordered">
+                                    <thead>
+                                        <tr class="table-primary">
+                                            <th></th>
+                                            @foreach (string column in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))
+                                            {
+                                                <th>@column</th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (string count in Model.Select(x => x.StackedDimensionOne).ToList())
+                                        {
+                                            <tr>
+                                                @foreach (var data in Model.Where(x => x.StackedDimensionOne == count).ToList())
+                                                {
+                                                    <th>@count</th>
+                                                    foreach (var value in data.LstData.Select(x => x.Quantity).ToList())
+                                                    {
+                                                        <th>@value</th>
+                                                    }
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</body>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    @*<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>*@
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/bootstrap-multiselect.js"></script>
+
+    <script src="../js/owl.carousel.js"></script>
+    <script src="../js/wow.min.js"></script>
+    <script src="../js/honey-custom.js"></script>
+    <script src="../js/Chart.min.js"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+        $(document).ready(function () {
+
+
+            debugger
+            Url = {
+                get get() {
+                    var vars = {};
+                    if (window.location.search.length !== 0)
+                        window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+                            key = decodeURIComponent(key);
+                            if (typeof vars[key] === "undefined") { vars[key] = decodeURIComponent(value); }
+                            else { vars[key] = [].concat(vars[key], decodeURIComponent(value)); }
+                        });
+                    return vars;
+                }
+            };
+
+
+            //myform = Url.get.form;
+            //myrep = Url.get.user;
+            //compid = Url.get.id;
+            myvar = Url.get.ref;
+            alert(myvar);
+            //useremailx = Url.get.useremail;
+            if (myvar == "g") {
+                $("#btnSubmit").hide();
+                //$("#html-content-holder").css("width", "100%");
+
+
+            }
+
+            var range = $(ddlRange).find("option:selected").val();
+            var ddlCustomers = $("#ddlChart");
+            if (range == "Daily basis") {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
+            }
+            else {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
+            }
+
+        });
+
+        $(function () {
+            $("#btnSubmit").click(function () {
+                $("input[name='GridHtml']").val($("#Grid").html());
+            });
+        });
+
+
+
+    </script>
+    <script>
+    function SubmitForm() {
+        debugger;
+            var Product = @Html.Raw(Product);
+            var ChartType = @Html.Raw(ChartType);
+            var range = @Html.Raw(range);
+        var Category = @Html.Raw(Category);
+
+
+            //  $('#ddlProduct').val();
+            if ( $('#ddlProduct').val()!=Product && $('#ddlProduct').val()!='')// Calling validation function
+            {
+                $('#myModal').modal({backdrop: 'static', keyboard: false});
+                event.preventDefault();
+            }
+
+    }
+
+
+    function ResetForm()
+    {
+        var Product = @Html.Raw(Product);
+            var ChartType = @Html.Raw(ChartType);
+            var range = @Html.Raw(range);
+        var Category = @Html.Raw(Category);
+
+        $('#ClearValue').val('ClearMaxValue');
+
+            //  $('#ddlProduct').val();
+            if ( $('#ddlProduct').val()!=Product && $('#ddlProduct').val()!='')// Calling validation function
+            {
+                $('#myModal').modal({backdrop: 'static', keyboard: false});
+                event.preventDefault();
+            }
+
+    }
+        $("body").on("change", "#category", function () {
+            var CatId=$(category).find("option:selected").val();
+
+            var ddlCustomers = $("#ddlProduct");
+            //  var ddlCompare = $("#example-getting-started");
+            // example-getting-started
+            ddlCustomers.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
+            $.ajax({
+                type: "POST",
+                url: "../ChemicalPricing/GetProductName",
+                data: "{ CatId:"+ CatId +"}" ,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (response) {
+                    ddlCustomers.empty().append('<option selected="selected" value=""> select Product</option>');
+                    //ddlCompare.empty().append('<option selected="selected" value="0"> select Product</option>');
+
+                    $.each(response, function () {
+                        ddlCustomers.append($("<option></option>").val(this['Value']).html(this['Text']));
+                        // ddlCompare.append($("<option  ></option>").val(this['Value']).html(this['Text']));
+
+                    });
+                    $("#example-getting-started").multiselect();
+                    // alert("category call");
+                },
+                failure: function (response) {
+                   // alert(response.responseText);
+                },
+                error: function (response) {
+                   // alert(response.responseText);
+                }
+            });
+        });
+
+
+
+
+    $("body").on("change", "#ddlRange", function () {
+       var range=$(ddlRange).find("option:selected").val();
+       var ddlCustomers = $("#ddlChart");
+        if (range == "Daily basis") {
+             ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
+        }
+        else {
+            ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
+        }
+    });
+
+
+
+
+    function Drowchart(id, d) {
+            var XLabels = @Html.Raw(XLabels);
+            var YValues = @Html.Raw(YValues);
+            var label = @Html.Raw(label2);
+        debugger
+        var firstValue = label[0];
+        var lasttValue = label[label.length-1];
+        $("#myRange").attr("min", @fValue);
+        $("#myRange").attr("max", @lValue);
+
+        var selected= '@Html.Raw(SelectedValues.ToString())';
+        if (selected != "Empty") {
+            if ('@fValue'==selected) {
+                $("#myRange").attr("value", firstValue);
+            }
+            else {
+                $("#myRange").attr("value", '@SelectedValues');
+            }
+        }
+        else {
+            $("#myRange").attr("value", firstValue);
+        }
+
+
+
+        var output = document.getElementById("demo");
+        output.innerHTML = firstValue;
+
+            var aux = 0;
+            var barChartData = {
+                labels: @Html.Raw(label2),
+                datasets: []
+            }
+            XLabels.forEach(function(a, i) {
+                var data = [];
+                YValues.forEach(function(a, i) {
+                    data.push(a[aux]);
+                });
+                barChartData.datasets.push({
+                    label: XLabels[aux],
+                    fill: false,
+                    backgroundColor: random_rgba(),
+                    borderColor: Bcolor,
+                    data: data
+                });
+                aux++;
+            });
+
+            var  options= {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Chemical Analysis Chart'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: false,
+                            labelString: 'Month'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: false,
+                            labelString: 'Value'
+                        },
+                        ticks: {
+                            min: 0,
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+            var Bcolor;
+            function random_rgba() {
+
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                Bcolor=color;
+                return color;
+                //var o = Math.round,
+                //    r = Math.random,
+                //    s = 100;
+                //return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
+        }
+        debugger
+            var ctx = document.getElementById(id).getContext('2d');
+            window.myLine =  new Chart(ctx, {      options: options,
+                data: barChartData,
+                type: d
+            });
+            // window.myLine = new Chart(ctx, config);
+        }
+
+
+        window.onload = function () {
+            var Product = @Html.Raw(Product);
+            var ChartType = @Html.Raw(ChartType);
+            var range = @Html.Raw(range);
+            var Category = @Html.Raw(Category);
+
+            $('#category').val(Category).trigger('change');;
+
+            $('#ddlProduct').val(Product);
+            $('#ddlChart').val(ChartType);
+            $('#ddlRange').val(range);
+
+
+
+            Drowchart('canvas', ChartType);
+            //Drowchart('canvas2','bar');
+        var selected = $("#ddlRange option:selected").text();
+        debugger
+        if (selected == "Yearly") {
+           $("#slidecontainer1").show()
+        }
+        else
+        {
+            $("#slidecontainer1").hide()
+        }
+        };
+
+
+        document.getElementById('drowchart').addEventListener('change', function () {
+            var d = document.getElementById('drowchart').value;
+            //alert(d);
+            debugger
+            Drowchart('canvas', d);
+        });
+
+
+
+        document.getElementById('randomizeData').addEventListener('click', function () {
+            config.data.datasets.forEach(function (dataset) {
+                dataset.data = dataset.data.map(function () {
+                    return randomScalingFactor();
+                });
+
+            });
+
+            window.myLine.update();
+        });
+
+        var colorNames = Object.keys(window.chartColors);
+    document.getElementById('addDataset').addEventListener('click', function () {
+
+            var colorName = colorNames[config.data.datasets.length % colorNames.length];
+            var newColor = window.chartColors[colorName];
+            var newDataset = {
+                label: 'Dataset ' + config.data.datasets.length,
+                backgroundColor: newColor,
+                borderColor: newColor,
+                data: [],
+                fill: false
+            };
+
+            for (var index = 0; index < config.data.labels.length; ++index) {
+                newDataset.data.push(randomScalingFactor());
+            }
+
+            config.data.datasets.push(newDataset);
+            window.myLine.update();
+        });
+
+        document.getElementById('addData').addEventListener('click', function () {
+            if (config.data.datasets.length > 0) {
+                var month = MONTHS[config.data.labels.length % MONTHS.length];
+                config.data.labels.push(month);
+
+                config.data.datasets.forEach(function (dataset) {
+                    dataset.data.push(randomScalingFactor());
+                });
+
+                window.myLine.update();
+            }
+        });
+
+        document.getElementById('removeDataset').addEventListener('click', function () {
+            config.data.datasets.splice(0, 1);
+            window.myLine.update();
+        });
+
+        document.getElementById('removeData').addEventListener('click', function () {
+            config.data.labels.splice(-1, 1); // remove the label first
+
+            config.data.datasets.forEach(function (dataset) {
+                dataset.data.pop();
+            });
+
+            window.myLine.update();
+        });
+
+
+
+
+    $(document).ready(function () {
+
+        //if("#ddlRange option:selected").text()=="Yearly") {
+        //    $("#slidecontainer").show();
+        //}
+
+
+
+            $("#ShowChart").validate({
+                debug: true,
+                rules: {
+                    ddlProduct: {
+                        required: function () {
+                            if ($("#ddlProduct option[value='0']")) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    },
+                    ddlChart: {
+                        required: function () {
+                            if ($("#ddlChart option[value='0']")) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }, ddlRange: {
+                        required: function () {
+                            if ($("#ddlRange option[value='0']")) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                },
+                messages: {
+                    ddlRange: "range Required",
+                },
+            });
+
+
+        })
+
+
+  //  $('#ddlRange').on('change', function() {
+  //alert( this.value );
+  //  });
+
+    </script>
+
+
+    <script>
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = slider.value;
+
+
+        document.getElementById("myRange").onmousedown = function () { mouseDown() };
+        document.getElementById("myRange").onmouseup = function () { mouseUp() };
+
+        function mouseDown() {
+            //document.getElementById("demo").innerHTML = "The mouse button is held down.";
+        }
+
+        function mouseUp() {
+            output.innerHTML = slider.value;
+            //alert(slider.value)
+
+            $("#MinValue").val($("#myRange").attr("min"));
+            $("#MaxValue").val(slider.value);
+
+            $(".mt27").trigger("click");
+
+        }
+    </script>
+
+    @*<script>
+            debugger
+            var slider = document.getElementById("myRange");
+            var output = document.getElementById("demo");
+            output.innerHTML = slider.value;
+        alert(output.innerHTML);
+
+            document.getElementById("myRange").onmousedown = function () {
+                debugger
+                mouseDown()
+            };
+            document.getElementById("myRange").onmouseup = function () {
+                debugger
+                mouseUp()
+            };
+
+        function mouseDown() {
+            debugger
+                 var Product = $("#ddlProduct").find("option:selected").val();
+                var ChartType = $("#ddlChart").find("option:selected").val();
+                var Range = $("#ddlRange").find("option:selected").val();
+            debugger
+
+            $("#MaxValue").val($("#myRange").attr("max"));
+            $("#MinValue").val($("#myRange").attr("min"));
+
+             $(".mt27").trigger( "click" );
+               // FilterChartData(Product, ChartType, Range,null, false);
+                //document.getElementById("demo").innerHTML = "The mouse button is held down.";
+            }
+
+            function mouseUp() {
+                //output.innerHTML = slider.value;
+                alert(document.getElementById("myRange").value);
+                output.innerHTML = document.getElementById("myRange").value;
+
+
+
+                var Product = $("#ddlProduct").find("option:selected").val();
+                var ChartType = $("#ddlChart").find("option:selected").val();
+                var Range = $("#ddlRange").find("option:selected").val();
+                debugger
+
+                $("#MaxValue").val($("#myRange").attr("max"));
+                $("#MinValue").val($("#myRange").attr("min"));
+
+                $(".mt27").trigger( "click" );
+                ///FilterChartData(Product, ChartType, Range,null, false);
+
+                // need to send request to filter chart data
+            }
+
+
+
+        function FilterChartData(product, ChartType, Range, CompareProject, Customer) {
+                debugger
+                $.ajax({
+                    type: "POST",
+                    url: "../ChemicalPricing/ChecmPriceYearlyChartJson",
+                    data: "{'product':'"+product+"', 'ChartType':'"+ChartType+"', 'Range':'"+Range+"', 'CompareProject':'nullData', 'Customer':'"+Customer+"'}",
+                    //data: { product: product, ChartType: ChartType, Range: Range,CompareProject:null, Customer: Customer },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+                    async: false,
+                    success: function (response) {
+                        alert("hiii")
+                        debugger
+                        Drowchart1("canvas","line");
+                        //ddlCustomers.empty().append('<option selected="selected" value=""> select Product</option>');
+                        //$.each(response, function () {
+                        //    ddlCustomers.append($("<option></option>").val(this['Value']).html(this['Text']));
+                        //});
+                        //$("#example-getting-started").multiselect();
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+                }
+
+
+
+
+        </script>*@
+
+
+
+
+
+</html>

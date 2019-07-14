@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ChemAnalyst.Models.CompanyProfRecord>
+@{
+    ViewBag.Title = "AllCompanyProfileRecords";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="update-profile-wrapper">
+
+        <div class="white-wrapper" style="padding-top:10px">
+
+            <div class="data-detail-wrapper table-responsive">
+
+               
+                <table class="table table-bordered" id="example">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(c => c.FinancialYear.FinYear)</th>
+                            <th>@Html.DisplayNameFor(c => c.SA_Company.Name)</th>
+                            <th>@Html.DisplayNameFor(c => c.Revenues)</th>
+                            <th>@Html.DisplayNameFor(c => c.Growth)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.FinancialYear.FinYear</td>
+                                <td>@item.SA_Company.Name</td>
+                                <td>@item.Revenues</td>
+                                <td>@item.Growth</td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", "CompanyProfRecord", new { id = item.Id }, new { @class = "btn btn-primary btn-xs" })
+                                    @Html.ActionLink("Delete", "Delete", "CompanyProfRecord", new { id = item.Id }, new { @class = "btn btn-danger btn-xs" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+

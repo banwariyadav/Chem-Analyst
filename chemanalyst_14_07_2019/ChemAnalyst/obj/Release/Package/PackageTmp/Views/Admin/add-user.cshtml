@@ -1,0 +1,147 @@
+﻿
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model ChemAnalyst.Models.SA_UserViewModel
+@using ChemAnalyst.Models
+
+
+
+
+
+
+<div class="update-profile-wrapper">
+
+    <h3><a href="@Url.Action("UserList","Admin")" class="btn btn-info"><i class="fa fa-list"></i> User List</a></h3>
+
+    <div class="white-wrapper">
+
+        <div class="col-md-6 col-lg-7 col-md-offset-2">
+
+            <div class="eq-form">
+                @if (Model.id > 0)
+                {
+                    <div class="change">
+                        <img src="~/images/@Model.ProfileImage" alt="" height="95px" width="95px" />
+                        <p>Update User/Profile</p>
+                    </div>
+                }
+                else
+                { <div class="change">
+                        <img src="~/images/change-img.jpg" alt="" />
+                        <p>Add New User</p>
+                    </div>
+                }
+
+            <div class="eq-form-box">
+                @using (Html.BeginForm("SaveUser", "Admin", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div style="visibility:hidden">
+                        @Html.TextBoxFor(model => model.id, new { @class = "form-control", @placeholder = "Title * ", required = "required" })
+                    </div>
+                    <div class="col-md-4 col-lg-6 form-group">
+                        @Html.TextBoxFor(model => model.Fname, new { @class = "form-control", @placeholder = "First Name * ", required = "required" })
+
+
+                    </div>
+
+                    <div class="col-md-4 col-lg-6 form-group">
+
+                        @Html.TextBoxFor(model => model.Lname, new { @class = "form-control", @placeholder = "Last Name * ", required = "required" })
+
+
+                    </div>
+                    if (Model.id == 0)
+                    {
+                        <div class="col-md-4 col-lg-6 form-group">
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email * ", type = "email", required = "required" })
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-4 col-lg-6 form-group" style="display:none">
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email * ", type = "email", })
+                        </div>
+                    }
+
+                    <div class="col-md-4 col-lg-6 form-group">
+
+                        @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", @placeholder = "Phone * ", required = "required", type = "number" })
+
+
+                    </div>
+                    if (Model.id == 0)
+                    {
+                        <div class="col-md-4 col-lg-6 form-group">
+                            @Html.TextBoxFor(model => model.UserPassword, new { @class = "form-control", @placeholder = "Password * ", required = "required" })
+                        </div>
+                        <div class="col-md-4 col-lg-6 form-group">
+                            <input type="password" name="confirm Password" size="40" class="form-control" placeholder="confirm Password" required>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-4 col-lg-6 form-group" style="display:none">
+                            @Html.TextBoxFor(model => model.UserPassword, new { @class = "form-control", @placeholder = "Password * " })
+                        </div>
+                        <div class="col-md-4 col-lg-6 form-group" style="display:none">
+                            <input type="password" name="confirm Password" size="40" class="form-control" placeholder="confirm Password">
+                        </div>
+                    }
+
+                    <div class="col-sm-4 col-lg-6 form-group">
+
+                        @Html.DropDownListFor(model => model.Gender,
+                new SelectList(Enum.GetValues(typeof(Gender))),
+                "Select Gender", new { @class = "form-control" })
+
+                    </div>
+
+                    <div class="col-sm-4 col-lg-6 form-group">
+                        @if (Session["UserRole"].ToString().ToUpper() == "ADMIN")
+                        {
+                            @Html.DropDownListFor(m => m.Role, Model.UserRoleList, "Select Role", new { @class = "form-control" })
+
+                        }
+
+                    </div>
+                    <div class="col-sm-6 col-lg-12">
+                        <div class="form-group">
+                            <input type="file" name="file" class="form-control" />
+                            @*<div class="input-group col-xs-12">
+                                <span class="input-group-addon"></span>
+                                <input type="text" class="form-control input-lg" disabled placeholder="Upload Image">
+                                <span class="input-group-btn">
+                                    <button class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-search"></i> Browse</button>
+                                </span>
+                            </div>*@
+                        </div>
+                    </div>
+
+                    <div class="btn-wrapper">
+
+                        <a class="gray-btn" href="@Url.Action("UserList","Admin")">Cancle</a>
+
+                        <input type="submit" class="blue-btn" value="Save">
+                    </div>
+
+                }
+            </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+

@@ -1,0 +1,38 @@
+﻿@model ChemAnalyst.ViewModel.CustomerProductFormViewModel
+@{
+    ViewBag.Title = "AddCustomerAndProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="update-profile-wrapper">
+
+
+        <div class="white-wrapper" style="padding-top:10px">
+
+            <div class="data-detail-wrapper table-responsive">
+
+                @using (Html.BeginForm("SaveCustomerAndProductRelation", "CustomerAndProduct", FormMethod.Post))
+                {
+                    <div class="form-group">
+                        <h3>Assign products for the customer : @Html.DisplayFor(c => c.Lead_Master.Name)</h3><br/>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            @for (int i = 0; i < Model.SA_Product.Count(); i++)
+                            {
+                                @Html.CheckBoxFor(p => Model.SA_Product[i].IsSelected) <span style="padding-right: 2px;"></span> @Html.DisplayFor(p => Model.SA_Product[i].ProductName) <span style="padding-right: 15px;"></span>
+                                @Html.HiddenFor(p => Model.SA_Product[i].id)
+
+                            }
+                        </div>
+                    </div>
+                    @Html.HiddenFor(c => c.Lead_Master.Id)
+                    <button type="submit" class="btn btn-success">Save</button>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+

@@ -1,0 +1,120 @@
+﻿
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+    <script src="../ckeditor/ckeditor.js" type="text/javascript"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('#role').DataTable({
+                "ajax": {
+                    "url": "../Industry/IndustryList",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                fields: [{
+                    label: 'CreatedTime:',
+
+                }],
+                "columnDefs": [
+
+                    {
+                        "targets": [0],
+                        "visible": false
+                    }
+                ],
+                "columns": [
+                    { "data": "id" },
+                    { "data": "Title" },
+                    { "data": "Description" },
+                    { "data": "CreatedTime" },
+                    //{
+
+                    //    "render": function (data, type, row, meta) { return '<button type="button" class="btn btn-success">Approved</button>'; }
+                    //},
+                    {
+
+                        "render": function (data, type, row, meta) { return '<a href="../Industry/EditIndustry/' + row.id + '"><i class="fa fa-pencil-square-o"></i></a>'; }
+                    },
+                    {
+                        data: null, render: function (data, type, row) {
+                            return '<a href="../Industry/DeleteIndustry/' + row.id + '"><i class="fa fa-trash-o fa-lg"></i></a>';
+                        }
+                    },
+                ]
+            });
+        });
+
+
+    </script>
+</head>
+
+
+
+
+
+<div class="page-content">
+    <div class="update-profile-wrapper static-page">
+        <div class="white-wrapper padbox">
+
+            
+
+                <h3><a href="@Url.Action("AddIndustry", "Industry")" class="btn btn-info"><i class="fa fa-plus"></i> Add Report</a></h3>
+
+
+
+               
+
+                    <div class="data-detail-wrapper table-responsive">
+
+                        <table id="role" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>description</th>
+                                    <th>Created</th>
+                                    @*<th>Status</th>*@
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @*@foreach (var role in Model)
+                                {
+                                <tr>
+
+                                  <td>@role.Role</td>
+                                  <td>@role.RoleDiscription </td>
+                                  <td>@role.CreatedTime</td>
+                                  <td><button type="button" class="btn btn-success">
+                                    Approved</button></td>
+                                  <td><a href="hedit-user/26"><i class="fa fa-pencil-square-o"></i></a></td>
+                                  <td><a site_url=" onclick="deleteUser(26)" href="javascript:void(0)"><i class="fa fa-trash-o fa-lg"></i></a></td>
+                                </tr>
+                                }*@
+
+
+
+                            </tbody>
+                        </table>
+
+
+
+                    </div>
+
+                </div>
+
+        </div>
+    </div>
+
+
+
+

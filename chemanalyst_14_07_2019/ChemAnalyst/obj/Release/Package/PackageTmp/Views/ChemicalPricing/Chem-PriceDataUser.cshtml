@@ -1,0 +1,220 @@
+﻿@{
+
+    var Product = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.product);
+    var ChartType = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ChartType);
+    var range = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.range);
+    var Category = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Category);
+
+
+}
+@{
+    if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
+    {
+        Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+    }
+
+
+}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
+
+    <title>Chem Analyst </title>
+    <link href="~/css/oswald-font.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/style.css" type="text/css" />
+    <link href="~/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/css/oswald-font.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/animate.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome-font-awesome.min.css">
+    <link rel="shortcut icon" href="~/mages/favicon.ico">
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/css/custom.css" type="text/css" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/bootstrap-multiselect.css">
+
+
+
+</head>
+
+
+<body>
+
+
+
+
+    <div class="page-content">
+        <div class="update-profile-wrapper static-page">
+            <div class="white-wrapper padbox">
+
+
+
+
+                <div class="filter-chart-type">
+                    @using (Html.BeginForm("ShowUserChart", "ChemicalPricing", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p><i class="fa fa-bars"></i> Category</p>
+                                @Html.DropDownList("category", new SelectList(ViewBag.ProductList, "Value", "Text"), "Please select category", new { @id = "category", @class = "btn btn-primary width100", required = "required", oninvalid = "this.setCustomValidity('Please select Category')", onchange = "try{setCustomValidity('')}catch(e){}" })
+
+
+                            </div>
+                            <div class="col-md-4 pl-0">
+                                <p><i class="fa fa-list"></i> Product</p>
+                                <select class="btn btn-primary width100" id="ddlProduct" name="ddlProduct" required="required" oninvalid="this.setCustomValidity('Please select product')" onchange="try{setCustomValidity('')}catch(e){}"></select>
+                            </div>
+
+                            <div class="col-md-4 pl-0">
+                                <p><i class="fa fa-random"></i> Range</p>
+                                <select id="ddlRange" name="ddlRange" class="btn btn-primary width100" required="required" oninvalid="this.setCustomValidity('Please select Range')" onchange="try{setCustomValidity('')}catch(e){}">
+                                    <option value="">Select Range</option>
+                                    <option value="Yearly">Yearly</option>
+                                    <option value="Monthly">Monthly</option>
+                                    <option value="Quarterly">Quarterly</option>
+                                    <option value="Daily basis">Daily basis</option>
+                                    <option value="Daily Bulk">Daily Bulk</option>
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-4 mt10">
+                                <p>
+                                    <i class="fa fa-compress"></i> Comparision
+                                </p>
+                                <select name="example-getting-started" id="example-getting-started" class="btn btn-primary width100" multiple="multiple"> </select>
+                                @*<option value="Sulfer">Sulfer</option>multiple="multiple"
+                                    <option selected="selected" value="xyz">Xyz</option>
+                                    <option selected="selected" value="pqr">Pqr</option>
+                                    <option value="lmn">Lmn</option>*@
+
+
+                            </div>
+                            <div class="col-md-4 pl-0 mt10">
+                                <p><i class="fa fa-bar-chart"></i> Chart Types</p>
+                                <select class="btn btn-primary width100" id="ddlChart" name="ddlChart">
+                                    <option value="line">Line Chart</option>
+                                    <option value="bar">Bar Chart</option>
+                                    <option value="pie">Pie Chart</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 pl-0 mt10">
+                                <button type="submit" class="btn btn-green mt27">
+                                    <i class="fa fa-refresh"></i>
+                                    Vew Chart
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+
+                <div class="filter-checkbox-btn">
+
+
+                    <span> <b>There is no data available with selected range.</b></span>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <script src="~/js/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    @*<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>*@
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/bootstrap-multiselect.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+    <script src="~/js/Chart.min.js"></script>
+
+    <script src="~/js/owl.carousel.js"></script>
+    <script src="~/js/wow.min.js"></script>
+    <script src="~/js/honey-custom.js"></script>
+
+    <script src="~/js/utils.js"></script>
+
+    <script>
+
+
+
+                    $("body").on("change", "#category", function () {
+                        var CatId=$(category).find("option:selected").val();
+                          var ddlCustomers = $("#ddlProduct");
+                          var ddlCompare = $("#example-getting-started");
+                          $("#example-getting-started").multiselect('destroy');
+                            // example-getting-started
+                            ddlCustomers.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
+                            ddlCompare.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
+
+                            $.ajax({
+                                type: "POST",
+                                url: "./GetProductNameUser",
+                                data: "{ CatId:"+ CatId +"}" ,
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                async: false,
+                                success: function (response) {
+                                    ddlCustomers.empty().append('<option selected="selected" value=""> select Product</option>');
+                                    ddlCompare.empty().append('<option selected="selected" value=""> select compare Product</option>');
+
+                                    $.each(response, function () {
+                                        ddlCustomers.append($("<option></option>").val(this['Value']).html(this['Text']));
+                                        ddlCompare.append($("<option  ></option>").val(this['Value']).html(this['Text']));
+
+                                    });
+                                    $("#example-getting-started").multiselect();
+                                },
+                                failure: function (response) {
+                                  //  alert(response.responseText);
+                                },
+                                error: function (response) {
+                                  //  alert(response.responseText);
+                                }
+                            });
+
+                    });
+
+
+
+
+
+
+                    window.onload = function () {
+
+                        var Product = @Html.Raw(Product);
+                        var ChartType = @Html.Raw(ChartType);
+                        var range = @Html.Raw(range);
+                        var Category = @Html.Raw(Category);
+
+                        $('#category').val(Category).trigger('change');
+                        $('#ddlProduct').val(Product);
+                        $('#ddlChart').val(ChartType);
+                        $('#ddlRange').val(range);
+                          $("#example-getting-started").multiselect();
+
+
+
+
+                       Drowchart('canvas', ChartType);
+                        //Drowchart('canvas2','bar');
+                    };
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,149 @@
+﻿
+@{
+    ViewBag.Title = "ShowSubscriptionListForSales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            function convertJsonDateToShortDate(data) {
+                debugger;
+                // This function converts a json date to a short date
+                // e.g. /Date(1538377200000)/ to 10/1/2018
+                const dateValue = new Date(parseInt(data.substr(6)));
+                return dateValue.toLocaleDateString();
+            }
+
+            $('#Leadlist').DataTable({
+                "ajax": {
+                    "url": "/SubsManagement/ShowSubscriptionList",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+
+                "columnDefs": [
+
+                    {
+                        "targets": [0],
+                        "visible": false
+                    }
+                ],
+                "columns": [
+
+
+                    //{
+
+                    //    "render": function (data, type, row, meta)
+                    //    { return '<input id="selectall" class="styled" type="checkbox">' }
+                    //},
+                    { "data": "SId" },
+                    { "data": "Name", "autoWidth": true },
+                    { "data": "Phone", "autoWidth": true },
+                    { "data": "CorpEmail", "autoWidth": true },
+                    //{ "data": "Organisation", "autoWidth": true },
+                    //{ "data": "Designation", "autoWidth": true },
+                    // { "data": "Subscribe", "autoWidth": true },
+                    {
+                              
+                        "data": "ExpiryDate", "render": function (data) {
+                            debugger
+                            if (data != null) return convertJsonDateToShortDate(data);
+                            else return '';
+                        }
+                    },
+                    {
+                        "data": "Package", "render": function (data, type, row, meta) {
+
+                            if (data != null) return '<span class="label label-success">' + data + '</span>';
+                            else return '';
+                        }
+                    },
+                    {
+                        "data": "Status", "render": function (data, type, row, meta) {
+                            debugger
+                            if (data == "Active") {
+                                return '<span class="label label-success">' + data + '</span>';
+                            }
+                            else {
+                                 return '<span class="label label-danger">' + data + '</span>';
+                            }
+                           
+                        }
+                    },
+                    {
+                        data: null, render: function (data, type, row) {
+                            //return '<a href="/Admin/DeleteUser/' + row.id + '"><i class="fa fa-trash-o fa-lg"></i></a>';
+                            debugger
+                            if (data.PackageStatus == "Expired") {
+                                return '<a href="javascript:void(0)" title="Send notification" onclick="SendNotification(' + data.LeadId + ')"> <i class="fa fa-envelope" aria-hidden="true"></i></a> <a class="label label-info" href="~/SubsManagement/ViewDetails/' + row.SId + '"> VIEW DETAILS</a>';
+
+                            }
+                            else {
+                                return '<a class="label label-info" href="~/SubsManagement/ViewDetails/' + row.SId + '"> VIEW DETAILS</a>';
+                            }
+                        }
+                    },
+                ]
+            });
+        });
+
+        function SendNotification(LeadId) {
+            debugger
+             alert(LeadId)
+            $.ajax({
+                url: "SendNotification",
+                type: "POST",
+                data: { LeadId: LeadId },
+                cache: false,
+                async: true,
+                success: function (data) {
+                    alert("Notification sent successfully!!!")
+                   // window.location.reload(true);
+                }
+
+            })
+        }
+    </script>
+</head>
+
+
+
+
+<div class="update-profile-wrapper">
+
+
+    <div class="white-wrapper" style="padding-top:10px">
+
+        <div class="data-detail-wrapper table-responsive">
+
+            <table id="Leadlist" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        @*<th>Organization</th>
+                        <th>Designation</th>
+                        <th>Subscribe</th>*@
+                        <th>Expire</th>
+                        <th>Package</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+

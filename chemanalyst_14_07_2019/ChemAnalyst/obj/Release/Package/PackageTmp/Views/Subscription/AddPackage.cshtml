@@ -1,0 +1,264 @@
+﻿
+@{
+    ViewBag.Title = "AddPackage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="update-profile-wrapper">
+    <h3><a href="lead.html" class="btn btn-info"><i class="fa fa-list"></i> Lead Details</a></h3>
+    <div class="white-wrapper" style="padding-top:10px">
+        <div class="col-md-6 col-lg-7 col-md-offset-2">
+            <input type="hidden" value="@ViewBag.LeadId" id="Leadid" />
+            <div class="eq-form">
+                <div class="col-sm-6 col-lg-12 form-group" id="FreePackage">
+                    <legend>Subscription Type</legend>
+                    <div class="radio-success radio-inline">
+                        <input type="radio" name="subscription_type" value="1">
+                        <label for="inlineradio2">Free Trial </label>
+                    </div>
+                    <div class="radio-success radio-inline">
+                        <input type="radio" name="subscription_type" value="2">
+                        <label for="inlineradio2">Package </label>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-6 form-group">
+                    <input type="text" value="" size="40" class="form-control" placeholder="Date From" id="FromDatepicker">
+                </div>
+                <div class="col-md-4 col-lg-6 form-group">
+                    <input type="text" value="" size="40" class="form-control" placeholder="Date To" id="ToDatepicker">
+                </div>
+                <div class="col-sm-6 col-lg-12 form-group">
+                    <legend>Select Module</legend>
+                    <div class="checkbox-success checkbox-inline">
+                        <input id="business_add" type="checkbox" name="module" value="1" onchange="selectModule(this);">
+                        <label for="inlineCheckbox2">Chemical Pricing </label>
+                    </div>
+                    <div class="checkbox-success checkbox-inline">
+                        <input id="business_edit" type="checkbox" name="module" value="2" onchange="selectModule(this);">
+                        <label for="inlineCheckbox2">Market Analysis </label>
+                    </div>
+                    <div class="checkbox-success checkbox-inline">
+                        <input id="business_delete" type="checkbox" name="module" value="3" onchange="selectModule(this);">
+                        <label for="inlineCheckbox2">Company Profile </label>
+                    </div>
+                    <div class="checkbox-success checkbox-inline">
+                        <input id="business_delete" type="checkbox" name="module" value="4" onchange="selectModule(this);">
+                        <label for="inlineCheckbox2">Industry Report </label>
+                    </div>
+                    <div class="checkbox-success checkbox-inline">
+                        <input id="business_delete" type="checkbox" name="module" value="5" onchange="selectModule(this);">
+                        <label for="inlineCheckbox2">News </label>
+                    </div>
+                    <div class="checkbox-success checkbox-inline">
+                        <input id="business_delete" type="checkbox" name="module" value="6" onchange="selectModule(this);">
+                        <label for="inlineCheckbox2">Deals </label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-12 form-group">
+                    <legend>Select Products</legend>
+                    <div class="custom-select-option">
+                        <div class="multiselect">
+                            <div id="dropdown1" class="selectbox" onclick="showCheckBoxes()">
+                                <select>
+                                    <option>Select option</option>
+                                </select>
+                                <div class="overSelect"></div>
+                            </div>
+                            <div id="checkboxes">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-12 form-group">
+                    <legend>Description</legend>
+                    <textarea rows="7" class="form-control" id="description"></textarea>
+                </div>
+                <div class="btn-wrapper">
+                    <a class="gray-btn" href="#">Cancle</a>
+                    <a class="blue-btn" href="#" id="btnSave">Active Subscription</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <link rel="stylesheet" type="text/css" href="~/css/jquery.datetimepicker.css"/ >
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+    <script src="jquery.js"></script>
+    <script src="~/js/jquery.datetimepicker.full.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            jQuery('#FromDatepicker').datetimepicker();
+            jQuery('#ToDatepicker').datetimepicker();           
+            getProduct();
+            var checkboxes = document.getElementById("checkboxes");
+            if (checkboxes)
+                checkboxes.style.display = "none";
+        });
+    </script>
+
+    <script>
+        var expanded = false;
+        var productList = [];
+        var moduleList = [];
+
+        function showCheckBoxes() {
+            var checkboxes = document.getElementById("checkboxes");
+            if (!expanded) {
+                checkboxes.style.display = "block";
+                expanded = true;
+
+            } else {
+                checkboxes.style.display = "none";
+                expanded = false;
+            }
+        }
+
+        function selectProduct(obj) {
+            if ($(obj).prop('checked') == true) {
+                productList.push(obj.id);
+            } else {
+                var index = productList.indexOf(obj.id);
+                if (index > -1) {
+                    productList.splice(index, 1);
+                }
+            }
+        }
+        function selectModule(obj) {
+            if ($(obj).prop('checked') == true) {
+                moduleList.push(obj.value);
+            } else {
+                var index = moduleList.indexOf(obj.value);
+                if (index > -1) {
+                    moduleList.splice(index, 1);
+                }
+            }
+        }
+
+    </script>
+
+    <script>
+        function getProduct() {
+            $.ajax({
+                type: "GET",
+                //url: '../ProductAndCategory/ProductList',
+                 url: '@(Url.Action("ProductList", "ProductAndCategory"))',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                cache: false,
+                success: function (result) {
+                    var checkboxes = document.getElementById("checkboxes");
+                    for (var i = 0; i < result.data.length; i++) {
+                        var node = document.createElement('div');
+                        node.innerHTML = '<label id="' + result.data[i].id + '"><input name ="productList" onchange="selectProduct(this);" type="checkbox"  id="' + result.data[i].id + '"/>' + result.data[i].ProductName + '</label>';
+                        document.getElementById('checkboxes').appendChild(node);
+                    }
+                },
+                error: function (msg) {
+                    alert("error" + msg);
+                }
+            });
+        }
+    </script>
+    <script>
+        $(function () {
+            $("#btnSave").click(function () {
+                var ProductId = "";
+                for (var i = 0; i < productList.length; i++) {
+                    if (!ProductId) {
+                        ProductId = productList[i];
+                    }
+                    else {
+                        ProductId = ProductId + ',' + productList[i];
+                    }
+                }
+
+                var MenuId = "";
+                for (var i = 0; i < moduleList.length; i++) {
+                    if (!MenuId) {
+                        MenuId = moduleList[i];
+                    }
+                    else {
+                        MenuId = MenuId + ',' + moduleList[i];
+                    }
+                }
+
+                var subs = {};
+                subs.SubscriptionType = $("input:radio[name = subscription_type]:checked").val();
+                subs.FromDate = $("#FromDatepicker").val();
+                subs.ToDate = $("#ToDatepicker").val();
+                subs.Description = $("#description").val();
+                subs.ProductId = ProductId;
+                subs.LeadId=$("#Leadid").val();
+                subs.MenuId = MenuId;
+
+                if (!subs.SubscriptionType) {
+                    alert("Please Select Subscription Type");
+                    return false;
+                }
+                if (!subs.FromDate) {
+                    alert("Please Enter From Date");
+                    return false;
+                }
+                if (!subs.ToDate) {
+                    alert("Please Enter From ToDate");
+                    return false;
+                }
+
+                if (!subs.MenuId) {
+                    alert("Please Select Module");
+                    return false;
+                }
+
+                if (!subs.ProductId) {
+                    alert("Please Select Product");
+                    return false;
+                }
+
+
+           $.ajax({
+                type: "POST",
+                url: '@Url.Action("SaveSalesPackageSubscriptionAsync")',
+                data:  subs,
+                success: function (data) {
+                    if (data && data.result) {
+                        alert(data.result);
+                        window.location.href = '/SubsManagement/ShowSubscriptionListForSales';
+                        $("#FromDatepicker").val('');
+                        $("#ToDatepicker").val('');
+                        $("#description").val('');
+                        productList = [];
+                        moduleList = [];
+                        $('input[name="module"]').each(function () {
+                            this.checked = false;
+                        });
+                        $('input[name="productList"]').each(function () {
+                            this.checked = false;
+                        });
+                        document.getElementById("checkboxes").style.display = "none";
+                    }
+                    else {
+                        alert("Error while inserting data");
+                    }
+                },
+                error: function () {
+                    alert("Error while inserting data");
+                }
+            });
+            return false;
+        });
+    });
+
+    </script>
+}
+
+
+
+

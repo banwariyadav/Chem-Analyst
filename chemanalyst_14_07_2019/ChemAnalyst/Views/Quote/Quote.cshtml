@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <head>
+        <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+        <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+        <script src="https//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+        <script src="~/js/date.format.js"></script>
+        <script>
+
+            $(document).ready(function () {
+                $('#role').DataTable({
+                    "ajax": {
+                        "url": "../Quote/QuoteList",
+                        "type": "GET",
+                        "datatype": "json"
+                    },
+                    fields: [{
+                        label: 'CreatedTime:',
+
+                    }],
+                    "columnDefs": [
+
+                        {
+                            "targets": [0],
+                            "visible": false
+                        }
+                    ],
+                    "columns": [
+                        { "data": "id" },
+                        { "data": "QuoteName" },
+                        //{ "data": "QuoteDiscription" },
+                        {
+                            "data": "CreatedTime", type: "datetime",
+                            "render": function (data) {
+                                var nowDate = new Date(parseInt(data.substr(6)));
+                                var result = "";
+                                result += nowDate.format(" mmm-dd-yy HH:MM:ss");
+                                return result;
+                            }
+
+                        },
+                        //{
+
+                        //    "render": function (data, type, row, meta) { return '<button type="button" class="btn btn-success">Approved</button>'; }
+                        //},
+                        {
+
+                            "render": function (data, type, row, meta) { return '<a href="../Quote/EditQuote/' + row.id + '"><i class="fa fa-pencil-square-o"></i></a>'; }
+                        },
+                        {
+                            data: null, render: function (data, type, row) {
+                                return '<a href="../Quote/DeleteQuote/' + row.id + '"><i class="fa fa-trash-o fa-lg"></i></a>';
+                            }
+                        },
+                    ]
+                });
+            });
+
+
+        </script>
+    </head>
+
+
+
+
+
+
+
+<div class="update-profile-wrapper">
+
+    <h3><a href="@Url.Action("AddQuote", "Quote")" class="btn btn-info"><i class="fa fa-plus"></i> Add New Testimonial</a></h3>
+     
+
+    <div class="white-wrapper" style="padding-top:10px">
+
+        <div class="data-detail-wrapper table-responsive">
+
+            <table id="role" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        @*<th>description</th>*@
+                        <th>Created</th>
+                        @*<th>Status</th>*@
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @*@foreach (var role in Model)
+                        {
+                        <tr>
+
+                          <td>@role.Role</td>
+                          <td>@role.RoleDiscription </td>
+                          <td>@role.CreatedTime</td>
+                          <td><button type="button" class="btn btn-success">
+                            Approved</button></td>
+                          <td><a href="hedit-user/26"><i class="fa fa-pencil-square-o"></i></a></td>
+                          <td><a site_url=" onclick="deleteUser(26)" href="javascript:void(0)"><i class="fa fa-trash-o fa-lg"></i></a></td>
+                        </tr>
+                        }*@
+
+
+
+                </tbody>
+            </table>
+
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+

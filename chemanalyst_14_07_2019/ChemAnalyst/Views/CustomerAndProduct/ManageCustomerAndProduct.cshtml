@@ -1,0 +1,39 @@
+﻿@model IEnumerable<ChemAnalyst.Models.SA_Product>
+@{
+    ViewBag.Title = "ManageCustomerAndProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="update-profile-wrapper">
+
+
+        <div class="white-wrapper" style="padding-top:10px">
+
+            <div class="data-detail-wrapper table-responsive">
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(c => c.ProductName)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.ProductName</td>
+                                <td>
+                                    @Html.ActionLink("View Details", "CompanyAndProductRelation", new { id = item.id }, new { @class = "btn btn-primary btn-xs" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+

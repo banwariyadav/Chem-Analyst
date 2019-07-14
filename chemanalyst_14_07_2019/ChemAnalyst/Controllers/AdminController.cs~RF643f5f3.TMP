@@ -1,0 +1,282 @@
+﻿using ChemAnalyst.DAL;
+using ChemAnalyst.Models;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace ChemAnalyst.Controllers
+{
+    public class AdminController : Controller
+    {
+        // GET: Admin
+        public ActionResult Index()
+        {
+            return View("Login");
+        }
+        /// <summary>
+        /// get user data
+        /// </summary>
+        /// <param name="collection"></param>
+        /// <returns></returns>
+        public ActionResult UserLogin(FormCollection collection)
+        {
+            SA_User login = new Models.SA_User();
+            login.Email = Request["Username"];
+            LoginDataStore LoginStore = new LoginDataStore();
+            login.UserPassword = Request["Password"];
+            if ((login.Email == "customer" && login.UserPassword == "Customer"))
+            {
+                string product = null;
+                string ChartType = null;
+                string Range = null;
+                string CompareProject = null;
+                bool Customer = true;
+                return RedirectToAction("ChecmPriceYearlyChart", "ChemicalPricing", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer
+                });
+
+                // return this.RedirectToAction("ChecmPriceYearlyChart", "ChemicalPricing");
+            }
+            if ((LoginStore.CheckUser(login) != null) || (login.Email == "admin" && login.UserPassword == "admin"))
+            {
+                SA_User objectuser = LoginStore.CheckUser(login);
+
+
+                if ((objectuser != null))
+                {
+                    Session["LoginUser"] = objectuser.id;
+                    Session["User"] = objectuser.Fname + " " + objectuser.Lname;
+                    Session["UserImg"] = "images /" + objectuser.ProfileImage; ;
+                    Session["UserRole"] = objectuser.Role;
+                    List<SA_RoleWiseAccess> Access = LoginStore.Getpage(objectuser.Role);
+                    Session["Access"] = Access;
+                    if (objectuser.Role == "Sales")
+                    {
+
+
+                        return this.RedirectToAction("ShowSubscriptionListForSales", "SubsManagement");
+                    }
+                    if (objectuser.Role.ToUpper() != "ADMIN")
+                        return this.RedirectToAction("Index", "User");
+                }
+                else
+                {
+                    objectuser = new SA_User();
+                    Session["LoginUser"] = 100001;
+                    objectuser.Role = "Admin";
+                    Session["UserRole"] = objectuser.Role;
+                    List<SA_RoleWiseAccess> Access = LoginStore.Getpage(objectuser.Role);
+                    Session["Access"] = Access;
+                    Session["User"] = "Admin";
+                    Session["UserImg"] = "images/" + "user.jpg";
+
+                }
+                return RedirectToAction("ShowUserList");
+            }
+            else
+            {
+                return View("Login");
+
+            }
+
+        }
+        public ActionResult LoadUserData()
+        {
+            try
+            {
+                UserDataStore Obj = new UserDataStore();
+                List<SA_User> UserList = Obj.GetUserList();
+                return Json(new { data = UserList }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+    
+       
+        public ActionResult GetUserList()
+        {
+            return View("grid");
+        }
+     
+        public ActionResult UserList()
+        {
+            return View("user-list");
+        }
+      
+        public ActionResult AddUser()
+        {
+            ChemAnalystContext _context = new ChemAnalystContext();
+            var customerData = (from User in _context.SA_Role
+                                    //  select  { Fname = User.Fname+" "+User.Lname , Phone = User.Phone, Role=User.Role,Email=User.Email,UserPassword=User.Password});
+                                select new SelectListItem { Text = User.Role, Value = User.Role }).ToList();
+            SA_UserViewModel obj = new SA_UserViewModel();
+            obj.UserRoleList = customerData;
+            return View("add-user", obj);
+
+        }
+        public ActionResult SaveUser(SA_User User)
+        {
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                var file = Request.Files[i];
+
+                if (file != null && file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+
+                    var path = Path.Combine(Server.MapPath("~/images"), fileName);
+                    file.SaveAs(path);
+                    User.ProfileImage = fileName;
+
+
+
+                }
+            }
+            UserDataStore Obj = new UserDataStore();
+            if (User.id ==0)
+            {
+                Obj.AddUser(User);
+               
+            }
+            else
+            {
+                Obj.UpdateUser(User);
+               if( (User.Role).ToUpper()!="ADMIN")
+                {
+                    return View("UserView");
+                }
+            }
+          
+           return RedirectToAction("ShowUserList");
+
+        }
+        public ActionResult ShowUserList()
+        {
+            UserDataStore Obj = new UserDataStore();
+            List<SA_User> UserList = Obj.GetUserList();
+            return View("user-list", UserList);
+        }
+
+
+        
+        [HttpPost]
+        public ActionResult UpdateStatus(int userId)
+        {
+            UserDataStore Obj = new UserDataStore();
+            Obj.UpdateUserStatus(userId);
+            return RedirectToAction("ShowUserList");
+        }
+
+        public ActionResult EditUser(int id)
+        {
+            ChemAnalystContext _context = new ChemAnalystContext();
+            UserDataStore Obj = new UserDataStore();
+            SA_User obj = Obj.GetUserByid(id);
+            SA_UserViewModel Objuser = new SA_UserViewModel();
+            Objuser.id = obj.id;
+            Objuser.Fname = obj.Fname;
+            Objuser.Lname = obj.Lname;
+            Objuser.Phone = obj.Phone;
+            Objuser.Role = obj.Role;
+            Objuser.Email = obj.Email;
+            Objuser.Gender = obj.Gender;
+            var customerData = (from User in _context.SA_Role
+                                    //  select  { Fname = User.Fname+" "+User.Lname , Phone = User.Phone, Role=User.Role,Email=User.Email,UserPassword=User.Password});
+                                select new SelectListItem { Text = User.Role, Value = User.Role }).ToList();
+            Objuser.UserRoleList = customerData;
+            return View("add-user", Objuser);
+        }
+        public ActionResult Deleteuser(int id)
+        {
+
+            UserDataStore Obj = new UserDataStore();
+            if (Obj.DeleteUser(id) == true) 
+            {
+                return RedirectToAction("ShowUserList");
+            }
+            else
+            {
+                return View("ErrorEventArgs");
+            }
+
+        }
+        /// <summary>
+        /// Get Role data
+        /// </summary>
+        /// <returns></returns>
+     
+        public ActionResult GetRoleList()
+        {
+            return View("role");
+        }
+        public JsonResult RoleList()
+        {
+            RoleDataStore Obj = new RoleDataStore();
+            List<SA_RoleViewModel> RoleList = Obj.GetRoleList();
+            return Json(new { data = RoleList }, JsonRequestBehavior.AllowGet);
+
+        }
+        public ActionResult AddRole()
+        {
+            SA_RoleViewModel obj = new SA_RoleViewModel();
+
+            return View("add-role", obj);
+
+        }
+        public ActionResult SaveRole(SA_RoleViewModel UserRole)
+        {
+            UserRole.CreatedTime = DateTime.Now;
+            RoleDataStore Obj = new RoleDataStore();
+            if (UserRole.id == 0)
+            {
+                Obj.AddRole(UserRole);
+            }
+            else
+            {
+                Obj.EditRole(UserRole);
+            }
+            return RedirectToAction("Role");
+        }
+
+        public ActionResult Role()
+        {
+            RoleDataStore Obj = new RoleDataStore();
+            // List<SA_Role> RoleList = Obj.GetRoleList();
+            return View("Role");
+        }
+        public ActionResult EditRole(int id)
+        {
+
+            RoleDataStore Obj = new RoleDataStore();
+            SA_RoleViewModel obj = Obj.GetRoleByid(id);
+            return View("add-role", obj);
+        }
+        public ActionResult DeleteRole(int id)
+        {
+
+            RoleDataStore Obj = new RoleDataStore();
+            if (Obj.DeleteRole(id) == true)
+            {
+                return View("role");
+            }
+            else
+            {
+                return View("ErrorEventArgs");
+            }
+        }
+
+
+    }
+}

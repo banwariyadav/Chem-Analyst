@@ -1,0 +1,216 @@
+﻿@model ChemAnalyst.ViewModel.IndustryViewModel
+
+@{
+    if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
+    {
+        Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutUser5.cshtml";
+    }
+
+}
+<style>
+    /*------------------Start custome css for industry-tabs---------------------*/
+.industry-text {
+	margin-bottom: 30px;
+}
+.industry-text h3 {
+	font-size: 24px;
+	color: #3368c6;
+	margin-bottom: 20px;
+	position: relative;
+	padding-bottom: 15px;
+}
+.industry-text h3:after {
+	position: absolute;
+	content: "";
+	bottom: 0;
+	left: 0;
+	background: #3368c6;
+	width: 40px;
+	height: 2px;
+}
+.industry-text p {
+	font-size: 16px;
+	margin-bottom: 10px;
+}
+.mains-indus-tabs .tab-content p {
+	line-height: 20px;
+}
+ul.nav-tabs li.nav-item {
+	background: #7db11a;
+	border-radius: 0;
+	border-right: 1px solid #fff;
+}
+ul.nav-tabs li.nav-item .nav-link.active {
+	background: #3368c6;
+	color: #fff;
+}
+.mains-indus-tabs .nav-tabs {
+	border: 0;
+}
+ul.nav-tabs li.nav-item a {
+	color: #fff;
+}
+.mains-indus-tabs .tab-pane.active {
+	background: #fbffeb;
+}
+.mains-indus-tabs .tab-pane {
+	float: left;
+}
+aside .subscription-btn {
+	text-align: center;
+}
+aside .subscription-btn a {
+	background: #3368c6;
+	display: block;
+	border-radius: 5px;
+	color: #fff;
+	padding: 15px 10px;
+	margin-bottom: 30px;
+}
+.side-news-feed {
+	background: #f5f5f5;
+}
+.side-news-feed h3 {
+	background: #3368c6;
+	color: #fff;
+	font-size: 20px;
+	padding: 10px 15px;
+	margin-bottom: 0px;
+}
+.side-news-feed .left-news-pic {
+	width: 20%;
+	margin-right: 10px;
+	display: inline-block;
+	vertical-align: top;
+}
+.side-news-feed .right-news-desc {
+	width: 70%;
+	display: inline-block;
+}
+.side-news-feed .right-news-desc p {
+	font-size: 11px;
+	margin-bottom: 8px;
+}
+.side-news-feed .right-news-desc p:last-child {
+	margin-bottom: 0;
+}
+.news-feed-col {
+	padding: 10px 15px;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 3px;
+}
+.news-feed-col:hover {
+	background: #fff;
+}
+.static-desc {
+	background: #fbffeb;
+	padding: 30px;
+}
+.static-desc p {
+	line-height: 20px;
+}
+.filter-category {
+	margin-bottom: 15px;
+}
+.filter-category .filter-btn a {
+	background: #3368c6;
+	padding-right: 10px;
+	color: #fff;
+	margin-bottom: 15px;
+	width: 100%;
+}
+.filter-category .filter-btn a i {
+	background: #7db11a;
+	padding: 10px;
+	font-size: 19px;
+	margin-right: 10px;
+}
+.common-desc {
+	margin-bottom: 20px;
+}
+.common-desc p {
+	font-size: 14px;
+	line-height: 20px;
+}
+
+.tab-content>.active{
+    display:block !important;
+}
+.fade {
+    transition: opacity .15s linear !important;
+    opacity:1;
+}
+.page-content {
+    margin: 30px 0;
+}
+/*------------------End custome css for industry report--------------*/
+
+</style>
+
+<body>
+    <div class="page-content">
+        <div class="static-page">
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        @foreach (var ind in Model.Industry)
+                        {
+                            <div class="industry-text">
+                                <h3>@ind.Title </h3>
+                                <p>Format: @Html.Raw(WebUtility.HtmlDecode(@ind.format)) </p>
+                                @*<p>Pages: @ind.Pages</p>*@
+                                <p>Pages: @Html.Raw(WebUtility.HtmlDecode(@ind.Pages))</p>
+                                <p>Industry: @ind.Industry</p>
+                            </div>
+
+                            <div class="mains-indus-tabs">
+
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#home">Description</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#menu1">Table of Content</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#menu2">Figure of Tablets</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#menu3">Related Reports</a>
+                                    </li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div id="home" class="tab-pane active">
+                                        <br /><p>@Html.Raw(WebUtility.HtmlDecode(@ind.Description))</p>
+                                    </div>
+                                    <div id="menu1" class="tab-pane fade">
+                                        <br /><p>@Html.Raw(WebUtility.HtmlDecode(@ind.Tableoc))</p>
+                                    </div>
+                                    <div id="menu2" class="tab-pane fade">
+                                        <br /><p>@Html.Raw(WebUtility.HtmlDecode(@ind.Figot))</p>
+                                    </div>
+
+                                    <div id="menu3" class="tab-pane fade">
+                                        <br /><p>@Html.Raw(WebUtility.HtmlDecode(@ind.RelatedRep))</p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
