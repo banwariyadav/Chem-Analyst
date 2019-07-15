@@ -13,52 +13,228 @@ namespace ChemAnalyst.DAL
     {
 
         private ChemAnalystContext _context = new ChemAnalystContext();
-        public List<SA_Chem1PriceYearly> GetChem1YearWise()
+        public List<SA_Chem1PriceWeekly> GetChem1WeekWise(string currentYear, string currentMonth, string currentWeek)
         {
 
+            try
+            {
+                if (currentWeek == "1")
+                {
+                    return _context.SA_Chem1PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) <= 7).ToList();
+                }
+                else if (currentWeek == "2")
+                {
+                    return _context.SA_Chem1PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 7 && Convert.ToInt32(w.day) <= 14)).ToList();
+                }
+                else if (currentWeek == "3")
+                {
+                    return _context.SA_Chem1PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 14 && Convert.ToInt32(w.day) <= 21)).ToList();
+                }
+                else if (currentWeek == "4")
+                {
+                    return _context.SA_Chem1PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
+                }
+                else
+                {
+                    return _context.SA_Chem1PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
+                }
 
+            }
+            catch (Exception ex)
+            {
 
-            return _context.SA_Chem1PriceYearly.ToList();
+                throw;
+            }
+
 
 
         }
-        public List<SA_Chem2PriceYearly> GetChem2YearWise()
+
+        public List<SA_Chem2PriceWeekly> GetChem2WeekWise(string currentYear, string currentMonth, string currentWeek)
         {
 
+            try
+            {
+                if (currentWeek == "1")
+                {
+                    return _context.SA_Chem2PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) <= 7).ToList();
+                }
+                else if (currentWeek == "2")
+                {
+                    return _context.SA_Chem2PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 7 && Convert.ToInt32(w.day) <= 14)).ToList();
+                }
+                else if (currentWeek == "3")
+                {
+                    return _context.SA_Chem2PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 14 && Convert.ToInt32(w.day) <= 21)).ToList();
+                }
+                else if (currentWeek == "4")
+                {
+                    return _context.SA_Chem2PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
+                }
+                else
+                {
+                    return _context.SA_Chem2PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
+                }
 
+            }
+            catch (Exception ex)
+            {
 
-            return _context.SA_Chem2PriceYearly.ToList();
+                throw;
+            }
+
 
 
         }
 
-        public List<SA_Chem3PriceYearly> GetChem3YearWise()
+        public List<SA_Chem3PriceWeekly> GetChem3WeekWise(string currentYear, string currentMonth, string currentWeek)
         {
 
+            try
+            {
+                if (currentWeek == "1")
+                {
+                    return _context.SA_Chem3PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) <= 7).ToList();
+                }
+                else if (currentWeek == "2")
+                {
+                    return _context.SA_Chem3PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 7 && Convert.ToInt32(w.day) <= 14)).ToList();
+                }
+                else if (currentWeek == "3")
+                {
+                    return _context.SA_Chem3PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 14 && Convert.ToInt32(w.day) <= 21)).ToList();
+                }
+                else if (currentWeek == "4")
+                {
+                    return _context.SA_Chem3PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
+                }
+                else
+                {
+                    return _context.SA_Chem3PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
+                }
 
+            }
+            catch (Exception ex)
+            {
 
-            return _context.SA_Chem3PriceYearly.ToList();
+                throw;
+            }
+
 
 
         }
-        public List<SA_Chem4PriceYearly> GetChem4YearWise()
+
+        public List<SA_Chem4PriceWeekly> GetChem4WeekWise(string currentYear, string currentMonth, string currentWeek)
         {
 
+            try
+            {
+                if (currentWeek == "1")
+                {
+                    return _context.SA_Chem4PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) <= 7).ToList();
+                }
+                else if (currentWeek == "2")
+                {
+                    return _context.SA_Chem4PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 7 && Convert.ToInt32(w.day) <= 14)).ToList();
+                }
+                else if (currentWeek == "3")
+                {
+                    return _context.SA_Chem4PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 14 && Convert.ToInt32(w.day) <= 21)).ToList();
+                }
+                else if (currentWeek == "4")
+                {
+                    return _context.SA_Chem4PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
+                }
+                else
+                {
+                    return _context.SA_Chem4PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
+                }
 
+            }
+            catch (Exception ex)
+            {
 
-            return _context.SA_Chem4PriceYearly.ToList();
+                throw;
+            }
+
 
 
         }
-        public List<SA_Chem5PriceYearly> GetChem5YearWise()
+
+        public List<SA_Chem5PriceWeekly> GetChem5WeekWise(string currentYear, string currentMonth, string currentWeek)
         {
 
+            try
+            {
+                if (currentWeek == "1")
+                {
+                    return _context.SA_Chem5PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) <= 7).ToList();
+                }
+                else if (currentWeek == "2")
+                {
+                    return _context.SA_Chem5PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 7 && Convert.ToInt32(w.day) <= 14)).ToList();
+                }
+                else if (currentWeek == "3")
+                {
+                    return _context.SA_Chem5PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 14 && Convert.ToInt32(w.day) <= 21)).ToList();
+                }
+                else if (currentWeek == "4")
+                {
+                    return _context.SA_Chem5PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
+                }
+                else
+                {
+                    return _context.SA_Chem5PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
+                }
 
+            }
+            catch (Exception ex)
+            {
 
-            return _context.SA_Chem5PriceYearly.ToList();
+                throw;
+            }
+
 
 
         }
+
+        public List<SA_Chem6PriceWeekly> GetChem6WeekWise(string currentYear, string currentMonth, string currentWeek)
+        {
+
+            try
+            {
+                if (currentWeek == "1")
+                {
+                    return _context.SA_Chem6PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) <= 7).ToList();
+                }
+                else if (currentWeek == "2")
+                {
+                    return _context.SA_Chem6PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 7 && Convert.ToInt32(w.day) <= 14)).ToList();
+                }
+                else if (currentWeek == "3")
+                {
+                    return _context.SA_Chem6PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 14 && Convert.ToInt32(w.day) <= 21)).ToList();
+                }
+                else if (currentWeek == "4")
+                {
+                    return _context.SA_Chem6PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
+                }
+                else
+                {
+                    return _context.SA_Chem6PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+
+
+        }
+
         public List<SA_ChemPriceYearly> GetYearWiseProductList(string ProductId, string MaxValue, string fromdate, string todate)
         {
 
@@ -283,8 +459,8 @@ namespace ChemAnalyst.DAL
             }
             else if (ImportType == "Chemical 1")
             {
-                List<SA_Chem1PriceYearly> obj = _context.SA_Chem1PriceYearly.ToList();
-                foreach (SA_Chem1PriceYearly PriceYearly in obj)
+                List<SA_Chem1PriceWeekly> obj = _context.SA_Chem1PriceWeekly.ToList();
+                foreach (SA_Chem1PriceWeekly PriceYearly in obj)
                 {
                     _context.Entry(PriceYearly).State = EntityState.Deleted;
                     x = _context.SaveChanges();
@@ -293,8 +469,8 @@ namespace ChemAnalyst.DAL
             }
             else if (ImportType == "Chemical 2")
             {
-                List<SA_Chem2PriceYearly> obj = _context.SA_Chem2PriceYearly.ToList();
-                foreach (SA_Chem2PriceYearly PriceYearly in obj)
+                List<SA_Chem2PriceWeekly> obj = _context.SA_Chem2PriceWeekly.ToList();
+                foreach (SA_Chem2PriceWeekly PriceYearly in obj)
                 {
                     _context.Entry(PriceYearly).State = EntityState.Deleted;
                     x = _context.SaveChanges();
@@ -303,8 +479,8 @@ namespace ChemAnalyst.DAL
             }
             else if (ImportType == "Chemical 3")
             {
-                List<SA_Chem3PriceYearly> obj = _context.SA_Chem3PriceYearly.ToList();
-                foreach (SA_Chem3PriceYearly PriceYearly in obj)
+                List<SA_Chem3PriceWeekly> obj = _context.SA_Chem3PriceWeekly.ToList();
+                foreach (SA_Chem3PriceWeekly PriceYearly in obj)
                 {
                     _context.Entry(PriceYearly).State = EntityState.Deleted;
                     x = _context.SaveChanges();
@@ -313,8 +489,8 @@ namespace ChemAnalyst.DAL
             }
             else if (ImportType == "Chemical 4")
             {
-                List<SA_Chem4PriceYearly> obj = _context.SA_Chem4PriceYearly.ToList();
-                foreach (SA_Chem4PriceYearly PriceYearly in obj)
+                List<SA_Chem4PriceWeekly> obj = _context.SA_Chem4PriceWeekly.ToList();
+                foreach (SA_Chem4PriceWeekly PriceYearly in obj)
                 {
                     _context.Entry(PriceYearly).State = EntityState.Deleted;
                     x = _context.SaveChanges();
@@ -323,8 +499,18 @@ namespace ChemAnalyst.DAL
             }
             else if (ImportType == "Chemical 5")
             {
-                List<SA_Chem5PriceYearly> obj = _context.SA_Chem5PriceYearly.ToList();
-                foreach (SA_Chem5PriceYearly PriceYearly in obj)
+                List<SA_Chem5PriceWeekly> obj = _context.SA_Chem5PriceWeekly.ToList();
+                foreach (SA_Chem5PriceWeekly PriceYearly in obj)
+                {
+                    _context.Entry(PriceYearly).State = EntityState.Deleted;
+                    x = _context.SaveChanges();
+
+                }
+            }
+            else if (ImportType == "Chemical 6")
+            {
+                List<SA_Chem6PriceWeekly> obj = _context.SA_Chem6PriceWeekly.ToList();
+                foreach (SA_Chem6PriceWeekly PriceYearly in obj)
                 {
                     _context.Entry(PriceYearly).State = EntityState.Deleted;
                     x = _context.SaveChanges();
@@ -394,7 +580,7 @@ namespace ChemAnalyst.DAL
             }
             else if (ImportType == "Chemical 1")
             {
-                List<SA_Chem1PriceYearly> obj = _context.SA_Chem1PriceYearly.Where(Year => Year.FileName == Filename).ToList();
+                List<SA_Chem1PriceWeekly> obj = _context.SA_Chem1PriceWeekly.Where(Year => Year.FileName == Filename).ToList();
                 if (obj.Count() > 0)
                 {
                     return 1;
@@ -404,7 +590,7 @@ namespace ChemAnalyst.DAL
             }
             else if (ImportType == "Chemical 2")
             {
-                List<SA_Chem2PriceYearly> obj = _context.SA_Chem2PriceYearly.Where(Year => Year.FileName == Filename).ToList();
+                List<SA_Chem2PriceWeekly> obj = _context.SA_Chem2PriceWeekly.Where(Year => Year.FileName == Filename).ToList();
                 if (obj.Count() > 0)
                 {
                     return 1;
@@ -414,7 +600,7 @@ namespace ChemAnalyst.DAL
             }
             else if (ImportType == "Chemical 3")
             {
-                List<SA_Chem3PriceYearly> obj = _context.SA_Chem3PriceYearly.Where(Year => Year.FileName == Filename).ToList();
+                List<SA_Chem3PriceWeekly> obj = _context.SA_Chem3PriceWeekly.Where(Year => Year.FileName == Filename).ToList();
                 if (obj.Count() > 0)
                 {
                     return 1;
@@ -424,7 +610,7 @@ namespace ChemAnalyst.DAL
             }
             else if (ImportType == "Chemical 4")
             {
-                List<SA_Chem4PriceYearly> obj = _context.SA_Chem4PriceYearly.Where(Year => Year.FileName == Filename).ToList();
+                List<SA_Chem4PriceWeekly> obj = _context.SA_Chem4PriceWeekly.Where(Year => Year.FileName == Filename).ToList();
                 if (obj.Count() > 0)
                 {
                     return 1;
@@ -434,7 +620,17 @@ namespace ChemAnalyst.DAL
             }
             else if (ImportType == "Chemical 5")
             {
-                List<SA_Chem5PriceYearly> obj = _context.SA_Chem5PriceYearly.Where(Year => Year.FileName == Filename).ToList();
+                List<SA_Chem5PriceWeekly> obj = _context.SA_Chem5PriceWeekly.Where(Year => Year.FileName == Filename).ToList();
+                if (obj.Count() > 0)
+                {
+                    return 1;
+                }
+                else
+                    return 0;
+            }
+            else if (ImportType == "Chemical 6")
+            {
+                List<SA_Chem6PriceWeekly> obj = _context.SA_Chem6PriceWeekly.Where(Year => Year.FileName == Filename).ToList();
                 if (obj.Count() > 0)
                 {
                     return 1;
@@ -610,22 +806,22 @@ namespace ChemAnalyst.DAL
             var query = from d in data
                             //where d.Product == id && d.year == DateTime.Now.Year.ToString() && d.Month.ToUpper() == monthname
 
-                        group d by d.Week into g
+                        group d by new { d.Week, d.ProductVariant } into g
                         from SalesHeaderAndDetail in g.DefaultIfEmpty()
                         group SalesHeaderAndDetail by new
                         {
                             // SalesOrderId=SalesHeaderAndDetail.SalesOrderId,
-                            Week = SalesHeaderAndDetail.Week
-
+                            Week = SalesHeaderAndDetail.Week,
+                            ProductVariant = SalesHeaderAndDetail.ProductVariant
                         }
                         into grouped
                         select new SA_ChemPriceWeekly
                         {
-                            Week = grouped.Key.ToString(),
+                            Week = grouped.Key.Week.ToString(),
                             count = grouped.Sum(x => x.count),
                             Discription = grouped.FirstOrDefault().Discription.ToString(),
                             Product = grouped.FirstOrDefault().Product,
-                            ProductVariant = grouped.FirstOrDefault().ProductVariant.ToString(),
+                            ProductVariant = grouped.Key.ProductVariant.ToString(),
                         };
 
 

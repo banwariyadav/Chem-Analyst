@@ -5,6 +5,8 @@
     var XLabels1 = "";
     var YValues1 = "";
     var label21 = "";
+    var ChartTitle = "";
+
     var fValue = Model.FirstOrDefault().FirstValue;
     var lValue = Model.FirstOrDefault().LastValues;
     var SelectedValues = Model.FirstOrDefault().SelectedValues;
@@ -26,6 +28,8 @@
 
     var fromdate = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.FromDate).FirstOrDefault());
     var todate = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.ToDate).FirstOrDefault());
+
+    ChartTitle = Model.Select(x => x.ProductName).FirstOrDefault() + " " + Model.Select(x => x.range).FirstOrDefault() + " " + "Pricing Analysis " + "[Unit = Tonnes]";
 }
 
 
@@ -55,7 +59,7 @@
     <link rel="shortcut icon" href="~/images/favicon.ico">
     <link rel="stylesheet" href="~/css/owl.carousel.min.css">
     <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="~/css/custom.css" type="text/css" />
+    @*<link rel="stylesheet" href="~/css/custom.css" type="text/css" />*@
     <link href="~/css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/bootstrap-multiselect.css">
 
@@ -706,7 +710,8 @@
                 responsive: true,
                 title: {
                     display: true,
-                    text: 'Chemical Analysis Chart'
+                    //text: 'Chemical Analysis Chart'
+                    text: '@Html.Raw(ChartTitle)'
                 },
                 tooltips: {
                     mode: 'index',

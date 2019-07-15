@@ -8,7 +8,7 @@
     var fromdate = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.FromDate);
     var todate = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ToDate);
 }
-}
+
 @{
     if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
     {
@@ -36,7 +36,7 @@
     <link rel="shortcut icon" href="~/mages/favicon.ico">
     <link rel="stylesheet" href="~/css/owl.carousel.min.css">
     <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="~/css/custom.css" type="text/css" />
+    @*<link rel="stylesheet" href="~/css/custom.css" type="text/css" />*@
     <link href="~/css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/bootstrap-multiselect.css">
 

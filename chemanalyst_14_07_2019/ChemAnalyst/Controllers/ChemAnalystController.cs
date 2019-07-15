@@ -189,16 +189,23 @@ namespace ChemAnalyst.Controllers
             // Get the IP  
             return Dns.GetHostByName(hostName).AddressList[0].ToString();
         }
-        public ActionResult Chem1YearChart()
+        public ActionResult Chem1WeekChart()
         {
             ChemicalPricing Objdal = new DAL.ChemicalPricing();
 
 
-            List<SA_Chem1PriceYearly> obj = null;
+            List<SA_Chem1PriceWeekly> obj = null;
             string compare = string.Empty;
 
-            obj = Objdal.GetChem1YearWise();
-            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            string currentYear = DateTime.Now.Year.ToString();
+            string currentMonth = DateTime.Now.ToMonthName().ToUpper();
+            string currentWeek = ((Convert.ToInt32(DateTime.Now.Day) / 7) + 1).ToString();
+
+                //               Convert.ToInt32(DateTime.Now.Day / 7).ToString();
+           
+
+            obj = Objdal.GetChem1WeekWise(currentYear, currentMonth, currentWeek);
+            List<string> Year = obj.Select(p => p.day).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
 
             var lstModel = new List<StackedViewModel>();
@@ -206,22 +213,37 @@ namespace ChemAnalyst.Controllers
             for (int i = 0; i < Year.Count; i++)
             {
 
-                List<SA_Chem1PriceYearly> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                List<SA_Chem1PriceWeekly> Chartdata = obj.Where(Chart => Chart.day == Year[i]).ToList();
                 //sales of product sales by quarter  
                 StackedViewModel Report = new StackedViewModel();
                 Report.StackedDimensionOne = Year[i];
+                
                 List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
                 List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
 
-                foreach (var item in Chartdata)
+
+                foreach (var item in obj.Select(p => p.ProductVariant).Distinct().ToList())
                 {
                     SimpleReportViewModel Quantity = new SimpleReportViewModel()
                     {
-                        DimensionOne = item.ProductVariant,
-                        Quantity = item.count
+                        DimensionOne = item,// item.Month,
+                        Quantity = Chartdata.Where(x => x.ProductVariant == item).Sum(x => x.count.Value),
+                       // MDimensionOne = Chartdata.FirstOrDefault(w=>w.ProductVariant== item).day
                     };
                     QuantityList.Add(Quantity);
                 }
+
+
+                //foreach (var item in Chartdata)
+                //{
+                //    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                //    {
+                //        DimensionOne = item.ProductVariant,
+                //        Quantity = item.count.HasValue? item.count.Value:0,
+                //        MDimensionOne = item.day
+                //};
+                //    QuantityList.Add(Quantity);
+                //}
                 Report.LstData = QuantityList;
 
                 lstModel.Add(Report);
@@ -237,16 +259,23 @@ namespace ChemAnalyst.Controllers
 
 
         }
-        public ActionResult Chem2YearChart()
+        public ActionResult Chem2WeekChart()
         {
             ChemicalPricing Objdal = new DAL.ChemicalPricing();
 
 
-            List<SA_Chem2PriceYearly> obj = null;
+            List<SA_Chem2PriceWeekly> obj = null;
             string compare = string.Empty;
 
-            obj = Objdal.GetChem2YearWise();
-            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            string currentYear = DateTime.Now.Year.ToString();
+            string currentMonth = DateTime.Now.ToMonthName().ToUpper();
+            string currentWeek = ((Convert.ToInt32(DateTime.Now.Day) / 7) + 1).ToString();
+
+            //               Convert.ToInt32(DateTime.Now.Day / 7).ToString();
+
+
+            obj = Objdal.GetChem2WeekWise(currentYear, currentMonth, currentWeek);
+            List<string> Year = obj.Select(p => p.day).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
 
             var lstModel = new List<StackedViewModel>();
@@ -254,7 +283,7 @@ namespace ChemAnalyst.Controllers
             for (int i = 0; i < Year.Count; i++)
             {
 
-                List<SA_Chem2PriceYearly> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                List<SA_Chem2PriceWeekly> Chartdata = obj.Where(Chart => Chart.day == Year[i]).ToList();
                 //sales of product sales by quarter  
                 StackedViewModel Report = new StackedViewModel();
                 Report.StackedDimensionOne = Year[i];
@@ -262,20 +291,33 @@ namespace ChemAnalyst.Controllers
                 List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
                 List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
 
-                foreach (var item in Chartdata)
+
+                foreach (var item in obj.Select(p => p.ProductVariant).Distinct().ToList())
                 {
                     SimpleReportViewModel Quantity = new SimpleReportViewModel()
                     {
-                        DimensionOne = item.ProductVariant,
-                        Quantity = item.count
+                        DimensionOne = item,// item.Month,
+                        Quantity = Chartdata.Where(x => x.ProductVariant == item).Sum(x => x.count.Value),
+                        // MDimensionOne = Chartdata.FirstOrDefault(w=>w.ProductVariant== item).day
                     };
                     QuantityList.Add(Quantity);
                 }
+
+
+                //foreach (var item in Chartdata)
+                //{
+                //    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                //    {
+                //        DimensionOne = item.ProductVariant,
+                //        Quantity = item.count.HasValue? item.count.Value:0,
+                //        MDimensionOne = item.day
+                //};
+                //    QuantityList.Add(Quantity);
+                //}
                 Report.LstData = QuantityList;
 
                 lstModel.Add(Report);
             }
-
 
 
 
@@ -286,16 +328,23 @@ namespace ChemAnalyst.Controllers
 
 
         }
-        public ActionResult Chem3YearChart()
+        public ActionResult Chem3WeekChart()
         {
             ChemicalPricing Objdal = new DAL.ChemicalPricing();
 
 
-            List<SA_Chem3PriceYearly> obj = null;
+            List<SA_Chem3PriceWeekly> obj = null;
             string compare = string.Empty;
 
-            obj = Objdal.GetChem3YearWise();
-            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            string currentYear = DateTime.Now.Year.ToString();
+            string currentMonth = DateTime.Now.ToMonthName().ToUpper();
+            string currentWeek = ((Convert.ToInt32(DateTime.Now.Day) / 7) + 1).ToString();
+
+            //               Convert.ToInt32(DateTime.Now.Day / 7).ToString();
+
+
+            obj = Objdal.GetChem3WeekWise(currentYear, currentMonth, currentWeek);
+            List<string> Year = obj.Select(p => p.day).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
 
             var lstModel = new List<StackedViewModel>();
@@ -303,7 +352,7 @@ namespace ChemAnalyst.Controllers
             for (int i = 0; i < Year.Count; i++)
             {
 
-                List<SA_Chem3PriceYearly> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                List<SA_Chem3PriceWeekly> Chartdata = obj.Where(Chart => Chart.day == Year[i]).ToList();
                 //sales of product sales by quarter  
                 StackedViewModel Report = new StackedViewModel();
                 Report.StackedDimensionOne = Year[i];
@@ -311,15 +360,29 @@ namespace ChemAnalyst.Controllers
                 List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
                 List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
 
-                foreach (var item in Chartdata)
+
+                foreach (var item in obj.Select(p => p.ProductVariant).Distinct().ToList())
                 {
                     SimpleReportViewModel Quantity = new SimpleReportViewModel()
                     {
-                        DimensionOne = item.ProductVariant,
-                        Quantity = item.count
+                        DimensionOne = item,// item.Month,
+                        Quantity = Chartdata.Where(x => x.ProductVariant == item).Sum(x => x.count.Value),
+                        // MDimensionOne = Chartdata.FirstOrDefault(w=>w.ProductVariant== item).day
                     };
                     QuantityList.Add(Quantity);
                 }
+
+
+                //foreach (var item in Chartdata)
+                //{
+                //    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                //    {
+                //        DimensionOne = item.ProductVariant,
+                //        Quantity = item.count.HasValue? item.count.Value:0,
+                //        MDimensionOne = item.day
+                //};
+                //    QuantityList.Add(Quantity);
+                //}
                 Report.LstData = QuantityList;
 
                 lstModel.Add(Report);
@@ -333,19 +396,24 @@ namespace ChemAnalyst.Controllers
                 return PartialView("~/Views/PartialView/YearlyChemical.cshtml", lstModel);
 
 
-
-
         }
-        public ActionResult Chem4YearChart()
+        public ActionResult Chem4WeekChart()
         {
             ChemicalPricing Objdal = new DAL.ChemicalPricing();
 
 
-            List<SA_Chem4PriceYearly> obj = null;
+            List<SA_Chem4PriceWeekly> obj = null;
             string compare = string.Empty;
 
-            obj = Objdal.GetChem4YearWise();
-            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            string currentYear = DateTime.Now.Year.ToString();
+            string currentMonth = DateTime.Now.ToMonthName().ToUpper();
+            string currentWeek = ((Convert.ToInt32(DateTime.Now.Day) / 7) + 1).ToString();
+
+            //               Convert.ToInt32(DateTime.Now.Day / 7).ToString();
+
+
+            obj = Objdal.GetChem4WeekWise(currentYear, currentMonth, currentWeek);
+            List<string> Year = obj.Select(p => p.day).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
 
             var lstModel = new List<StackedViewModel>();
@@ -353,27 +421,41 @@ namespace ChemAnalyst.Controllers
             for (int i = 0; i < Year.Count; i++)
             {
 
-                List<SA_Chem4PriceYearly> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                List<SA_Chem4PriceWeekly> Chartdata = obj.Where(Chart => Chart.day == Year[i]).ToList();
                 //sales of product sales by quarter  
                 StackedViewModel Report = new StackedViewModel();
                 Report.StackedDimensionOne = Year[i];
+
                 List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
                 List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
 
-                foreach (var item in Chartdata)
+
+                foreach (var item in obj.Select(p => p.ProductVariant).Distinct().ToList())
                 {
                     SimpleReportViewModel Quantity = new SimpleReportViewModel()
                     {
-                        DimensionOne = item.ProductVariant,
-                        Quantity = item.count
+                        DimensionOne = item,// item.Month,
+                        Quantity = Chartdata.Where(x => x.ProductVariant == item).Sum(x => x.count.Value),
+                        // MDimensionOne = Chartdata.FirstOrDefault(w=>w.ProductVariant== item).day
                     };
                     QuantityList.Add(Quantity);
                 }
+
+
+                //foreach (var item in Chartdata)
+                //{
+                //    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                //    {
+                //        DimensionOne = item.ProductVariant,
+                //        Quantity = item.count.HasValue? item.count.Value:0,
+                //        MDimensionOne = item.day
+                //};
+                //    QuantityList.Add(Quantity);
+                //}
                 Report.LstData = QuantityList;
 
                 lstModel.Add(Report);
             }
-
 
 
 
@@ -383,18 +465,24 @@ namespace ChemAnalyst.Controllers
                 return PartialView("~/Views/PartialView/YearlyChemical.cshtml", lstModel);
 
 
-
         }
-        public ActionResult Chem5YearChart()
+        public ActionResult Chem5WeekChart()
         {
             ChemicalPricing Objdal = new DAL.ChemicalPricing();
 
 
-            List<SA_Chem5PriceYearly> obj = null;
+            List<SA_Chem5PriceWeekly> obj = null;
             string compare = string.Empty;
 
-            obj = Objdal.GetChem5YearWise();
-            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            string currentYear = DateTime.Now.Year.ToString();
+            string currentMonth = DateTime.Now.ToMonthName().ToUpper();
+            string currentWeek = ((Convert.ToInt32(DateTime.Now.Day) / 7) + 1).ToString();
+
+            //               Convert.ToInt32(DateTime.Now.Day / 7).ToString();
+
+
+            obj = Objdal.GetChem5WeekWise(currentYear, currentMonth, currentWeek);
+            List<string> Year = obj.Select(p => p.day).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
 
             var lstModel = new List<StackedViewModel>();
@@ -402,7 +490,7 @@ namespace ChemAnalyst.Controllers
             for (int i = 0; i < Year.Count; i++)
             {
 
-                List<SA_Chem5PriceYearly> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                List<SA_Chem5PriceWeekly> Chartdata = obj.Where(Chart => Chart.day == Year[i]).ToList();
                 //sales of product sales by quarter  
                 StackedViewModel Report = new StackedViewModel();
                 Report.StackedDimensionOne = Year[i];
@@ -410,20 +498,33 @@ namespace ChemAnalyst.Controllers
                 List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
                 List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
 
-                foreach (var item in Chartdata)
+
+                foreach (var item in obj.Select(p => p.ProductVariant).Distinct().ToList())
                 {
                     SimpleReportViewModel Quantity = new SimpleReportViewModel()
                     {
-                        DimensionOne = item.ProductVariant,
-                        Quantity = item.count
+                        DimensionOne = item,// item.Month,
+                        Quantity = Chartdata.Where(x => x.ProductVariant == item).Sum(x => x.count.Value),
+                        // MDimensionOne = Chartdata.FirstOrDefault(w=>w.ProductVariant== item).day
                     };
                     QuantityList.Add(Quantity);
                 }
+
+
+                //foreach (var item in Chartdata)
+                //{
+                //    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                //    {
+                //        DimensionOne = item.ProductVariant,
+                //        Quantity = item.count.HasValue? item.count.Value:0,
+                //        MDimensionOne = item.day
+                //};
+                //    QuantityList.Add(Quantity);
+                //}
                 Report.LstData = QuantityList;
 
                 lstModel.Add(Report);
             }
-
 
 
 
@@ -433,8 +534,76 @@ namespace ChemAnalyst.Controllers
                 return PartialView("~/Views/PartialView/YearlyChemical.cshtml", lstModel);
 
 
+        }
+        public ActionResult Chem6WeekChart()
+        {
+            ChemicalPricing Objdal = new DAL.ChemicalPricing();
+
+
+            List<SA_Chem6PriceWeekly> obj = null;
+            string compare = string.Empty;
+
+            string currentYear = DateTime.Now.Year.ToString();
+            string currentMonth = DateTime.Now.ToMonthName().ToUpper();
+            string currentWeek = ((Convert.ToInt32(DateTime.Now.Day) / 7) + 1).ToString();
+
+            //               Convert.ToInt32(DateTime.Now.Day / 7).ToString();
+
+
+            obj = Objdal.GetChem6WeekWise(currentYear, currentMonth, currentWeek);
+            List<string> Year = obj.Select(p => p.day).Distinct().ToList();
+            List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            var lstModel = new List<StackedViewModel>();
+
+            for (int i = 0; i < Year.Count; i++)
+            {
+
+                List<SA_Chem6PriceWeekly> Chartdata = obj.Where(Chart => Chart.day == Year[i]).ToList();
+                //sales of product sales by quarter  
+                StackedViewModel Report = new StackedViewModel();
+                Report.StackedDimensionOne = Year[i];
+
+                List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
+                List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
+
+
+                foreach (var item in obj.Select(p => p.ProductVariant).Distinct().ToList())
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        DimensionOne = item,// item.Month,
+                        Quantity = Chartdata.Where(x => x.ProductVariant == item).Sum(x => x.count.Value),
+                        // MDimensionOne = Chartdata.FirstOrDefault(w=>w.ProductVariant== item).day
+                    };
+                    QuantityList.Add(Quantity);
+                }
+
+
+                //foreach (var item in Chartdata)
+                //{
+                //    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                //    {
+                //        DimensionOne = item.ProductVariant,
+                //        Quantity = item.count.HasValue? item.count.Value:0,
+                //        MDimensionOne = item.day
+                //};
+                //    QuantityList.Add(Quantity);
+                //}
+                Report.LstData = QuantityList;
+
+                lstModel.Add(Report);
+            }
+
+
+
+            if (lstModel.Count() > 0)
+                return PartialView("~/Views/PartialView/YearlyChartChemical6.cshtml", lstModel);
+            else
+                return PartialView("~/Views/PartialView/YearlyChemical.cshtml", lstModel);
 
 
         }
+
     }
 }

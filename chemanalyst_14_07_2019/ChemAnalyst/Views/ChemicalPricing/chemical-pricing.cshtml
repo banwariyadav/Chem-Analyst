@@ -5,6 +5,7 @@
     var XLabels1 = "";
     var YValues1 = "";
     var label21 = "";
+    var ChartTitle = "";
     var fValue = Model.FirstOrDefault().FirstValue;
     var lValue = Model.FirstOrDefault().LastValues;
     var SelectedValues = Model.FirstOrDefault().SelectedValues;
@@ -25,6 +26,8 @@
 
     var fromdate = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.FromDate).FirstOrDefault());
     var todate = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.ToDate).FirstOrDefault());
+
+    ChartTitle  = Model.Select(x => x.ProductName).FirstOrDefault() + " " + Model.Select(x => x.range).FirstOrDefault()+ " " + "Pricing Analysis ";
 }
 
 <!DOCTYPE HTML>
@@ -306,7 +309,7 @@
 
                         </div>
 
-                        <div id="invoice">
+                        <div id="invoice"><span class="pull-right" style="font-size:12px;margin-right: 2px;">[Unit = Tonnes]</span>
                             <canvas id="canvas"></canvas>
                             <div style="height:20px"></div>
                             <div class="rangeSlider col-lg-12" style="margin:0;cursor: pointer; color: #f30404;">
@@ -393,7 +396,7 @@
                                 @foreach (var news in Model.Select(x => x.NewsDetailsViewModel.NewsList).FirstOrDefault())
                                 {
                                     <div class="news-feed-col">
-                                        <a href="#">
+                                        <a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = news.GenerateItemNameAsParam() })">
 
                                             <div class="right-news-desc2">
                                                 <p>@(news.NewsDiscription.Length > 60 ? (news.NewsDiscription.Substring(0, 60)) : news.NewsDiscription)</p>
@@ -414,7 +417,7 @@
                                 @foreach (var item in Model.Select(x => x.NewsDetailsViewModel.DealList).FirstOrDefault())
                                 {
                                     <div class="news-feed-col">
-                                        <a href="#">
+                                        <a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">
                                             @if (item.DealsImg != string.Empty)
                                             {
                                                 <div class="left-news-pic"><img src="/images/@item.DealsImg" alt=""></div>
@@ -926,7 +929,8 @@
                 responsive: true,
                 title: {
                     display: true,
-                    text: 'Chemical Analysis Chart'
+                    //text: 'Chemical Analysis Chart'
+                    text: '@Html.Raw(ChartTitle)' 
                 },
                 tooltips: {
                     mode: 'index',

@@ -500,31 +500,94 @@ namespace ChemAnalyst.Controllers
 
         private bool InsertChemical1ExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
         {
-
             try
             {
+                System.Data.DataTable dt = new System.Data.DataTable();
 
-                Exceldt.Columns.Add("Product", typeof(int));
-                Exceldt.Columns.Add("Discription", typeof(string));
-                Exceldt.Columns.Add("FileName", typeof(string));
-                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                dt.Columns.Add("Product", typeof(string));
+                dt.Columns.Add("ProductVariant", typeof(string));
+                dt.Columns.Add("year", typeof(string));
+                dt.Columns.Add("Month", typeof(string));
+                dt.Columns.Add("Day", typeof(string));
+                dt.Columns.Add("count", typeof(string));
+                dt.Columns.Add("Discription", typeof(string));
+                dt.Columns.Add("FileName", typeof(string));
+                dt.Columns.Add("CreatedDate", typeof(DateTime));
                 for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
                 {
-                    if ((Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value) || (Exceldt.Rows[i]["Product Name"].ToString().Trim() == "" || Exceldt.Rows[i]["Year"].ToString().Trim() == "" || Exceldt.Rows[i]["count"].ToString().Trim() == ""))
+                    if (Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["Month"] == DBNull.Value)
                     {
                         Exceldt.Rows[i].Delete();
                     }
+
                     else
                     {
-                        Exceldt.Rows[i]["Product"] = product;
-                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
-                        Exceldt.Rows[i]["FileName"] = fileName;
-                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                        if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
+                            for (int j = 3; j < Exceldt.Columns.Count; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
+                            for (int j = 3; j < Exceldt.Columns.Count - 1; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
+                            for (int j = 3; j < Exceldt.Columns.Count - 2; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else
+                        {
+                            for (int j = 3; j < Exceldt.Columns.Count - 3; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        }
+
                     }
                 }
-                Exceldt.AcceptChanges();
-                string productid = Exceldt.Rows[0]["Product Name"].ToString();
-                string year = Exceldt.Rows[0]["Year"].ToString();
+                dt.AcceptChanges();
 
 
                 //inserting Datatable Records to DataBase   
@@ -534,18 +597,20 @@ namespace ChemAnalyst.Controllers
                                                                   //creating object of SqlBulkCopy      
                 SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
                 //assigning Destination table name      
-                objbulk.DestinationTableName = "SA_Chem1PriceYearly";
+                objbulk.DestinationTableName = "SA_Chem1PriceWeekly";
                 //Mapping Table column    
-                objbulk.ColumnMappings.Add("[Product]", "Product");
-                objbulk.ColumnMappings.Add("[Product Name]", "ProductVariant");
-                objbulk.ColumnMappings.Add("[Year]", "year");
-                objbulk.ColumnMappings.Add("[count]", "count");
-                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("Product", "Product");
+                objbulk.ColumnMappings.Add("ProductVariant", "ProductVariant");
+                objbulk.ColumnMappings.Add("year", "year");
+                objbulk.ColumnMappings.Add("Month", "Month");
+                objbulk.ColumnMappings.Add("Day", "Day");
+                objbulk.ColumnMappings.Add("count", "count");
+                objbulk.ColumnMappings.Add("Discription", "Discription");
                 objbulk.ColumnMappings.Add("[FileName]", "FileName");
                 objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
 
                 sqlConnection.Open();
-                objbulk.WriteToServer(Exceldt);
+                objbulk.WriteToServer(dt);
                 sqlConnection.Close();
                 //  MessageBox.Show("Data has been Imported successfully.", "Imported", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -553,41 +618,100 @@ namespace ChemAnalyst.Controllers
             catch (Exception ex)
             {
                 //  MessageBox.Show(string.Format("Data has not been Imported due to :{0}", ex.Message), "Not Imported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                return false;
-
-
             }
             return true;
 
         }
         private bool InsertChemical2ExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
         {
-
             try
             {
+                System.Data.DataTable dt = new System.Data.DataTable();
 
-                Exceldt.Columns.Add("Product", typeof(int));
-                Exceldt.Columns.Add("Discription", typeof(string));
-                Exceldt.Columns.Add("FileName", typeof(string));
-                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                dt.Columns.Add("Product", typeof(string));
+                dt.Columns.Add("ProductVariant", typeof(string));
+                dt.Columns.Add("year", typeof(string));
+                dt.Columns.Add("Month", typeof(string));
+                dt.Columns.Add("Day", typeof(string));
+                dt.Columns.Add("count", typeof(string));
+                dt.Columns.Add("Discription", typeof(string));
+                dt.Columns.Add("FileName", typeof(string));
+                dt.Columns.Add("CreatedDate", typeof(DateTime));
                 for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
                 {
-                    if ((Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value) || (Exceldt.Rows[i]["Product Name"].ToString().Trim() == "" || Exceldt.Rows[i]["Year"].ToString().Trim() == "" || Exceldt.Rows[i]["count"].ToString().Trim() == ""))
+                    if (Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["Month"] == DBNull.Value)
                     {
                         Exceldt.Rows[i].Delete();
                     }
+
                     else
                     {
-                        Exceldt.Rows[i]["Product"] = product;
-                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
-                        Exceldt.Rows[i]["FileName"] = fileName;
-                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                        if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
+                            for (int j = 3; j < Exceldt.Columns.Count; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
+                            for (int j = 3; j < Exceldt.Columns.Count - 1; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
+                            for (int j = 3; j < Exceldt.Columns.Count - 2; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else
+                        {
+                            for (int j = 3; j < Exceldt.Columns.Count - 3; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        }
+
                     }
                 }
-                Exceldt.AcceptChanges();
-                string productid = Exceldt.Rows[0]["Product Name"].ToString();
-                string year = Exceldt.Rows[0]["Year"].ToString();
+                dt.AcceptChanges();
 
 
                 //inserting Datatable Records to DataBase   
@@ -597,18 +721,20 @@ namespace ChemAnalyst.Controllers
                                                                   //creating object of SqlBulkCopy      
                 SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
                 //assigning Destination table name      
-                objbulk.DestinationTableName = "SA_Chem2PriceYearly";
+                objbulk.DestinationTableName = "SA_Chem2PriceWeekly";
                 //Mapping Table column    
-                objbulk.ColumnMappings.Add("[Product]", "Product");
-                objbulk.ColumnMappings.Add("[Product Name]", "ProductVariant");
-                objbulk.ColumnMappings.Add("[Year]", "year");
-                objbulk.ColumnMappings.Add("[count]", "count");
-                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("Product", "Product");
+                objbulk.ColumnMappings.Add("ProductVariant", "ProductVariant");
+                objbulk.ColumnMappings.Add("year", "year");
+                objbulk.ColumnMappings.Add("Month", "Month");
+                objbulk.ColumnMappings.Add("Day", "Day");
+                objbulk.ColumnMappings.Add("count", "count");
+                objbulk.ColumnMappings.Add("Discription", "Discription");
                 objbulk.ColumnMappings.Add("[FileName]", "FileName");
                 objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
 
                 sqlConnection.Open();
-                objbulk.WriteToServer(Exceldt);
+                objbulk.WriteToServer(dt);
                 sqlConnection.Close();
                 //  MessageBox.Show("Data has been Imported successfully.", "Imported", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -616,10 +742,6 @@ namespace ChemAnalyst.Controllers
             catch (Exception ex)
             {
                 //  MessageBox.Show(string.Format("Data has not been Imported due to :{0}", ex.Message), "Not Imported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-
-
-
             }
             return true;
 
@@ -629,30 +751,92 @@ namespace ChemAnalyst.Controllers
 
             try
             {
+                System.Data.DataTable dt = new System.Data.DataTable();
 
-                Exceldt.Columns.Add("Product", typeof(int));
-                Exceldt.Columns.Add("Discription", typeof(string));
-                Exceldt.Columns.Add("FileName", typeof(string));
-                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                dt.Columns.Add("Product", typeof(string));
+                dt.Columns.Add("ProductVariant", typeof(string));
+                dt.Columns.Add("year", typeof(string));
+                dt.Columns.Add("Month", typeof(string));
+                dt.Columns.Add("Day", typeof(string));
+                dt.Columns.Add("count", typeof(string));
+                dt.Columns.Add("Discription", typeof(string));
+                dt.Columns.Add("FileName", typeof(string));
+                dt.Columns.Add("CreatedDate", typeof(DateTime));
                 for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
                 {
-                    if ((Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value) || (Exceldt.Rows[i]["Product Name"].ToString().Trim() == "" || Exceldt.Rows[i]["Year"].ToString().Trim() == "" || Exceldt.Rows[i]["count"].ToString().Trim() == ""))
+                    if (Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["Month"] == DBNull.Value)
                     {
                         Exceldt.Rows[i].Delete();
                     }
+
                     else
                     {
-
-                        Exceldt.Rows[i]["Product"] = product;
-                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
-                        Exceldt.Rows[i]["FileName"] = fileName;
-                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                        if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
+                            for (int j = 3; j < Exceldt.Columns.Count; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
+                            for (int j = 3; j < Exceldt.Columns.Count - 1; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
+                            for (int j = 3; j < Exceldt.Columns.Count - 2; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else
+                        {
+                            for (int j = 3; j < Exceldt.Columns.Count - 3; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        }
 
                     }
                 }
-                Exceldt.AcceptChanges();
-                string productid = Exceldt.Rows[0]["Product Name"].ToString();
-                string year = Exceldt.Rows[0]["Year"].ToString();
+                dt.AcceptChanges();
 
 
                 //inserting Datatable Records to DataBase   
@@ -662,18 +846,20 @@ namespace ChemAnalyst.Controllers
                                                                   //creating object of SqlBulkCopy      
                 SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
                 //assigning Destination table name      
-                objbulk.DestinationTableName = "SA_Chem3PriceYearly";
+                objbulk.DestinationTableName = "SA_Chem3PriceWeekly";
                 //Mapping Table column    
-                objbulk.ColumnMappings.Add("[Product]", "Product");
-                objbulk.ColumnMappings.Add("[Product Name]", "ProductVariant");
-                objbulk.ColumnMappings.Add("[Year]", "year");
-                objbulk.ColumnMappings.Add("[count]", "count");
-                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("Product", "Product");
+                objbulk.ColumnMappings.Add("ProductVariant", "ProductVariant");
+                objbulk.ColumnMappings.Add("year", "year");
+                objbulk.ColumnMappings.Add("Month", "Month");
+                objbulk.ColumnMappings.Add("Day", "Day");
+                objbulk.ColumnMappings.Add("count", "count");
+                objbulk.ColumnMappings.Add("Discription", "Discription");
                 objbulk.ColumnMappings.Add("[FileName]", "FileName");
                 objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
 
                 sqlConnection.Open();
-                objbulk.WriteToServer(Exceldt);
+                objbulk.WriteToServer(dt);
                 sqlConnection.Close();
                 //  MessageBox.Show("Data has been Imported successfully.", "Imported", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -681,10 +867,6 @@ namespace ChemAnalyst.Controllers
             catch (Exception ex)
             {
                 //  MessageBox.Show(string.Format("Data has not been Imported due to :{0}", ex.Message), "Not Imported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-
-
-
             }
             return true;
 
@@ -694,30 +876,92 @@ namespace ChemAnalyst.Controllers
 
             try
             {
+                System.Data.DataTable dt = new System.Data.DataTable();
 
-                Exceldt.Columns.Add("Product", typeof(int));
-                Exceldt.Columns.Add("Discription", typeof(string));
-                Exceldt.Columns.Add("FileName", typeof(string));
-                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                dt.Columns.Add("Product", typeof(string));
+                dt.Columns.Add("ProductVariant", typeof(string));
+                dt.Columns.Add("year", typeof(string));
+                dt.Columns.Add("Month", typeof(string));
+                dt.Columns.Add("Day", typeof(string));
+                dt.Columns.Add("count", typeof(string));
+                dt.Columns.Add("Discription", typeof(string));
+                dt.Columns.Add("FileName", typeof(string));
+                dt.Columns.Add("CreatedDate", typeof(DateTime));
                 for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
                 {
-                    if ((Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value) || (Exceldt.Rows[i]["Product Name"].ToString().Trim() == "" || Exceldt.Rows[i]["Year"].ToString().Trim() == "" || Exceldt.Rows[i]["count"].ToString().Trim() == ""))
+                    if (Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["Month"] == DBNull.Value)
                     {
                         Exceldt.Rows[i].Delete();
                     }
+
                     else
                     {
-                        string producid = Exceldt.Rows[i]["Product Name"].ToString();
+                        if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
+                            for (int j = 3; j < Exceldt.Columns.Count; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
+                            for (int j = 3; j < Exceldt.Columns.Count - 1; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
+                            for (int j = 3; j < Exceldt.Columns.Count - 2; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else
+                        {
+                            for (int j = 3; j < Exceldt.Columns.Count - 3; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        }
 
-                        Exceldt.Rows[i]["Product"] = product;
-                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
-                        Exceldt.Rows[i]["FileName"] = fileName;
-                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
                     }
                 }
-                Exceldt.AcceptChanges();
-                string productid = Exceldt.Rows[0]["Product Name"].ToString();
-                string year = Exceldt.Rows[0]["Year"].ToString();
+                dt.AcceptChanges();
 
 
                 //inserting Datatable Records to DataBase   
@@ -727,18 +971,20 @@ namespace ChemAnalyst.Controllers
                                                                   //creating object of SqlBulkCopy      
                 SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
                 //assigning Destination table name      
-                objbulk.DestinationTableName = "SA_Chem4PriceYearly";
+                objbulk.DestinationTableName = "SA_Chem4PriceWeekly";
                 //Mapping Table column    
-                objbulk.ColumnMappings.Add("[Product]", "Product");
-                objbulk.ColumnMappings.Add("[Product Name]", "ProductVariant");
-                objbulk.ColumnMappings.Add("[Year]", "year");
-                objbulk.ColumnMappings.Add("[count]", "count");
-                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("Product", "Product");
+                objbulk.ColumnMappings.Add("ProductVariant", "ProductVariant");
+                objbulk.ColumnMappings.Add("year", "year");
+                objbulk.ColumnMappings.Add("Month", "Month");
+                objbulk.ColumnMappings.Add("Day", "Day");
+                objbulk.ColumnMappings.Add("count", "count");
+                objbulk.ColumnMappings.Add("Discription", "Discription");
                 objbulk.ColumnMappings.Add("[FileName]", "FileName");
                 objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
 
                 sqlConnection.Open();
-                objbulk.WriteToServer(Exceldt);
+                objbulk.WriteToServer(dt);
                 sqlConnection.Close();
                 //  MessageBox.Show("Data has been Imported successfully.", "Imported", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -746,10 +992,6 @@ namespace ChemAnalyst.Controllers
             catch (Exception ex)
             {
                 //  MessageBox.Show(string.Format("Data has not been Imported due to :{0}", ex.Message), "Not Imported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                return false;
-
-
             }
             return true;
 
@@ -759,28 +1001,92 @@ namespace ChemAnalyst.Controllers
 
             try
             {
+                System.Data.DataTable dt = new System.Data.DataTable();
 
-                Exceldt.Columns.Add("Product", typeof(int));
-                Exceldt.Columns.Add("Discription", typeof(string));
-                Exceldt.Columns.Add("FileName", typeof(string));
-                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                dt.Columns.Add("Product", typeof(string));
+                dt.Columns.Add("ProductVariant", typeof(string));
+                dt.Columns.Add("year", typeof(string));
+                dt.Columns.Add("Month", typeof(string));
+                dt.Columns.Add("Day", typeof(string));
+                dt.Columns.Add("count", typeof(string));
+                dt.Columns.Add("Discription", typeof(string));
+                dt.Columns.Add("FileName", typeof(string));
+                dt.Columns.Add("CreatedDate", typeof(DateTime));
                 for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
                 {
-                    if ((Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value) || (Exceldt.Rows[i]["Product Name"].ToString().Trim() == "" || Exceldt.Rows[i]["Year"].ToString().Trim() == "" || Exceldt.Rows[i]["count"].ToString().Trim() == ""))
+                    if (Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["Month"] == DBNull.Value)
                     {
                         Exceldt.Rows[i].Delete();
                     }
+
                     else
                     {
-                        Exceldt.Rows[i]["Product"] = product;
-                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
-                        Exceldt.Rows[i]["FileName"] = fileName;
-                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                        if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
+                            for (int j = 3; j < Exceldt.Columns.Count; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
+                            for (int j = 3; j < Exceldt.Columns.Count - 1; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
+                            for (int j = 3; j < Exceldt.Columns.Count - 2; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else
+                        {
+                            for (int j = 3; j < Exceldt.Columns.Count - 3; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        }
+
                     }
                 }
-                Exceldt.AcceptChanges();
-                string productid = Exceldt.Rows[0]["Product Name"].ToString();
-                string year = Exceldt.Rows[0]["Year"].ToString();
+                dt.AcceptChanges();
 
 
                 //inserting Datatable Records to DataBase   
@@ -790,18 +1096,20 @@ namespace ChemAnalyst.Controllers
                                                                   //creating object of SqlBulkCopy      
                 SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
                 //assigning Destination table name      
-                objbulk.DestinationTableName = "SA_Chem5PriceYearly";
+                objbulk.DestinationTableName = "SA_Chem5PriceWeekly";
                 //Mapping Table column    
-                objbulk.ColumnMappings.Add("[Product]", "Product");
-                objbulk.ColumnMappings.Add("[Product Name]", "ProductVariant");
-                objbulk.ColumnMappings.Add("[Year]", "year");
-                objbulk.ColumnMappings.Add("[count]", "count");
-                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("Product", "Product");
+                objbulk.ColumnMappings.Add("ProductVariant", "ProductVariant");
+                objbulk.ColumnMappings.Add("year", "year");
+                objbulk.ColumnMappings.Add("Month", "Month");
+                objbulk.ColumnMappings.Add("Day", "Day");
+                objbulk.ColumnMappings.Add("count", "count");
+                objbulk.ColumnMappings.Add("Discription", "Discription");
                 objbulk.ColumnMappings.Add("[FileName]", "FileName");
                 objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
 
                 sqlConnection.Open();
-                objbulk.WriteToServer(Exceldt);
+                objbulk.WriteToServer(dt);
                 sqlConnection.Close();
                 //  MessageBox.Show("Data has been Imported successfully.", "Imported", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -809,16 +1117,135 @@ namespace ChemAnalyst.Controllers
             catch (Exception ex)
             {
                 //  MessageBox.Show(string.Format("Data has not been Imported due to :{0}", ex.Message), "Not Imported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                return false;
-
-
             }
             return true;
 
         }
+        private bool InsertChemical6ExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+
+            try
+            {
+                System.Data.DataTable dt = new System.Data.DataTable();
+
+                dt.Columns.Add("Product", typeof(string));
+                dt.Columns.Add("ProductVariant", typeof(string));
+                dt.Columns.Add("year", typeof(string));
+                dt.Columns.Add("Month", typeof(string));
+                dt.Columns.Add("Day", typeof(string));
+                dt.Columns.Add("count", typeof(string));
+                dt.Columns.Add("Discription", typeof(string));
+                dt.Columns.Add("FileName", typeof(string));
+                dt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["Month"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+
+                    else
+                    {
+                        if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
+                            for (int j = 3; j < Exceldt.Columns.Count; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
+                            for (int j = 3; j < Exceldt.Columns.Count - 1; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
+                            for (int j = 3; j < Exceldt.Columns.Count - 2; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else
+                        {
+                            for (int j = 3; j < Exceldt.Columns.Count - 3; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        }
+
+                    }
+                }
+                dt.AcceptChanges();
 
 
+                //inserting Datatable Records to DataBase   
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+                sqlConnection.ConnectionString = connectionString;//Connection Details  
+                                                                  //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_Chem6PriceWeekly";
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("Product", "Product");
+                objbulk.ColumnMappings.Add("ProductVariant", "ProductVariant");
+                objbulk.ColumnMappings.Add("year", "year");
+                objbulk.ColumnMappings.Add("Month", "Month");
+                objbulk.ColumnMappings.Add("Day", "Day");
+                objbulk.ColumnMappings.Add("count", "count");
+                objbulk.ColumnMappings.Add("Discription", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(dt);
+                sqlConnection.Close();
+                //  MessageBox.Show("Data has been Imported successfully.", "Imported", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            catch (Exception ex)
+            {
+                //  MessageBox.Show(string.Format("Data has not been Imported due to :{0}", ex.Message), "Not Imported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            return true;
+
+        }
 
         private bool InsertYearExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
         {
@@ -1003,135 +1430,6 @@ namespace ChemAnalyst.Controllers
 
             }
         }
-        private void InsertDAilyExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
-        {
-
-            try
-            {
-
-
-                System.Data.DataTable dt = new System.Data.DataTable();
-
-                dt.Columns.Add("Product", typeof(string));
-                dt.Columns.Add("ProductVariant", typeof(string));
-                dt.Columns.Add("year", typeof(string));
-                dt.Columns.Add("Month", typeof(string));
-                dt.Columns.Add("Day", typeof(string));
-                dt.Columns.Add("count", typeof(string));
-                dt.Columns.Add("Discription", typeof(string));
-                dt.Columns.Add("FileName", typeof(string));
-                dt.Columns.Add("CreatedDate", typeof(DateTime));
-                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
-                {
-                    if (Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["Month"] == DBNull.Value)
-                    {
-                        Exceldt.Rows[i].Delete();
-                    }
-
-                    else
-                    {
-                        if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count; j++)
-                            {
-                                DataRow daily = dt.NewRow();
-                                daily["Product"] = product;
-                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
-                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
-                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
-                                daily["count"] = Exceldt.Rows[i][j].ToString();
-                                daily["Discription"] = UploadFileDiscription;
-                                daily["FileName"] = fileName;
-                                daily["CreatedDate"] = DateTime.Now;
-                                dt.Rows.Add(daily);
-                            }
-                        else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count - 1; j++)
-                            {
-                                DataRow daily = dt.NewRow();
-                                daily["Product"] = product;
-                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
-                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
-                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
-                                daily["count"] = Exceldt.Rows[i][j].ToString();
-                                daily["Discription"] = UploadFileDiscription;
-                                daily["FileName"] = fileName;
-                                daily["CreatedDate"] = DateTime.Now;
-                                dt.Rows.Add(daily);
-                            }
-                        else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
-                            for (int j = 3; j < Exceldt.Columns.Count - 2; j++)
-                            {
-                                DataRow daily = dt.NewRow();
-                                daily["Product"] = product;
-                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
-                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
-                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
-                                daily["count"] = Exceldt.Rows[i][j].ToString();
-                                daily["Discription"] = UploadFileDiscription;
-                                daily["FileName"] = fileName;
-                                daily["CreatedDate"] = DateTime.Now;
-                                dt.Rows.Add(daily);
-                            }
-                        else
-                        {
-                            for (int j = 3; j < Exceldt.Columns.Count - 3; j++)
-                            {
-                                DataRow daily = dt.NewRow();
-                                daily["Product"] = product;
-                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
-                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
-                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
-                                daily["count"] = Exceldt.Rows[i][j].ToString();
-                                daily["Discription"] = UploadFileDiscription;
-                                daily["FileName"] = fileName;
-                                daily["CreatedDate"] = DateTime.Now;
-                                dt.Rows.Add(daily);
-                            }
-                        }
-
-                    }
-                }
-                dt.AcceptChanges();
-
-
-                //inserting Datatable Records to DataBase   
-                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
-                SqlConnection sqlConnection = new SqlConnection();
-                sqlConnection.ConnectionString = connectionString;//Connection Details  
-                                                                  //creating object of SqlBulkCopy      
-                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
-                //assigning Destination table name      
-                objbulk.DestinationTableName = "SA_ChemPriceDaily";
-                //Mapping Table column    
-                objbulk.ColumnMappings.Add("Product", "Product");
-                objbulk.ColumnMappings.Add("ProductVariant", "ProductVariant");
-                objbulk.ColumnMappings.Add("year", "year");
-                objbulk.ColumnMappings.Add("Month", "Month");
-                objbulk.ColumnMappings.Add("Day", "Day");
-                objbulk.ColumnMappings.Add("count", "count");
-                objbulk.ColumnMappings.Add("Discription", "Discription");
-                objbulk.ColumnMappings.Add("[FileName]", "FileName");
-                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
-
-                sqlConnection.Open();
-                objbulk.WriteToServer(dt);
-                sqlConnection.Close();
-                //  MessageBox.Show("Data has been Imported successfully.", "Imported", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            }
-            catch (Exception ex)
-            {
-                //  MessageBox.Show(string.Format("Data has not been Imported due to :{0}", ex.Message), "Not Imported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-
-
-            }
-
-        }
         private void InsertWeeklyExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
         {
 
@@ -1261,7 +1559,7 @@ namespace ChemAnalyst.Controllers
             }
 
         }
-        private void InsertDailyAverageExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        private void InsertDAilyExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
         {
 
             try
@@ -1272,6 +1570,10 @@ namespace ChemAnalyst.Controllers
 
                 dt.Columns.Add("Product", typeof(string));
                 dt.Columns.Add("ProductVariant", typeof(string));
+
+                dt.Columns.Add("ModeOfDistrubution", typeof(string));
+                dt.Columns.Add("Location", typeof(string));
+
                 dt.Columns.Add("year", typeof(string));
                 dt.Columns.Add("Month", typeof(string));
                 dt.Columns.Add("Day", typeof(string));
@@ -1294,6 +1596,10 @@ namespace ChemAnalyst.Controllers
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+
+                                daily["ModeOfDistrubution"] = Exceldt.Rows[i]["Mode Of Distrubution"].ToString();
+                                daily["Location"] = Exceldt.Rows[i]["Location"].ToString();
+
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
                                 daily["Day"] = j - 2;
@@ -1309,6 +1615,10 @@ namespace ChemAnalyst.Controllers
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+
+                                daily["ModeOfDistrubution"] = Exceldt.Rows[i]["Mode Of Distrubution"].ToString();
+                                daily["Location"] = Exceldt.Rows[i]["Location"].ToString();
+
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
                                 daily["Day"] = j - 2;
@@ -1324,6 +1634,10 @@ namespace ChemAnalyst.Controllers
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+
+                                daily["ModeOfDistrubution"] = Exceldt.Rows[i]["Mode Of Distrubution"].ToString();
+                                daily["Location"] = Exceldt.Rows[i]["Location"].ToString();
+
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
                                 daily["Day"] = j - 2;
@@ -1340,6 +1654,163 @@ namespace ChemAnalyst.Controllers
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+
+                                daily["ModeOfDistrubution"] = Exceldt.Rows[i]["Mode Of Distrubution"].ToString();
+                                daily["Location"] = Exceldt.Rows[i]["Location"].ToString();
+
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        }
+
+                    }
+                }
+                dt.AcceptChanges();
+
+
+                //inserting Datatable Records to DataBase   
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+                sqlConnection.ConnectionString = connectionString;//Connection Details  
+                                                                  //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_ChemPriceDaily";
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("Product", "Product");
+                objbulk.ColumnMappings.Add("ProductVariant", "ProductVariant");
+
+                objbulk.ColumnMappings.Add("ModeOfDistrubution", "ModeOfDistrubution");
+                objbulk.ColumnMappings.Add("Location", "Location");
+
+                objbulk.ColumnMappings.Add("year", "year");
+                objbulk.ColumnMappings.Add("Month", "Month");
+                objbulk.ColumnMappings.Add("Day", "Day");
+                objbulk.ColumnMappings.Add("count", "count");
+                objbulk.ColumnMappings.Add("Discription", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(dt);
+                sqlConnection.Close();
+                //  MessageBox.Show("Data has been Imported successfully.", "Imported", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            catch (Exception ex)
+            {
+                //  MessageBox.Show(string.Format("Data has not been Imported due to :{0}", ex.Message), "Not Imported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+
+
+            }
+
+        }
+        private void InsertDailyAverageExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+
+            try
+            {
+
+
+                System.Data.DataTable dt = new System.Data.DataTable();
+
+                dt.Columns.Add("Product", typeof(string));
+                dt.Columns.Add("ProductVariant", typeof(string));
+
+                dt.Columns.Add("ModeOfDistrubution", typeof(string));
+                dt.Columns.Add("Location", typeof(string));
+
+                dt.Columns.Add("year", typeof(string));
+                dt.Columns.Add("Month", typeof(string));
+                dt.Columns.Add("Day", typeof(string));
+                dt.Columns.Add("count", typeof(string));
+                dt.Columns.Add("Discription", typeof(string));
+                dt.Columns.Add("FileName", typeof(string));
+                dt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["Month"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+
+                    else
+                    {
+                        if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
+                            for (int j = 3; j < Exceldt.Columns.Count; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+
+                                daily["ModeOfDistrubution"] = Exceldt.Rows[i]["Mode Of Distrubution"].ToString();
+                                daily["Location"] = Exceldt.Rows[i]["Location"].ToString();
+
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
+                            for (int j = 3; j < Exceldt.Columns.Count - 1; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+
+                                daily["ModeOfDistrubution"] = Exceldt.Rows[i]["Mode Of Distrubution"].ToString();
+                                daily["Location"] = Exceldt.Rows[i]["Location"].ToString();
+
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
+                            for (int j = 3; j < Exceldt.Columns.Count - 2; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+
+                                daily["ModeOfDistrubution"] = Exceldt.Rows[i]["Mode Of Distrubution"].ToString();
+                                daily["Location"] = Exceldt.Rows[i]["Location"].ToString();
+
+                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
+                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
+                                daily["Day"] = j - 2;
+                                daily["count"] = Exceldt.Rows[i][j].ToString();
+                                daily["Discription"] = UploadFileDiscription;
+                                daily["FileName"] = fileName;
+                                daily["CreatedDate"] = DateTime.Now;
+                                dt.Rows.Add(daily);
+                            }
+                        else
+                        {
+                            for (int j = 3; j < Exceldt.Columns.Count - 3; j++)
+                            {
+                                DataRow daily = dt.NewRow();
+                                daily["Product"] = product;
+                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
+
+                                daily["ModeOfDistrubution"] = Exceldt.Rows[i]["Mode Of Distrubution"].ToString();
+                                daily["Location"] = Exceldt.Rows[i]["Location"].ToString();
+
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
                                 daily["Day"] = j - 2;
@@ -1367,6 +1838,10 @@ namespace ChemAnalyst.Controllers
                 //Mapping Table column    
                 objbulk.ColumnMappings.Add("Product", "Product");
                 objbulk.ColumnMappings.Add("ProductVariant", "ProductVariant");
+
+                objbulk.ColumnMappings.Add("ModeOfDistrubution", "ModeOfDistrubution");
+                objbulk.ColumnMappings.Add("Location", "Location");
+
                 objbulk.ColumnMappings.Add("year", "year");
                 objbulk.ColumnMappings.Add("Month", "Month");
                 objbulk.ColumnMappings.Add("Day", "Day");
@@ -1390,8 +1865,6 @@ namespace ChemAnalyst.Controllers
             }
 
         }
-
-
 
         public ActionResult ChecmPriceYearlyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string MaxValue, string fromdate = "", string todate = "")
         {
@@ -1475,14 +1948,18 @@ namespace ChemAnalyst.Controllers
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
 
             string Commentary = "";
+            int PId = 0;
             if (product != null)
             {
                 int ProductId = int.Parse(product);
+                PId = ProductId;
                 Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
             }
             else
             {
-                Commentary = ObjCommentary.GetCommentaryList().OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+
             }
 
             var lstModel = new List<StackedViewModel>();
@@ -1535,7 +2012,7 @@ namespace ChemAnalyst.Controllers
                 
             }
 
-            lstModel[0].Commentary = Commentary;
+           
             if (lstModel.Count() <= 0 && Customer == false)
             {
 
@@ -1578,6 +2055,10 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+                lstModel[0].Commentary = Commentary;
+                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+
                 return View("chemicalpricingUser", lstModel);
             }
             else
@@ -1589,6 +2070,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].Commentary = Commentary;
+                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+
                 return View("chemical-pricing", lstModel);
             }
 
@@ -1651,28 +2136,32 @@ namespace ChemAnalyst.Controllers
             }
             else
                 obj = Objdal.GetMonthlyWiseProductList1(product, fromdate, todate);
-            List<string> Month = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Month = obj.Select(p => p.Month + " " + p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
 
             string Commentary = "";
+            int PId = 0;
             if (product != null)
             {
                 int ProductId = int.Parse(product);
+                PId = ProductId;
                 Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
             }
             else
             {
-                Commentary = ObjCommentary.GetCommentaryList().OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+
             }
 
             var lstModel = new List<StackedViewModel>();
 
-           
+
             for (int i = 0; i < Month.Count; i++)
             {
-                
+
                 // List<SA_ChemPriceMonthly> Chartdata = obj.Where(Chart => Chart.year == DateTime.Now.Year.ToString() && Chart.Month == Month[i]).ToList();
-                List<SA_ChemPriceMonthly> Chartdata = obj.Where(Chart => Chart.year == Month[i]).ToList();
+                List<SA_ChemPriceMonthly> Chartdata = obj.Where(Chart => Chart.Month + " " + Chart.year == Month[i]).ToList();
                 //sales of product sales by quarter  
                 StackedViewModel Report = new StackedViewModel();
                 Report.StackedDimensionOne = Month[i];
@@ -1685,26 +2174,36 @@ namespace ChemAnalyst.Controllers
                 List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
                 List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
 
+                foreach (var item in obj.Select(p => p.ProductVariant).Distinct().ToList())
+                {
+                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                    {
+                        DimensionOne = item,// item.Month,
+                        Quantity = Chartdata.Where(x => x.ProductVariant == item).Sum(x => x.count)
+                    };
+                    QuantityList.Add(Quantity);
+                }
+
                 //foreach (var item in Chartdata)
                 //{
                 //    SimpleReportViewModel Quantity = new SimpleReportViewModel()
                 //    {
-                //        DimensionOne = item.Month,
+                //        DimensionOne = item.ProductVariant,// item.Month,
                 //        Quantity = item.count
                 //    };
                 //    QuantityList.Add(Quantity);
                 //}
 
-                string[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
-                foreach (var item in months)
-                {
-                    SimpleReportViewModel Quantity = new SimpleReportViewModel()
-                    {
-                        DimensionOne = item,
-                        Quantity = Chartdata.Where(x => x.Month == item).Sum(x => x.count)
-                    };
-                    QuantityList.Add(Quantity);
-                }
+                //string[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+                //foreach (var item in months)
+                //{
+                //    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                //    {
+                //        DimensionOne = item,
+                //        Quantity = Chartdata.Where(x => x.Month == item).Sum(x => x.count)
+                //    };
+                //    QuantityList.Add(Quantity);
+                //}
 
 
                 Report.LstData = QuantityList;
@@ -1722,7 +2221,6 @@ namespace ChemAnalyst.Controllers
                 lstModel.Add(Report);
             }
 
-            lstModel[0].Commentary = Commentary;
             ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
             if (lstModel.Count() <= 0 && Customer == false)
             {
@@ -1756,6 +2254,9 @@ namespace ChemAnalyst.Controllers
             {
                 ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
 
+                lstModel[0].Commentary = Commentary;
+                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+
                 return View("chemicalpricingUser", lstModel);
             }
             else
@@ -1767,6 +2268,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].Commentary = Commentary;
+                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+
                 return View("chemical-pricing", lstModel);
             }
 
@@ -1833,22 +2338,26 @@ namespace ChemAnalyst.Controllers
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
 
             string Commentary = "";
+            int PId = 0;
             if (product != null)
             {
                 int ProductId = int.Parse(product);
+                PId = ProductId;
                 Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
             }
             else
             {
-                Commentary = ObjCommentary.GetCommentaryList().OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+
             }
 
             var lstModel = new List<StackedViewModel>();
 
-           
+
             for (int i = 0; i < Quarter.Count; i++)
             {
-                
+
                 List<SA_ChemPriceQuarterly> Chartdata = obj.Where(Chart => Chart.year == DateTime.Now.Year.ToString() && Chart.Quarter == Quarter[i]).ToList();
                 //sales of product sales by quarter  
                 StackedViewModel Report = new StackedViewModel();
@@ -1886,7 +2395,6 @@ namespace ChemAnalyst.Controllers
                 lstModel.Add(Report);
             }
 
-            lstModel[0].Commentary = Commentary;
             ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
             if (lstModel.Count() <= 0 && Customer == false)
             {
@@ -1920,6 +2428,9 @@ namespace ChemAnalyst.Controllers
             {
                 ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
 
+                lstModel[0].Commentary = Commentary;
+                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+
                 return View("chemicalpricingUser", lstModel);
             }
             else
@@ -1931,6 +2442,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].Commentary = Commentary;
+                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+
                 return View("chemical-pricing", lstModel);
             }
 
@@ -1996,22 +2511,26 @@ namespace ChemAnalyst.Controllers
             List<string> Day = obj.Select(p => p.day).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
             string Commentary = "";
+            int PId = 0;
             if (product != null)
             {
                 int ProductId = int.Parse(product);
+                PId = ProductId;
                 Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
             }
             else
             {
-                Commentary = ObjCommentary.GetCommentaryList().OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+
             }
 
             var lstModel = new List<StackedViewModel>();
 
-           
+
             for (int i = 0; i < Day.Count; i++)
             {
-               
+
                 List<SA_ChemPriceDaily> Chartdata = obj.Where(Chart => Chart.year == DateTime.Now.Year.ToString() && Chart.day == Day[i]).ToList();
                 //sales of product sales by quarter  
                 StackedViewModel Report = new StackedViewModel();
@@ -2025,15 +2544,26 @@ namespace ChemAnalyst.Controllers
                 List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
                 List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
 
-                foreach (var item in Chartdata)
+
+                foreach (var item in obj.Select(p => p.ProductVariant).Distinct().ToList())
                 {
                     SimpleReportViewModel Quantity = new SimpleReportViewModel()
                     {
-                        DimensionOne = item.ProductVariant,
-                        Quantity = item.count
+                        DimensionOne = item,// item.Month,
+                        Quantity = Chartdata.Where(x => x.ProductVariant == item).Sum(x => x.count)
                     };
                     QuantityList.Add(Quantity);
                 }
+
+                //foreach (var item in Chartdata)
+                //{
+                //    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                //    {
+                //        DimensionOne = item.ProductVariant,
+                //        Quantity = item.count
+                //    };
+                //    QuantityList.Add(Quantity);
+                //}
                 Report.LstData = QuantityList;
                 if (product == null)
                 {
@@ -2048,7 +2578,6 @@ namespace ChemAnalyst.Controllers
                 }
                 lstModel.Add(Report);
             }
-            lstModel[0].Commentary = Commentary;
             ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
 
             if (lstModel.Count() <= 0 && Customer == false)
@@ -2083,6 +2612,9 @@ namespace ChemAnalyst.Controllers
             {
                 ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
 
+                lstModel[0].Commentary = Commentary;
+                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+
                 return View("chemicalpricingUser", lstModel);
             }
             else
@@ -2094,6 +2626,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].Commentary = Commentary;
+                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+
                 return View("chemical-pricing", lstModel);
             }
 
@@ -2157,22 +2693,26 @@ namespace ChemAnalyst.Controllers
             List<string> Day = obj.Select(p => p.day).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
             string Commentary = "";
+            int PId = 0;
             if (product != null)
             {
                 int ProductId = int.Parse(product);
+                PId = ProductId;
                 Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
             }
             else
             {
-                Commentary = ObjCommentary.GetCommentaryList().OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+
             }
 
             var lstModel = new List<StackedViewModel>();
 
-          
+
             for (int i = 0; i < Day.Count; i++)
             {
-               
+
                 List<SA_ChemPriceDailyAverage> Chartdata = obj.Where(Chart => Chart.year == DateTime.Now.Year.ToString() && Chart.day == Day[i]).ToList();
                 //sales of product sales by quarter  
                 StackedViewModel Report = new StackedViewModel();
@@ -2186,15 +2726,25 @@ namespace ChemAnalyst.Controllers
                 List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
                 List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
 
-                foreach (var item in Chartdata)
+                foreach (var item in obj.Select(p => p.ProductVariant).Distinct().ToList())
                 {
                     SimpleReportViewModel Quantity = new SimpleReportViewModel()
                     {
-                        DimensionOne = item.ProductVariant,
-                        Quantity = item.count
+                        DimensionOne = item,// item.Month,
+                        Quantity = Chartdata.Where(x => x.ProductVariant == item).Sum(x => x.count)
                     };
                     QuantityList.Add(Quantity);
                 }
+
+                //foreach (var item in Chartdata)
+                //{
+                //    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                //    {
+                //        DimensionOne = item.ProductVariant,
+                //        Quantity = item.count
+                //    };
+                //    QuantityList.Add(Quantity);
+                //}
                 Report.LstData = QuantityList;
                 if (product == null)
                 {
@@ -2209,7 +2759,6 @@ namespace ChemAnalyst.Controllers
                 }
                 lstModel.Add(Report);
             }
-            lstModel[0].Commentary = Commentary;
             ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
 
             if (lstModel.Count() <= 0 && Customer == false)
@@ -2244,6 +2793,9 @@ namespace ChemAnalyst.Controllers
             {
                 ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
 
+                lstModel[0].Commentary = Commentary;
+                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+
                 return View("chemicalpricingUser", lstModel);
             }
             else
@@ -2255,6 +2807,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].Commentary = Commentary;
+                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+
                 return View("chemical-pricing", lstModel);
             }
 
@@ -2317,22 +2873,26 @@ namespace ChemAnalyst.Controllers
             List<string> Day = obj.Select(p => p.Week).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
             string Commentary = "";
+            int PId = 0;
             if (product != null)
             {
                 int ProductId = int.Parse(product);
+                PId = ProductId;
                 Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
             }
             else
             {
-                Commentary = ObjCommentary.GetCommentaryList().OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+
             }
 
             var lstModel = new List<StackedViewModel>();
 
-          
+
             for (int i = 0; i < Day.Count; i++)
             {
-               
+
                 List<SA_ChemPriceWeekly> Chartdata = obj.Where(Chart => Chart.Week == Day[i]).ToList(); ;
                 //obj.Where(Chart => Chart.year == DateTime.Now.Year.ToString() && Chart.day == Day[i]).ToList();
                 //sales of product sales by quarter  
@@ -2348,15 +2908,26 @@ namespace ChemAnalyst.Controllers
                 List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
                 List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
 
-                foreach (var item in Chartdata)
+
+                foreach (var item in obj.Select(p => p.ProductVariant).Distinct().ToList())
                 {
                     SimpleReportViewModel Quantity = new SimpleReportViewModel()
                     {
-                        DimensionOne = item.ProductVariant,
-                        Quantity = item.count
+                        DimensionOne = item,// item.Month,
+                        Quantity = Chartdata.Where(x => x.ProductVariant == item).Sum(x => x.count)
                     };
                     QuantityList.Add(Quantity);
                 }
+
+                //foreach (var item in Chartdata)
+                //{
+                //    SimpleReportViewModel Quantity = new SimpleReportViewModel()
+                //    {
+                //        DimensionOne = item.ProductVariant,
+                //        Quantity = item.count
+                //    };
+                //    QuantityList.Add(Quantity);
+                //}
                 Report.LstData = QuantityList;
                 if (product == null)
                 {
@@ -2371,7 +2942,6 @@ namespace ChemAnalyst.Controllers
                 }
                 lstModel.Add(Report);
             }
-            lstModel[0].Commentary = Commentary;
             ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
 
             if (lstModel.Count() <= 0 && Customer == false)
@@ -2406,6 +2976,9 @@ namespace ChemAnalyst.Controllers
             {
                 ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
 
+                lstModel[0].Commentary = Commentary;
+                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+
                 return View("chemicalpricingUser", lstModel);
             }
             else
@@ -2417,11 +2990,16 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].Commentary = Commentary;
+                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+
                 return View("chemical-pricing", lstModel);
             }
 
 
         }
+
 
 
         [HttpPost]

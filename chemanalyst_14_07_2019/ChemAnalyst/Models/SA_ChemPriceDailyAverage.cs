@@ -16,6 +16,12 @@
         [StringLength(500)]
         public string ProductVariant { get; set; }
 
+        [StringLength(500)]
+        public string ModeOfDistrubution { get; set; }
+
+        [StringLength(100)]
+        public string Location { get; set; }
+
         [StringLength(50)]
         public string year { get; set; }
         [StringLength(50)]

@@ -16,40 +16,44 @@
 <div class="chemical-bar-col">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="chpricing-txt">
                     @Html.Action("ChemContentList", "ChemAnalyst")
                     <div class="common-btn-col"><a href="@Url.Action("ChecmPriceChart", "ChemicalPricing")" class="common-btn">View Pricings</a></div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-7">
 
-                <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                <ul class="nav nav-pills" id="pills-tab" role="tablist" style="font-size: 11px;">
                     <li class="nav-item">
-                        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Chemical 1</a>
+                        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Feedstock</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Chemical 2</a>
+                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Polymer & Resin</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Chemical 3</a>
+                        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Petrochemical</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="pills-chem4-tab" data-toggle="pill" href="#pills-chem4" role="tab" aria-controls="pills-chem4" aria-selected="false">Chemical 4</a>
+                        <a class="nav-link" id="pills-chem4-tab" data-toggle="pill" href="#pills-chem4" role="tab" aria-controls="pills-chem4" aria-selected="false">Elastomer</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="pills-chem5-tab" data-toggle="pill" href="#pills-chem5" role="tab" aria-controls="pills-chem5" aria-selected="false">Chemical 5</a>
+                        <a class="nav-link" id="pills-chem5-tab" data-toggle="pill" href="#pills-chem5" role="tab" aria-controls="pills-chem5" aria-selected="false">Bulk chemical & fertilizer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-chem6-tab" data-toggle="pill" href="#pills-chem5" role="tab" aria-controls="pills-chem5" aria-selected="false"> Specialty chemicals </a>
                     </li>
                 </ul>
 
                 <div class="tab-content" id="pills-tabContent">
                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                        @Html.Action("Chem1YearChart", "ChemAnalyst")
+                        @Html.Action("Chem1WeekChart", "ChemAnalyst")
                     </div>
-                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"> @Html.Action("Chem2YearChart", "ChemAnalyst") </div>
-                    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">@Html.Action("Chem3YearChart", "ChemAnalyst")</div>
-                    <div class="tab-pane fade" id="pills-chem4" role="tabpanel" aria-labelledby="pills-chem4-tab">@Html.Action("Chem4YearChart", "ChemAnalyst")</div>
-                    <div class="tab-pane fade" id="pills-chem5" role="tabpanel" aria-labelledby="pills-chem5-tab">@Html.Action("Chem5YearChart", "ChemAnalyst")</div>
+                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"> @Html.Action("Chem2WeekChart", "ChemAnalyst") </div>
+    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">@Html.Action("Chem3WeekChart", "ChemAnalyst")</div>
+      <div class="tab-pane fade" id="pills-chem4" role="tabpanel" aria-labelledby="pills-chem4-tab">@Html.Action("Chem4WeekChart", "ChemAnalyst")</div>
+      <div class="tab-pane fade" id="pills-chem5" role="tabpanel" aria-labelledby="pills-chem5-tab">@Html.Action("Chem5WeekChart", "ChemAnalyst")</div>
+      <div class="tab-pane fade" id="pills-chem6" role="tabpanel" aria-labelledby="pills-chem6-tab">@Html.Action("Chem6WeekChart", "ChemAnalyst")</div>
                 </div>
             </div>
         </div>

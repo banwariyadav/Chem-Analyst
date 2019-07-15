@@ -12,11 +12,13 @@ namespace ChemAnalyst.Models
             : base("name=ChemAnalystContext")
         {
         }
-        public virtual DbSet<SA_Chem1PriceYearly> SA_Chem1PriceYearly { get; set; }
-        public virtual DbSet<SA_Chem2PriceYearly> SA_Chem2PriceYearly { get; set; }
-        public virtual DbSet<SA_Chem3PriceYearly> SA_Chem3PriceYearly { get; set; }
-        public virtual DbSet<SA_Chem4PriceYearly> SA_Chem4PriceYearly { get; set; }
-        public virtual DbSet<SA_Chem5PriceYearly> SA_Chem5PriceYearly { get; set; }
+        public virtual DbSet<SA_Chem1PriceWeekly> SA_Chem1PriceWeekly { get; set; }
+        public virtual DbSet<SA_Chem2PriceWeekly> SA_Chem2PriceWeekly { get; set; }
+        public virtual DbSet<SA_Chem3PriceWeekly> SA_Chem3PriceWeekly { get; set; }
+        public virtual DbSet<SA_Chem4PriceWeekly> SA_Chem4PriceWeekly { get; set; }
+        public virtual DbSet<SA_Chem5PriceWeekly> SA_Chem5PriceWeekly { get; set; }
+
+        public virtual DbSet<SA_Chem6PriceWeekly> SA_Chem6PriceWeekly { get; set; }
         public virtual DbSet<SA_ChemPriceDailyAverage> SA_ChemPriceDailyAverage { get; set; }
         public virtual DbSet<SA_Company> SA_Company { get; set; }
         public virtual DbSet<SA_ChemPriceDaily> SA_ChemPriceDaily { get; set; }

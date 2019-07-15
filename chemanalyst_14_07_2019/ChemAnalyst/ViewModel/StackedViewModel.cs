@@ -26,6 +26,8 @@ namespace ChemAnalyst.ViewModel
         public List<SimpleReportViewModel> LstData { get; set; }
         public List<SelectListItem> ProductList { get; set; }
         public string Product { get; set; }
+
+        public string ProductName { get; set; }
         public string ChartType { get; set; }
         public List<string> Discription { get; set; }
         public int category { get; set; }
