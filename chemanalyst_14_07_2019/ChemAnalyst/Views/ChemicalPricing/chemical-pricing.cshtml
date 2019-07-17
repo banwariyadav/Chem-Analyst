@@ -10,10 +10,18 @@
     var lValue = Model.FirstOrDefault().LastValues;
     var SelectedValues = Model.FirstOrDefault().SelectedValues;
 
+    var selectedLegends = Model.FirstOrDefault().selectedLegends;
+
+
+
     if (SelectedValues == null)
     {
         SelectedValues = "Empty";
+    }
 
+    if (selectedLegends == null)
+    {
+        selectedLegends = "";
     }
 
     var XLabels = "";
@@ -295,6 +303,8 @@
 
                                     <input type="hidden" id="ClearValue" name="ClearValue" value="" />
 
+                                    <input type="hidden" id="hiddenLegends" name="hiddenLegends" value="@selectedLegends" />
+
                                     <div class="col-md-12 pl-0 mt12" style="margin-left: 15px;">
                                         <button type="submit" onclick="SubmitForm()" class="btn btn-green mt27" id="ViewChart" value="ViewChart" name="submit">
                                             <i class="fa fa-refresh"></i>
@@ -314,15 +324,18 @@
                                                 }
                         </div>
 
-                        <div class="filter-checkbox-btn" style="display:none">
+                        <div class="filter-checkbox-btn" style="display:block; ">
 
 
-                            <ul>
+                            @*<ul>*@
                                 @foreach (string item in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))
                                 {
-                                    <li><a href="#">@item <i class="fa fa-close"></i></a></li>
+                                    <label class="checkbox-inline" style="font-size: 12px;font-weight: bold;">
+                                        <input type="checkbox" value="@item" class="chcktbl" onclick="myfunction(this)">@item
+                                    </label>
+                                    @*<li><a href="#">@item <i class="fa fa-close"></i></a></li>*@
                                 }
-                            </ul>
+                            @*</ul>*@
 
                         </div>
 
@@ -596,6 +609,15 @@
     </footer>
 
     <script>
+        function myfunction(id) {
+            var $checkedagreeChecker = $('.chcktbl:checked');
+            var joinedValues = $checkedagreeChecker.map(function(){return this.value}).get().join(",");
+            $('input[name="hiddenLegends"]').val($checkedagreeChecker.length > 0 ? joinedValues : "" )
+
+            $("#submit").trigger("click");
+        }
+      
+       
 
         function SubmitResetForm()
         {

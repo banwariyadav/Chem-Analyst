@@ -111,6 +111,8 @@ namespace ChemAnalyst.Controllers
             string todate = FilterObject["todate"];
             string year = FilterObject["ddlyear"];
 
+            string selectedLegends = FilterObject["hiddenLegends"];
+
             if (submit == "Reset")
             {
                 Maxvalue = "";
@@ -148,7 +150,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     fromdate,
-                    todate
+                    todate,
+                    selectedLegends
                 });
             }
             else if (Range == "Quarterly")
@@ -2104,7 +2107,7 @@ namespace ChemAnalyst.Controllers
 
 
         }
-        public ActionResult ChecmPriceMonthlyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string fromdate = "", string todate = "")
+        public ActionResult ChecmPriceMonthlyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string fromdate = "", string todate = "", string selectedLegends="")
         {
 
             if (fromdate == "")
@@ -2160,7 +2163,17 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetMonthlyWiseProductList1(product, fromdate, todate);
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+                    obj = Objdal.GetMonthlyWiseProductList1(product, fromdate, todate);
+                }
+                else
+                {
+                    obj = Objdal.GetMonthlyWiseProductList1(product, fromdate, todate).Where(w => w.ProductVariant.Contains(selectedLegends)).ToList();
+                }
+                
+            }
             List<string> Month = obj.Select(p => p.Month + " " + p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
 
@@ -2300,6 +2313,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].Commentary = Commentary;
                 lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+                lstModel[0].selectedLegends = selectedLegends;
 
                 return View("chemical-pricing", lstModel);
             }
