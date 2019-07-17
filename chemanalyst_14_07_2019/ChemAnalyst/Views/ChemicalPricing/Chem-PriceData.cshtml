@@ -218,11 +218,11 @@
 
 
 
-                                        <button type="submit" class="btn btn-green mt30" id="submit" value="Reset" name="submit" style="display:none">
+                                        @*<button type="submit" class="btn btn-green mt30" id="submit" value="Reset" name="submit" style="display:none">
                                             <i class="fa fa-refresh"></i>
                                             Reset
                                         </button>
-                                        <span style="cursor:pointer" class="btn btn-green mt30" onclick="generatePDF()">Export as PDF</span>
+                                        <span style="cursor:pointer" class="btn btn-green mt30" onclick="generatePDF()">Export as PDF</span>*@
 
                                     </div>
                                 </div>
@@ -545,21 +545,27 @@
     <script>
         $(document).ready(function () {
 
-
+            debugger;
             var range = $(ddlRange).find("option:selected").val();
             var ddlCustomers = $("#ddlChart");
+            debugger
             if (range == "Daily basis") {
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
+            }
+            else if(range == "Quarterly")
+            {
+                ddlCustomers.empty().append('<option selected="selected" value="pie" >Pie Chart</option>');
             }
             else {
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
             }
+
             ShowCommentariesByDeafult()
         });
 
         function ShowCommentaries()
         {
-            debugger;
+           
             var  ProductId = $('#ddlProduct').val();
             $.ajax({
                 type: "POST",
@@ -699,8 +705,13 @@
         $("body").on("change", "#ddlRange", function () {
             var range=$(ddlRange).find("option:selected").val();
             var ddlCustomers = $("#ddlChart");
+            debugger
             if (range == "Daily basis") {
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
+            }
+            else if(range == "Quarterly")
+            {
+                ddlCustomers.empty().append('<option selected="selected" value="pie" >Pie Chart</option>');
             }
             else {
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');

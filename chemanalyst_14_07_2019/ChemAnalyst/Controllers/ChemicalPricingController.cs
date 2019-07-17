@@ -384,7 +384,7 @@ namespace ChemAnalyst.Controllers
                     else if (ImportType == "Weekly")
                     {
                         var excel = new ExcelPackage(file.InputStream);
-                        dt = excel.ToDailyDataTable();
+                        dt = excel.ToWeekDataTable();
                         InsertWeeklyExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
                         ViewBag.Status = "Success";
@@ -414,7 +414,7 @@ namespace ChemAnalyst.Controllers
                     else if (ImportType == "Chemical 1")
                     {
                         var excel = new ExcelPackage(file.InputStream);
-                        dt = excel.ToDataTable();
+                        dt = excel.ToWeekDataTable();
                         if (InsertChemical1ExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName))
                         {
                             ViewBag.Status = "Success";
@@ -430,7 +430,7 @@ namespace ChemAnalyst.Controllers
                     else if (ImportType == "Chemical 2")
                     {
                         var excel = new ExcelPackage(file.InputStream);
-                        dt = excel.ToDataTable();
+                        dt = excel.ToWeekDataTable();
                         if (InsertChemical2ExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName))
                         {
                             ViewBag.Status = "Success";
@@ -445,7 +445,7 @@ namespace ChemAnalyst.Controllers
                     else if (ImportType == "Chemical 3")
                     {
                         var excel = new ExcelPackage(file.InputStream);
-                        dt = excel.ToDataTable();
+                        dt = excel.ToWeekDataTable();
                         if (InsertChemical3ExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName))
                         {
                             ViewBag.Status = "Success";
@@ -460,7 +460,7 @@ namespace ChemAnalyst.Controllers
                     else if (ImportType == "Chemical 4")
                     {
                         var excel = new ExcelPackage(file.InputStream);
-                        dt = excel.ToDataTable();
+                        dt = excel.ToWeekDataTable();
                         if (InsertChemical4ExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName))
                         {
                             ViewBag.Status = "Success";
@@ -475,8 +475,23 @@ namespace ChemAnalyst.Controllers
                     else if (ImportType == "Chemical 5")
                     {
                         var excel = new ExcelPackage(file.InputStream);
-                        dt = excel.ToDataTable();
+                        dt = excel.ToWeekDataTable();
                         if (InsertChemical5ExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName))
+                        {
+                            ViewBag.Status = "Success";
+                            ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
+
+                        }
+                        else
+                            ViewBag.Messge = "Data  not Imported successfully.";
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        return View("Chemical-analysis-import");
+                    }
+                    else if (ImportType == "Chemical 6")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToWeekDataTable();
+                        if (InsertChemical6ExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName))
                         {
                             ViewBag.Status = "Success";
                             ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
@@ -523,14 +538,14 @@ namespace ChemAnalyst.Controllers
                     else
                     {
                         if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -538,14 +553,14 @@ namespace ChemAnalyst.Controllers
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count - 1; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 1; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -553,14 +568,14 @@ namespace ChemAnalyst.Controllers
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
-                            for (int j = 3; j < Exceldt.Columns.Count - 2; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 2; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -569,14 +584,14 @@ namespace ChemAnalyst.Controllers
                             }
                         else
                         {
-                            for (int j = 3; j < Exceldt.Columns.Count - 3; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 3; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -647,14 +662,14 @@ namespace ChemAnalyst.Controllers
                     else
                     {
                         if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -662,14 +677,14 @@ namespace ChemAnalyst.Controllers
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count - 1; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 1; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -677,14 +692,14 @@ namespace ChemAnalyst.Controllers
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
-                            for (int j = 3; j < Exceldt.Columns.Count - 2; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 2; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -693,14 +708,14 @@ namespace ChemAnalyst.Controllers
                             }
                         else
                         {
-                            for (int j = 3; j < Exceldt.Columns.Count - 3; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 3; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -772,14 +787,14 @@ namespace ChemAnalyst.Controllers
                     else
                     {
                         if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -787,14 +802,14 @@ namespace ChemAnalyst.Controllers
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count - 1; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 1; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -802,14 +817,14 @@ namespace ChemAnalyst.Controllers
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
-                            for (int j = 3; j < Exceldt.Columns.Count - 2; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 2; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -818,14 +833,14 @@ namespace ChemAnalyst.Controllers
                             }
                         else
                         {
-                            for (int j = 3; j < Exceldt.Columns.Count - 3; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 3; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -897,14 +912,14 @@ namespace ChemAnalyst.Controllers
                     else
                     {
                         if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -912,14 +927,14 @@ namespace ChemAnalyst.Controllers
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count - 1; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 1; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -927,14 +942,14 @@ namespace ChemAnalyst.Controllers
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
-                            for (int j = 3; j < Exceldt.Columns.Count - 2; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 2; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -943,14 +958,14 @@ namespace ChemAnalyst.Controllers
                             }
                         else
                         {
-                            for (int j = 3; j < Exceldt.Columns.Count - 3; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 3; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -1022,14 +1037,14 @@ namespace ChemAnalyst.Controllers
                     else
                     {
                         if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -1037,14 +1052,14 @@ namespace ChemAnalyst.Controllers
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count - 1; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 1; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -1052,14 +1067,14 @@ namespace ChemAnalyst.Controllers
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
-                            for (int j = 3; j < Exceldt.Columns.Count - 2; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 2; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -1068,14 +1083,14 @@ namespace ChemAnalyst.Controllers
                             }
                         else
                         {
-                            for (int j = 3; j < Exceldt.Columns.Count - 3; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 3; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -1147,14 +1162,14 @@ namespace ChemAnalyst.Controllers
                     else
                     {
                         if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -1162,14 +1177,14 @@ namespace ChemAnalyst.Controllers
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count - 1; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 1; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -1177,14 +1192,14 @@ namespace ChemAnalyst.Controllers
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
-                            for (int j = 3; j < Exceldt.Columns.Count - 2; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 2; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -1193,14 +1208,14 @@ namespace ChemAnalyst.Controllers
                             }
                         else
                         {
-                            for (int j = 3; j < Exceldt.Columns.Count - 3; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 3; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -1443,6 +1458,7 @@ namespace ChemAnalyst.Controllers
                 dt.Columns.Add("ProductVariant", typeof(string));
                 dt.Columns.Add("year", typeof(string));
                 dt.Columns.Add("Month", typeof(string));
+                dt.Columns.Add("Week", typeof(string));
                 dt.Columns.Add("Day", typeof(string));
                 dt.Columns.Add("count", typeof(string));
                 dt.Columns.Add("Discription", typeof(string));
@@ -1457,15 +1473,17 @@ namespace ChemAnalyst.Controllers
 
                     else
                     {
+                        //if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
                         if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count; j++)
+                            for (int j =4 ; j < Exceldt.Columns.Count; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Week"] = Exceldt.Rows[i]["Week"].ToString();
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -1473,14 +1491,15 @@ namespace ChemAnalyst.Controllers
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count - 1; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 1; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Week"] = Exceldt.Rows[i]["Week"].ToString();
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -1488,14 +1507,15 @@ namespace ChemAnalyst.Controllers
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
-                            for (int j = 3; j < Exceldt.Columns.Count - 2; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 2; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Week"] = Exceldt.Rows[i]["Week"].ToString();
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -1504,14 +1524,15 @@ namespace ChemAnalyst.Controllers
                             }
                         else
                         {
-                            for (int j = 3; j < Exceldt.Columns.Count - 3; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count - 3; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
                                 daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Week"] = Exceldt.Rows[i]["Week"].ToString();
+                                daily["Day"] = j - 3;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -1590,8 +1611,9 @@ namespace ChemAnalyst.Controllers
 
                     else
                     {
+                        //if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
                         if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count; j++)
+                            for (int j = 5; j < Exceldt.Columns.Count; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
@@ -1602,7 +1624,7 @@ namespace ChemAnalyst.Controllers
 
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 4;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -1610,7 +1632,7 @@ namespace ChemAnalyst.Controllers
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count - 1; j++)
+                            for (int j = 5; j < Exceldt.Columns.Count - 1; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
@@ -1621,7 +1643,7 @@ namespace ChemAnalyst.Controllers
 
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 4;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -1629,7 +1651,7 @@ namespace ChemAnalyst.Controllers
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
-                            for (int j = 3; j < Exceldt.Columns.Count - 2; j++)
+                            for (int j = 5; j < Exceldt.Columns.Count - 2; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
@@ -1640,16 +1662,17 @@ namespace ChemAnalyst.Controllers
 
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 4;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
                                 daily["CreatedDate"] = DateTime.Now;
                                 dt.Rows.Add(daily);
                             }
+                       
                         else
                         {
-                            for (int j = 3; j < Exceldt.Columns.Count - 3; j++)
+                            for (int j = 5; j < Exceldt.Columns.Count - 3; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
@@ -1660,7 +1683,7 @@ namespace ChemAnalyst.Controllers
 
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 4;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -1743,8 +1766,9 @@ namespace ChemAnalyst.Controllers
 
                     else
                     {
+                        //if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
                         if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count; j++)
+                            for (int j = 5; j < Exceldt.Columns.Count; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
@@ -1755,7 +1779,7 @@ namespace ChemAnalyst.Controllers
 
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 4;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -1763,7 +1787,7 @@ namespace ChemAnalyst.Controllers
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
-                            for (int j = 3; j < Exceldt.Columns.Count - 1; j++)
+                            for (int j = 5; j < Exceldt.Columns.Count - 1; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
@@ -1774,7 +1798,7 @@ namespace ChemAnalyst.Controllers
 
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 4;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -1782,7 +1806,7 @@ namespace ChemAnalyst.Controllers
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
-                            for (int j = 3; j < Exceldt.Columns.Count - 2; j++)
+                            for (int j = 5; j < Exceldt.Columns.Count - 2; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
@@ -1793,16 +1817,17 @@ namespace ChemAnalyst.Controllers
 
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 4;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
                                 daily["CreatedDate"] = DateTime.Now;
                                 dt.Rows.Add(daily);
                             }
+
                         else
                         {
-                            for (int j = 3; j < Exceldt.Columns.Count - 3; j++)
+                            for (int j = 5; j < Exceldt.Columns.Count - 3; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
@@ -1813,7 +1838,7 @@ namespace ChemAnalyst.Controllers
 
                                 daily["year"] = Exceldt.Rows[i]["Year"].ToString();
                                 daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 2;
+                                daily["Day"] = j - 4;
                                 daily["count"] = Exceldt.Rows[i][j].ToString();
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
@@ -2234,6 +2259,10 @@ namespace ChemAnalyst.Controllers
                 DealsDetailsViewModel d = new DealsDetailsViewModel();
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
+
+                d.FromDate = fromdate;
+                d.ToDate = todate;
+
                 return View("Chem-PriceData", d);
 
             }
@@ -2409,6 +2438,8 @@ namespace ChemAnalyst.Controllers
                 DealsDetailsViewModel d = new DealsDetailsViewModel();
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
+
+
                 return View("Chem-PriceData", d);
             }
             else if (lstModel.Count() <= 0 && Customer == true)
@@ -2593,6 +2624,10 @@ namespace ChemAnalyst.Controllers
                 DealsDetailsViewModel d = new DealsDetailsViewModel();
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
+
+                d.FromDate = fromdate;
+                d.ToDate = todate;
+
                 return View("Chem-PriceData", d);
             }
             else if (lstModel.Count() <= 0 && Customer == true)
@@ -2774,6 +2809,10 @@ namespace ChemAnalyst.Controllers
                 DealsDetailsViewModel d = new DealsDetailsViewModel();
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
+
+                d.FromDate = fromdate;
+                d.ToDate = todate;
+
                 return View("Chem-PriceData", d);
             }
             else if (lstModel.Count() <= 0 && Customer == true)
@@ -2957,6 +2996,10 @@ namespace ChemAnalyst.Controllers
                 DealsDetailsViewModel d = new DealsDetailsViewModel();
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
+
+                d.FromDate = fromdate;
+                d.ToDate = todate;
+
                 return View("Chem-PriceData", d);
             }
             else if (lstModel.Count() <= 0 && Customer == true)

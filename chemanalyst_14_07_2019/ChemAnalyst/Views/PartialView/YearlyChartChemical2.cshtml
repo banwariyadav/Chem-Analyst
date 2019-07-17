@@ -1,10 +1,16 @@
 ﻿@model List<ChemAnalyst.ViewModel.StackedViewModel>
 @{
-
+    var ChartTitle = "";
     var XLabels2 = Newtonsoft.Json.JsonConvert.SerializeObject(Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList());
     var YValues2 = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.LstData.Select(w => w.Quantity)).ToList());
     var label2 = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.StackedDimensionOne).ToList());
+
+    ChartTitle = Model.Select(x => x.ProductName).FirstOrDefault() + " " + "Weekly " + "Pricing Analysis ";
+
 }
+
+<span class="pull-right" style="font-size:12px;margin-right: 2px; font-weight:bold">[Unit = Tonnes]</span>
+
 <canvas height="190" id="canvas2"></canvas>
 <script src="~/js/jquery.js"></script>
 <script src="~/js/Chart.min.js"></script>
@@ -41,7 +47,8 @@
             responsive: true,
             title: {
                 display: true,
-                text: 'Chemical Analysis Chart'
+                text: '@Html.Raw(ChartTitle)' 
+                //text: 'Chemical Analysis Chart'
             },
             tooltips: {
                 mode: 'index',

@@ -14,6 +14,7 @@ namespace ChemAnalyst.Controllers
     public class ChemAnalystController : Controller
     {
         // GET: Home
+        ProductDataStore ObjProduct = new ProductDataStore();
         public ActionResult Index()
         {
             return View("ChemAnalyst");
@@ -191,6 +192,7 @@ namespace ChemAnalyst.Controllers
         }
         public ActionResult Chem1WeekChart()
         {
+            int PId = 0;
             ChemicalPricing Objdal = new DAL.ChemicalPricing();
 
 
@@ -214,6 +216,8 @@ namespace ChemAnalyst.Controllers
             {
 
                 List<SA_Chem1PriceWeekly> Chartdata = obj.Where(Chart => Chart.day == Year[i]).ToList();
+
+                PId = Chartdata.FirstOrDefault().Product.Value;
                 //sales of product sales by quarter  
                 StackedViewModel Report = new StackedViewModel();
                 Report.StackedDimensionOne = Year[i];
@@ -249,7 +253,7 @@ namespace ChemAnalyst.Controllers
                 lstModel.Add(Report);
             }
 
-
+            lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
 
 
             if (lstModel.Count() > 0)
@@ -262,7 +266,7 @@ namespace ChemAnalyst.Controllers
         public ActionResult Chem2WeekChart()
         {
             ChemicalPricing Objdal = new DAL.ChemicalPricing();
-
+            int PId = 0;
 
             List<SA_Chem2PriceWeekly> obj = null;
             string compare = string.Empty;
@@ -284,6 +288,7 @@ namespace ChemAnalyst.Controllers
             {
 
                 List<SA_Chem2PriceWeekly> Chartdata = obj.Where(Chart => Chart.day == Year[i]).ToList();
+                PId = Chartdata.FirstOrDefault().Product.Value;
                 //sales of product sales by quarter  
                 StackedViewModel Report = new StackedViewModel();
                 Report.StackedDimensionOne = Year[i];
@@ -319,7 +324,7 @@ namespace ChemAnalyst.Controllers
                 lstModel.Add(Report);
             }
 
-
+            lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
 
             if (lstModel.Count() > 0)
                 return PartialView("~/Views/PartialView/YearlyChartChemical2.cshtml", lstModel);
@@ -330,6 +335,7 @@ namespace ChemAnalyst.Controllers
         }
         public ActionResult Chem3WeekChart()
         {
+            int PId = 0;
             ChemicalPricing Objdal = new DAL.ChemicalPricing();
 
 
@@ -354,6 +360,7 @@ namespace ChemAnalyst.Controllers
 
                 List<SA_Chem3PriceWeekly> Chartdata = obj.Where(Chart => Chart.day == Year[i]).ToList();
                 //sales of product sales by quarter  
+                PId = Chartdata.FirstOrDefault().Product.Value;
                 StackedViewModel Report = new StackedViewModel();
                 Report.StackedDimensionOne = Year[i];
 
@@ -388,7 +395,7 @@ namespace ChemAnalyst.Controllers
                 lstModel.Add(Report);
             }
 
-
+            lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
 
             if (lstModel.Count() > 0)
                 return PartialView("~/Views/PartialView/YearlyChartChemical3.cshtml", lstModel);
@@ -399,6 +406,7 @@ namespace ChemAnalyst.Controllers
         }
         public ActionResult Chem4WeekChart()
         {
+            int PId = 0;
             ChemicalPricing Objdal = new DAL.ChemicalPricing();
 
 
@@ -422,6 +430,7 @@ namespace ChemAnalyst.Controllers
             {
 
                 List<SA_Chem4PriceWeekly> Chartdata = obj.Where(Chart => Chart.day == Year[i]).ToList();
+                PId = Chartdata.FirstOrDefault().Product.Value;
                 //sales of product sales by quarter  
                 StackedViewModel Report = new StackedViewModel();
                 Report.StackedDimensionOne = Year[i];
@@ -457,7 +466,7 @@ namespace ChemAnalyst.Controllers
                 lstModel.Add(Report);
             }
 
-
+            lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
 
             if (lstModel.Count() > 0)
                 return PartialView("~/Views/PartialView/YearlyChartChemical4.cshtml", lstModel);
@@ -468,6 +477,7 @@ namespace ChemAnalyst.Controllers
         }
         public ActionResult Chem5WeekChart()
         {
+            int PId = 0;
             ChemicalPricing Objdal = new DAL.ChemicalPricing();
 
 
@@ -491,6 +501,7 @@ namespace ChemAnalyst.Controllers
             {
 
                 List<SA_Chem5PriceWeekly> Chartdata = obj.Where(Chart => Chart.day == Year[i]).ToList();
+                PId = Chartdata.FirstOrDefault().Product.Value;
                 //sales of product sales by quarter  
                 StackedViewModel Report = new StackedViewModel();
                 Report.StackedDimensionOne = Year[i];
@@ -526,7 +537,7 @@ namespace ChemAnalyst.Controllers
                 lstModel.Add(Report);
             }
 
-
+            lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
 
             if (lstModel.Count() > 0)
                 return PartialView("~/Views/PartialView/YearlyChartChemical5.cshtml", lstModel);
@@ -537,6 +548,7 @@ namespace ChemAnalyst.Controllers
         }
         public ActionResult Chem6WeekChart()
         {
+            int PId = 0;
             ChemicalPricing Objdal = new DAL.ChemicalPricing();
 
 
@@ -560,6 +572,7 @@ namespace ChemAnalyst.Controllers
             {
 
                 List<SA_Chem6PriceWeekly> Chartdata = obj.Where(Chart => Chart.day == Year[i]).ToList();
+                PId = Chartdata.FirstOrDefault().Product.Value;
                 //sales of product sales by quarter  
                 StackedViewModel Report = new StackedViewModel();
                 Report.StackedDimensionOne = Year[i];
@@ -595,7 +608,7 @@ namespace ChemAnalyst.Controllers
                 lstModel.Add(Report);
             }
 
-
+            lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
 
             if (lstModel.Count() > 0)
                 return PartialView("~/Views/PartialView/YearlyChartChemical6.cshtml", lstModel);

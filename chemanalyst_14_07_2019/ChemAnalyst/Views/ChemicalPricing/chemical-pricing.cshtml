@@ -16,18 +16,35 @@
 
     }
 
-    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList());
-    var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.LstData.Select(w => w.Quantity)).ToList());
-    var label2 = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.StackedDimensionOne).ToList());
-    var Product = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.Product).FirstOrDefault());
-    var ChartType = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.ChartType).FirstOrDefault());
-    var range = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.range).FirstOrDefault());
-    var Category = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.category).FirstOrDefault());
+    var XLabels = "";
+    var YValues = "";
+    var label2 = "";
+    var Product = "";
+    var ChartType = "";
+    var range = "";
+    var Category = "";
+
+    if (Model.Select(x => x.ProductName).FirstOrDefault() == "No Data")
+    {
+
+
+    }
+    else
+    {
+        XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList());
+        YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.LstData.Select(w => w.Quantity)).ToList());
+        label2 = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.StackedDimensionOne).ToList());
+        Product = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.Product).FirstOrDefault());
+        ChartType = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.ChartType).FirstOrDefault());
+        range = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.range).FirstOrDefault());
+        Category = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.category).FirstOrDefault());
+    }
+
 
     var fromdate = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.FromDate).FirstOrDefault());
     var todate = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.ToDate).FirstOrDefault());
 
-    ChartTitle  = Model.Select(x => x.ProductName).FirstOrDefault() + " " + Model.Select(x => x.range).FirstOrDefault()+ " " + "Pricing Analysis ";
+    ChartTitle = Model.Select(x => x.ProductName).FirstOrDefault() + " " + Model.Select(x => x.range).FirstOrDefault() + " " + "Pricing Analysis ";
 }
 
 <!DOCTYPE HTML>
@@ -290,8 +307,8 @@
                                             <i class="fa fa-refresh"></i>
                                             Reset
                                         </button>
-                                        <span style="cursor:pointer" class="btn btn-green mt30" onclick="generatePDF()">Export as PDF</span>
-                                       
+
+
                                     </div>
                                 </div>
                                                 }
@@ -303,13 +320,14 @@
                             <ul>
                                 @foreach (string item in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))
                                 {
-                                <li><a href="#">@item <i class="fa fa-close"></i></a></li>
+                                    <li><a href="#">@item <i class="fa fa-close"></i></a></li>
                                 }
                             </ul>
 
                         </div>
 
-                        <div id="invoice"><span class="pull-right" style="font-size:12px;margin-right: 2px;">[Unit = Tonnes]</span>
+                        <div id="invoice">
+                            <span class="pull-right" style="font-size:12px;margin-right: 2px; font-weight:bold">[Unit = Tonnes]</span>
                             <canvas id="canvas"></canvas>
                             <div style="height:20px"></div>
                             <div class="rangeSlider col-lg-12" style="margin:0;cursor: pointer; color: #f30404;">
@@ -337,7 +355,7 @@
                                 </div>
                                 <div style="height:30px"></div>
 
-
+                                <span id="exportpdf2" style="cursor:pointer; margin-left: 20px;" class="btn btn-green mt30 pull-right" onclick="generatePDF()">Export as PDF</span>
                                 <a href="javascript:void(0)" id="exportxls2" onclick="exportToExcel('tblRegisteredUsers', 'Chemical-Pricing.')" class="btn btn-green mt30 pull-right">Export as Excel</a>
                                 <br /><br /><br /><br />
                                 <div class="custom-table">
@@ -598,7 +616,7 @@
     <script src="../js/Chart.min.js"></script>
     <script src="../js/utils.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="~/css/jquery.datetimepicker.css" >
+    <link rel="stylesheet" type="text/css" href="~/css/jquery.datetimepicker.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     @*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>*@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -618,7 +636,7 @@
 
     <script src="https://igniteui.com/js/external/FileSaver.js"></script>
     <script src="https://igniteui.com/js/external/Blob.js"></script>
-    
+
     <script src="https://www.github.developerdan.com/table-to-json/javascripts/jquery.tabletojson.min.js"></script>
 
     <script type="text/javascript">
@@ -715,12 +733,18 @@
 
             var range = $(ddlRange).find("option:selected").val();
             var ddlCustomers = $("#ddlChart");
+            debugger
             if (range == "Daily basis") {
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
+            }
+            else if(range == "Quarterly")
+            {
+                ddlCustomers.empty().append('<option selected="selected" value="pie" >Pie Chart</option>');
             }
             else {
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
             }
+
             ShowCommentariesByDeafult()
         });
 
@@ -757,7 +781,7 @@
 
         function ShowCommentariesByDeafult()
         {
-                       //debugger;
+            //debugger;
             var  ProductId = 'None';
             $.ajax({
                 type: "POST",
@@ -866,12 +890,26 @@
         $("body").on("change", "#ddlRange", function () {
             var range=$(ddlRange).find("option:selected").val();
             var ddlCustomers = $("#ddlChart");
+
+            debugger
             if (range == "Daily basis") {
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
+            }
+            else if(range == "Quarterly")
+            {
+                ddlCustomers.empty().append('<option selected="selected" value="pie" >Pie Chart</option>');
             }
             else {
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
             }
+
+            //if (range == "Quarterly") {
+            //    ddlCustomers.empty().append('<option selected="selected" value="pie" >Pie Chart</option>');
+            //}
+            //else {
+            //    ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
+            //}
+
         });
 
 
@@ -930,7 +968,7 @@
                 title: {
                     display: true,
                     //text: 'Chemical Analysis Chart'
-                    text: '@Html.Raw(ChartTitle)' 
+                    text: '@Html.Raw(ChartTitle)'
                 },
                 tooltips: {
                     mode: 'index',
@@ -1001,11 +1039,11 @@
             $('#todate').val(to);
             $('#ddlChart').val(ChartType);
             Drowchart('canvas', ChartType);
-            var  cyear ='@(ViewBag.CYear==null?"": ViewBag.CYear)'
+            @*var  cyear ='@(ViewBag.CYear==null?"": ViewBag.CYear)'
 
             if(cyear!= "") {
                 $("#ddlyear").val(cyear)
-            }
+            }*@
 
             //Drowchart('canvas2','bar');
             var selected = $("#ddlRange option:selected").text();
@@ -1306,7 +1344,8 @@
             $("#hrefComentery").hide();
             $("#slidecontainer1").hide();
             $("#submitReset").hide();
-            
+            $("#exportpdf2").hide();
+
 
             // Generate the PDF.
             html2pdf().from(element).set({
@@ -1319,7 +1358,9 @@
                 $("#exportxls2").show();
                 $("#slidecontainer1").show();
                 $("#submitReset").show();
-                
+                $("#exportpdf2").show();
+
+
                 // window.location.reload();
             });;
 
