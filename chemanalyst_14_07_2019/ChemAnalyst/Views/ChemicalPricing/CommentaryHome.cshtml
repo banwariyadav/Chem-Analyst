@@ -1,0 +1,107 @@
+﻿@model List<ChemAnalyst.Models.SA_Commentary>
+
+
+@*@using PagedList.Mvc;
+@using PagedList;*@
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutUser1.cshtml";
+
+
+}
+
+<body>
+
+
+    @if (Session["UserRole"] == null)
+    {
+        <div class="inner-banner">
+            <img src="~/images/about-banner.jpg">
+            <h1>Commentary</h1>
+
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Commentary</li>
+            </ol>
+
+        </div>
+    }
+
+    <div class="page-content">
+        <div class="static-page">
+            <div class="container">
+
+                <div class="bloglist">
+
+                    <div class="row">
+                        @if (Session["UserRole"] == null)
+                        {
+                            <div class="col-lg-12">
+                                <div class="searchbox">
+                                   
+                                </div>
+                            </div>
+                        }
+                        <div class="width100" style="height:30px"></div>
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-md-6 col-sm-6">
+
+                                <div class="post-item clearfix">
+
+                                    <div class="row">
+
+                                        <div class="col-md-4 col-sm-4 themestek-box-img-left">
+                                            <div class="news-pic" style="height: 167px;">
+                                                <img src="~/Images/icon-commentary.png" alt="" style="padding-top: 7px; padding-left: 15px;">
+                                            </div>
+                                        </div>
+
+                                        <div class="themestek-box-content col-md-8 col-sm-8">
+                                            <div class="news-text">
+                                                <h4>@(item.Title.Length > 40 ? (item.Title.Substring(0, 40)) : item.Title)...</h4>
+                                                <p>@(item.Description.Length > 100 ? (item.Description.Substring(0, 100)) : item.Description)...</p>
+
+                                                <div class="row mt-3">
+                                                    @*<div class="col-6"><a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">Read More <i class="fa fa-arrow-right"></i></a></div>*@
+
+                                                    <div class="col-6"> <i class="fa fa-clock-o"></i>@item.CreatedTime.Date.ToString("M/dd/yyyy") </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        }
+
+                    </div>
+
+                </div>
+                @*@Html.PagedListPager(Model.NewsList, page => Url.Action("NewsHome", new { page }))*@
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <script src="../js/jquery.js"></script>
+    <script src="../js/jquery-3.3.1.slim.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    @*<script src="http://cdnjs.cloudflare.com/ajax/libs/simplelightbox/1.17.1/simple-lightbox.js"></script>*@
+    <script src="../js/owl.carousel.js"></script>
+    <script src="../js/wow.min.js"></script>
+    <script src="../js/honey-custom.js"></script>
+
+</body>

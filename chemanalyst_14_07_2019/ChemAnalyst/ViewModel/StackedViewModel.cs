@@ -28,6 +28,8 @@ namespace ChemAnalyst.ViewModel
         public string Product { get; set; }
 
         public string ProductName { get; set; }
+
+        public string selectedLegends { get; set; }
         public string ChartType { get; set; }
         public List<string> Discription { get; set; }
         public int category { get; set; }
@@ -36,7 +38,9 @@ namespace ChemAnalyst.ViewModel
         public string FromDate { get; set; }
         public string ToDate { get; set; }
 
-        public string Commentary { get; set; }
+        public string CommentaryTitle { get; set; }
+
+        public string CommentaryDescription { get; set; }
 
 
     }

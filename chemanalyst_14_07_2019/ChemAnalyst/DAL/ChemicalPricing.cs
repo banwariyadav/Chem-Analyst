@@ -916,8 +916,69 @@ namespace ChemAnalyst.DAL
             return _context.SA_ChemPriceQuarterly.Select(x => new YearModel { Year = x.year }).Distinct().ToList();
 
         }
-    }
 
+        internal List<ProductVariantModel> GetAllProductVariant(string type, int productId)
+        {
+            if (type == "month")
+            {
+                return _context.SA_ChemPriceMonthly.Where(w=>w.Product== productId).Select(x => new ProductVariantModel
+                {
+                    Name = x.ProductVariant
+                }).Distinct().ToList();
+            }
+            else if (type == "year") {
+                return _context.SA_ChemPriceYearly.Where(w => w.Product == productId).Select(x => new ProductVariantModel
+                {
+                    Name = x.ProductVariant
+                }).Distinct().ToList();
+                
+            }
+            else if (type == "week")
+            {
+                return _context.SA_ChemPriceWeekly.Where(w => w.Product == productId).Select(x => new ProductVariantModel
+                {
+                    Name = x.ProductVariant
+                }).Distinct().ToList();
+
+            }
+            else if (type == "quater")
+            {
+                return _context.SA_ChemPriceQuarterly.Where(w => w.Product == productId).Select(x => new ProductVariantModel
+                {
+                    Name = x.ProductVariant
+                }).Distinct().ToList();
+
+            }
+            else if (type == "day")
+            {
+                return _context.SA_ChemPriceDaily.Where(w => w.Product == productId).Select(x => new ProductVariantModel
+                {
+                    Name = x.ProductVariant
+                }).Distinct().ToList();
+
+            }
+            else
+            {
+                return _context.SA_ChemPriceDailyAverage.Where(w => w.Product == productId).Select(x => new ProductVariantModel
+                {
+                    Name = x.ProductVariant
+                }).Distinct().ToList();
+
+            }
+            //else
+            //{
+            //    return _context.SA_ChemPriceMonthly.Where(w => w.Product == productId).Select(x => new ProductVariantModel
+            //    {
+            //        Name = x.ProductVariant
+            //    }).Distinct().ToList();
+            //}
+
+        }
+    }
+    public class ProductVariantModel
+    {
+        public string Name { get; set; }
+    }
     public class YearModel
     {
         public string Year { get; set; }

@@ -254,10 +254,10 @@
                     <div class="col-md-12">
                         <div style="height:30px"></div>
                         <div class="common-desc ">
-                            <h4 style="border-bottom: 1px solid #ccc">Commentary   <a href="#" id="hrefComentery" style="cursor: pointer;font-size: 14px;float: right;" data-toggle="modal" data-target="#Comentery" onclick="ShowCommentaries()"><span>View all</span></a></h4>
+                            <h4 style="border-bottom: 1px solid #ccc">@Model.FirstOrDefault().CommentaryTitle   <a href="#" id="hrefComentery" style="cursor: pointer;font-size: 14px;float: right;" data-toggle="modal" data-target="#Comentery" onclick="ShowCommentaries()"><span>View all</span></a></h4>
                             @*<h4 style="border-bottom: 1px solid #ccc">Commentary   <a href="#" style="font-size: 14px;float: right;" data-toggle="modal" onclick="ShowCommentaries()"><span>View all</span></a></h4>*@
                             <p>
-                                @Model.FirstOrDefault().Commentary
+                                @Model.FirstOrDefault().CommentaryDescription
 
 
                             </p>
@@ -504,17 +504,52 @@
 
             var range = $(ddlRange).find("option:selected").val();
             var ddlCustomers = $("#ddlChart");
-            if (range == "Daily basis") {
+            
+            if (range == "Daily basis" || range == "Daily Bulk") {
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
             }
             else if(range == "Quarterly")
             {
                 ddlCustomers.empty().append('<option selected="selected" value="pie" >Pie Chart</option>');
             }
+            else if(range == "Monthly")
+            {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
+            }
+            else if(range == "Weekly")
+            {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
+            }
             else {
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
             }
+
             ShowCommentariesByDeafult()
+        });
+
+        $("body").on("change", "#ddlRange", function () {
+            var range=$(ddlRange).find("option:selected").val();
+            var ddlCustomers = $("#ddlChart");
+
+            
+            if (range == "Daily basis" || range == "Daily Bulk") {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
+            }
+            else if(range == "Quarterly")
+            {
+                ddlCustomers.empty().append('<option selected="selected" value="pie" >Pie Chart</option>');
+            }
+            else if(range == "Monthly")
+            {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
+            }
+            else if(range == "Weekly")
+            {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
+            }
+            else {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
+            }
         });
 
         function ShowCommentaries()
@@ -650,20 +685,7 @@
 
         });
 
-        $("body").on("change", "#ddlRange", function () {
-            var range=$(ddlRange).find("option:selected").val();
-            var ddlCustomers = $("#ddlChart");
-            if (range == "Daily basis") {
-                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
-            }
-            else if(range == "Quarterly")
-            {
-                ddlCustomers.empty().append('<option selected="selected" value="pie" >Pie Chart</option>');
-            }
-            else {
-                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
-            }
-        });
+   
 
 
         function Drowchart(id, d) {

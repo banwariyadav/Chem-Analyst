@@ -10,7 +10,7 @@ using System.Data.SqlClient;
 using ChemAnalyst.ViewModel;
 using ChemAnalyst.Models;
 using OfficeOpenXml;
-
+using PagedList;
 
 namespace ChemAnalyst.Controllers
 {
@@ -136,7 +136,8 @@ namespace ChemAnalyst.Controllers
                     Customer,
                     Maxvalue,
                     fromdate,
-                    todate
+                    todate,
+                    selectedLegends
                 });
                 // ChecmPriceYearlyChartUser(product, ChartType, Range);
             }
@@ -165,7 +166,8 @@ namespace ChemAnalyst.Controllers
                     Range,
                     CompareProject,
                     Customer,
-                    year
+                    year,
+                    selectedLegends
 
                 });
             }
@@ -179,7 +181,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     fromdate,
-                    todate
+                    todate,
+                    selectedLegends
                 });
             }
             else if (Range == "Daily basis")
@@ -192,7 +195,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     fromdate,
-                    todate
+                    todate,
+                    selectedLegends
                 });
             }
             else if (Range == "Daily Bulk")
@@ -205,7 +209,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     fromdate,
-                    todate
+                    todate,
+                    selectedLegends
                 });
             }
 
@@ -222,6 +227,7 @@ namespace ChemAnalyst.Controllers
             string fromdate = FilterObject["fromdate"];
             string todate = FilterObject["todate"];
             string year = FilterObject["ddlyear"];
+            string selectedLegends = FilterObject["hiddenLegends"];
 
             if (submit == "Reset")
             {
@@ -245,7 +251,8 @@ namespace ChemAnalyst.Controllers
                     Customer,
                     Maxvalue,
                     fromdate,
-                    todate
+                    todate,
+                    selectedLegends
                 });
                 // ChecmPriceYearlyChartUser(product, ChartType, Range);
             }
@@ -259,7 +266,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     fromdate,
-                    todate
+                    todate,
+                    selectedLegends
                 });
             }
             else if (Range == "Quarterly")
@@ -284,7 +292,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     fromdate,
-                    todate
+                    todate,
+                    selectedLegends
                 });
             }
             else if (Range == "Daily basis")
@@ -297,7 +306,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     fromdate,
-                    todate
+                    todate,
+                    selectedLegends
                 });
             }
             else if (Range == "Daily Bulk")
@@ -310,7 +320,9 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     fromdate,
-                    todate
+                    todate,
+                    selectedLegends
+
                 });
             }
             return RedirectToAction("ChecmPriceYearlyChart");
@@ -347,7 +359,7 @@ namespace ChemAnalyst.Controllers
                             ViewBag.ProductList = ObjProduct.ProductList();
 
                             ViewBag.Status = "Fail";
-                            ViewBag.Messge = "File is already uploaded under "+productName+" & mapped with "+ ImportType + " Kindly check if you want to Replace the existing file.";
+                            ViewBag.Messge = "File is already uploaded under " + productName + " & mapped with " + ImportType + " Kindly check if you want to Replace the existing file.";
                             return View("Chemical-analysis-import");
                         }
 
@@ -361,7 +373,7 @@ namespace ChemAnalyst.Controllers
                         InsertYearExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
                         ViewBag.Status = "Success";
-                        ViewBag.SuccesMessge = "File uploaded under "+productName+" & mapped with "+ ImportType + " Successfully.";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("Chemical-analysis-import");
                     }
                     else if (ImportType == "Monthly")
@@ -397,8 +409,9 @@ namespace ChemAnalyst.Controllers
                     else if (ImportType == "Daily basis")
                     {
                         var excel = new ExcelPackage(file.InputStream);
-                        dt = excel.ToDailyDataTable();
-                        InsertDAilyExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        dt = excel.ToDailyNewDataTable();
+                        //InsertDAilyExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        InsertDailyNewExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
                         ViewBag.Status = "Success";
                         ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
@@ -1478,7 +1491,7 @@ namespace ChemAnalyst.Controllers
                     {
                         //if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
                         if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
-                            for (int j =4 ; j < Exceldt.Columns.Count; j++)
+                            for (int j = 4; j < Exceldt.Columns.Count; j++)
                             {
                                 DataRow daily = dt.NewRow();
                                 daily["Product"] = product;
@@ -1583,6 +1596,78 @@ namespace ChemAnalyst.Controllers
             }
 
         }
+
+        private bool InsertDailyNewExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+
+            try
+            {
+                //Exceldt.Columns.Add("Date", typeof(string));
+                Exceldt.Columns.Add("Product", typeof(int));
+                //Exceldt.Columns.Add("Commodity", typeof(string));
+                //Exceldt.Columns.Add("Type", typeof(string));
+                //Exceldt.Columns.Add("Term", typeof(string));
+                //Exceldt.Columns.Add("Location", typeof(string));
+                //Exceldt.Columns.Add("Price", typeof(string));
+                //Exceldt.Columns.Add("MidValue", typeof(string));
+                //Exceldt.Columns.Add("Difference4WeekAgo", typeof(string));
+                //Exceldt.Columns.Add("ContractDetails", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["Date"] == DBNull.Value || Exceldt.Rows[i]["Commodity"] == DBNull.Value || Exceldt.Rows[i]["Type"] == DBNull.Value || Exceldt.Rows[i]["Terms"] == DBNull.Value || Exceldt.Rows[i]["Location"] == DBNull.Value || Exceldt.Rows[i]["Price"] == DBNull.Value || Exceldt.Rows[i]["Mid Value"] == DBNull.Value || Exceldt.Rows[i]["Contract Details"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                //string productid = Exceldt.Rows[0]["Product Name"].ToString();
+                //string year = Exceldt.Rows[0]["Year"].ToString();
+
+
+                //inserting Datatable Records to DataBase   
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+                sqlConnection.ConnectionString = connectionString;//Connection Details  
+                                                                  //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_ChemPriceDailyNew";
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Date]", "Date");
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[Commodity]", "Commodity");
+                objbulk.ColumnMappings.Add("[Type]", "Type");
+                objbulk.ColumnMappings.Add("[Terms]", "Term");
+                objbulk.ColumnMappings.Add("[Location]", "Location");
+                objbulk.ColumnMappings.Add("[Price]", "Price");
+                objbulk.ColumnMappings.Add("[Mid Value]", "MidValue");
+                objbulk.ColumnMappings.Add("[Differnce 4 Weeks Ago]", "Difference4WeekAgo");
+                objbulk.ColumnMappings.Add("[Contract Details]", "ContractDetails");
+
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+                //  MessageBox.Show("Data has been Imported successfully.", "Imported", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            catch (Exception ex)
+            {
+                //  MessageBox.Show(string.Format("Data has not been Imported due to :{0}", ex.Message), "Not Imported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            return false;
+
+        }
         private void InsertDAilyExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
         {
 
@@ -1672,7 +1757,7 @@ namespace ChemAnalyst.Controllers
                                 daily["CreatedDate"] = DateTime.Now;
                                 dt.Rows.Add(daily);
                             }
-                       
+
                         else
                         {
                             for (int j = 5; j < Exceldt.Columns.Count - 3; j++)
@@ -1894,7 +1979,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult ChecmPriceYearlyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string MaxValue, string fromdate = "", string todate = "")
+        public ActionResult ChecmPriceYearlyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string MaxValue, string fromdate = "", string todate = "", string selectedLegends = "")
         {
             if (fromdate == "")
             {
@@ -1961,43 +2046,66 @@ namespace ChemAnalyst.Controllers
             }
             else
             {
-                obj = Objdal.GetYearWiseProductList(product, MaxValue, fromdate, todate);
-                //if (MaxValue != null)
-                //{
-                //    obj = Objdal.GetYearWiseProductList(product);
-                //}
-                //else
-                //{
-                //    obj = Objdal.GetYearWiseProductList(product);
-                //}
+
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+                    obj = Objdal.GetYearWiseProductList(product, MaxValue, fromdate, todate);
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetYearWiseProductList(product, MaxValue, fromdate, todate).Where(w => selfilter.Contains(w.ProductVariant + ",")).ToList();
+                }
+
+
 
             }
+
+            if (!string.IsNullOrEmpty(product))
+            {
+                int ProductId = int.Parse(product);
+                ViewBag.AllLegends = Objdal.GetAllProductVariant("year", ProductId);
+            }
+            else
+            {
+                ChemAnalystContext _context = new ChemAnalystContext();
+                int uniqueCategories = (from m in _context.SA_ChemPriceYearly
+                                        join n in _context.SA_Product on
+                                        m.Product equals n.id
+                                        select (n.id)).FirstOrDefault();
+                ViewBag.AllLegends = Objdal.GetAllProductVariant("year", uniqueCategories);
+            }
+
+
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
 
-            string Commentary = "";
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
             int PId = 0;
             if (product != null)
             {
                 int ProductId = int.Parse(product);
                 PId = ProductId;
-                Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
             }
             else
             {
                 PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
-                Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
 
             }
 
             var lstModel = new List<StackedViewModel>();
 
-           
+
 
             for (int i = 0; i < Year.Count; i++)
             {
 
-                
+
 
                 List<SA_ChemPriceYearly> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
                 //sales of product sales by quarter  
@@ -2037,10 +2145,10 @@ namespace ChemAnalyst.Controllers
                     Report.range = Range;
                 }
                 lstModel.Add(Report);
-                
+
             }
 
-           
+
             if (lstModel.Count() <= 0 && Customer == false)
             {
 
@@ -2050,7 +2158,7 @@ namespace ChemAnalyst.Controllers
                 ViewBag.ProductList = ObjProduct.CategoryByUser(0);
                 ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
 
-              
+
 
                 NewsDataStore Obj2 = new NewsDataStore();
                 DealsDataStore Obj = new DealsDataStore();
@@ -2084,7 +2192,8 @@ namespace ChemAnalyst.Controllers
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
 
-                lstModel[0].Commentary = Commentary;
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
                 lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
 
                 return View("chemicalpricingUser", lstModel);
@@ -2099,15 +2208,16 @@ namespace ChemAnalyst.Controllers
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
 
-                lstModel[0].Commentary = Commentary;
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
                 lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("chemical-pricing", lstModel);
             }
 
 
         }
-        public ActionResult ChecmPriceMonthlyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string fromdate = "", string todate = "", string selectedLegends="")
+        public ActionResult ChecmPriceMonthlyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string fromdate = "", string todate = "", string selectedLegends = "")
         {
 
             if (fromdate == "")
@@ -2166,29 +2276,51 @@ namespace ChemAnalyst.Controllers
             {
                 if (string.IsNullOrEmpty(selectedLegends))
                 {
+
                     obj = Objdal.GetMonthlyWiseProductList1(product, fromdate, todate);
+
                 }
                 else
                 {
-                    obj = Objdal.GetMonthlyWiseProductList1(product, fromdate, todate).Where(w => w.ProductVariant.Contains(selectedLegends)).ToList();
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetMonthlyWiseProductList1(product, fromdate, todate).Where(w => selfilter.Contains(w.ProductVariant + ",")).ToList();
                 }
-                
+
             }
+
+            if (!string.IsNullOrEmpty(product))
+            {
+                int ProductId = int.Parse(product);
+                ViewBag.AllLegends = Objdal.GetAllProductVariant("month", ProductId);
+            }
+            else
+            {
+                ChemAnalystContext _context = new ChemAnalystContext();
+                int uniqueCategories = (from m in _context.SA_ChemPriceYearly
+                                        join n in _context.SA_Product on
+                                        m.Product equals n.id
+                                        select (n.id)).FirstOrDefault();
+                ViewBag.AllLegends = Objdal.GetAllProductVariant("month", uniqueCategories);
+            }
+
             List<string> Month = obj.Select(p => p.Month + " " + p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
 
-            string Commentary = "";
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
             int PId = 0;
             if (product != null)
             {
                 int ProductId = int.Parse(product);
                 PId = ProductId;
-                Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
             }
             else
             {
                 PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
-                Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
 
             }
 
@@ -2217,7 +2349,7 @@ namespace ChemAnalyst.Controllers
                     SimpleReportViewModel Quantity = new SimpleReportViewModel()
                     {
                         DimensionOne = item,// item.Month,
-                        Quantity = Chartdata.Where(x => x.ProductVariant == item).Sum(x => x.count)
+                        Quantity = Chartdata.Where(x => x.ProductVariant == item).Sum(x => x.count),
                     };
                     QuantityList.Add(Quantity);
                 }
@@ -2296,7 +2428,8 @@ namespace ChemAnalyst.Controllers
             {
                 ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
 
-                lstModel[0].Commentary = Commentary;
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
                 lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
 
                 return View("chemicalpricingUser", lstModel);
@@ -2311,7 +2444,8 @@ namespace ChemAnalyst.Controllers
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
 
-                lstModel[0].Commentary = Commentary;
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
                 lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
                 lstModel[0].selectedLegends = selectedLegends;
 
@@ -2320,17 +2454,13 @@ namespace ChemAnalyst.Controllers
 
 
         }
-        public ActionResult ChecmPriceQuarterlyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string year = "")
+        public ActionResult ChecmPriceQuarterlyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string year = "", string selectedLegends = "")
         {
             if (year == "")
             {
                 year = DateTime.Now.Year.ToString();
 
             }
-
-
-
-
             int custid = 0;
 
             ChemicalPricing Objdal = new DAL.ChemicalPricing();
@@ -2376,22 +2506,57 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetQuarterWiseProductList(product, year);
+            {
+
+
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+                    obj = Objdal.GetQuarterWiseProductList(product, year);
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetQuarterWiseProductList(product, year).Where(w => selfilter.Contains(w.ProductVariant + ",")).ToList();
+                }
+
+
+            }
+
+            if (!string.IsNullOrEmpty(product))
+            {
+                int ProductId = int.Parse(product);
+                ViewBag.AllLegends = Objdal.GetAllProductVariant("quater", ProductId);
+            }
+            else
+            {
+                ChemAnalystContext _context = new ChemAnalystContext();
+                int uniqueCategories = (from m in _context.SA_ChemPriceYearly
+                                        join n in _context.SA_Product on
+                                        m.Product equals n.id
+                                        select (n.id)).FirstOrDefault();
+                ViewBag.AllLegends = Objdal.GetAllProductVariant("quater", uniqueCategories);
+            }
+
+
+
             List<string> Quarter = obj.Select(p => p.Quarter).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
 
-            string Commentary = "";
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
             int PId = 0;
             if (product != null)
             {
                 int ProductId = int.Parse(product);
                 PId = ProductId;
-                Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
             }
             else
             {
                 PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
-                Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
 
             }
 
@@ -2473,7 +2638,8 @@ namespace ChemAnalyst.Controllers
             {
                 ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
 
-                lstModel[0].Commentary = Commentary;
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
                 lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
 
                 return View("chemicalpricingUser", lstModel);
@@ -2488,15 +2654,16 @@ namespace ChemAnalyst.Controllers
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
 
-                lstModel[0].Commentary = Commentary;
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
                 lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("chemical-pricing", lstModel);
             }
 
 
         }
-        public ActionResult ChecmPriceDailyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string fromdate = "", string todate = "")
+        public ActionResult ChecmPriceDailyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string fromdate = "", string todate = "", string selectedLegends = "")
         {
 
             if (fromdate == "")
@@ -2552,21 +2719,51 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetDailyWiseProductList(product, fromdate, todate);
+            {
+
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+                    obj = Objdal.GetDailyWiseProductList(product, fromdate, todate);
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetDailyWiseProductList(product, fromdate, todate).Where(w => selfilter.Contains(w.ProductVariant + ",")).ToList();
+                }
+            }
+
+            if (!string.IsNullOrEmpty(product))
+            {
+                int ProductId = int.Parse(product);
+                ViewBag.AllLegends = Objdal.GetAllProductVariant("day", ProductId);
+            }
+            else
+            {
+                ChemAnalystContext _context = new ChemAnalystContext();
+                int uniqueCategories = (from m in _context.SA_ChemPriceYearly
+                                        join n in _context.SA_Product on
+                                        m.Product equals n.id
+                                        select (n.id)).FirstOrDefault();
+                ViewBag.AllLegends = Objdal.GetAllProductVariant("day", uniqueCategories);
+            }
+
             List<string> Day = obj.Select(p => p.day).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
-            string Commentary = "";
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
             int PId = 0;
             if (product != null)
             {
                 int ProductId = int.Parse(product);
                 PId = ProductId;
-                Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
             }
             else
             {
                 PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
-                Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
 
             }
 
@@ -2661,7 +2858,8 @@ namespace ChemAnalyst.Controllers
             {
                 ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
 
-                lstModel[0].Commentary = Commentary;
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
                 lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
 
                 return View("chemicalpricingUser", lstModel);
@@ -2676,15 +2874,16 @@ namespace ChemAnalyst.Controllers
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
 
-                lstModel[0].Commentary = Commentary;
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
                 lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("chemical-pricing", lstModel);
             }
 
 
         }
-        public ActionResult ChecmPriceDailyAverageChart(string product, string chartType, string Range, string CompareProject, bool Customer, string fromdate = "", string todate = "")
+        public ActionResult ChecmPriceDailyAverageChart(string product, string chartType, string Range, string CompareProject, bool Customer, string fromdate = "", string todate = "", string selectedLegends = "")
         {
 
             if (fromdate == "")
@@ -2738,21 +2937,52 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetDailyAverageWiseProductList(product, fromdate, todate);
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+                    obj = Objdal.GetDailyAverageWiseProductList(product, fromdate, todate);
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetDailyAverageWiseProductList(product, fromdate, todate).Where(w => selfilter.Contains(w.ProductVariant + ",")).ToList();
+                }
+
+
+            }
+
+            if (!string.IsNullOrEmpty(product))
+            {
+                int ProductId = int.Parse(product);
+                ViewBag.AllLegends = Objdal.GetAllProductVariant("dayAvg", ProductId);
+            }
+            else
+            {
+                ChemAnalystContext _context = new ChemAnalystContext();
+                int uniqueCategories = (from m in _context.SA_ChemPriceYearly
+                                        join n in _context.SA_Product on
+                                        m.Product equals n.id
+                                        select (n.id)).FirstOrDefault();
+                ViewBag.AllLegends = Objdal.GetAllProductVariant("dayAvg", uniqueCategories);
+            }
+
             List<string> Day = obj.Select(p => p.day).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
-            string Commentary = "";
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
             int PId = 0;
             if (product != null)
             {
                 int ProductId = int.Parse(product);
                 PId = ProductId;
-                Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
             }
             else
             {
                 PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
-                Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
 
             }
 
@@ -2846,7 +3076,8 @@ namespace ChemAnalyst.Controllers
             {
                 ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
 
-                lstModel[0].Commentary = Commentary;
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
                 lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
 
                 return View("chemicalpricingUser", lstModel);
@@ -2861,15 +3092,16 @@ namespace ChemAnalyst.Controllers
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
 
-                lstModel[0].Commentary = Commentary;
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
                 lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("chemical-pricing", lstModel);
             }
 
 
         }
-        public ActionResult ChecmPriceWeeklyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string fromdate = "", string todate = "")
+        public ActionResult ChecmPriceWeeklyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string fromdate = "", string todate = "", string selectedLegends = "")
         {
             int custid = 0;
             if (fromdate == "")
@@ -2922,21 +3154,51 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetWeeklyWiseProductList(product, fromdate, todate);
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+                    obj = Objdal.GetWeeklyWiseProductList(product, fromdate, todate);
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetWeeklyWiseProductList(product, fromdate, todate).Where(w => selfilter.Contains(w.ProductVariant + ",")).ToList();
+                }
+
+            }
+
+            if (!string.IsNullOrEmpty(product))
+            {
+                int ProductId = int.Parse(product);
+                ViewBag.AllLegends = Objdal.GetAllProductVariant("week", ProductId);
+            }
+            else
+            {
+                ChemAnalystContext _context = new ChemAnalystContext();
+                int uniqueCategories = (from m in _context.SA_ChemPriceYearly
+                                        join n in _context.SA_Product on
+                                        m.Product equals n.id
+                                        select (n.id)).FirstOrDefault();
+                ViewBag.AllLegends = Objdal.GetAllProductVariant("week", uniqueCategories);
+            }
+
             List<string> Day = obj.Select(p => p.Week).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
-            string Commentary = "";
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
             int PId = 0;
             if (product != null)
             {
                 int ProductId = int.Parse(product);
                 PId = ProductId;
-                Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
             }
             else
             {
                 PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
-                Commentary = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
 
             }
 
@@ -3033,7 +3295,8 @@ namespace ChemAnalyst.Controllers
             {
                 ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
 
-                lstModel[0].Commentary = Commentary;
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
                 lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
 
                 return View("chemicalpricingUser", lstModel);
@@ -3048,9 +3311,10 @@ namespace ChemAnalyst.Controllers
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
 
-                lstModel[0].Commentary = Commentary;
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
                 lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("chemical-pricing", lstModel);
             }
 
@@ -3078,5 +3342,22 @@ namespace ChemAnalyst.Controllers
         }
 
 
+        public ActionResult CommentaryHome(string ProductId)
+        {
+
+            int pageSize = 6;
+            if (!string.IsNullOrEmpty(ProductId))
+            {
+                int catId = int.Parse(ProductId);
+                var Commentaries = ObjCommentary.GetCommentaryList().Where(w => w.Product == catId).Select(w => new SA_Commentary { id = w.id, Title = w.Title, Description = w.Description, CreatedTime=w.CreatedTime }).ToList();
+                return View(Commentaries);
+            }
+
+            else
+            {
+                var Commentaries = ObjCommentary.GetCommentaryList().Select(w => new SA_Commentary {id=w.id, Title = w.Title, Description = w.Description, CreatedTime = w.CreatedTime }).ToList();
+                return View(Commentaries);
+            }
+        }
     }
 }

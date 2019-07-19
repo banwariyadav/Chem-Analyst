@@ -324,17 +324,17 @@
                                                 }
                         </div>
 
-                        <div class="filter-checkbox-btn" style="display:block; ">
+                        <div class="filter-checkbox-btn lgndchk" style="display:block; ">
 
 
                             @*<ul>*@
-                                @foreach (string item in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))
-                                {
-                                    <label class="checkbox-inline" style="font-size: 12px;font-weight: bold;">
-                                        <input type="checkbox" value="@item" class="chcktbl" onclick="myfunction(this)">@item
-                                    </label>
-                                    @*<li><a href="#">@item <i class="fa fa-close"></i></a></li>*@
-                                }
+                            @foreach (var item in ViewBag.AllLegends)
+                            {
+                                <label class="checkbox-inline" style="font-size: 12px;font-weight: bold;">
+                                    <input type="checkbox" value="@item.Name" @(selectedLegends.Contains(item.Name) ? "checked='checked'" : "") class="chcktbl" onclick="myfunction(this)">@item.Name
+                                </label>
+                                @*<li><a href="#">@item <i class="fa fa-close"></i></a></li>*@
+                            }
                             @*</ul>*@
 
                         </div>
@@ -357,10 +357,13 @@
                             <div class="col-md-12">
                                 <div style="height:30px"></div>
                                 <div class="common-desc">
-                                    <h4 style="border-bottom: 1px solid #ccc">Commentary   <a href="#" id="hrefComentery" style="cursor: pointer;font-size: 14px;float: right;" data-toggle="modal" data-target="#Comentery" onclick="ShowCommentaries()"><span>View all</span></a></h4>
-                                    @*<h4 style="border-bottom: 1px solid #ccc">Commentary   <a href="#" style="font-size: 14px;float: right;" data-toggle="modal" onclick="ShowCommentaries()"><span>View all</span></a></h4>*@
+                                    <h4 style="border-bottom: 1px solid #ccc">
+                                        @Model.FirstOrDefault().CommentaryTitle
+                                        @*<a href="#" id="hrefComentery" style="cursor: pointer;font-size: 14px;float: right;" data-toggle="modal" data-target="#Comentery" onclick="ShowCommentaries()"><span>View all</span></a>*@
+                                        <a href="@Url.Action("CommentaryHome", "ChemicalPricing", new { ProductId = Model.Select(x => x.Product).FirstOrDefault() })" style="cursor: pointer;font-size: 14px;float: right;"><span>View all</span></a>
+                                    </h4>
                                     <p>
-                                        @Model.FirstOrDefault().Commentary
+                                        @Model.FirstOrDefault().CommentaryDescription
 
 
                                     </p>
@@ -372,40 +375,82 @@
                                 <a href="javascript:void(0)" id="exportxls2" onclick="exportToExcel('tblRegisteredUsers', 'Chemical-Pricing.')" class="btn btn-green mt30 pull-right">Export as Excel</a>
                                 <br /><br /><br /><br />
                                 <div class="custom-table">
-
+                                    @if (Model.FirstOrDefault().range.ToLower() == "weekly"
+                                                || Model.FirstOrDefault().range.ToLower() == "monthly"
+                                        || Model.FirstOrDefault().range.ToLower() == "quarterly")
+                                    {
                                     <table class="table table-hover table-bordered" id="tblRegisteredUsers">
                                         <thead>
                                             <tr class="table-primary">
                                                 <th></th>
-                                                @foreach (string column in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
+                                                
+                                                @foreach (string column in Model.Select(x => x.StackedDimensionOne).ToList())
                                                 {
 
                                                     <th>@column</th>
                                                 }
 
 
+
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (string count in Model.Select(x => x.StackedDimensionOne).ToList())
+                                            
+                                            @foreach (string column in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
                                             {
                                                 <tr>
-                                                    @foreach (var data in Model.Where(x => x.StackedDimensionOne == count).ToList())
 
+                                                    <td>@column</td>
+                                                    @foreach (string x in Model.Select(x => x.StackedDimensionOne).ToList())
                                                     {
-                                                        <th>@count</th>
 
-                                                        foreach (var value in data.LstData.Select(x => x.Quantity).ToList())
-                                                        {
-                                                            <th>@value</th>
-                                                        }
-
+                                                        <th>@Model.FirstOrDefault(c => c.StackedDimensionOne == x).LstData.FirstOrDefault(e => e.DimensionOne == column).Quantity </th>
                                                     }
+
+
                                                 </tr>
                                             }
 
+
                                         </tbody>
                                     </table>
+                                    }
+                                    else
+                                    {
+                                        <table class="table table-hover table-bordered" id="tblRegisteredUsers">
+                                            <thead>
+                                                <tr class="table-primary">
+                                                    <th></th>
+                                                    @foreach (string column in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
+                                                    {
+
+                                                        <th>@column</th>
+                                                    }
+
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (string count in Model.Select(x => x.StackedDimensionOne).ToList())
+                                                {
+                                                    <tr>
+                                                        @foreach (var data in Model.Where(x => x.StackedDimensionOne == count).ToList())
+
+                                                        {
+                                                            <th>@count</th>
+
+                                                            foreach (var value in data.LstData.Select(x => x.Quantity).ToList())
+                                                            {
+                                                                <th>@value</th>
+                                                            }
+
+                                                        }
+                                                    </tr>
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    }
 
                                 </div>
 
@@ -612,12 +657,13 @@
         function myfunction(id) {
             var $checkedagreeChecker = $('.chcktbl:checked');
             var joinedValues = $checkedagreeChecker.map(function(){return this.value}).get().join(",");
+
             $('input[name="hiddenLegends"]').val($checkedagreeChecker.length > 0 ? joinedValues : "" )
 
             $("#submit").trigger("click");
         }
-      
-       
+
+
 
         function SubmitResetForm()
         {
@@ -688,7 +734,7 @@
                 changeYear: true ,
                 onSelect: function (selected) {
 
-
+                    debugger;
                     var diff = 30;
                     if($("#ddlRange").val() == "Yearly" || $("#ddlRange").val() == "Monthly"){
                         diff = (365*5);
@@ -696,30 +742,46 @@
                     if($("#ddlRange").val() == "Quarterly"){
                         diff = (365);
                     }
-                    if($($("#ddlRange").val() == "Weekly" || "#ddlRange").val() == "Daily basis" || $("#ddlRange").val() == "Daily Bulk"){
+                    if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily basis" || $("#ddlRange").val() == "Daily Bulk"){
                         diff = (30);
                     }
 
                     var dt = new Date(selected);
                     dt.setDate(dt.getDate() - diff);
-                    $("#fromdate").datepicker("option", "maxDate",new Date(selected) );
-                    $("#fromdate").datepicker("option", "minDate",dt );
+                    $('#fromdate').datepicker('setDate', dt);
                 }
             });
 
         });
+        function resetdates(){
+            $('#txttodate').datepicker('setDate', 'today');
+            var diff = 30;
+            if($("#ddlRange").val() == "Yearly" || $("#ddlRange").val() == "Monthly"){
+                diff = (365*5);
+            }
+            if($("#ddlRange").val() == "Quarterly"){
+                diff = (365);
+            }
+            if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily basis" || $("#ddlRange").val() == "Daily Bulk"){
+                diff = (30);
+            }
 
+            var dt = new Date();
+            dt.setDate(dt.getDate() - diff);
+            
+            $('#fromdate').datepicker('setDate', dt);
+        }
 
         function exportToExcel(tableId, tableName) {
             //showloader();
-            debugger;
+            
             setTimeout(function () { export_table_to_excel(tableId, 'xlsx' || 'xlsx', tableName); }, 100);
 
 
         }
 
         function export_table_to_excel(id, type, fn) {
-            debugger;
+            
 
             var table ;
             if (id == 'tbllince') {
@@ -755,13 +817,21 @@
 
             var range = $(ddlRange).find("option:selected").val();
             var ddlCustomers = $("#ddlChart");
-            debugger
-            if (range == "Daily basis") {
+            
+            if (range == "Daily basis" || range == "Daily Bulk") {
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
             }
             else if(range == "Quarterly")
             {
                 ddlCustomers.empty().append('<option selected="selected" value="pie" >Pie Chart</option>');
+            }
+            else if(range == "Monthly")
+            {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
+            }
+            else if(range == "Weekly")
+            {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
             }
             else {
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
@@ -770,9 +840,34 @@
             ShowCommentariesByDeafult()
         });
 
+        $("body").on("change", "#ddlRange", function () {
+            var range=$(ddlRange).find("option:selected").val();
+            var ddlCustomers = $("#ddlChart");
+
+            
+            if (range == "Daily basis" || range == "Daily Bulk") {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
+            }
+            else if(range == "Quarterly")
+            {
+                ddlCustomers.empty().append('<option selected="selected" value="pie" >Pie Chart</option>');
+            }
+            else if(range == "Monthly")
+            {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
+            }
+            else if(range == "Weekly")
+            {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
+            }
+            else {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
+            }
+        });
+
         function ShowCommentaries()
         {
-            debugger;
+            
             var  ProductId = $('#ddlProduct').val();
             $.ajax({
                 type: "POST",
@@ -784,7 +879,7 @@
                 success: function (response) {
                     $("#Commentaries").html('');
                     $.each(response, function () {
-                        debugger;
+                        
                         //ddlCustomers.append($("<option></option>").val(this['Value']).html(this['Text']));
                         $("#Commentaries").append($("<h3 style='font-size:20px !important; font-weight: bold;'> "+this.Text+" </h3>")).append($("<p style='font-size:14px !important'> "+this.Value+" </p>"));
                     });
@@ -803,7 +898,7 @@
 
         function ShowCommentariesByDeafult()
         {
-            //debugger;
+            //
             var  ProductId = 'None';
             $.ajax({
                 type: "POST",
@@ -815,7 +910,7 @@
                 success: function (response) {
                     $("#Commentaries").html('');
                     $.each(response, function () {
-                        debugger;
+                        
                         //ddlCustomers.append($("<option></option>").val(this['Value']).html(this['Text']));
                         $("#Commentaries").append($("<h3 style='font-size:20px !important; font-weight: bold;'> "+this.Text+" </h3>")).append($("<p style='font-size:14px !important'> "+this.Value+" </p>"));
                     });
@@ -909,30 +1004,7 @@
 
 
 
-        $("body").on("change", "#ddlRange", function () {
-            var range=$(ddlRange).find("option:selected").val();
-            var ddlCustomers = $("#ddlChart");
-
-            debugger
-            if (range == "Daily basis") {
-                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
-            }
-            else if(range == "Quarterly")
-            {
-                ddlCustomers.empty().append('<option selected="selected" value="pie" >Pie Chart</option>');
-            }
-            else {
-                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
-            }
-
-            //if (range == "Quarterly") {
-            //    ddlCustomers.empty().append('<option selected="selected" value="pie" >Pie Chart</option>');
-            //}
-            //else {
-            //    ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
-            //}
-
-        });
+  
 
 
 
@@ -941,7 +1013,7 @@
             var XLabels = @Html.Raw(XLabels);
             var YValues = @Html.Raw(YValues);
             var label = @Html.Raw(label2);
-            debugger
+            
             var firstValue = label[0];
             var lasttValue = label[label.length-1];
             $("#myRange").attr("min", @fValue);
@@ -1033,7 +1105,7 @@
                 //    s = 100;
                 //return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
             }
-            debugger
+            
             var ctx = document.getElementById(id).getContext('2d');
             window.myLine =  new Chart(ctx, {      options: options,
                 data: barChartData,
@@ -1069,7 +1141,7 @@
 
             //Drowchart('canvas2','bar');
             var selected = $("#ddlRange option:selected").text();
-            debugger
+            
             if (selected == "Yearly") {
                 $("#slidecontainer1").show()
             }
@@ -1083,7 +1155,7 @@
         document.getElementById('drowchart').addEventListener('change', function () {
             var d = document.getElementById('drowchart').value;
             //alert(d);
-            debugger
+            
             Drowchart('canvas', d);
         });
 
@@ -1151,13 +1223,15 @@
 
 
         function setdtval(){
-
+            $(".lgndchk").hide();
+            $('input[name="hiddenLegends"]').val("");
             if($("#ddlRange").val() =="Quarterly"){
                 $(".dtcol").hide();
                 $(".yrcol").show();
             }else{
                 $(".dtcol").show();
                 $(".yrcol").hide();
+                resetdates()
             }
 
             if($("#ddlRange").val() =="Quarterly"){
@@ -1245,98 +1319,7 @@
         }
     </script>
 
-    @*<script>
-            debugger
-            var slider = document.getElementById("myRange");
-            var output = document.getElementById("demo");
-            output.innerHTML = slider.value;
-        alert(output.innerHTML);
-
-            document.getElementById("myRange").onmousedown = function () {
-                debugger
-                mouseDown()
-            };
-            document.getElementById("myRange").onmouseup = function () {
-                debugger
-                mouseUp()
-            };
-
-        function mouseDown() {
-            debugger
-                 var Product = $("#ddlProduct").find("option:selected").val();
-                var ChartType = $("#ddlChart").find("option:selected").val();
-                var Range = $("#ddlRange").find("option:selected").val();
-            debugger
-
-            $("#MaxValue").val($("#myRange").attr("max"));
-            $("#MinValue").val($("#myRange").attr("min"));
-
-             $(".mt27").trigger( "click" );
-               // FilterChartData(Product, ChartType, Range,null, false);
-                //document.getElementById("demo").innerHTML = "The mouse button is held down.";
-            }
-
-            function mouseUp() {
-                //output.innerHTML = slider.value;
-                alert(document.getElementById("myRange").value);
-                output.innerHTML = document.getElementById("myRange").value;
-
-
-
-                var Product = $("#ddlProduct").find("option:selected").val();
-                var ChartType = $("#ddlChart").find("option:selected").val();
-                var Range = $("#ddlRange").find("option:selected").val();
-                debugger
-
-                $("#MaxValue").val($("#myRange").attr("max"));
-                $("#MinValue").val($("#myRange").attr("min"));
-
-                $(".mt27").trigger( "click" );
-                ///FilterChartData(Product, ChartType, Range,null, false);
-
-                // need to send request to filter chart data
-            }
-
-
-
-        function FilterChartData(product, ChartType, Range, CompareProject, Customer) {
-                debugger
-                $.ajax({
-                    type: "POST",
-                    url: "../ChemicalPricing/ChecmPriceYearlyChartJson",
-                    data: "{'product':'"+product+"', 'ChartType':'"+ChartType+"', 'Range':'"+Range+"', 'CompareProject':'nullData', 'Customer':'"+Customer+"'}",
-                    //data: { product: product, ChartType: ChartType, Range: Range,CompareProject:null, Customer: Customer },
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "text",
-                    async: false,
-                    success: function (response) {
-                        alert("hiii")
-                        debugger
-                        Drowchart1("canvas","line");
-                        //ddlCustomers.empty().append('<option selected="selected" value=""> select Product</option>');
-                        //$.each(response, function () {
-                        //    ddlCustomers.append($("<option></option>").val(this['Value']).html(this['Text']));
-                        //});
-                        //$("#example-getting-started").multiselect();
-                    },
-                    failure: function (response) {
-                        alert(response.responseText);
-                    },
-                    error: function (response) {
-                        alert(response.responseText);
-                    }
-                });
-                }
-
-
-
-
-        </script>*@
-
-
-
-
-    <script>
+       <script>
         //function generatePDF() {
         //  // Choose the element that our invoice is rendered in.
         //  const element = document.getElementById("invoice");
@@ -1355,7 +1338,7 @@
 
 
             var element = document.getElementById('invoice');
-            debugger
+            
             // Choose pagebreak options based on mode.
             var mode = "avoid-all";
             var pagebreak = (mode === 'specify') ?
