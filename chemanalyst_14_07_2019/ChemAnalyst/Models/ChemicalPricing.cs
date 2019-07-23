@@ -32,11 +32,11 @@ namespace ChemAnalyst.DAL
                 }
                 else if (currentWeek == "4")
                 {
-                    return _context.SA_Chem1PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
+                    return _context.SA_Chem1PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
                 }
                 else
                 {
-                    return _context.SA_Chem1PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
+                    return _context.SA_Chem1PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
                 }
 
             }
@@ -69,11 +69,11 @@ namespace ChemAnalyst.DAL
                 }
                 else if (currentWeek == "4")
                 {
-                    return _context.SA_Chem2PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
+                    return _context.SA_Chem2PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
                 }
                 else
                 {
-                    return _context.SA_Chem2PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
+                    return _context.SA_Chem2PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
                 }
 
             }
@@ -106,11 +106,11 @@ namespace ChemAnalyst.DAL
                 }
                 else if (currentWeek == "4")
                 {
-                    return _context.SA_Chem3PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
+                    return _context.SA_Chem3PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
                 }
                 else
                 {
-                    return _context.SA_Chem3PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
+                    return _context.SA_Chem3PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
                 }
 
             }
@@ -143,11 +143,11 @@ namespace ChemAnalyst.DAL
                 }
                 else if (currentWeek == "4")
                 {
-                    return _context.SA_Chem4PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
+                    return _context.SA_Chem4PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
                 }
                 else
                 {
-                    return _context.SA_Chem4PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
+                    return _context.SA_Chem4PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
                 }
 
             }
@@ -180,11 +180,11 @@ namespace ChemAnalyst.DAL
                 }
                 else if (currentWeek == "4")
                 {
-                    return _context.SA_Chem5PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
+                    return _context.SA_Chem5PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
                 }
                 else
                 {
-                    return _context.SA_Chem5PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
+                    return _context.SA_Chem5PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
                 }
 
             }
@@ -217,11 +217,11 @@ namespace ChemAnalyst.DAL
                 }
                 else if (currentWeek == "4")
                 {
-                    return _context.SA_Chem6PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
+                    return _context.SA_Chem6PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
                 }
                 else
                 {
-                    return _context.SA_Chem6PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
+                    return _context.SA_Chem6PriceWeekly.Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
                 }
 
             }

@@ -10,6 +10,8 @@ namespace ChemAnalyst.ViewModel
 {
     public class StackedViewModel
     {
+       
+
         //public IEnumerable<SA_Deals> DealsList { get; set; }
 
         //public IEnumerable<SA_News> NewsList { get; set; }
@@ -41,11 +43,8 @@ namespace ChemAnalyst.ViewModel
         public string CommentaryTitle { get; set; }
 
         public string CommentaryDescription { get; set; }
-
         public string Year { get; internal set; }
-
         public List<SA_ChemPriceDailyNew> lstDataTable { get; set; }
-
     }
     public enum Range
     {

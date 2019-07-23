@@ -506,6 +506,7 @@
     <Compile Include="Models\SA_Advisory.cs" />
     <Compile Include="Models\SA_Chem6PriceWeekly.cs" />
     <Compile Include="Models\SA_ChemContent.cs" />
+    <Compile Include="Models\SA_ChemPriceDailyNew.cs" />
     <Compile Include="Models\SA_ChemPriceDaily.cs" />
     <Compile Include="Models\SA_ChemPriceDailyAverage.cs" />
     <Compile Include="Models\SA_ChemPriceQuarterly.cs" />
@@ -515,6 +516,7 @@
     <Compile Include="Models\SA_Chem3PriceWeekly.cs" />
     <Compile Include="Models\SA_Chem4PriceWeekly.cs" />
     <Compile Include="Models\SA_Chem5PriceWeekly.cs" />
+    <Compile Include="Models\SA_ChemPriceWeeklyNew.cs" />
     <Compile Include="Models\SA_ChemPriceWeekly.cs" />
     <Compile Include="Models\SA_ChemPriceYearly.cs" />
     <Compile Include="Models\SA_CMS.cs" />

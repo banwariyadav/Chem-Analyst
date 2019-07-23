@@ -16,7 +16,6 @@ namespace ChemAnalyst.ViewModel
 
         public string FromDate { get; set; }
         public string ToDate { get; set; }
-
-        public string Year { get; set; }
+        public string Year { get; internal set; }
     }
 }

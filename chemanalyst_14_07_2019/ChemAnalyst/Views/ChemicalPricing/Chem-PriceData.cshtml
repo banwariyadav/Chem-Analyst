@@ -186,13 +186,7 @@
                                     <div style="display:@(ViewBag.QYears != null ? "" : "none")" class="col-md-4 yrcol  mt10">
                                         <p><i class="fa fa-bar-chart"></i> Year</p>
                                         <select class="btn btn-primary width100" id="ddlyear" name="ddlyear">
-                                            @{  ChemAnalyst.DAL.ChemicalPricing Objdal = new ChemAnalyst.DAL.ChemicalPricing();
-
-                                                foreach (var item in Objdal.GetYear())
-                                                {
-                                                    <option value="@item.Year">@item.Year</option>
-                                                }
-                                            }
+                                            <option value="@DateTime.Now.Year">@DateTime.Now.Year</option>
                                         </select>
                                     </div>
                                     <div class="col-md-4 mt10" style="display:none">
