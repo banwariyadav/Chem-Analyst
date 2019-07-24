@@ -301,7 +301,7 @@
                             @*</ul>*@
                         </div>
                         <div id="invoice">
-                            <span class="pull-right" style="font-size:12px;margin-right: 2px; font-weight:bold">[Unit = Tonnes]</span>
+                            <span class="pull-right" style="font-size:12px;margin-right: 2px; font-weight:bold">[Unit = INR/Tonnes]</span>
                             <canvas id="canvas"></canvas>
                             <div style="height:20px"></div>
                             <div class="rangeSlider col-lg-12" style="margin:0;cursor: pointer; color: #f30404;">
@@ -322,6 +322,7 @@
                                         <a href="@Url.Action("CommentaryHome", "ChemicalPricing", new { ProductId = Model.Select(x => x.Product).FirstOrDefault() })" style="cursor: pointer;font-size: 14px;float: right;"><span>View all</span></a>
                                     </h4>
                                     <p>
+                                     
                                         @Model.FirstOrDefault().CommentaryDescription
 
                                     </p>
@@ -334,42 +335,46 @@
                                     @if (Model.FirstOrDefault().range.ToLower() == "weekly"
 || Model.FirstOrDefault().range.ToLower() == "quarterly")
                                     {
-                                        <table class="table table-hover table-bordered" id="tblRegisteredUsers">
-                                            <thead>
-                                                <tr class="table-primary">
-                                                    <th></th>
-                                                    @if (Model.FirstOrDefault().range.ToLower() == "weekly") {
+                                        <div style="overflow-x:scroll">
+
+                                            <table class="table table-hover table-bordered" id="tblRegisteredUsers">
+                                                <thead>
+                                                    <tr class="table-primary">
+                                                        <th></th>
+                                                        @if (Model.FirstOrDefault().range.ToLower() == "weekly") {
                                                        // <th></th>
                                                     }
-                                                    @foreach (string column in Model.Select(x => x.StackedDimensionOne).ToList())
+                                                        @foreach (string column in Model.Select(x => x.StackedDimensionOne).ToList())
                                                     {
 
-                                                        <th>@column</th>
+                                                    <th>@column</th>
                                                     }
 
-                                                </tr>
-                                            </thead>
-                                            <tbody>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
 
-                                                @foreach (string column in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
+                                                    @foreach (string column in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
                                                 {
-                                                    <tr>
-                                                        <td>@column</td>
-                                                        @if (Model.FirstOrDefault().range.ToLower() == "weekly")
+                                                <tr>
+                                                    <td>@column</td>
+                                                    @if (Model.FirstOrDefault().range.ToLower() == "weekly")
                                                         {
                                                             //<th>@Model.FirstOrDefault().Discription.ToString()</th>
                                                         }
-                                                        @foreach (string x in Model.Select(x => x.StackedDimensionOne).ToList())
+                                                    @foreach (string x in Model.Select(x => x.StackedDimensionOne).ToList())
                                                         {
 
-                                                            <th>@Model.FirstOrDefault(c => c.StackedDimensionOne == x).LstData.FirstOrDefault(e => e.DimensionOne == column).Quantity </th>
+                                                        <th>@Model.FirstOrDefault(c => c.StackedDimensionOne == x).LstData.FirstOrDefault(e => e.DimensionOne == column).Quantity </th>
                                                         }
 
-                                                    </tr>
+                                                </tr>
                                                 }
 
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
                                     }
 
                                     else if (Model.FirstOrDefault().range.ToLower() == "monthly")

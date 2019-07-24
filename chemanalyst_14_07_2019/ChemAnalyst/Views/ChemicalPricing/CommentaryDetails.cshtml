@@ -1,0 +1,63 @@
+﻿@model ChemAnalyst.Models.SA_Commentary
+
+
+@*@using PagedList.Mvc;
+    @using PagedList;*@
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutUser1.cshtml";
+
+
+}
+
+<body>
+
+  
+        <div class="inner-banner">
+            <img src="/images/about-banner.jpg">
+            <h1>Commentary</h1>
+
+
+
+        </div>
+
+    
+    <div class="page-content">
+        <div class="static-page">
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-md-9">
+
+                        <div class="blog-detail">
+                          
+
+
+
+                                <div class="blog-detail-summary">
+
+                                    <h3>@Model.Title</h3>
+
+
+
+                                    <p>@Model.Description</p>
+
+
+
+                                </div>
+                            
+
+                        </div>
+
+
+                    </div>
+                  
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+

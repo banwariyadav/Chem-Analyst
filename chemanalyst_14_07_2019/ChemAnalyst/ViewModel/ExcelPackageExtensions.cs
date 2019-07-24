@@ -14,7 +14,7 @@ namespace ChemAnalyst.ViewModel
             DataTable table = new DataTable();
             foreach (var firstRowCell in workSheet.Cells[1, 1, 1, 3])// workSheet.Dimension.End.Column
             {
-                table.Columns.Add(firstRowCell.Text);
+                table.Columns.Add(firstRowCell.Text.Trim());
             }
             for (var rowNumber = 2; rowNumber <= workSheet.Dimension.End.Row; rowNumber++)
             {
@@ -23,7 +23,7 @@ namespace ChemAnalyst.ViewModel
                 var newRow = table.NewRow();
                 foreach (var cell in row)
                 {
-                    newRow[cell.Start.Column - 1] = cell.Text;
+                    newRow[cell.Start.Column - 1] = cell.Text.Trim();
                 }
                 table.Rows.Add(newRow);
             }
@@ -36,7 +36,7 @@ namespace ChemAnalyst.ViewModel
             DataTable table = new DataTable();
             foreach (var firstRowCell in workSheet.Cells[1, 1, 1, 6])// workSheet.Dimension.End.Column
             {
-                table.Columns.Add(firstRowCell.Text);
+                table.Columns.Add(firstRowCell.Text.Trim());
             }
             for (var rowNumber = 2; rowNumber <= workSheet.Dimension.End.Row; rowNumber++)
             {
@@ -45,7 +45,7 @@ namespace ChemAnalyst.ViewModel
                 var newRow = table.NewRow();
                 foreach (var cell in row)
                 {
-                    newRow[cell.Start.Column - 1] = cell.Text;
+                    newRow[cell.Start.Column - 1] = cell.Text.Trim();
                 }
                 table.Rows.Add(newRow);
             }
@@ -58,7 +58,7 @@ namespace ChemAnalyst.ViewModel
             DataTable table = new DataTable();
             foreach (var firstRowCell in workSheet.Cells[1, 1, 1, 4])// workSheet.Dimension.End.Column
             {
-                table.Columns.Add(firstRowCell.Text);
+                table.Columns.Add(firstRowCell.Text.Trim());
             }
             for (var rowNumber = 2; rowNumber <= workSheet.Dimension.End.Row; rowNumber++)
             {
@@ -67,7 +67,7 @@ namespace ChemAnalyst.ViewModel
                 var newRow = table.NewRow();
                 foreach (var cell in row)
                 {
-                    newRow[cell.Start.Column - 1] = cell.Text;
+                    newRow[cell.Start.Column - 1] = cell.Text.Trim();
                 }
                 table.Rows.Add(newRow);
             }
@@ -79,7 +79,7 @@ namespace ChemAnalyst.ViewModel
             DataTable table = new DataTable();
             foreach (var firstRowCell in workSheet.Cells[1, 1, 1, 4])// workSheet.Dimension.End.Column
             {
-                table.Columns.Add(firstRowCell.Text);
+                table.Columns.Add(firstRowCell.Text.Trim());
             }
             for (var rowNumber = 2; rowNumber <= workSheet.Dimension.End.Row; rowNumber++)
             {
@@ -88,7 +88,7 @@ namespace ChemAnalyst.ViewModel
                 var newRow = table.NewRow();
                 foreach (var cell in row)
                 {
-                    newRow[cell.Start.Column - 1] = cell.Text;
+                    newRow[cell.Start.Column - 1] = cell.Text.Trim();
                 }
                 table.Rows.Add(newRow);
             }
@@ -100,7 +100,7 @@ namespace ChemAnalyst.ViewModel
             DataTable table = new DataTable();
             foreach (var firstRowCell in workSheet.Cells[1, 1, 1, 5])// workSheet.Dimension.End.Column
             {
-                table.Columns.Add(firstRowCell.Text);
+                table.Columns.Add(firstRowCell.Text.Trim());
             }
             for (var rowNumber = 2; rowNumber <= workSheet.Dimension.End.Row; rowNumber++)
             {
@@ -109,7 +109,7 @@ namespace ChemAnalyst.ViewModel
                 var newRow = table.NewRow();
                 foreach (var cell in row)
                 {
-                    newRow[cell.Start.Column - 1] = cell.Text;
+                    newRow[cell.Start.Column - 1] = cell.Text.Trim();
                 }
                 table.Rows.Add(newRow);
             }
@@ -121,7 +121,7 @@ namespace ChemAnalyst.ViewModel
             DataTable table = new DataTable();
             foreach (var firstRowCell in workSheet.Cells[1, 1, 1, 37])// workSheet.Dimension.End.Column
             {
-                table.Columns.Add(firstRowCell.Text);
+                table.Columns.Add(firstRowCell.Text.Trim());
             }
             for (var rowNumber = 2; rowNumber <= workSheet.Dimension.End.Row; rowNumber++)
             {
@@ -130,7 +130,7 @@ namespace ChemAnalyst.ViewModel
                 var newRow = table.NewRow();
                 foreach (var cell in row)
                 {
-                    newRow[cell.Start.Column - 1] = cell.Text;
+                    newRow[cell.Start.Column - 1] = cell.Text.Trim();
                 }
                 table.Rows.Add(newRow);
             }
@@ -143,7 +143,7 @@ namespace ChemAnalyst.ViewModel
             DataTable table = new DataTable();
             foreach (var firstRowCell in workSheet.Cells[1, 1, 1, 9])// workSheet.Dimension.End.Column
             {
-                table.Columns.Add(firstRowCell.Text);
+                table.Columns.Add(firstRowCell.Text.Trim());
             }
             for (var rowNumber = 2; rowNumber <= workSheet.Dimension.End.Row; rowNumber++)
             {
@@ -152,7 +152,7 @@ namespace ChemAnalyst.ViewModel
                 var newRow = table.NewRow();
                 foreach (var cell in row)
                 {
-                    newRow[cell.Start.Column - 1] = cell.Text;
+                    newRow[cell.Start.Column - 1] = cell.Text.Trim();
                 }
                 table.Rows.Add(newRow);
             }
@@ -166,7 +166,7 @@ namespace ChemAnalyst.ViewModel
             DataTable table = new DataTable();
             foreach (var firstRowCell in workSheet.Cells[1, 1, 1, 38])// workSheet.Dimension.End.Column
             {
-                table.Columns.Add(firstRowCell.Text);
+                table.Columns.Add(firstRowCell.Text.Trim());
             }
             for (var rowNumber = 2; rowNumber <= workSheet.Dimension.End.Row; rowNumber++)
             {
@@ -175,7 +175,7 @@ namespace ChemAnalyst.ViewModel
                 var newRow = table.NewRow();
                 foreach (var cell in row)
                 {
-                    newRow[cell.Start.Column - 1] = cell.Text;
+                    newRow[cell.Start.Column - 1] = cell.Text.Trim();
                 }
                 table.Rows.Add(newRow);
             }

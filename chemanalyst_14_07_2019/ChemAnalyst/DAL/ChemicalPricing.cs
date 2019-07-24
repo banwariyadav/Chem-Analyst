@@ -795,7 +795,8 @@ namespace ChemAnalyst.DAL
                 .Select(x => new
                 {
                     ProductVariant = x.ProductVariant,
-                    Week = x.Week + " ("+ Convert.ToDateTime( x.Date).ToString("dd MMM yy")+")",
+                    //Week = x.Week + " ("+ Convert.ToDateTime( x.Date).ToString("dd MMM yy")+")",
+                    Week = "(" + Convert.ToDateTime(x.Date).ToString("dd MMM yy") + ")",
                     count = x.count,
                     Discription = x.Type,
                     Product = x.Product

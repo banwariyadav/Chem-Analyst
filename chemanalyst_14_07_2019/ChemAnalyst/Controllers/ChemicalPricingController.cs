@@ -411,12 +411,23 @@ namespace ChemAnalyst.Controllers
                         ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("Chemical-analysis-import");
                     }
-                    else if (ImportType == "Daily basis")
+                    else if (ImportType == "Daily Data Import")
                     {
                         var excel = new ExcelPackage(file.InputStream);
                         dt = excel.ToDailyNewDataTable();
                         //InsertDAilyExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         InsertDailyNewExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
+                        return View("Chemical-analysis-import");
+                    }
+                    else if (ImportType == "Daily basis")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToDailyDataTable();
+                        InsertDAilyExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                       // InsertDailyNewExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
                         ViewBag.Status = "Success";
                         ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
@@ -3227,6 +3238,7 @@ namespace ChemAnalyst.Controllers
             }
             ViewBag.CYear = year;
             ChemicalPricing Objdal = new DAL.ChemicalPricing();
+            //ViewBag.QYears = Objdal.GetYear("W");
             ViewBag.QYears = Objdal.GetYear("W");
             if (product == null && Customer == true)
             {
@@ -3472,5 +3484,14 @@ namespace ChemAnalyst.Controllers
                 return View(Commentaries);
             }
         }
+
+        public ActionResult CommentaryDetails(int id)
+        {
+            ChemAnalystContext _context = new ChemAnalystContext();
+            var data = _context.SA_Commentary.Where(w => w.id == id).FirstOrDefault();
+            return View(data);
+        }
     }
+
+ 
 }
