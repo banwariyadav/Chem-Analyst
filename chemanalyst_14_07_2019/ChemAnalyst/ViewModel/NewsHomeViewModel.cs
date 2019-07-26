@@ -11,7 +11,8 @@ namespace ChemAnalyst.ViewModel
     {
         public string id { get; set; }
         public DateTime search { get; set; }
-
+        public DateTime searchto { get; set; }
+        public string keyword { get; set; }
         public IPagedList<SA_News> NewsList { get; set; }
     }
 }

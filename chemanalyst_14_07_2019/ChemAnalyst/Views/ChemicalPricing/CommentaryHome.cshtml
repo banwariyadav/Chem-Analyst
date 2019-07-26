@@ -61,10 +61,21 @@
                                         <div class="themestek-box-content col-md-8 col-sm-8">
                                             <div class="news-text">
                                                 <h4>@(item.Title.Length > 40 ? (item.Title.Substring(0, 40)) : item.Title)...</h4>
-                                                <p>@(item.Description.Length > 100 ? (item.Description.Substring(0, 100)) : item.Description)...</p>
+                                                @*<p>@(item.Description.Length > 100 ? (@Html.Raw(WebUtility.HtmlDecode(@item.Description)).ToString().Substring(0, 100)) : Html.Raw(WebUtility.HtmlDecode(@item.Description)).ToString())...</p>*@
 
+                                                @*@{ 
+                                                    if(item.Description.Length > 100)
+                                                    {
+                                                        @Html.Raw(WebUtility.HtmlDecode(@item.Description.ToString().Substring(0, 100)) + "...")
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.Raw(WebUtility.HtmlDecode(@item.Description))
+                                                    }
+                                                }*@
+                                                @Html.Raw(WebUtility.HtmlDecode(@item.Description))
                                                 <div class="row mt-3">
-                                                    <div class="col-6"><a href="@Url.Action("CommentaryDetails", "ChemicalPricing", new { Id = item.id })">Read More <i class="fa fa-arrow-right"></i></a></div>
+                                                    @*<div class="col-6"><a href="@Url.Action("CommentaryDetails", "ChemicalPricing", new { Id = item.id })">Read More <i class="fa fa-arrow-right"></i></a></div>*@
 
                                                     <div class="col-6"> <i class="fa fa-clock-o"></i>@item.CreatedTime.Date.ToString("MMM/yyyy") </div>
                                                    

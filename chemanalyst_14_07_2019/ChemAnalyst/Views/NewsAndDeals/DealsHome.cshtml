@@ -42,7 +42,8 @@
         <div class="static-page">
             <div class="container">
 
-                <div class="blog-list">
+                @*<div class="blog-list">*@
+                <div >
 
                     <div class="row">
                         @if (Session["UserRole"] == null)
@@ -51,20 +52,27 @@
                                 <div class="searchbox">
                                     @using (Html.BeginForm("DealsHome", "NewsAndDeals", null, FormMethod.Post, new { @class = "row", enctype = "multipart/form-data" }))
                                     {
-                                        <div class="col-md-5">
+                                        <div class="col-md-3">
                                             @Html.TextBoxFor(m => m.search,
-                                     new { @readonly = "readonly", @id = "datepicker", @value = DateTime.UtcNow, @class = "plbxt btn btn-primary width100" })
+                                         new { @readonly = "readonly", @id = "search", @class = "plbxt btn btn-primary fromdate width100" })
 
                                         </div>
-                                        <div class="col-md-5 pl-0">
-                                            @Html.DropDownListFor(m => m.id, (IEnumerable<SelectListItem>)ViewBag.category, "Please select Product", new { @id = "category", @class = "btn btn-primary width100" })
+                                        <div class="col-md-3">
+                                            @Html.TextBoxFor(m => m.searchto,
+                                         new { @readonly = "readonly", @id = "searchto", @class = "plbxt btn btn-primary todate width100" })
                                         </div>
-                                        <div class="col-md-2 pl-0">
-                                            <button type="submit" class="btn btn-green">
-                                                <i class="fa fa-filter"></i>
-                                                Filter
-                                            </button>
-                                        </div>
+                                                <div class="col-md-3 pl-0">
+                                                    @Html.TextBoxFor(m => m.keyword,
+                                         new { @id = "keyword", @placeholder = "Keyword", @class = "  btn btn-primary width100" })
+
+
+                                                </div>
+                                                <div class="col-md-2 pl-0">
+                                                    <button type="submit" class="btn btn-green">
+                                                        <i class="fa fa-filter"></i>
+                                                        Filter
+                                                    </button>
+                                                </div>
                                     }
                                 </div>
                             </div>
@@ -84,7 +92,8 @@
 
                                         <div class="col-md-4 col-sm-4 themestek-box-img-left">
                                             <div class="news-pic">
-                                                <img src="~/ProductImages/@Model.DealsList.First().DealsImg" alt="">
+                                                @*<img src="~/ProductImages/@Model.DealsList.First().DealsImg" alt="">*@
+                                                <img src="~/images/deal.jpg" alt="">
                                             </div>
                                         </div>
 
@@ -117,7 +126,19 @@
 
 
 
+    <style>
+        ::placeholder { /* Firefox, Chrome, Opera */
+            color: #fff;
+        }
 
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: #fff;
+        }
+
+        ::-ms-input-placeholder { /* Microsoft Edge */
+            color: #fff;
+        }
+    </style>
 
 
     <script src="../js/jquery.js"></script>
@@ -127,6 +148,30 @@
     @*<script src="http://cdnjs.cloudflare.com/ajax/libs/simplelightbox/1.17.1/simple-lightbox.js"></script>*@
     <script src="../js/owl.carousel.js"></script>
     <script src="../js/wow.min.js"></script>
-    <script src="../js/honey-custom.js"></script>
+    <script>
 
+            $(function () {
+
+                jQuery('.fromdate').datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    onSelect: function (selected) {
+
+                    }
+                });
+                jQuery('.todate').datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    onSelect: function (selected) {
+
+
+
+                    }
+                });
+                var d = new Date();
+
+                $('.fromdate').val('@ViewBag.formdate');
+                $('.todate').val('@ViewBag.todate');
+            });
+    </script>
 </body>

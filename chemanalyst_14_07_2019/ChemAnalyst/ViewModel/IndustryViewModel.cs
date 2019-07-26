@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace ChemAnalyst.ViewModel
 {
@@ -12,6 +13,9 @@ namespace ChemAnalyst.ViewModel
         public IEnumerable<SA_Industry> Industry { get; set; }
         public IEnumerable<SA_Deals> DealsList { get; set; }
 
+        public IEnumerable<SelectListItem> lstCategory { get; set; }
+
+        public string Title { get; set; }
         public IEnumerable<SA_News> NewsList { get; set; }
 
     }

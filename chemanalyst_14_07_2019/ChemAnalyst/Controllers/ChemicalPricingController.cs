@@ -2062,12 +2062,12 @@ namespace ChemAnalyst.Controllers
         {
             if (fromdate == "")
             {
-                fromdate = "01/01/" + (DateTime.Now.Year - 5);
+                fromdate = "";//"01/01/" + (DateTime.Now.Year - 5);
 
             }
             if (todate == "")
             {
-                todate = "12/31/" + DateTime.Now.Year;
+                todate = ""; //"12/31/" + DateTime.Now.Year;
 
             }
             //if (ClearValue == "ClearMaxValue")
@@ -2897,7 +2897,7 @@ namespace ChemAnalyst.Controllers
                 List<SA_ChemPriceDaily> Chartdata = obj.Where(Chart => Chart.year == DateTime.Now.Year.ToString() && Chart.day == Day[i]).ToList();
                 //sales of product sales by quarter  
                 StackedViewModel Report = new StackedViewModel();
-                Report.StackedDimensionOne = Day[i];
+                Report.StackedDimensionOne = Chartdata.FirstOrDefault().Month +" "+Day[i];
                 Report.Discription = Discription;
                 Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
                 Report.Product = (obj[0].Product).ToString();
@@ -3474,13 +3474,13 @@ namespace ChemAnalyst.Controllers
             if (!string.IsNullOrEmpty(ProductId))
             {
                 int catId = int.Parse(ProductId);
-                var Commentaries = ObjCommentary.GetCommentaryList().Where(w => w.Product == catId).Select(w => new SA_Commentary { id = w.id, Title = w.Title, Description = w.Description, CreatedTime=w.CreatedTime }).ToList();
+                var Commentaries = ObjCommentary.GetCommentaryList().Where(w => w.Product == catId).Select(w => new SA_Commentary { id = w.id, Title = w.Title, Description = w.Description, CreatedTime=w.CreatedTime }).OrderByDescending(d=>d.CreatedTime).ToList();
                 return View(Commentaries);
             }
 
             else
             {
-                var Commentaries = ObjCommentary.GetCommentaryList().Select(w => new SA_Commentary {id=w.id, Title = w.Title, Description = w.Description, CreatedTime = w.CreatedTime }).ToList();
+                var Commentaries = ObjCommentary.GetCommentaryList().Select(w => new SA_Commentary {id=w.id, Title = w.Title, Description = w.Description, CreatedTime = w.CreatedTime }).OrderByDescending(d => d.CreatedTime).ToList();
                 return View(Commentaries);
             }
         }

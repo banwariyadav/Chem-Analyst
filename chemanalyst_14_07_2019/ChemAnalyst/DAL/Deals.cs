@@ -38,23 +38,29 @@ namespace ChemAnalyst.DAL
 
         }
 
-        public IQueryable<SA_Deals> GetDealsBySearch(string id, DateTime search)
+        public IQueryable<SA_Deals> GetDealsBySearch(string id, DateTime search, DateTime searchto, string keyword)
         {
+            if (id == null) { id = ""; }
             IQueryable<SA_Deals> lst;
             if (id != "" && search != DateTime.MinValue)
             {
                 var ids = Convert.ToInt32(id);
                 lst = from r in _context.SA_Deals
                       join p in _context.SA_Product on r.Product equals ids
-                      where p.status == 1 && r.status == 1 && DbFunctions.TruncateTime(r.CreatedTime) <= DbFunctions.TruncateTime(search)
+                      where p.status == 1 && r.status == 1 &&
+                       r.Keywords.Contains(keyword) &&
+                      DbFunctions.TruncateTime(r.CreatedTime) >= DbFunctions.TruncateTime(search)
+                      && DbFunctions.TruncateTime(r.CreatedTime) <= DbFunctions.TruncateTime(searchto)
                       select r;
             }
             else if (id == "" && search != DateTime.MinValue)
             {
 
                 lst = from r in _context.SA_Deals
-                      where r.status == 1 && DbFunctions.TruncateTime(r.CreatedTime) <= DbFunctions.TruncateTime(search)
-
+                      where r.status == 1 &&
+                       r.Keywords.Contains(keyword)
+                      && DbFunctions.TruncateTime(r.CreatedTime) >= DbFunctions.TruncateTime(search)
+                      && DbFunctions.TruncateTime(r.CreatedTime) <= DbFunctions.TruncateTime(searchto)
                       select r;
             }
             else if (id != "" && search == DateTime.MinValue)
@@ -62,14 +68,13 @@ namespace ChemAnalyst.DAL
                 var ids = Convert.ToInt32(id);
                 lst = from r in _context.SA_Deals
                       join p in _context.SA_Product on r.Product equals ids
-                      where p.status == 1 && r.status == 1
+                      where p.status == 1 && r.Keywords.Contains(keyword) && r.status == 1
                       select r;
-
             }
             else
             {
                 lst = from r in _context.SA_Deals
-                      where r.status == 1
+                      where r.Keywords.Contains(keyword) && r.status == 1
                       select r;
             }
             return lst.Distinct();

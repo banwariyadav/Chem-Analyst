@@ -238,46 +238,78 @@ namespace ChemAnalyst.DAL
         public List<SA_ChemPriceYearly> GetYearWiseProductList(string ProductId, string MaxValue, string fromdate, string todate)
         {
 
-            int fromyear = Convert.ToDateTime(fromdate).Year;
-            int toyear = Convert.ToDateTime(todate).Year;
+
+            var q = _context.SA_ChemPriceYearly.ToList().AsQueryable();
+
+
             if (ProductId != null)
             {
                 int id = int.Parse(ProductId);
-                if (MaxValue != null)
-                {
-                    int MaxYear = Convert.ToInt32(MaxValue);
-                    return _context.SA_ChemPriceYearly.ToList().
-                        Where(Year => Year.Product == id && Convert.ToInt32(Year.year) <= MaxYear
-                        && Convert.ToInt16(Year.year) >= fromyear
-                        && Convert.ToInt16(Year.year) <= toyear
-                        ).ToList();
-                }
-                else
-                {
-                    return _context.SA_ChemPriceYearly.Where(Year => Year.Product == id
-
-                        ).ToList().Where(x => Convert.ToInt16(x.year) >= fromyear
-                       && Convert.ToInt16(x.year) <= toyear).ToList(); ;
-                }
-
+                q = q.Where(Year => Year.Product == id);
             }
             else
             {
-                //var uniqueCategories = _context.SA_ChemPriceYearly
-                //                  .Select(p => p.Product)
-                //                  .Distinct().FirstOrDefault();
                 int uniqueCategories = (from m in _context.SA_ChemPriceYearly
                                         join n in _context.SA_Product on
                                         m.Product equals n.id
                                         select (n.id)).FirstOrDefault();
 
-                return _context.SA_ChemPriceYearly.Where(Year => Year.Product == uniqueCategories
-
-
-                        ).ToList().Where(x => Convert.ToInt16(x.year) >= fromyear
-                       && Convert.ToInt16(x.year) <= toyear).ToList();
-                // return _context.SA_ChemPriceYearly.ToList();
+                q = q.Where(Year => Year.Product == uniqueCategories);
             }
+
+            if (!string.IsNullOrEmpty(fromdate) && !string.IsNullOrEmpty(todate))
+            {
+
+                int fromyear = Convert.ToDateTime(fromdate).Year;
+                int toyear = Convert.ToDateTime(todate).Year;
+
+                q = q.Where(Year => Convert.ToInt16(Year.year) >= fromyear
+                        && Convert.ToInt16(Year.year) <= toyear);
+            }
+            if (MaxValue != null)
+            {
+                int MaxYear = Convert.ToInt32(MaxValue);
+                q = q.Where(Year => Convert.ToInt32(Year.year) <= MaxYear);
+            }
+            return q.ToList();
+            //if (ProductId != null)
+            //{
+            //    int id = int.Parse(ProductId);
+            //    if (MaxValue != null)
+            //    {
+            //        int MaxYear = Convert.ToInt32(MaxValue);
+            //        return _context.SA_ChemPriceYearly.ToList().
+            //            Where(Year => Year.Product == id && Convert.ToInt32(Year.year) <= MaxYear
+            //            && Convert.ToInt16(Year.year) >= fromyear
+            //            && Convert.ToInt16(Year.year) <= toyear
+            //            ).ToList();
+            //    }
+            //    else
+            //    {
+            //        return _context.SA_ChemPriceYearly.Where(Year => Year.Product == id
+
+            //            ).ToList().Where(x => Convert.ToInt16(x.year) >= fromyear
+            //           && Convert.ToInt16(x.year) <= toyear).ToList(); ;
+            //    }
+
+            //}
+            //else
+            //{
+            //    //var uniqueCategories = _context.SA_ChemPriceYearly
+            //    //                  .Select(p => p.Product)
+            //    //                  .Distinct().FirstOrDefault();
+            //    int uniqueCategories = (from m in _context.SA_ChemPriceYearly
+            //                            join n in _context.SA_Product on
+            //                            m.Product equals n.id
+            //                            select (n.id)).FirstOrDefault();
+
+            //    return _context.SA_ChemPriceYearly.Where(Year => Year.Product == uniqueCategories
+
+
+            //            ).ToList().Where(x => Convert.ToInt16(x.year) >= fromyear
+            //           && Convert.ToInt16(x.year) <= toyear).ToList();
+            //    // return _context.SA_ChemPriceYearly.ToList();
+            //}
 
 
         }
@@ -364,16 +396,17 @@ namespace ChemAnalyst.DAL
                         {
                             // SalesOrderId=SalesHeaderAndDetail.SalesOrderId,
                             year = SalesHeaderAndDetail.year,
-                            Month = SalesHeaderAndDetail.Month
-
+                            Month = SalesHeaderAndDetail.Month,
+                            Product = SalesHeaderAndDetail.Product,
+                            ProductVariant = SalesHeaderAndDetail.ProductVariant
 
 
                         }
                          into grouped
                         select new SA_ChemPriceMonthly
                         {
-                            Product = grouped.FirstOrDefault().Product,
-                            ProductVariant = grouped.FirstOrDefault().ProductVariant.ToString(),
+                            Product = grouped.Key.Product,
+                            ProductVariant = grouped.Key.ProductVariant.ToString(),
                             year = grouped.Key.year.ToString(),
                             Month = grouped.Key.Month.ToString(),
                             count = grouped.Sum(x => x.count),
@@ -385,7 +418,8 @@ namespace ChemAnalyst.DAL
 
 
             var ss = query.ToList();
-            return query.OrderByDescending(x => Convert.ToDateTime("01 " + x.Month + " " + x.year)).ToList();
+            //return query.OrderByDescending(x => Convert.ToDateTime("01 " + x.Month + " " + x.year)).ToList();
+            return query.OrderBy(x => Convert.ToDateTime("01 " + x.Month + " " + x.year)).ToList();
 
 
 
@@ -788,7 +822,7 @@ namespace ChemAnalyst.DAL
         internal List<SA_ChemPriceWeekly> GetWeeklyWiseProductList(string product, string year)
         {
             int id = int.Parse(product);
-            
+
 
             var data = (_context.SA_ChemPriceWeeklyNew.Where(Year => Year.Product == id && Year.year
             == year)).ToList()
@@ -812,7 +846,8 @@ namespace ChemAnalyst.DAL
                         {
                             // SalesOrderId=SalesHeaderAndDetail.SalesOrderId,
                             Week = SalesHeaderAndDetail.Week,
-                            ProductVariant = SalesHeaderAndDetail.ProductVariant
+                            ProductVariant = SalesHeaderAndDetail.ProductVariant,
+                            Product = SalesHeaderAndDetail.Product
                         }
                         into grouped
                         select new SA_ChemPriceWeekly
@@ -820,11 +855,11 @@ namespace ChemAnalyst.DAL
                             Week = grouped.Key.Week.ToString(),
                             count = grouped.Sum(x => x.count),
                             Discription = grouped.FirstOrDefault().Discription.ToString(),
-                            Product = grouped.FirstOrDefault().Product,
+                            Product = grouped.Key.Product,
                             ProductVariant = grouped.Key.ProductVariant.ToString(),
                         };
 
- 
+
             var ss = query.ToList();
             return query.ToList();
 
@@ -960,7 +995,8 @@ namespace ChemAnalyst.DAL
 
                 return _context.SA_ChemPriceQuarterly.Select(x => new YearModel { Year = x.year }).Distinct().ToList();
             }
-            else   {
+            else
+            {
                 return _context.SA_ChemPriceWeeklyNew.Select(x => new YearModel { Year = x.year.Trim() }).Distinct().ToList();
             }
         }
@@ -969,17 +1005,18 @@ namespace ChemAnalyst.DAL
         {
             if (type == "month")
             {
-                return _context.SA_ChemPriceMonthly.Where(w=>w.Product== productId).Select(x => new ProductVariantModel
+                return _context.SA_ChemPriceMonthly.Where(w => w.Product == productId).Select(x => new ProductVariantModel
                 {
                     Name = x.ProductVariant
                 }).Distinct().ToList();
             }
-            else if (type == "year") {
+            else if (type == "year")
+            {
                 return _context.SA_ChemPriceYearly.Where(w => w.Product == productId).Select(x => new ProductVariantModel
                 {
                     Name = x.ProductVariant
                 }).Distinct().ToList();
-                
+
             }
             else if (type == "week")
             {

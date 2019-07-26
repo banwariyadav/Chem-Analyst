@@ -42,7 +42,7 @@
 
 
 
-                                    <p>@Model.Description</p>
+                                    <p>@Html.Raw(WebUtility.HtmlDecode(@Model.Description))</p>
 
 
 

@@ -17,7 +17,20 @@
 }
 
     <body>
+        <style>
 
+             ::placeholder { /* Firefox, Chrome, Opera */ 
+    color: #fff; 
+} 
+  
+:-ms-input-placeholder { /* Internet Explorer 10-11 */ 
+    color: #fff; 
+}
+
+            ::-ms-input-placeholder { /* Microsoft Edge */
+                color: #fff;
+            }
+        </style>
 
         @if (Session["UserRole"] == null)
         {
@@ -46,16 +59,21 @@
                                     <div class="searchbox">
                                         @using (Html.BeginForm("NewsHome", "NewsAndDeals", null, FormMethod.Post, new { @class = "row", enctype = "multipart/form-data" }))
                                         {
-                                            <div class="col-md-5">
+                                            <div class="col-md-3">
                                                 @Html.TextBoxFor(m => m.search,
-                                         new { @readonly = "readonly", @id = "datepicker", @value = DateTime.UtcNow, @class = "plbxt btn btn-primary width100" })
+                                         new { @readonly = "readonly", @id = "search",   @class = "plbxt btn btn-primary fromdate width100" })
 
-                                                @*@Html.EditorFor(model => model.search, new { @class = "plbxt btn btn-primary width100", Type = "date", @placeholder = "search * " })*@
-                                            </div>
-                                            <div class="col-md-5 pl-0">
-                                                @*@Html.DropDownList(Model.id, new SelectList(ViewBag.category), "Please select category", new { @id = "category", @class = "btn btn-primary width100" })*@
-                                                @Html.DropDownListFor(m => m.id, (IEnumerable<SelectListItem>)ViewBag.category, "Please select Product", new { @id = "category", @class = "btn btn-primary width100" })
-                                            </div>
+                                                  </div>
+                                                <div class="col-md-3">
+                                                    @Html.TextBoxFor(m => m.searchto,
+                                         new { @readonly = "readonly", @id = "searchto",  @class = "plbxt btn btn-primary todate width100" })
+                                                </div>
+                                            <div class="col-md-3 pl-0">
+                                                @Html.TextBoxFor(m => m.keyword,
+                                         new {   @id = "keyword", @placeholder="Keyword",  @class = "  btn btn-primary width100" })
+
+
+                                                  </div>
                                             <div class="col-md-2 pl-0">
                                                 <button type="submit" class="btn btn-green">
                                                     <i class="fa fa-filter"></i>
@@ -125,6 +143,31 @@
         @*<script src="http://cdnjs.cloudflare.com/ajax/libs/simplelightbox/1.17.1/simple-lightbox.js"></script>*@
         <script src="../js/owl.carousel.js"></script>
         <script src="../js/wow.min.js"></script>
-        <script src="../js/honey-custom.js"></script>
+        @*<script src="../js/honey-custom.js"></script>*@
+        <script>
 
+            $(function () {
+
+                jQuery('.fromdate').datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    onSelect: function (selected) {
+
+                    }
+                });
+                jQuery('.todate').datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    onSelect: function (selected) {
+
+
+
+                    }
+                });
+                var d = new Date();
+
+                $('.fromdate').val('@ViewBag.formdate');
+                $('.todate').val('@ViewBag.todate');
+            });
+        </script>
     </body>

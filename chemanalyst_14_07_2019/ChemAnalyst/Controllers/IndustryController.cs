@@ -91,18 +91,33 @@ namespace ChemAnalyst.Controllers
                 }
             }
 
-        public ActionResult IndustryReport()
+        public ActionResult IndustryReport(int id)
         {
             NewsDataStore n = new NewsDataStore();
             DealsDataStore d = new DealsDataStore();
             IndustryViewModel model = new IndustryViewModel();
-            List<SA_Industry> IndustryList = Obj.GetIndustryList().OrderBy(w => w.id).Take(1).ToList(); ;
+            List<SA_Industry> IndustryList = Obj.GetIndustryList().Where(w=>w.id==id).OrderBy(w => w.id).ToList(); ;
             model.Industry = IndustryList;
             List<SA_News> NewsList = n.GetNewsList();
             model.NewsList = NewsList;
             List<SA_Deals> DealList = d.GetDealsList();
             model.DealsList = DealList;
             return View(model);
+
+        }
+
+        public ActionResult Reportsection()
+        {
+            CategoryDataStore d = new CategoryDataStore();
+            IndustryViewModel model = new IndustryViewModel();
+            List<SA_Industry> IndustryList = Obj.GetIndustryList().OrderBy(w => w.id).ToList(); ;
+            model.Industry = IndustryList;
+            List<SelectListItem> lstCategory = d.CategoryList();
+            model.lstCategory = lstCategory;
+           
+
+
+            return View("report-section", model);
 
         }
 

@@ -25,36 +25,43 @@ namespace ChemAnalyst.DAL
             return _context.SA_News.Where(x=>x.status==1).ToList();
 
         }
-        public IQueryable<SA_News> GetNewsBySearch(string id, DateTime search)
+        public IQueryable<SA_News> GetNewsBySearch(string id, DateTime search,DateTime searchto ,string keyword)
         {
+            if (id == null) { id = ""; }
             IQueryable<SA_News> lst;
             if (id != "" && search != DateTime.MinValue)
             {
                 var ids = Convert.ToInt32(id);
                 lst = from r in _context.SA_News
                       join p in _context.SA_Product on r.Product equals ids
-                      where p.status==1 && r.status==1 && DbFunctions.TruncateTime(r.CreatedTime) <= DbFunctions.TruncateTime(search)
+                      where p.status==1 && r.status==1 && 
+                       r.Keywords.Contains(keyword) &&
+                      DbFunctions.TruncateTime(r.CreatedTime) >= DbFunctions.TruncateTime(search)
+                      && DbFunctions.TruncateTime(r.CreatedTime) <= DbFunctions.TruncateTime(searchto)
                       select r;
             }
             else if (id == "" && search != DateTime.MinValue)
             {
 
                 lst = from r in _context.SA_News
-                      where r.status == 1 && DbFunctions.TruncateTime(r.CreatedTime) <= DbFunctions.TruncateTime(search)
-
+                      where r.status == 1 &&
+                       r.Keywords.Contains(keyword)  
+                      && DbFunctions.TruncateTime(r.CreatedTime) >= DbFunctions.TruncateTime(search)
+                      && DbFunctions.TruncateTime(r.CreatedTime) <= DbFunctions.TruncateTime(searchto)
                       select r;
             }
             else if (id != "" && search == DateTime.MinValue)
             {
                 var ids = Convert.ToInt32(id);
                 lst = from r in _context.SA_News
-                      join p in _context.SA_Product on r.Product equals ids where p.status == 1 && r.status == 1 
+                      join p in _context.SA_Product on r.Product equals ids where p.status == 1 && r.Keywords.Contains(keyword) && r.status == 1 
                       select r;
 
             }
             else
             {
-                lst = from r in _context.SA_News where  r.status == 1 
+                lst = from r in _context.SA_News
+                      where r.Keywords.Contains(keyword) && r.status == 1 
                       select r;
             }
             return lst.Distinct();
