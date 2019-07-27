@@ -13,6 +13,7 @@ namespace ChemAnalyst.Controllers
     {
         // GET: SubsManagement
         private LeadDAL ObjLead;
+        UserDataStore ObjUser = new UserDataStore();
         public SubsManagementController()
         {
 
@@ -39,8 +40,14 @@ namespace ChemAnalyst.Controllers
             }
             foreach (var item in leadList)
             {
-                if (item.AssignTo == "NA" || item.AssignTo ==null)
+                if (item.AssignTo == "NA" || item.AssignTo == null)
+                {
                     item.AssignTo = "---";
+                }
+                else
+                {
+                    item.AssignTo = ObjUser.GetUserByid(Convert.ToInt32(item.AssignTo)) != null? ObjUser.GetUserByid(Convert.ToInt32(item.AssignTo)).Fname : "NA";
+                }
             }
             return Json(new { data = leadList }, JsonRequestBehavior.AllowGet);
 
@@ -91,7 +98,8 @@ namespace ChemAnalyst.Controllers
             List<SubscriptionViewModel> SubscriptionList;
             if (Session["UserRole"].ToString() == "Admin")
             {
-            SubscriptionList = ObjLead.SubscriptionListforadmin(loggeduser);
+            //SubscriptionList = ObjLead.SubscriptionListforadmin(loggeduser);
+                SubscriptionList = ObjLead.SubscriptionListforAdminNew(loggeduser);
             }
             else
             {

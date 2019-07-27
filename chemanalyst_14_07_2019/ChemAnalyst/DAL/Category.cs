@@ -78,5 +78,11 @@ namespace ChemAnalyst.DAL
                         //  select  { Fname = User.Fname+" "+User.Lname , Phone = User.Phone, Role=User.Role,Email=User.Email,UserPassword=User.Password});
                     select new SelectListItem { Text = category.CategoryName, Value = category.id.ToString() }).ToList();
         }
+        internal List<SelectListItem> CountryList()
+        {
+            return (from category in _context.SA_Country
+                        //  select  { Fname = User.Fname+" "+User.Lname , Phone = User.Phone, Role=User.Role,Email=User.Email,UserPassword=User.Password});
+                    select new SelectListItem { Text = category.CountryName, Value = category.id.ToString() }).ToList();
+        }
     }
 }

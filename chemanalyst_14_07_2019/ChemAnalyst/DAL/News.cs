@@ -25,8 +25,11 @@ namespace ChemAnalyst.DAL
             return _context.SA_News.Where(x=>x.status==1).ToList();
 
         }
-        public IQueryable<SA_News> GetNewsBySearch(string id, DateTime search,DateTime searchto ,string keyword)
+        public IQueryable<SA_News> GetNewsBySearch(string id, DateTime? from,DateTime? to ,string keyword)
         {
+
+            DateTime search = from == null ? new DateTime(1990, 01, 01) : from.Value;
+            DateTime searchto = to == null ? new DateTime(2100, 01, 01) : to.Value;
             if (id == null) { id = ""; }
             IQueryable<SA_News> lst;
             if (id != "" && search != DateTime.MinValue)

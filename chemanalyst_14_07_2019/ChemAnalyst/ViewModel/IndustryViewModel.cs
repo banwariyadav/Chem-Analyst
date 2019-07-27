@@ -18,6 +18,8 @@ namespace ChemAnalyst.ViewModel
         public string Title { get; set; }
         public IEnumerable<SA_News> NewsList { get; set; }
 
+        public List<SelectListItem> lstCountry { get; set; }
+
     }
 
     public class IndustryVM

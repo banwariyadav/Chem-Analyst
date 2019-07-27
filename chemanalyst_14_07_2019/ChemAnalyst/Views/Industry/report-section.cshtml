@@ -135,9 +135,33 @@
                 <div class="row">
                     <div class="col-lg-3 col-md-3 col-sm-4 mb-30 scrolla">
                         <div style="box-shadow:2px 2px 2px #ccc;box-shadow: 0px 0px 12px 1px #ccc; padding: 15px;">
+@using (Html.BeginForm("Reportsection", "Industry", null, FormMethod.Post, new {@id= "myForm" , enctype = "multipart/form-data" }))
+{
+    <input type="hidden" id="categoryname" name="categoryname" value="@ViewBag.Cat" />
+    <input type="hidden" id="countryname" name="countryname" value="@ViewBag.Cou" />
                             <h2 class="box-title">
                                 Categories
                             </h2>
+                            <script>
+                                function setcategory(id,el) {
+                                    if ($(el).prop("checked") == true) {
+                                        $("#categoryname").val( $("#categoryname").val()+(id + ","));
+                                    } else {
+                                        var nval = $("#categoryname").val().replace(id + ",", "");
+                                        $("#categoryname").val(nval);
+                                    }
+                                    $("#myForm").submit();
+                                }
+                                function setcountry(id, el) {
+                                    if ($(el).prop("checked") == true) {
+                                        $("#countryname").val($("#countryname").val() + (id + ","));
+                                    } else {
+                                        var nval = $("#countryname").val().replace(id + ",", "");
+                                        $("#countryname").val(nval);
+                                    }
+                                    $("#myForm").submit();
+                                }
+                            </script>
                             <div style="max-height: 300px; overflow-y: scroll; margin-bottom: 20px ">
                                 <div class="checkbox">
                                     <label>
@@ -148,7 +172,7 @@
                                                 <div class="accordion-group">
                                                     <div class="accordion-heading">
                                                         <span type="checkbox">
-                                                        <input id="ctl00_ContentPlaceHolder1_chkinput" type="checkbox" name="ctl00$ContentPlaceHolder1$chkinput" onclick="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$chkinput\',\'\')', 0)">
+                                                        <input @(((string)ViewBag.Cat).Contains(cat.Value+",")?"checked='checked'":"") type="checkbox" onclick="setcategory(@cat.Value,this)">
                                                         </span>
                                                         <label class="checkbox-inline mt-3">
                                                             @cat.Text
@@ -170,21 +194,16 @@
                             <div>
                                 <div class="checkbox sm_chk_be" id="sm_chk">
                                     <label>
-                                        <table id="ctl00_ContentPlaceHolder1_CheckBoxList2" border="0">
+                                        <table   border="0">
                                             <tbody>
+                                                @foreach (var item in Model.lstCountry)
+                                                {
                                                 <tr>
-                                                    <td><input id="ctl00_ContentPlaceHolder1_CheckBoxList2_0" type="checkbox" name="ctl00$ContentPlaceHolder1$CheckBoxList2$0" onclick="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$CheckBoxList2$0\',\'\')', 0)"><label for="ctl00_ContentPlaceHolder1_CheckBoxList2_0">Global</label></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input id="ctl00_ContentPlaceHolder1_CheckBoxList2_1" type="checkbox" name="ctl00$ContentPlaceHolder1$CheckBoxList2$1" onclick="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$CheckBoxList2$1\',\'\')', 0)"><label for="ctl00_ContentPlaceHolder1_CheckBoxList2_1">India</label></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input id="ctl00_ContentPlaceHolder1_CheckBoxList2_2" type="checkbox" name="ctl00$ContentPlaceHolder1$CheckBoxList2$2" onclick="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$CheckBoxList2$2\',\'\')', 0)"><label for="ctl00_ContentPlaceHolder1_CheckBoxList2_2">USA (United States of America)</label></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input id="ctl00_ContentPlaceHolder1_CheckBoxList2_3" type="checkbox" name="ctl00$ContentPlaceHolder1$CheckBoxList2$3" onclick="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$CheckBoxList2$3\',\'\')', 0)"><label for="ctl00_ContentPlaceHolder1_CheckBoxList2_3">Saudi Arabia</label></td>
-                                                </tr>
-                                               
+                                                    <td>
+                                                    
+                                                    <input @(((string)ViewBag.Cou).Contains(item.Value+",")?"checked='checked'":"")  onclick="setcountry(@item.Value,this)" value="@item.Value" type="checkbox"><label>@item.Text</label></td>
+                                                </tr> 
+                                                }
                                             </tbody>
                                         </table>
                                     </label>
@@ -192,6 +211,7 @@
                                 <div>
                                 </div>
                             </div>
+}
                         </div>
                         <div class="cat-box">
                         </div>
@@ -199,7 +219,7 @@
                         </div>
                     </div>
                     <div class="col-lg-9 col-md-9 col-sm-8">
-                        <h1 id="ctl00_ContentPlaceHolder1_cat_type" class="r-title mb-20" style="margin-top: 20px !important">All Report</h1>
+                        <h1 id="ctl00_ContentPlaceHolder1_cat_type" class="r-title mb-20" >All Report</h1>
                         <div class="table-responsive mt-10">
                             <div class="table">
                                 <div id="ctl00_ContentPlaceHolder1_sec_data"></div><table class="table table-hover ">

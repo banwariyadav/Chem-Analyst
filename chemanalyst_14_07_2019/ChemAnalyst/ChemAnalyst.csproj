@@ -523,6 +523,7 @@
     <Compile Include="Models\SA_ChemPriceYearly.cs" />
     <Compile Include="Models\SA_CMS.cs" />
     <Compile Include="Models\SA_Commentary.cs" />
+    <Compile Include="Models\SA_Country.cs" />
     <Compile Include="Models\SA_MarketbyCompanySharetonnes.cs" />
     <Compile Include="Models\SA_MarketbyCompanySharepercent.cs" />
     <Compile Include="Models\SA_MarketbyDemandsupply.cs" />

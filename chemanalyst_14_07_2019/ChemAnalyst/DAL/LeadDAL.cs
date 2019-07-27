@@ -42,7 +42,7 @@ namespace ChemAnalyst.DAL
 
         public List<SelectListItem> GetUserList()
         {
-            return (from p in _context.SA_User.AsEnumerable().Where(x => x.Role == "Sales")
+            return (from p in _context.SA_User.AsEnumerable().Where(x => (x.Role == "sales" || x.Role=="Admin") && x.Status==true)
                     select new SelectListItem
                     {
                         Text = p.Fname + " " + p.Lname,
@@ -148,6 +148,49 @@ namespace ChemAnalyst.DAL
             }
             return lst;
         }
+
+        public List<SubscriptionViewModel> SubscriptionListforAdminNew(string loggeduser)
+        {
+            var query = _context.SA_Customers.ToList().Select(w => new SubscriptionViewModel
+            {
+                Name = w.Fname,
+                Phone = w.Phone,
+                CorpEmail = w.Email,
+                Status = _context.SalesPackageSubscription.ToList().Where(q => q.LeadId == w.id && q.ToDate.Value.Date <= DateTime.Now.Date).OrderByDescending(d => d.CreatedDate).FirstOrDefault() != null ? "Active" : "Inactive",
+                Subscribe= _context.SalesPackageSubscription.ToList().Where(q => q.LeadId == w.id).ToList().Count().ToString(),
+
+            }).ToList();
+            //var query = from sales in _context.SalesPackageSubscription
+            //            join sub in _context.SubscriptionType on sales.SubscriptionType equals sub.id
+            //            //join mod in _context.Module on sales.MenuId equals mod.id
+            //            join lead in _context.Lead_Master on sales.LeadId equals lead.Id
+            //            //where lead.AssignTo.Trim().Equals(loggeduser)
+            //            select new SubscriptionViewModel
+            //            {
+            //                SId = sales.Id,
+            //                Status = sales.Status,
+            //                Name = lead.Name,
+            //                Organisation = lead.Organisation,
+            //                Phone = lead.Phone,
+            //                CorpEmail = lead.CorpEmail,
+            //                Designation = lead.Designation,
+            //                Subscribe = sales.MenuId,
+            //                ExpiryDate = sales.ToDate,
+            //                Package = sub.Name,
+            //                LeadId = lead.Id
+            //            };
+            //List<SubscriptionViewModel> lst = new List<SubscriptionViewModel>();
+            //foreach (SubscriptionViewModel sub in query)
+            //{
+            //    sub.PackageStatus = sub.ExpiryDate.Value.Date <= DateTime.Now.Date ? "Expired" : "";
+            //    sub.Status = sub.ExpiryDate.Value.Date <= DateTime.Now.Date ? "Expired" : "Active";
+            //    lst.Add(sub);
+
+            //}
+            // return lst;
+            return query;
+        }
+
         public List<SubscriptionViewModel> SubscriptionList(string loggeduser)
         {
 

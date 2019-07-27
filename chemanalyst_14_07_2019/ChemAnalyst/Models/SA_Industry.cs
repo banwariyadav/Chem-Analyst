@@ -39,7 +39,8 @@ namespace ChemAnalyst.Models
         public DateTime? CreatedTime { get; set; }
 
         public int Product { get; set; }
-
+        public int CountryID { get; set; }
+        public int CategoryID { get; set; }
         //public List<SelectListItem> ProductList { get; set; }
 
 

@@ -17,6 +17,7 @@ namespace ChemAnalyst.Controllers
     public class SubscriptionController : Controller
     {
         // GET: Subscription
+        private LeadDAL ObjLead;
         public ActionResult Index()
         {
             return View();
@@ -88,13 +89,19 @@ namespace ChemAnalyst.Controllers
                         //EmailBody = EmailBody.Replace("@SiteRoot@", CommonUtility.SitePath);
                         //EmailBody = EmailBody.Replace("@URL@", CommonUtility.SitePath);
 
-
                         SubscriptionDAL.SendMail("Chem Analyst", "info@chemanalyst", Customer.Email, "Package Activation", EmailBody, "mrnickolasjames@gmail.com");
+
+                        UpdateLeadStatus(subs.LeadId);
 
                     }
                     else
                     {
-                        return Json(new { result = "This customer is already added", JsonRequestBehavior.AllowGet });
+                        var custId = c.GetCustomerList().Where(w => w.Email == lst.CorpEmail).FirstOrDefault().id;
+                        result = await Obj.AddSalesPackageTrial(subs);
+                        DAL.AddCustWiseAccess(subs.MenuId, custId);
+                        DAL.AddCustProduct(subs.ProductId, custId);
+
+                        return Json(new { result = "This customer is already added and added one more package into that account.", JsonRequestBehavior.AllowGet });
                     }
 
                 }
@@ -106,7 +113,24 @@ namespace ChemAnalyst.Controllers
             return Json(new { result = "Data Added Successfully", JsonRequestBehavior.AllowGet });
         }
 
-        
+
+
+        private void UpdateLeadStatus(int leadId)
+        {
+            try
+            {
+                LeadDAL db = new LeadDAL();
+                Lead_Master lm = new Lead_Master();
+                lm = db.GetLeadList().Where(x => x.Id == leadId).FirstOrDefault();
+                lm.Status = "Won";
+                db.AddLeadDetails(lm);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+           
+        }
     }
 
 

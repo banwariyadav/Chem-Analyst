@@ -317,10 +317,10 @@ namespace ChemAnalyst.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult NewsHome(int? page, string id, DateTime search,DateTime searchto,string keyword)
-        {
-            ViewBag.formdate = search.ToString("MM/dd/yyyy");
-            ViewBag.todate = searchto.ToString("MM/dd/yyyy");
+        public ActionResult NewsHome(int? page, string id, DateTime? search,DateTime? searchto,string keyword)
+        { 
+            ViewBag.formdate = search!= null? Convert.ToDateTime( search).ToString("MM/dd/yyyy"):"";
+            ViewBag.todate = searchto != null?Convert.ToDateTime( searchto).ToString("MM/dd/yyyy"):"";
             int pageSize = 6;
             NewsDataStore n = new NewsDataStore();
             ProductDataStore p = new ProductDataStore();

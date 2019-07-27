@@ -50,24 +50,24 @@
                     //{ "data": "Organisation", "autoWidth": true },
                     //{ "data": "Designation", "autoWidth": true },
                     // { "data": "Subscribe", "autoWidth": true },
-                    {
+                    //{
                               
-                        "data": "ExpiryDate", "render": function (data) {
-                            debugger
-                            if (data != null) return convertJsonDateToShortDate(data);
-                            else return '';
-                        }
-                    },
-                    {
-                        "data": "Package", "render": function (data, type, row, meta) {
+                    //    "data": "ExpiryDate", "render": function (data) {
+                    //        debugger
+                    //        if (data != null) return convertJsonDateToShortDate(data);
+                    //        else return '';
+                    //    }
+                    //},
+                    //{
+                    //    "data": "Package", "render": function (data, type, row, meta) {
 
-                            if (data != null) return '<span class="label label-success">' + data + '</span>';
-                            else return '';
-                        }
-                    },
+                    //        if (data != null) return '<span class="label label-success">' + data + '</span>';
+                    //        else return '';
+                    //    }
+                    //},
                     {
                         "data": "Status", "render": function (data, type, row, meta) {
-                            debugger
+                      
                             if (data == "Active") {
                                 return '<span class="label label-success">' + data + '</span>';
                             }
@@ -77,16 +77,26 @@
                            
                         }
                     },
+
+                     {
+
+                         "data": "No. of subscription", "render": function (data, type, row, meta) {
+                             debugger
+
+                             return '<span class="label label-success">' + row.Subscribe + '</span>';
+                         }
+                     },
+
                     {
                         data: null, render: function (data, type, row) {
                             //return '<a href="/Admin/DeleteUser/' + row.id + '"><i class="fa fa-trash-o fa-lg"></i></a>';
                             debugger
                             if (data.PackageStatus == "Expired") {
-                                return '<a href="javascript:void(0)" title="Send notification" onclick="SendNotification(' + data.LeadId + ')"> <i class="fa fa-envelope" aria-hidden="true"></i></a> <a class="label label-info" href="../SubsManagement/ViewDetails/' + row.SId + '"> VIEW DETAILS</a>';
+                                return '<a href="javascript:void(0)" title="Send notification" onclick="SendNotification(' + data.LeadId + ')"> <i class="fa fa-envelope" aria-hidden="true"></i></a> <a class="label label-info" href="../SubsManagement/ViewDetails/' + row.SId + '"> VIEW DETAILS</a> <a style="cursor: pointer;" href="../Subscription/AddPackage/' + row.SId + '" class="label label-primary"><i style="cursor: pointer;" class="fa fa-plus"></i> ADD More Package  </a>';
 
                             }
                             else {
-                                return '<a class="label label-info" href="../SubsManagement/ViewDetails/' + row.SId + '"> VIEW DETAILS</a>';
+                                return '<a class="label label-info" href="../SubsManagement/ViewDetails/' + row.SId + '"> VIEW DETAILS</a> <a style="cursor: pointer;" href="../Subscription/AddPackage/' + row.SId + '" class="label label-primary"><i style="cursor: pointer;" class="fa fa-plus"></i> ADD More Package  </a>';
                             }
                         }
                     },
@@ -133,9 +143,10 @@
                         @*<th>Organization</th>
                         <th>Designation</th>
                         <th>Subscribe</th>*@
-                        <th>Expire</th>
-                        <th>Package</th>
-                        <th>Status</th>
+                        <th>Account Status</th>
+                        <th>No. of subscription</th>
+                        @*<th>Package</th>*@
+                       
                         <th>Action</th>
                     </tr>
                 </thead>

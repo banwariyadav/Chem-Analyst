@@ -121,6 +121,7 @@ namespace ChemAnalyst.Models
         public DbSet<CompanyAndProductRelation> CompanyAndProductRelations { get; set; }
         public DbSet<CompanyProduct> CompanyProducts { get; set; }
         public DbSet<CompanyProfRecord> CompanyProfRecords { get; set; }
+        public DbSet<SA_Country> SA_Country { get; set; }
         //public DbSet<CustomerNew> CustomerNew { get; set; }
         public DbSet<CustomerAndProducRelation> CustomerAndProducRelation { get; set; }
         //NEW CODE
