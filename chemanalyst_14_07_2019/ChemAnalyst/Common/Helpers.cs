@@ -82,6 +82,9 @@ namespace ChemAnalyst.Common
             public const Int32 bytePermutation3 = 0x17;
             public const Int32 bytePermutation4 = 0x41;
         }
+
+
+
         #endregion
     }
 }

@@ -29,6 +29,8 @@ namespace ChemAnalyst.Models
         public string Keywords { get; set; }
         public int status { get; set; }
 
+        [StringLength(500)]
+        public string MetaTitle { get; set; }
         public string Product { get; set; }
         public DateTime? CreatedTime { get; set; }
         public List<SelectListItem> ProductList { get; set; }

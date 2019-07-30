@@ -5,7 +5,7 @@
 }
 
 
-
+<script src="~\ckeditor/ckeditor.js" type="text/javascript"></script>
 @model ChemAnalyst.Models.SA_DealsViewModel
 <div class="update-profile-wrapper">
 
@@ -42,10 +42,15 @@
 
                         <div class="col-md-4 col-lg-12 form-group">
                             @*<textarea rows="10" class="form-control" placeholder="Description"></textarea>*@
-                            @Html.TextAreaFor(model => model.DealsDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Description * ", required = "required" })
+                            @Html.TextAreaFor(model => model.DealsDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Description * ", id = "Desc", required = "required" })
 
 
                         </div>
+                        <script>
+
+                            CKEDITOR.replace("Desc");
+
+                        </script>
                         <div class="col-sm-4 col-lg-12 form-group">
                             @*<select class="form-control">
                     <option value="">Parent Deals</option>
@@ -71,7 +76,12 @@
 
 
                         </div>
+                        <div class="col-md-4 col-lg-12 form-group">
+                            @*<textarea rows="4" class="form-control" placeholder="Meta Description"></textarea>*@
+                            @Html.TextAreaFor(model => model.MetaTitle, new { @class = "form-control", @rows = 4, @placeholder = "Meta Title * ", required = "required" })
 
+
+                        </div>
                         <div class="col-md-4 col-lg-12 form-group">
                             @*<textarea rows="4" class="form-control" placeholder="Meta Description"></textarea>*@
                             @Html.TextAreaFor(model => model.MetaDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Meta Description * ", required = "required" })
@@ -120,7 +130,15 @@
 
 
 
-
+<script type="text/javascript">
+    $(function () {
+        $('#Desc').ckeditor({
+            toolbar: 'Full',
+            enterMode: CKEDITOR.ENTER_BR,
+            shiftEnterMode: CKEDITOR.ENTER_P
+        });
+    });
+</script>
 
 
 <script>

@@ -10,5 +10,7 @@ namespace ChemAnalyst.Models
         public int id { get; set; }
         public int CustId { get; set; }
         public int ProdId { get; set; }
+
+        public int PageId { get; set; }
     }
 }

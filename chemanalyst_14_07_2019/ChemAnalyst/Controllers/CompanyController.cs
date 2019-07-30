@@ -95,9 +95,35 @@ namespace ChemAnalyst.Controllers
         }
         public ActionResult CompanyProfile()
         {
-            List<SA_Company> NewsList = Obj.GetCompanyList().OrderBy(w => w.id).Take(1).ToList();
+            ViewBag.Product = Obj.GetCompanyProducts();
+            ViewBag.Category = Obj.GetUniqueCategory();
+            ViewBag.Cat = "";
+            ViewBag.Prod = "";
+            ViewBag.RevS = "";
+            ViewBag.EmpSiz = "";
+
+            return View(Obj.GetCompanyList().OrderBy(x => x.CreatedTime));
+
+        }
+
+        public ActionResult CompanyProfileDetails(int id)
+        {
+            List<SA_Company> NewsList = Obj.GetCompanyList().Where(w=>w.id==id).OrderBy(w => w.id).ToList();
             NewsList.OrderBy(x => x.CreatedTime).Take(1);
             return View(NewsList);
+
+        }
+
+        [HttpPost]
+        public ActionResult CompanyProfile(string category,string products,string revsize,string empsize)
+        {
+            ViewBag.Cat = category;
+            ViewBag.Prod = products;
+            ViewBag.RevS = revsize;
+            ViewBag.EmpSiz = empsize;
+            ViewBag.Product = Obj.GetCompanyProducts();
+            ViewBag.Category = Obj.GetUniqueCategory();
+            return View(Obj.GetCompanyList(category, products,revsize,empsize).OrderBy(x => x.CreatedTime));
 
         }
     }

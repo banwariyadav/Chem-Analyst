@@ -4,9 +4,11 @@ using ChemAnalyst.Models;
 using ChemAnalyst.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace ChemAnalyst.Controllers
 {
@@ -139,6 +141,104 @@ namespace ChemAnalyst.Controllers
 
             return View(model);
 
+        }
+
+        public ActionResult ChangePassword()
+        {
+            return View("custChangePassword");
+        }
+        public ActionResult UpdatePassword(FormCollection ChangePassword)
+        {
+
+            int LoginUser = int.Parse(ChangePassword["LoginUser"]);
+            string CurPassword = ChangePassword["CurPassword"];
+            string newPassword = ChangePassword["newPassword"];
+            string confirmpasswd = ChangePassword["confirmpasswd"];
+
+            //string strPassword = "1234";
+
+            string strEncryptedCurr = (Helpers.Encrypt(CurPassword));
+            string strDecryptedCurr = (Helpers.Decrypt(strEncryptedCurr));
+
+            string strEncrypted = (Helpers.Encrypt(newPassword));
+            string strDecrypted = (Helpers.Decrypt(strEncrypted));
+
+            CustomerDataStore ObjUser = new CustomerDataStore();
+            SA_Customer loginUser = ObjUser.GetCustomerByid(LoginUser);
+            if ((loginUser != null))
+            {
+                if (loginUser.UserPassword == strEncryptedCurr)
+                {
+                    loginUser.id = LoginUser;
+                    loginUser.UserPassword = strEncrypted;
+                    int valid = ObjUser.UpdatePassword(loginUser);
+                    if (valid > 0)
+                    {
+                        ViewBag.Message = "Password Updated Successfuly.";
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Password not Updated Successfuly.";
+                    }
+                }
+                else
+                    ViewBag.Message = "Your current Password is not matched.";
+            }
+            return View("custChangePassword");
+        }
+
+
+        public ActionResult CustUpdateProfile()
+        {
+            int id = int.Parse(Session["LoginUser"].ToString());
+            ChemAnalystContext _context = new ChemAnalystContext();
+            CustomerDataStore Obj = new CustomerDataStore();
+            SA_Customer obj = Obj.GetCustomerByid(id);
+            SA_CustomerViewModel Objuser = new SA_CustomerViewModel();
+            Objuser.id = obj.id;
+            Objuser.Fname = obj.Fname;
+            Objuser.Lname = obj.Lname;
+            Objuser.Phone = obj.Phone;
+            Objuser.Role = obj.Role;
+            Objuser.Email = obj.Email;
+            Objuser.Gender = obj.Gender;
+            Objuser.UserPassword = obj.UserPassword;
+            Objuser.ProfileImage = obj.ProfileImage;
+
+            var customerData = (from User in _context.SA_Role
+                                    //  select  { Fname = User.Fname+" "+User.Lname , Phone = User.Phone, Role=User.Role,Email=User.Email,UserPassword=User.Password});
+                                select new SelectListItem { Text = User.Role, Value = User.Role }).ToList();
+            Objuser.UserRoleList = customerData;
+            return View("cust-update-profile", Objuser);
+        }
+        public ActionResult CustSaveProfile(SA_Customer User)
+        {
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                var file = Request.Files[i];
+
+                if (file != null && file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+
+                    var path = Path.Combine(Server.MapPath("~/images"), fileName);
+                    file.SaveAs(path);
+                    User.ProfileImage = fileName;
+                }
+            }
+            CustomerDataStore Obj = new CustomerDataStore();
+
+            Obj.UpdateCustomer(User);
+
+            return RedirectToAction("CustUpdateProfile", "Login");
+
+        }
+
+        public ActionResult LogOut()
+        {
+            FormsAuthentication.SignOut();
+            Session.Clear();
+            return RedirectToAction("index", "ChemAnalyst");
         }
     }
 }

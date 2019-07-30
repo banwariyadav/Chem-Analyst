@@ -92,11 +92,11 @@
                             //return '<a href="/Admin/DeleteUser/' + row.id + '"><i class="fa fa-trash-o fa-lg"></i></a>';
                             debugger
                             if (data.PackageStatus == "Expired") {
-                                return '<a href="javascript:void(0)" title="Send notification" onclick="SendNotification(' + data.LeadId + ')"> <i class="fa fa-envelope" aria-hidden="true"></i></a> <a class="label label-info" href="../SubsManagement/ViewDetails/' + row.SId + '"> VIEW DETAILS</a> <a style="cursor: pointer;" href="../Subscription/AddPackage/' + row.SId + '" class="label label-primary"><i style="cursor: pointer;" class="fa fa-plus"></i> ADD More Package  </a>';
+                                return '<a href="javascript:void(0)" title="Send notification" onclick="SendNotification(' + data.LeadId + ')"> <i class="fa fa-envelope" aria-hidden="true"></i></a> <a class="label label-info" href="../SubsManagement/ViewAllSubscriptions/' + data.LeadId + '"> VIEW DETAILS</a> <a style="cursor: pointer;" href="../Subscription/AddPackage/' + data.LeadId + '" class="label label-primary"><i style="cursor: pointer;" class="fa fa-plus"></i> ADD More Package  </a>';
 
                             }
                             else {
-                                return '<a class="label label-info" href="../SubsManagement/ViewDetails/' + row.SId + '"> VIEW DETAILS</a> <a style="cursor: pointer;" href="../Subscription/AddPackage/' + row.SId + '" class="label label-primary"><i style="cursor: pointer;" class="fa fa-plus"></i> ADD More Package  </a>';
+                                return '<a class="label label-info" href="../SubsManagement/ViewAllSubscriptions/' + data.UserId + '"> VIEW DETAILS</a> <a style="cursor: pointer;" href="../Subscription/AddPackage/' + data.LeadId + '" class="label label-primary"><i style="cursor: pointer;" class="fa fa-plus"></i> ADD More Package  </a>';
                             }
                         }
                     },

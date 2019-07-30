@@ -16,6 +16,9 @@ namespace ChemAnalyst.Models
         [StringLength(500)]
         public string NewsName { get; set; }
 
+        [StringLength(500)]
+        public string MetaTitle { get; set; }
+
         [StringLength(5000)]
         public string NewsDiscription { get; set; }
 
@@ -36,6 +39,8 @@ namespace ChemAnalyst.Models
 
         [StringLength(1000)]
         public string Keywords { get; set; }
+
+        public string CreatedBy { get; set; }
 
         public string GenerateItemNameAsParam()
         {

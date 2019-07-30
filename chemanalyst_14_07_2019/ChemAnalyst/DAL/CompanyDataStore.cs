@@ -18,7 +18,67 @@ namespace ChemAnalyst.DAL
             return _context.SA_Company.ToList();
 
         }
+        public List<SA_Company> GetCompanyList(string category, string products, string revsize, string empsize)
+        {
 
+         //   var ss = _context.SA_CompanyAndProductRelation.Where(x=>x.SA_ProductId == )
+
+            //var q = _context.SA_Company.ToList().AsEnumerable();
+            var q = from c in _context.SA_Company
+                        join p in _context.CompanyAndProductRelations on c.id equals p.SA_CompanyId into gj
+                        join r in  _context.CompanyProfRecords on c.id equals r.SA_CompanyId
+                        select new  {
+                            id = c.id,
+                            Name = c.Name,
+                            Description = c.Description,
+                            Category = c.Category,
+                            NOE = c.NOE,
+                            Logo= c.Logo,
+                            Product = gj.FirstOrDefault().SA_ProductId,
+                            Revenu = r.Revenues
+                        };
+            // from subpet in gj.DefaultIfEmpty()
+            // select new { person.FirstName, PetName = subpet?.Name ?? String.Empty };
+            var sq = q.ToList().AsEnumerable();
+            if (category != "")
+            {
+                sq = sq.Where(x => x.Category == category);
+            }
+            if (empsize != "")
+            {
+                int min = Convert.ToInt16(empsize.Split('-')[0]);
+                int max = empsize.Split('-').Length<=1?50000: Convert.ToInt16(empsize.Split('-')[1]);
+                sq = sq.Where(x =>Convert.ToInt16( x.NOE)>min && Convert.ToInt16( x.NOE)<=max);
+            }
+            if (revsize != "")
+            {
+                int min = Convert.ToInt16(revsize.Split('-')[0]);
+                int max = revsize.Split('-').Length<=1 ? 5000000 : Convert.ToInt16(revsize.Split('-')[1]);
+
+                if (revsize.Split('-').Length > 1)
+                {
+                    sq = sq.Where(x => Convert.ToDouble(x.Revenu.Replace("US$", "").Replace("billion", "").Trim()) > min && Convert.ToDouble(x.Revenu.Replace("US$", "").Replace("billion", "").Trim()) <= max);
+                }
+                else {
+                    sq = sq.Where(x => Convert.ToDouble(x.Revenu.Replace("US$", "").Replace("billion", "").Trim()) > min );
+                }
+            }
+            if (products != "")
+            {
+                sq = sq.Where(x => x.Product == Convert.ToInt16( products));
+            }
+         
+            return sq.ToList().Select(c=> new SA_Company
+            {
+                id = c.id,
+                Name = c.Name,
+                Description = c.Description,
+                Category = c.Category,
+                NOE = c.NOE,
+                Logo= c.Logo
+            }).ToList();
+
+        }
         public bool EditCompany(SA_Company News)
         {
             //  News.CreatedDate = DateTime.Now;
@@ -42,6 +102,13 @@ namespace ChemAnalyst.DAL
             int x = _context.SaveChanges();
             return x == 0 ? false : true;
         }
+
+        internal dynamic GetUniqueCategory()
+        {
+            //return _context.SA_Company.Select(x=>x.Category).Distinct().ToList();
+            return _context.SA_Category.Where(w=>w.status==1).ToList();
+        }
+
         public bool DeleteCompany(int NewsId)
         {
             //  News.CreatedDate = DateTime.Now;
@@ -64,6 +131,12 @@ namespace ChemAnalyst.DAL
             //  News.ModeifiedDate = DateTime.Now;
             int x = await _context.SaveChangesAsync();
             return x == 0 ? false : true;
+        }
+
+        internal dynamic GetCompanyProducts()
+        {
+            //return _context.CompanyProducts.ToList();
+            return _context.SA_Product.Where(w=>w.status==1).ToList();
         }
 
         internal SA_Company GetCompanyByid(int id)

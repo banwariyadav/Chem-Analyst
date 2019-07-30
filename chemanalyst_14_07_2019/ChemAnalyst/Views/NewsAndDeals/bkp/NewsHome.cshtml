@@ -1,0 +1,174 @@
+﻿@model ChemAnalyst.ViewModel.NewsHomeViewModel
+
+
+@using PagedList.Mvc;
+@using PagedList;
+
+@{
+    if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
+    {
+        Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutUser1.cshtml";
+    }
+
+}
+
+    <body>
+        <style>
+
+             ::placeholder { /* Firefox, Chrome, Opera */ 
+    color: #fff; 
+} 
+  
+:-ms-input-placeholder { /* Internet Explorer 10-11 */ 
+    color: #fff; 
+}
+
+            ::-ms-input-placeholder { /* Microsoft Edge */
+                color: #fff;
+            }
+        </style>
+
+        @if (Session["UserRole"] == null)
+        {
+            <div class="inner-banner">
+                <img src="~/images/about-banner.jpg">
+                <h1>News</h1>
+
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">News</li>
+                </ol>
+
+            </div>
+        }
+
+        <div class="page-content">
+            <div class="static-page">
+                <div class="container">
+
+                    <div class="bloglist">
+
+                        <div class="row">
+                            @if (Session["UserRole"] == null)
+                            {
+                                <div class="col-lg-12">
+                                    <div class="searchbox">
+                                        @using (Html.BeginForm("NewsHome", "NewsAndDeals", null, FormMethod.Post, new { @class = "row", enctype = "multipart/form-data" }))
+                                        {
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.search,
+                                         new { @id = "search",   @class = "plbxt btn btn-primary fromdate width100", @placeholder = "From date", @autocomplete = "off" })
+
+                                                  </div>
+                                                <div class="col-md-3">
+                                                    @Html.TextBoxFor(m => m.searchto,
+                                         new { @id = "searchto",  @class = "plbxt btn btn-primary todate width100", @placeholder = "To date", @autocomplete="off" })
+                                                </div>
+                                            <div class="col-md-3 pl-0">
+                                                @Html.TextBoxFor(m => m.keyword,
+                                         new {   @id = "keyword", @placeholder="Keyword",  @class = "  btn btn-primary width100", @autocomplete = "off" })
+
+
+                                                  </div>
+                                            <div class="col-md-2 pl-0">
+                                                <button type="submit" class="btn btn-green">
+                                                    <i class="fa fa-filter"></i>
+                                                    Filter
+                                                </button>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            <div class="width100" style="height:30px"></div>
+                            @foreach (var item in Model.NewsList)
+                            {
+                                <div class="col-md-6 col-sm-6">
+
+                                    <div class="post-item clearfix">
+
+                                        <div class="row">
+
+                                            <div class="col-md-4 col-sm-4 themestek-box-img-left">
+                                                <div class="news-pic">
+                                                    @*<img src="../ProductImages/@item.NewsImg" alt="">*@
+                                                    <img src="~/images/news2.jpg" alt="">
+                                                </div>
+                                            </div>
+
+                                            <div class="themestek-box-content col-md-8 col-sm-8">
+                                                <div class="news-text">
+                                                    <h4> <a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">@(item.NewsName.Length > 40 ? (item.NewsName.Substring(0, 40)) : item.NewsName)...</a> </h4>
+                                                    <p>@(item.NewsDiscription.Length > 100 ? (item.NewsDiscription.Substring(0, 100)) : item.NewsDiscription)...</p>
+
+                                                    <div class="row mt-3">
+                                                        <div class="col-6"><a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">Read More <i class="fa fa-arrow-right"></i></a></div>
+
+                                                        <div class="col-6"> <i class="fa fa-clock-o"></i>@item.CreatedTime.Date.ToString("MMM/yyyy") </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            }
+
+                        </div>
+
+                    </div>
+                    @Html.PagedListPager(Model.NewsList, page => Url.Action("NewsHome", new { page }))
+                </div>
+
+            </div>
+        </div>
+
+       
+
+
+
+
+
+        <script src="../js/jquery.js"></script>
+        <script src="../js/jquery-3.3.1.slim.min.js"></script>
+        <script src="../js/popper.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        @*<script src="http://cdnjs.cloudflare.com/ajax/libs/simplelightbox/1.17.1/simple-lightbox.js"></script>*@
+        <script src="../js/owl.carousel.js"></script>
+        <script src="../js/wow.min.js"></script>
+        @*<script src="../js/honey-custom.js"></script>*@
+        <script>
+
+            $(function () {
+
+                jQuery('.fromdate').datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    onSelect: function (selected) {
+
+                    }
+                });
+                jQuery('.todate').datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    onSelect: function (selected) {
+
+
+
+                    }
+                });
+                var d = new Date();
+
+                $('.fromdate').val('@ViewBag.formdate');
+                $('.todate').val('@ViewBag.todate');
+            });
+        </script>
+    </body>

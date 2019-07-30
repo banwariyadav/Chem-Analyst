@@ -1,0 +1,163 @@
+﻿
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+@model ChemAnalyst.Models.SA_CustomerViewModel
+@using ChemAnalyst.Models
+
+
+
+
+
+
+<div class="update-profile-wrapper">
+
+
+    <div class="white-wrapper">
+
+        <div class="col-md-6 col-lg-7 col-md-offset-2">
+
+            <div class="eq-form">
+                @if (Model.id > 0)
+                {
+                    <div class="change">
+                        <img style="width:100px; height:100px" src="~/images/@Model.ProfileImage" alt="" />
+                        <p>Update Customer/Profile</p>
+                    </div>
+                }
+                else
+                {                        <div class="change">
+                    <img src="~/images/change-img.jpg" alt="" />
+                    <p>Add New Customer</p>
+                </div>
+                }
+
+                <div class="eq-form-box">
+                    @using (Html.BeginForm("CustSaveProfile", "Login", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.HiddenFor(m=>m.UserPassword)
+                        @Html.HiddenFor(m => m.ProfileImage)
+                        @Html.HiddenFor(m => m.Email)
+                        @Html.AntiForgeryToken()
+                        <div style="visibility:hidden">
+                            @Html.TextBoxFor(model => model.id, new { @class = "form-control", @placeholder = "Title * ", required = "required" })
+                        </div>
+                        <div class="col-md-4 col-lg-6 form-group">
+                            @Html.TextBoxFor(model => model.Fname, new { @class = "form-control", @placeholder = "First Name * ", required = "required" })
+
+
+                            @*<input type="text" name="FirstName"  size="40" class="form-control" placeholder="First Name">*@
+                        </div>
+
+                            <div class="col-md-4 col-lg-6 form-group">
+
+                                @*<input type="text" name="LastName" size="40" class="form-control" placeholder="Last Name">*@
+                                @Html.TextBoxFor(model => model.Lname, new { @class = "form-control", @placeholder = "Last Name * ", required = "required" })
+
+
+                            </div>
+                       
+                            <div class="col-md-4 col-lg-6 form-group" style="display:none">
+
+                                @*<input type="email" name="Email" size="40" class="form-control" placeholder="Email">*@
+                                @*@Html.HiddenFor(m => m.Email)*@
+
+                            </div>
+                      
+
+                        <div class="col-md-4 col-lg-6 form-group">
+
+                            @*<input type="text" name="Phone" size="40" class="form-control" placeholder="Phone">*@
+                            @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", @placeholder = "Phone * ", required = "required", type = "number" })
+
+
+                        </div>
+                        if (Model.id == 0)
+                        {
+                            <div class="col-md-4 col-lg-6 form-group">
+
+                                @Html.TextBoxFor(model => model.UserPassword, new { @class = "form-control", @placeholder = "Password * ", required = "required" })
+
+
+                            </div>
+
+                            <div class="col-md-4 col-lg-6 form-group">
+
+                                <input type="password" name="confirm Password" size="40" class="form-control" placeholder="confirm Password" required>
+
+
+                            </div>
+
+                        }
+
+                        <div class="col-sm-4 col-lg-6 form-group">
+
+                            @Html.DropDownListFor(model => model.Gender,
+                    new SelectList(Enum.GetValues(typeof(Gender))),
+                    "Select Gender", new { @class = "form-control" })
+
+                            @*<select class="form-control" name="Username">
+                                    <option value="volvo">Gender</option>
+                                    <option value="1">Male</option>
+                                    <option value="2">Female</option>
+
+                                </select>*@
+
+
+                        </div>
+
+                        <div class="col-sm-4 col-lg-6 form-group">
+                          
+                                @Html.HiddenFor(m => m.Role)
+
+                          
+
+                            @*@Html.DropDownListFor(m => m.Role,
+                                new SelectList(Enum.GetValues(typeof(UserRole))),
+                                "Select Rile", new { @class = "form-control" })*@
+
+
+                            @*<select class="form-control" name="Username">
+                                    <option value="">Role</option>
+                                    <option value="1">Admin</option>
+                                    <option value="2">Sales</option>
+                                    <option value="3">Customer</option>
+
+                                </select>*@
+
+                        </div>
+                                <div class="col-sm-6 col-lg-12">
+                                    <div class="form-group">
+                                        <input type="file" name="file" class="form-control" />
+                                   
+                                    </div>
+                                </div>
+
+                                <div class="btn-wrapper">
+
+                                    <a class="gray-btn" href="@Url.Action("UserView","User")">Cancle</a>
+
+                                    <input type="submit" class="blue-btn" value="Save">
+                                    @*<a class="blue-btn" href="#">Save</a>*@
+
+                                </div>
+
+                    }
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+

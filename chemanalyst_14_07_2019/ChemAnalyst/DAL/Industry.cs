@@ -48,6 +48,8 @@ namespace ChemAnalyst.DAL
             EditNews.RelatedRep = News.RelatedRep;
             EditNews.Tableoc = News.Tableoc;
             EditNews.Product = News.Product;
+            EditNews.CategoryID = News.CategoryID;
+            EditNews.CountryID = News.CountryID;
 
             _context.Entry(EditNews).State = EntityState.Modified;
             int x = _context.SaveChanges();
@@ -80,7 +82,7 @@ namespace ChemAnalyst.DAL
 
         internal SA_Industry GetIndustryByid(int id)
         {
-            var data = _context.SA_Industry.Where(x => x.id == id).SingleOrDefault();
+            var data = _context.SA_Industry.Where(x => x.id == id).FirstOrDefault();
             if (data != null)
             {
                 return data;

@@ -13,28 +13,29 @@ namespace ChemAnalyst.Controllers
     public class IndustryController : Controller
     {
         // GET: Industry
-       // GET: Quote
-            IndustryDataStore Obj = new IndustryDataStore();
-            // GET: AdvisorySolutions
-            public ActionResult Industry()
-            {
-                return View("Industry");
-            }
+        // GET: Quote
+        IndustryDataStore Obj = new IndustryDataStore();
+        // GET: AdvisorySolutions
+        private ChemAnalystContext _context = new ChemAnalystContext();
+        public ActionResult Industry()
+        {
+            return View("Industry");
+        }
 
-            // GET: NewsAndDeals
-            public ActionResult GetIndustryList()
-            {
-                return View("Industry");
-            }
-            public JsonResult IndustryList()
-            {
+        // GET: NewsAndDeals
+        public ActionResult GetIndustryList()
+        {
+            return View("Industry");
+        }
+        public JsonResult IndustryList()
+        {
 
-                List<SA_Industry> NewsList = Obj.GetIndustryList();
+            List<SA_Industry> NewsList = Obj.GetIndustryList().OrderByDescending(w => w.id).ToList();
 
-                return Json(new { data = NewsList }, JsonRequestBehavior.AllowGet);
+            return Json(new { data = NewsList }, JsonRequestBehavior.AllowGet);
 
-            }
-        public ActionResult AddIndustry(int id =0)
+        }
+        public ActionResult AddIndustry(int id = 0)
         {
             //NewsDataStore ObjDal = new NewsDataStore();
             //SA_NewsViewModel objCatViewModel = new SA_NewsViewModel();
@@ -44,9 +45,9 @@ namespace ChemAnalyst.Controllers
             SA_Industry obj = new SA_Industry();
             if (id > 0)
             {
-                obj= Obj.GetIndustryByid(id);
+                obj = Obj.GetIndustryByid(id);
             }
-           
+
             if (obj == null)
             {
                 obj = new SA_Industry();
@@ -59,44 +60,49 @@ namespace ChemAnalyst.Controllers
         }
         [ValidateInput(false)]
         public ActionResult SaveIndustry(SA_Industry UserNews)
+        {
+
+            if (UserNews.id == 0)
             {
-              
-                if (UserNews.id == 0)
-                {
-                    Obj.AddIndustry(UserNews);
-                }
-                else
-                {
-                    Obj.EditIndustry(UserNews);
-                }
+                var Category = _context.SA_Product.Where(w => w.id == UserNews.Product).FirstOrDefault().Category;
+                UserNews.CategoryID = Category;
+                Obj.AddIndustry(UserNews);
+            }
+            else
+            {
+                var Category = _context.SA_Product.Where(w => w.id == UserNews.Product).FirstOrDefault().Category;
+                UserNews.CategoryID = Category;
+                UserNews.CountryID = UserNews.CountryID;
+                Obj.EditIndustry(UserNews);
+            }
+            return RedirectToAction("ShowIndustryList", "Admin");
+        }
+
+
+        public ActionResult EditIndustry(int id)
+        {
+            SA_Industry obj = Obj.GetIndustryByid(id);
+            return View("AddIndustry", obj);
+        }
+
+        public ActionResult DeleteIndustry(int id)
+        {
+            if (Obj.DeleteIndustry(id) == true)
+            {
                 return RedirectToAction("ShowIndustryList", "Admin");
             }
-
-
-            public ActionResult EditIndustry(int id)
+            else
             {
-                SA_Industry obj = Obj.GetIndustryByid(id);
-                return View("AddIndustry", obj);
+                return View("ErrorEventArgs");
             }
-
-            public ActionResult DeleteIndustry(int id)
-            {
-                if (Obj.DeleteIndustry(id) == true)
-                {
-                return RedirectToAction("ShowIndustryList", "Admin");
-            }
-                else
-                {
-                    return View("ErrorEventArgs");
-                }
-            }
+        }
 
         public ActionResult IndustryReport(int id)
         {
             NewsDataStore n = new NewsDataStore();
             DealsDataStore d = new DealsDataStore();
             IndustryViewModel model = new IndustryViewModel();
-            List<SA_Industry> IndustryList = Obj.GetIndustryList().Where(w=>w.id==id).OrderBy(w => w.id).ToList(); ;
+            List<SA_Industry> IndustryList = Obj.GetIndustryList().Where(w => w.id == id).OrderBy(w => w.id).ToList(); ;
             model.Industry = IndustryList;
             List<SA_News> NewsList = n.GetNewsList();
             model.NewsList = NewsList;
@@ -115,8 +121,7 @@ namespace ChemAnalyst.Controllers
             ViewBag.Cou = country;
             CategoryDataStore d = new CategoryDataStore();
             IndustryViewModel model = new IndustryViewModel();
-            List<SA_Industry> IndustryList = Obj.GetIndustryList().Where(x=> (cate==""|| cate.Contains(x.CategoryID.ToString()+","))
-            && (country == "" || country.Contains(x.CountryID.ToString()+","))).OrderBy(w => w.id).ToList(); ;
+            List<SA_Industry> IndustryList = Obj.GetIndustryList().Where(x => (cate == "" || cate.Contains(x.CategoryID.ToString() + ",")) && (country == "" || country.Contains(x.CountryID.ToString() + ","))).OrderBy(w => w.id).OrderByDescending(w=>w.id).ToList(); 
             model.Industry = IndustryList;
             List<SelectListItem> lstCategory = d.CategoryList();
             model.lstCategory = lstCategory;
@@ -129,7 +134,7 @@ namespace ChemAnalyst.Controllers
         }
 
         public ActionResult IndustryReports(int id)
-          {
+        {
             NewsDataStore n = new NewsDataStore();
             DealsDataStore d = new DealsDataStore();
             IndustryViewModel model = new IndustryViewModel();
@@ -138,13 +143,12 @@ namespace ChemAnalyst.Controllers
             model.Industry = IndustryList;
             List<SA_News> NewsList = n.GetNewsList();
             model.NewsList = NewsList;
-            List <SA_Deals> DealList = d.GetDealsList();
+            List<SA_Deals> DealList = d.GetDealsList();
             model.DealsList = DealList;
             return View(model);
-            
-         }
+
+        }
     }
-    }
+}
 
 
-      

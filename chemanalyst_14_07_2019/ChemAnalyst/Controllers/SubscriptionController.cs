@@ -67,7 +67,7 @@ namespace ChemAnalyst.Controllers
                 {
                     if (Check.CheckCustomerCount(lst.CorpEmail, strEncrypted) == 0)
                     {
-                        result = await Obj.AddSalesPackageTrial(subs);
+                      
                         SA_Customer Customer = new SA_Customer();
                         Customer.MenuId = subs.Id.ToString();
                         Customer.Email = lst.CorpEmail;
@@ -79,8 +79,12 @@ namespace ChemAnalyst.Controllers
                         Customer.Lname = "";
 
                         c.AddCustomer(Customer);
+
+                        subs.UserId = Customer.id;
+                        result = await Obj.AddSalesPackageTrial(subs);
+
                         DAL.AddCustWiseAccess(subs.MenuId, Customer.id);
-                        DAL.AddCustProduct(subs.ProductId, Customer.id);
+                        DAL.AddCustProduct(subs.ProductId, Customer.id, subs.MenuId);
 
                         string EmailBody = SubscriptionDAL.GetHtml("PackageWelcome.html");
                         //EmailBody = EmailBody.Replace("@Name@", Customer.Fname + " " + Customer.Lname);
@@ -97,11 +101,12 @@ namespace ChemAnalyst.Controllers
                     else
                     {
                         var custId = c.GetCustomerList().Where(w => w.Email == lst.CorpEmail).FirstOrDefault().id;
+                        subs.UserId = custId;
                         result = await Obj.AddSalesPackageTrial(subs);
                         DAL.AddCustWiseAccess(subs.MenuId, custId);
-                        DAL.AddCustProduct(subs.ProductId, custId);
+                        DAL.AddCustProduct(subs.ProductId, custId, subs.MenuId);
 
-                        return Json(new { result = "This customer is already added and added one more package into that account.", JsonRequestBehavior.AllowGet });
+                        return Json(new { result = "One more package added successfully.", JsonRequestBehavior.AllowGet });
                     }
 
                 }

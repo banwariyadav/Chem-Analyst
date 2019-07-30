@@ -52,5 +52,7 @@ namespace ChemAnalyst.ViewModel
         public DateTime? AssignDate { get; set; }
 
         public string PackageStatus { get; set; }
+
+        public int UserId { get; set; }
     }
 }

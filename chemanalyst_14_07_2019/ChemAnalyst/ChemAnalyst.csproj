@@ -331,6 +331,8 @@
     <Content Include="Views\ChemicalPricing\chemical-pricing-pdf.cshtml" />
     <Content Include="Views\Admin\commentary-list.cshtml" />
     <Content Include="Views\Admin\AddCommentary.cshtml" />
+    <Content Include="Views\Admin\country-list.cshtml" />
+    <Content Include="Views\Admin\add-country.cshtml" />
     <None Include="Views\ChemicalPricing\chemical-pricing11.cshtml" />
     <Content Include="Views\ProductAndCategory\add-product.cshtml" />
     <Content Include="Views\Admin\add-role.cshtml" />
@@ -407,6 +409,9 @@
     <Content Include="Views\ChemicalPricing\CommentaryHome.cshtml" />
     <Content Include="Views\ChemicalPricing\CommentaryDetails.cshtml" />
     <Content Include="Views\Industry\report-section.cshtml" />
+    <Content Include="Views\Company\CompanyProfileDetails.cshtml" />
+    <Content Include="Views\Login\custChangePassword.cshtml" />
+    <Content Include="Views\Login\cust-update-profile.cshtml" />
     <None Include="Views\ProductAndCategory\category1.cshtml" />
     <Content Include="Views\Admin\grid.cshtml" />
     <Content Include="Views\Admin\role1 - Copy.cshtml" />
@@ -587,6 +592,7 @@
     <Compile Include="ViewModel\SA_ProductViewModel.cs" />
     <Compile Include="ViewModel\SA_NewsViewModel.cs" />
     <Compile Include="ViewModel\SA_RoleViewModel.cs" />
+    <Compile Include="ViewModel\SA_CustomerViewModel.cs" />
     <Compile Include="ViewModel\SA_UserViewModel.cs" />
     <Compile Include="ViewModel\SeoFriendlyRoute.cs" />
     <Compile Include="ViewModel\SimpleReportViewModel.cs" />
@@ -617,6 +623,7 @@
     <Content Include="Views\User\UserView.cshtml" />
     <Content Include="Views\World\AddWorld.cshtml" />
     <Content Include="Views\Shared\_LayoutUser7.cshtml" />
+    <Content Include="Views\SubsManagement\ViewAllSubscriptions.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

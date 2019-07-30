@@ -191,6 +191,20 @@ namespace ChemAnalyst.DAL
             return cat;
         }
 
+        public static IEnumerable<SelectListItem> GetCountry()
+        {
+            ChemAnalystContext _context1 = new ChemAnalystContext();
+            var cat = (from coun in _context1.SA_Country select new SelectListItem { Text = coun.CountryName, Value = coun.id.ToString() }).AsEnumerable();
+            return cat;
+        }
+
+        public static string GetProductName( int ProductId)
+        {
+            ChemAnalystContext _context1 = new ChemAnalystContext();
+            var cat = (from coun in _context1.SA_Product where coun.id==ProductId select new { Text = coun.ProductName}).FirstOrDefault().Text;
+            return cat;
+        }
+
         public List<string> GetCustProductList(int custId)
         {
             ChemAnalystContext _context = new ChemAnalystContext();
@@ -198,6 +212,14 @@ namespace ChemAnalyst.DAL
             product = _context.CustProduct.Where(x => x.CustId == custId).ToList();
             List<string> lst = product.Select(e => e.ProdId.ToString()).ToList();
             return lst;
+
+        }
+
+        public static string GetCategory(int cat)
+        {
+            ChemAnalystContext _context = new ChemAnalystContext();
+            var category = _context.SA_Category.Where(w => w.id == cat).FirstOrDefault().CategoryName;
+            return category;
 
         }
 

@@ -3,6 +3,7 @@ using ChemAnalyst.Models;
 using ChemAnalyst.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -13,6 +14,7 @@ namespace ChemAnalyst.Controllers
     public class AdminController : Controller
     {
         // GET: Admin
+        private ChemAnalystContext _context = new ChemAnalystContext();
         public ActionResult Index()
         {
             return View("Login");
@@ -109,6 +111,22 @@ namespace ChemAnalyst.Controllers
 
         }
 
+        public ActionResult LoadCountryData()
+        {
+            try
+            {
+              
+                List<SA_Country> CountryList =_context.SA_Country.ToList();
+                return Json(new { data = CountryList }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
         public ActionResult LoadIndustryData()
         {
             try
@@ -155,6 +173,13 @@ namespace ChemAnalyst.Controllers
             return View("add-user", obj);
 
         }
+
+        public ActionResult AddCountry()
+        {
+           
+            return View("add-country");
+
+        }
         public ActionResult SaveUser(SA_User User)
         {
             for (int i = 0; i < Request.Files.Count; i++)
@@ -184,11 +209,40 @@ namespace ChemAnalyst.Controllers
             }
             return RedirectToAction("ShowUserList");
         }
+
+        public ActionResult SaveCountry(SA_Country Country)
+        {
+            if (Country.id == 0)
+            {
+                SA_Country Obj = new SA_Country();
+                Obj.CountryName = Country.CountryName;
+                Obj.Active = true;
+                _context.SA_Country.Add(Obj);
+                _context.SaveChanges();
+            }
+            else
+            {
+                var Obj = _context.SA_Country.Where(w => w.id == Country.id).FirstOrDefault();
+                Obj.CountryName = Country.CountryName;
+                _context.SaveChanges();
+              return RedirectToAction("ShowCountryList");
+
+            }
+            return RedirectToAction("ShowCountryList");
+        }
         public ActionResult ShowUserList()
         {
             UserDataStore Obj = new UserDataStore();
             List<SA_User> UserList = Obj.GetUserList();
             return View("user-list", UserList);
+        }
+
+
+        public ActionResult ShowCountryList()
+        {
+            UserDataStore Obj = new UserDataStore();
+            List<SA_Country> CountryList = _context.SA_Country.ToList();
+            return View("country-list", CountryList);
         }
 
         public ActionResult ShowIndustryList()
@@ -229,6 +283,15 @@ namespace ChemAnalyst.Controllers
             Objuser.UserRoleList = customerData;
             return View("add-user", Objuser);
         }
+
+        public ActionResult EditCountry(int id)
+        {
+            ChemAnalystContext _context = new ChemAnalystContext();
+
+            SA_Country obj = _context.SA_Country.Where(w => w.id == id).FirstOrDefault();
+           
+            return View("add-country", obj);
+        }
         public ActionResult Deleteuser(int id)
         {
 
@@ -242,6 +305,24 @@ namespace ChemAnalyst.Controllers
                 return View("ErrorEventArgs");
             }
 
+        }
+
+
+        public ActionResult Deletecountry(int id)
+        {
+            try
+            {
+                SA_Country country = _context.SA_Country.Where(c => c.id == id).FirstOrDefault();
+                _context.Entry(country).State = EntityState.Deleted;
+                int x = _context.SaveChanges();
+
+                return RedirectToAction("ShowCountryList");
+            }
+            catch (Exception ex)
+            {
+
+                return View("ErrorEventArgs");
+            }
         }
         /// <summary>
         /// Get Role data

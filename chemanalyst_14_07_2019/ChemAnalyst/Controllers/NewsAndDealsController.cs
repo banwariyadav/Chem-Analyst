@@ -45,6 +45,8 @@ namespace ChemAnalyst.Controllers
             return View("add-News", objCatViewModel);
 
         }
+
+        [ValidateInput(false)]
         public ActionResult SaveNews(SA_News UserNews)
         {
             for (int i = 0; i < Request.Files.Count; i++)
@@ -63,6 +65,8 @@ namespace ChemAnalyst.Controllers
 
                 }
             }
+            UserNews.status = 1;
+            UserNews.CreatedBy = Session["User"].ToString();
             UserNews.CreatedTime = DateTime.Now;
             NewsDataStore Obj = new NewsDataStore();
             if (UserNews.id == 0)
@@ -90,6 +94,7 @@ namespace ChemAnalyst.Controllers
             objSaCatV.URL = obj.URL;
             objSaCatV.MetaDiscription = obj.MetaDiscription;
             objSaCatV.Keywords = obj.Keywords;
+            objSaCatV.MetaTitle = obj.MetaTitle;
             objSaCatV.ProductList = productList;
             objSaCatV.Product = obj.Product.ToString();
 
@@ -138,6 +143,8 @@ namespace ChemAnalyst.Controllers
             return View("add-Deals", objCatViewModel);
 
         }
+
+        [ValidateInput(false)]
         public ActionResult SaveDeals(SA_Deals UserDeals)
         {
             for (int i = 0; i < Request.Files.Count; i++)
@@ -156,6 +163,8 @@ namespace ChemAnalyst.Controllers
 
                 }
             }
+            UserDeals.status = 1;
+            UserDeals.CreatedBy = Session["User"].ToString();
             UserDeals.CreatedTime = DateTime.Now;
             DealsDataStore Obj = new DealsDataStore();
             if (UserDeals.id == 0)
@@ -183,6 +192,7 @@ namespace ChemAnalyst.Controllers
             objSaCatV.URL = obj.URL;
             objSaCatV.MetaDiscription = obj.MetaDiscription;
             objSaCatV.Keywords = obj.Keywords;
+            objSaCatV.MetaTitle = obj.MetaTitle;
             objSaCatV.ProductList = productList;
 
             objSaCatV.Product = obj.Product.ToString();
@@ -302,8 +312,8 @@ namespace ChemAnalyst.Controllers
             NewsDataStore n = new NewsDataStore();
             ProductDataStore p = new ProductDataStore();
             NewsHomeViewModel model=new NewsHomeViewModel();
-            ViewBag.formdate = new DateTime(DateTime.Now.Year,DateTime.Now.Month,01).ToString("MM/dd/yyyy");
-            ViewBag.todate = DateTime.Now.ToString("MM/dd/yyyy");
+            //ViewBag.formdate = new DateTime(DateTime.Now.Year,DateTime.Now.Month,01).ToString("MM/dd/yyyy");
+            //ViewBag.todate = DateTime.Now.ToString("MM/dd/yyyy");
             if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
                 {
                     model.NewsList = n.GetCustNewsList(Convert.ToInt32(Session["LoginUser"])).ToPagedList(page ?? 1, pageSize);
@@ -345,7 +355,7 @@ namespace ChemAnalyst.Controllers
             //DealsDataStore d = new DealsDataStore();
             //var model= d.GetDealsList().ToPagedList(page ?? 1, pageSize);
             //return View(model);
-
+           
             int pageSize = 6;
             DealsDataStore n = new DealsDataStore();
             ProductDataStore p = new ProductDataStore();
@@ -365,10 +375,10 @@ namespace ChemAnalyst.Controllers
         }
 
         [HttpPost]
-        public ActionResult DealsHome(int? page, string id, DateTime search, DateTime searchto, string keyword)
+        public ActionResult DealsHome(int? page, string id, DateTime? search, DateTime? searchto, string keyword)
         {
-            ViewBag.formdate = search.ToString("MM/dd/yyyy");
-            ViewBag.todate = searchto.ToString("MM/dd/yyyy");
+            ViewBag.formdate = search != null ? Convert.ToDateTime(search).ToString("MM/dd/yyyy") : "";
+            ViewBag.todate = searchto != null ? Convert.ToDateTime(searchto).ToString("MM/dd/yyyy") : "";
             int pageSize = 6;
             DealsDataStore n = new DealsDataStore();
             ProductDataStore p = new ProductDataStore();
@@ -382,11 +392,12 @@ namespace ChemAnalyst.Controllers
             else
             {
 
-                model.DealsList = n.GetDealsBySearch(id, search, searchto,keyword).OrderByDescending(x => x.CreatedTime).ToPagedList(page ?? 1, pageSize);
+                model.DealsList = n.GetDealsBySearch(id, search, searchto, keyword).OrderByDescending(x => x.CreatedTime).ToPagedList(page ?? 1, pageSize);
             }
             ViewBag.category = p.ProductList();
             return View(model);
         }
+
 
         public ActionResult NewsDetails(int id)
         {

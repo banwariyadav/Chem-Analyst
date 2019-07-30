@@ -51,10 +51,28 @@
                     { "data": "AssignTo", "autoWidth": true },
                      { "data": "IPAddress", "autoWidth": true },
                     {
-                        "data": "CreatedDate", "render": function (data) {return convertJsonDateToShortDate(data);}
+                        "data": "CreatedDate", "render": function (data) { return convertJsonDateToShortDate(data); }
                     },
                      {
-                         "data": "Status", "render": function (data, type, row, meta) { return '<span class="label label-success">' + data + '</span>'; }
+                         "data": "Status", "render": function (data, type, row, meta) {
+                             debugger
+                             if (data == "New") {
+                                 return '<span class="label label-primary">' + data + '</span>';
+                             }
+                             if (data == "Assign") {
+                                 return '<span class="label label-info">' + data + '</span>';
+                             }
+                             if (data == "Won") {
+                                 return '<span class="label label-success">' + data + '</span>';
+                             }
+                             else if (data == "Pending") {
+                                 return '<span class="label label-warning">' + data + '</span>';
+                             }
+                             else if (data == "Lost") {
+                                 return '<span class="label label-danger">' + data + '</span>';
+                             }
+
+                         }
                      },
                       {
                           data: null, render: function (data, type, row) {
@@ -67,8 +85,8 @@
                             var isCoBrowse = $("#sessionInput").val();
                             debugger
                             if (isCoBrowse != "Admin") {
-                                if (row.Status == "New" || row.Status == "Won") {
-                                    return '<a style="cursor: default;" href="#" class="label label-primary"><i class="fa fa-plus"></i> ADD  </a>';
+                                if (row.Status == "Won") {
+                                    return '';
                                 }
                                 else {
                                     return '<a style="cursor: pointer;" href="../Subscription/AddPackage/' + row.Id + '" class="label label-primary"><i style="cursor: pointer;" class="fa fa-plus"></i> ADD  </a>';
@@ -77,7 +95,7 @@
                             }
                         }
                     }
-                   
+
                     //{
                     //    data: null, render: function (data, type, row) {
                     //        return '<a class="label label-default" href="/CustomerAndProduct/AddCustomerAndProduct/' + row.Id + '"> MANAGE</a>';
@@ -110,8 +128,8 @@
                         <th>Status</th>
                         <th>Action</th>
                         <th>Package</th>
-                       
-                       
+
+
                         @*<th>Process</th>*@
                     </tr>
                 </thead>

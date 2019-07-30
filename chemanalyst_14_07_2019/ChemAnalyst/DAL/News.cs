@@ -38,7 +38,7 @@ namespace ChemAnalyst.DAL
                 lst = from r in _context.SA_News
                       join p in _context.SA_Product on r.Product equals ids
                       where p.status==1 && r.status==1 && 
-                       r.Keywords.Contains(keyword) &&
+                       r.NewsDiscription.Contains(keyword) &&
                       DbFunctions.TruncateTime(r.CreatedTime) >= DbFunctions.TruncateTime(search)
                       && DbFunctions.TruncateTime(r.CreatedTime) <= DbFunctions.TruncateTime(searchto)
                       select r;
@@ -48,7 +48,7 @@ namespace ChemAnalyst.DAL
 
                 lst = from r in _context.SA_News
                       where r.status == 1 &&
-                       r.Keywords.Contains(keyword)  
+                       r.NewsDiscription.Contains(keyword)  
                       && DbFunctions.TruncateTime(r.CreatedTime) >= DbFunctions.TruncateTime(search)
                       && DbFunctions.TruncateTime(r.CreatedTime) <= DbFunctions.TruncateTime(searchto)
                       select r;
@@ -57,14 +57,14 @@ namespace ChemAnalyst.DAL
             {
                 var ids = Convert.ToInt32(id);
                 lst = from r in _context.SA_News
-                      join p in _context.SA_Product on r.Product equals ids where p.status == 1 && r.Keywords.Contains(keyword) && r.status == 1 
+                      join p in _context.SA_Product on r.Product equals ids where p.status == 1 && r.NewsDiscription.Contains(keyword) && r.status == 1 
                       select r;
 
             }
             else
             {
                 lst = from r in _context.SA_News
-                      where r.Keywords.Contains(keyword) && r.status == 1 
+                      where r.NewsDiscription.Contains(keyword) && r.status == 1 
                       select r;
             }
             return lst.Distinct();
@@ -90,6 +90,7 @@ namespace ChemAnalyst.DAL
             EditNews.URL = News.URL;
             EditNews.MetaDiscription = News.MetaDiscription;
             EditNews.Keywords = News.Keywords;
+            EditNews.MetaTitle = News.MetaTitle;
             EditNews.Product = News.Product;
             if (News.NewsImg != null)
             {

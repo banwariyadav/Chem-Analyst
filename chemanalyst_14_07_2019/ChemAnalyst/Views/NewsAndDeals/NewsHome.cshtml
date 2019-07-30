@@ -39,7 +39,7 @@
                 <h1>News</h1>
 
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">News</li>
                 </ol>
 
@@ -61,12 +61,12 @@
                                         {
                                             <div class="col-md-3">
                                                 @Html.TextBoxFor(m => m.search,
-                                         new { @id = "search",   @class = "plbxt btn btn-primary fromdate width100" })
+                                         new { @id = "search",   @class = "plbxt btn btn-primary fromdate width100", @placeholder = "From date", @autocomplete = "off" })
 
                                                   </div>
                                                 <div class="col-md-3">
                                                     @Html.TextBoxFor(m => m.searchto,
-                                         new { @id = "searchto",  @class = "plbxt btn btn-primary todate width100" })
+                                         new { @id = "searchto",  @class = "plbxt btn btn-primary todate width100", @placeholder = "To date", @autocomplete = "off" })
                                                 </div>
                                             <div class="col-md-3 pl-0">
                                                 @Html.TextBoxFor(m => m.keyword,
@@ -95,19 +95,20 @@
 
                                             <div class="col-md-4 col-sm-4 themestek-box-img-left">
                                                 <div class="news-pic">
-                                                    <img src="../ProductImages/@item.NewsImg" alt="">
+                                                    @*<img src="../ProductImages/@item.NewsImg" alt="">*@
+                                                    <img src="~/images/news-report.png" alt="" height="70" width="70">
                                                 </div>
                                             </div>
 
                                             <div class="themestek-box-content col-md-8 col-sm-8">
                                                 <div class="news-text">
-                                                    <h4>@(item.NewsName.Length > 40 ? (item.NewsName.Substring(0, 40)) : item.NewsName)...</h4>
+                                                    <h4> <a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">@(item.NewsName.Length > 40 ? (item.NewsName.Substring(0, 40)) : item.NewsName)...</a> </h4>
                                                     <p>@(item.NewsDiscription.Length > 100 ? (item.NewsDiscription.Substring(0, 100)) : item.NewsDiscription)...</p>
 
                                                     <div class="row mt-3">
                                                         <div class="col-6"><a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">Read More <i class="fa fa-arrow-right"></i></a></div>
 
-                                                        <div class="col-6"> <i class="fa fa-clock-o"></i>@item.CreatedTime.Date.ToString("M/dd/yyyy") </div>
+                                                        <div class="col-6"> <i class="fa fa-clock-o"></i>@item.CreatedTime.Date.ToString("MMM/yyyy") </div>
 
                                                     </div>
 

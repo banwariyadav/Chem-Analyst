@@ -1,36 +1,59 @@
 ﻿@using ChemAnalyst.ViewModel
 @model List<ChemAnalyst.ViewModel.StackedViewModel>
-
 @{
     var XLabels1 = "";
     var YValues1 = "";
     var label21 = "";
     var ChartTitle = "";
-
     var fValue = Model.FirstOrDefault().FirstValue;
     var lValue = Model.FirstOrDefault().LastValues;
     var SelectedValues = Model.FirstOrDefault().SelectedValues;
 
+    var selectedLegends = Model.FirstOrDefault().selectedLegends;
+
+
+
     if (SelectedValues == null)
     {
         SelectedValues = "Empty";
-
     }
 
-    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList());
-    var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.LstData.Select(w => w.Quantity)).ToList());
-    var label2 = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.StackedDimensionOne).ToList());
-    var Product = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.Product).FirstOrDefault());
-    var ChartType = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.ChartType).FirstOrDefault());
-    var range = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.range).FirstOrDefault());
-    var Category = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.category).FirstOrDefault());
-    var compare = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.Compare).FirstOrDefault());
+    if (selectedLegends == null)
+    {
+        selectedLegends = "";
+    }
+
+    var XLabels = "";
+    var YValues = "";
+    var label2 = "";
+    var Product = "";
+    var ChartType = "";
+    var range = "";
+    var Category = "";
+
+    if (Model.Select(x => x.ProductName).FirstOrDefault() == "No Data")
+    {
+
+
+    }
+    else
+    {
+        XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList());
+        YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.LstData.Select(w => w.Quantity)).ToList());
+        label2 = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.StackedDimensionOne).ToList());
+        Product = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.Product).FirstOrDefault());
+        ChartType = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.ChartType).FirstOrDefault());
+        range = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.range).FirstOrDefault());
+        Category = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.category).FirstOrDefault());
+    }
+
 
     var fromdate = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.FromDate).FirstOrDefault());
     var todate = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.ToDate).FirstOrDefault());
 
-    ChartTitle = Model.Select(x => x.ProductName).FirstOrDefault() + " " + Model.Select(x => x.range).FirstOrDefault() + " " + "Pricing Analysis " + "[Unit = Tonnes]";
+    ChartTitle = Model.Select(x => x.ProductName).FirstOrDefault() + " " + Model.Select(x => x.range).FirstOrDefault() + " " + "Pricing Analysis ";
 }
+
 
 
 @{
@@ -59,11 +82,42 @@
     <link rel="shortcut icon" href="~/images/favicon.ico">
     <link rel="stylesheet" href="~/css/owl.carousel.min.css">
     <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
-    @*<link rel="stylesheet" href="~/css/custom.css" type="text/css" />*@
+    @*
+        <link rel="stylesheet" href="~/css/custom.css" type="text/css" />*@
     <link href="~/css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/bootstrap-multiselect.css">
 
+
     <style>
+
+        #myModal .modal-content {
+	background-color: transparent;
+}
+#myModal .modal-dialog {
+	max-width: 790px;
+	height: 350px;
+	background-image: url(../images/subscribe-bg.png);
+	top: 15%;
+	background-size: cover;
+}
+
+.freeSub {
+	color: #fff;
+	padding: 50px 50px 0px 30px;
+}
+.freeSub h2 {
+	text-transform: uppercase;
+}
+.freeSub a.btn.btn-yellow {
+    color: #000000;
+    background: yellow;
+    text-transform: uppercase;
+}
+.freeSub a.text-center {
+    color: #fff;
+    margin-top: 10px;
+}
+
         .rangeSlider .slidecontainer {
             width: 100%;
         }
@@ -105,7 +159,21 @@
                     background: #7db11a;
                     cursor: pointer;
                 }
+
+        ::placeholder { /* Firefox, Chrome, Opera */
+            color: #fff;
+        }
+
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: #fff;
+        }
+
+        ::-ms-input-placeholder { /* Microsoft Edge */
+            color: #fff;
+        }
     </style>
+
+
 
 </head>
 
@@ -136,6 +204,9 @@
                             <div class="col-md-4 pl-0">
                                 <p><i class="fa fa-list"></i> Product</p>
                                 <select class="btn btn-primary width100" id="ddlProduct" name="ddlProduct" required="required" oninvalid="this.setCustomValidity('Please select product')" onchange="try{setCustomValidity('')}catch(e){}"></select>
+                                @*<select class="btn btn-primary width100" id="ddlProduct" name="ddlProduct" required="required" oninvalid="this.setCustomValidity('Please select product')"></select>*@
+
+                               
                             </div>
 
                             <div class="col-md-4 pl-0">
@@ -152,51 +223,58 @@
 
                             </div>
 
-                            <div class="col-md-4 mt10">
+                            <div class="col-md-4 mt10" style="display:none">
                                 <p>
                                     <i class="fa fa-compress"></i> Comparision
                                 </p>
                                 <select name="example-getting-started" id="example-getting-started" class="btn btn-primary width100" multiple="multiple"> </select>
                                 @*<option value="Sulfer">Sulfer</option>multiple="multiple"
-                            <option selected="selected" value="xyz">Xyz</option>
-                            <option selected="selected" value="pqr">Pqr</option>
-                            <option value="lmn">Lmn</option>*@
+                                    <option selected="selected" value="xyz">Xyz</option>
+                                    <option selected="selected" value="pqr">Pqr</option>
+                                    <option value="lmn">Lmn</option>*@
 
 
                             </div>
                             <div class="col-md-4 pl-0 mt10">
                                 <p><i class="fa fa-bar-chart"></i> Chart Types</p>
-                                <select class="btn btn-primary width100" id="ddlChart" name="ddlChart">
+                                <select class="btn btn-primary width100" id="ddlChart" name="ddlChart" style="width: 97%; margin-left: 13px;">
                                     <option value="line">Line Chart</option>
                                     <option value="bar">Bar Chart</option>
                                     <option value="pie">Pie Chart</option>
                                 </select>
                             </div>
 
-                            <div style="display:@(ViewBag.QYears == null ? "" : "none")" class="col-md-2 dtcol mt10">
+                            <div style="display:@(ViewBag.QYears == null ? " " : " none")" class="col-md-4 dtcol mt10">
                                 <p><i class="fa fa-bar-chart"></i> From Date</p>
-                                <input type="text" class="btn btn-primary width100" id="fromdate" name="fromdate" autocomplete="off" />
-
+                                <input type="text" class="btn btn-primary width100" placeholder="Select Date" id="fromdate" name="fromdate" autocomplete="off" />
                             </div>
-                            <div style="display:@(ViewBag.QYears == null ? "" : "none")" class="col-md-2 dtcol mt10">
+                            <div style="display:@(ViewBag.QYears == null ? " " : " none")" class="col-md-4 dtcol mt10">
                                 <p><i class="fa fa-bar-chart"></i> To Date</p>
-                                <input type="text" class="btn btn-primary width100" id="todate" name="todate" autocomplete="off" />
+                                <input type="text" class="btn btn-primary width100" placeholder="Select Date" id="todate" name="todate" autocomplete="off" />
                             </div>
-
-                            <div style="display:@(ViewBag.QYears != null ? "" : "none")" class="col-md-4 yrcol  mt10">
+                            <div style="display:@(ViewBag.QYears != null ? " " : " none")" class="col-md-4 yrcol  mt10">
                                 <p><i class="fa fa-bar-chart"></i> Year</p>
                                 <select class="btn btn-primary width100" id="ddlyear" name="ddlyear">
-                                    @{  ChemAnalyst.DAL.ChemicalPricing Objdal = new ChemAnalyst.DAL.ChemicalPricing();
-
-                                        foreach (var item in Objdal.GetYear())
+                                    @{
+                                        if (ViewBag.QYears != null)
                                         {
-                                            <option value="@item.Year">@item.Year</option>
+                                            foreach (var item in ViewBag.QYears)
+                                            {
+                                                <option value="@item.Year">@item.Year</option>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <option value="@DateTime.Now.Year">@DateTime.Now.Year</option>
                                         }
                                     }
                                 </select>
                             </div>
+
                             <input type="hidden" id="MaxValue" name="MaxValue" value="" />
                             <input type="hidden" id="MinValue" name="MinValue" value="" />
+                            <input type="hidden" id="ClearValue" name="ClearValue" value="" />
+                            <input type="hidden" id="hiddenLegends" name="hiddenLegends" value="@selectedLegends" />
 
                             <input type="hidden" id="ClearValue" name="ClearValue" value="" />
                             <div class="col-md-12 pl-0 mt12" style="margin-left: 15px;">
@@ -210,100 +288,270 @@
                                     Reset
                                 </button>
 
-                                <span style="cursor:pointer" class="btn btn-green mt30" onclick="generatePDF()">Export as PDF</span>
+                                <span id="exportpdf2" style="cursor:pointer; " class="btn btn-green mt30 " onclick="generatePDF()">Export as PDF</span>
+                                <a href="javascript:void(0)" id="exportxls2" onclick="exportToExcel('tblRegisteredUsers', 'Chemical-Pricing.')" class="btn btn-green mt30 ">Export as Excel</a>
 
                             </div>
-                            
+
 
                         </div>
                                         }
                 </div>
-                <button class="btn btn-green mt27" id="download-pdf" style="display:none">Download PDF</button>
+
+                <div class="filter-checkbox-btn lgndchk" style="display:block; ">
+
+
+                    @foreach (var item in ViewBag.AllLegends)
+                    {
+                        <label class="checkbox-inline" style="font-size: 12px;font-weight: bold;">
+                            <input type="checkbox" value="@item.Name" @(selectedLegends.Contains(item.Name) ? "checked='checked'" : "") class="chcktbl" onclick="myfunction(this)">@item.Name
+                        </label>
+                        @*<li><a href="#">@item <i class="fa fa-close"></i></a></li>*@
+                    }
+
+
+                </div>
 
 
 
-                @*<div class="filter-checkbox-btn">
-
-
-                    <ul>
-                        @foreach (string item in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))
-                        {
-                            <li><a href="#">@item <i class="fa fa-close"></i></a></li>
-                        }
-                    </ul>
-
-
-
-                </div>*@
 
 
                 <div id="invoice">
+                    <span class="pull-right" style="font-size:12px;margin-right: 2px; font-weight:bold">[Unit = INR/Tonnes]</span>
                     <canvas id="canvas"></canvas>
-                    <div style="height:20px"></div>
-                    <div class="rangeSlider col-lg-12" style="margin:0;cursor: pointer; color: #f30404;">
+                    @*<div style="height:20px"></div>*@
+                    <div class="rangeSlider col-lg-12" style="margin:0;cursor: pointer; color: #f30404; display:none">
                         <a onclick="SubmitResetForm()" title="Reset" id="submitReset" style="float: right;"><i class="fa fa-refresh"></i></a>
                         <div class="slidecontainer" style="display:none" id="slidecontainer1">
                             <input type="range" min="" max="" value="" class="slider" id="myRange">
                             <div style="height:10px"></div>
                             <p>Value: <span id="demo"></span></p>
                         </div>
-
-
                     </div>
-
                     <div class="col-md-12">
                         <div style="height:30px"></div>
-                        <div class="common-desc ">
-                            <h4 style="border-bottom: 1px solid #ccc">@Model.FirstOrDefault().CommentaryTitle   <a href="#" id="hrefComentery" style="cursor: pointer;font-size: 14px;float: right;" data-toggle="modal" data-target="#Comentery" onclick="ShowCommentaries()"><span>View all</span></a></h4>
-                            @*<h4 style="border-bottom: 1px solid #ccc">Commentary   <a href="#" style="font-size: 14px;float: right;" data-toggle="modal" onclick="ShowCommentaries()"><span>View all</span></a></h4>*@
+                        <div class="common-desc">
+                            <h4 style="border-bottom: 1px solid #ccc">
+                                @Model.FirstOrDefault().CommentaryTitle
+                                @*<a href="#" id="hrefComentery" style="cursor: pointer;font-size: 14px;float: right;" data-toggle="modal" data-target="#Comentery" onclick="ShowCommentaries()"><span>View all</span></a>*@
+                                <a id="viewAll" href="@Url.Action(" CommentaryHome", "ChemicalPricing" , new { ProductId=Model.Select(x => x.Product).FirstOrDefault() })" style="cursor: pointer;font-size: 14px;float: right;"><span>View all</span></a>
+                            </h4>
                             <p>
-                                @Model.FirstOrDefault().CommentaryDescription
 
 
+                                @Html.Raw(WebUtility.HtmlDecode(@Model.FirstOrDefault().CommentaryDescription))
                             </p>
                         </div>
+                        <div style="height:30px"></div>
+
 
                         <div class="custom-table">
-                            <a href="javascript:void(0)" id="exportxls2" onclick="exportToExcel('tblRegisteredUsers', 'Chemical-Pricing.')" class="btn btn-green mt30 pull-right">Export as Excel</a>
-                            <br /><br /><br /><br />
-                            <table class="table table-hover table-bordered" id="tblRegisteredUsers">
-                                <thead>
-                                    <tr class="table-primary">
-                                        <th></th>
-                                        @foreach (string column in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))
-                                        {
-                                            <th>@column</th>
-                                        }
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (string count in Model.Select(x => x.StackedDimensionOne).ToList())
-                                    {
-                                        <tr>
-                                            @foreach (var data in Model.Where(x => x.StackedDimensionOne == count).ToList())
-
-                                            {
-                                                <th>@count</th>
-                                                foreach (var value in data.LstData.Select(x => x.Quantity).ToList())
+                            @if (Model.FirstOrDefault().range.ToLower() == "weekly" || Model.FirstOrDefault().range.ToLower() == "quarterly")
+                            {
+                                <div style="overflow-x:scroll">
+                                    <table class="table table-hover table-bordered" id="tblRegisteredUsers">
+                                        <thead>
+                                            <tr class="table-primary">
+                                                <th>Product</th>
+                                                @if (Model.FirstOrDefault().range.ToLower() == "weekly")
                                                 {
-                                                    <th>@value</th>
+                                                    //
+                                                    <th></th>
                                                 }
+                                                @foreach (string column in Model.Select(x => x.StackedDimensionOne).ToList())
+                                                {
+
+                                                    <th>@column</th>
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (string column in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
+                                            {
+                                                <tr>
+                                                    <td>@column</td>
+                                                    @if (Model.FirstOrDefault().range.ToLower() == "weekly")
+                                                    {
+                                                        //
+                                                        <th>@Model.FirstOrDefault().Discription.ToString()</th>
+                                                    }
+                                                    @foreach (string x in Model.Select(x => x.StackedDimensionOne).ToList())
+                                                    {
+
+                                                        <th>@Model.FirstOrDefault(c => c.StackedDimensionOne == x).LstData.FirstOrDefault(e => e.DimensionOne == column).Quantity </th>
+                                                    }
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+
+                            else if (Model.FirstOrDefault().range.ToLower() == "monthly")
+                            {
+                                string[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+                                string[] mths = { "Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec" };
+                                <table class="table table-hover table-bordered" id="tblRegisteredUsers">
+                                    <thead>
+                                        <tr class="table-primary">
+                                            <th>Product</th>
+                                            <th>Year</th>
+                                            @foreach (string column in mths)
+                                            {
+                                                <th>@column</th>
                                             }
                                         </tr>
-                                    }
+                                    </thead>
+                                    <tbody>
+                                        @foreach (string x in Model.Select(x => x.Year).Distinct().ToList())
+                                        //foreach (string column in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
+                                        {
+                                            foreach (string column in (Model.FirstOrDefault().LstData.Select(z => z.DimensionOne).ToList()))
+                                            // foreach (string x in Model.Select(x => x.Year).Distinct().ToList())
+                                            {
+                                                //comment this condifition to view all year data including 0 total
+                                                if (Model.Where(c => c.StackedDimensionOne.Contains(x)).ToList().Sum(tt => tt.LstData.FirstOrDefault(e => e.DimensionOne == column).Quantity) > 0)
+                                                {
 
-                                </tbody>
-                            </table>
+                                                    <tr>
+                                                        <td>@column</td>
+                                                        <td>@x</td>
+                                                        @foreach (string s in months)
+                                                        {
+
+                                                            <td>
+                                                                @if (Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x) != null &&
+Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrDefault(e => e.DimensionOne == column) != null
+)
+                                                                {
+                                                                    <span>@Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrDefault(e => e.DimensionOne == column).Quantity</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span>0</span>
+                                                                }
+                                                            </td>
+                                                        }
+                                                    </tr>}
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else if (Model.FirstOrDefault().range.ToLower() == "daily basis")
+                            {
+                                @*<div style="overflow-y:scroll; height:500px;width: 1200px;z-index: 9999;    position: relative;">
+                                *@
+                                @*<div>
+                                *@
+                                <div id="divScorll" style="height:500px ;z-index: 9999; position: relative;">
+                                    <table class="table table-hover table-bordered dailybasis" id="tblRegisteredUsers">
+                                        <thead>
+                                            <tr class="table-primary">
+                                                <th scope="col" style=" width:90px">Product</th>
+                                                <th scope="col" style=" width:90px">Date</th>
+                                                <th scope="col" style=" width:116px">Commodity</th>
+                                                <th scope="col" style=" width:91px">Type</th>
+                                                <th scope="col" style=" width:82px">Terms</th>
+                                                <th scope="col" style=" width:90px">Location</th>
+                                                <th scope="col" style=" width:110px">Price</th>
+                                                <th scope="col" style=" width:110px">Mid Value</th>
+                                                <th scope="col" colspan="2" style=" width:150px">Differnce 4 Weeks Ago</th>
+                                                <th scope="col" style=" width:155px">Contract Details</th>
+                                                @*@foreach (var column in (Model.FirstOrDefault().lstDataTable.ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
+                                                    {
+
+                                                    <th>@column</th>
+                                                    }*@
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var column in (Model.FirstOrDefault().lstDataTable.ToList()))
+                                            {
+                                                <tr>
+                                                    <td style=" width:90px">@column.FileName</td>
+                                                    <td style=" width:90px">@column.Date</td>
+                                                    <td style=" width:116px">@column.Commodity</td>
+                                                    <td style=" width:91px">@column.Type</td>
+                                                    <td style=" width:82px">@column.Term</td>
+                                                    <td style=" width:93px">@column.Location</td>
+                                                    <td style=" width:110px">@column.Price</td>
+                                                    <td style=" width:110px">@column.MidValue</td>
+                                                    <td style=" width:40px">
+                                                        @{
+                                                            if (column.Difference4WeekAgo.FirstOrDefault().ToString() == "(")
+                                                            {
+                                                                <img src="~/images/down_stock_2.png" style="width: 20px;height: 15px;" />
+                                                                @*<span><i class="fa fa-arrow-circle-down" style="color:red"></i></span>*@
+                                                            }
+                                                            else
+                                                            {
+                                                                <img src="~/images/up_stock_1.png" style="width: 20px;height: 15px;" />
+                                                                @*<span><i class="fa fa-arrow-circle-up" style="color:green"></i></span>*@
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td style="width:110px">@column.Difference4WeekAgo</td>
+                                                    @*
+                                                        <td>
+                                                            @{
+                                                            if (column.Difference4WeekAgo.FirstOrDefault().ToString() == "(")
+                                                            {
+
+                                                            @column.Difference4WeekAgo <span><i class="fa fa-arrow-circle-down" style="color:red"></i></span>
+                                                            }
+                                                            else
+                                                            {
+                                                            @column.Difference4WeekAgo <span><i class="fa fa-arrow-circle-up" style="color:green"></i></span>
+                                                            }
+                                                            }
+                                                        </td>*@
+                                                    <td style=" width:155px">@column.ContractDetails</td>
+                                                </tr>
+                                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                                            }
 
 
+                                                            else
+                                                            {
+                                                                <table class="table table-hover table-bordered" id="tblRegisteredUsers">
+                                                                    <thead>
+                                                                        <tr class="table-primary">
+                                                                            <th>Year</th>
+                                                                            @foreach (string column in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
+                                                                            {
 
+                                                                                <th>@column</th>
+                                                                            }
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach (string count in Model.Select(x => x.StackedDimensionOne).ToList())
+                                                                        {
+                                                                            <tr>
+                                                                                @foreach (var data in Model.Where(x => x.StackedDimensionOne == count).ToList())
+
+                                                                                {
+                                                                                    <th>@count</th>
+
+                                                                                    foreach (var value in data.LstData.Select(x => x.Quantity).ToList())
+                                                                                    {
+                                                                                        <th>@value</th>
+                                                                                    }
+
+                                                                                }
+                                                                            </tr>
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+                                                            }
                         </div>
-
-
                     </div>
-
-
                 </div>
+
             </div>
 
         </div>
@@ -311,6 +559,32 @@
 
 
     </div>
+
+
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="login-pic">
+                                <div class="freeSub">
+                                    <h2>Get Chemical Pricing in few-clicks.</h2>
+                                    <a href="@Url.Action("FreeTrail", "ChemAnalyst")" class="btn btn-yellow">Start your Free Trail today.</a>
+                                    <a href="@Url.Action("FreeTrail", "ChemAnalyst")" class="text-center">Click here to subscribe free trial to enjoy our benefits!</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- The Modal -->
     <div class="modal" id="Comentery">
         <div class="modal-dialog modal-dialog-scrollable">
@@ -365,19 +639,63 @@
 
 
 
+    <style>
+        #divScorll thead, tfoot {
+            background: #f9f9f9;
+            display: table;
+            width: 100%;
+            width: calc(100% - 18px);
+        }
+
+        #divScorll tbody {
+            height: 400px;
+            overflow: auto;
+            overflow-x: hidden;
+            display: block;
+            width: 100%;
+        }
+
+            #divScorll tbody tr {
+                display: table;
+                width: 100%;
+                table-layout: fixed;
+            }
+    </style>
+    <script>
+
+
+
+        function myfunction(id) {
+            var $checkedagreeChecker = $('.chcktbl:checked');
+            var joinedValues = $checkedagreeChecker.map(function(){return this.value}).get().join(",");
+
+            $('input[name="hiddenLegends"]').val($checkedagreeChecker.length > 0 ? joinedValues : "" )
+
+            $("#submit").trigger("click");
+        }
+
+
+
+        function SubmitResetForm()
+        {
+            $("#submit").trigger("click");
+        }
+
+    </script>
 
 
 
 
-
-    @*<script src="~/js/jquery-3.3.1.slim.min.js"></script>*@
+    @*
+        <script src="~/js/jquery-3.3.1.slim.min.js"></script>*@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="~/js/popper.min.js"></script>
     <script src="~/js/bootstrap.min.js"></script>
     <script src="~/js/bootstrap-multiselect.js"></script>
-    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>*@
+    @*
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>*@
     <script src="~/js/Chart.min.js"></script>
 
     <script src="~/js/owl.carousel.js"></script>
@@ -387,7 +705,7 @@
     <script src="~/js/utils.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="~/css/jquery.datetimepicker.css" >
+    <link rel="stylesheet" type="text/css" href="~/css/jquery.datetimepicker.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="jquery.js"></script>
     <script src="~/js/jquery.datetimepicker.full.min.js"></script>
@@ -402,36 +720,34 @@
 
     <script src="https://igniteui.com/js/external/FileSaver.js"></script>
     <script src="https://igniteui.com/js/external/Blob.js"></script>
-   
+
 
     <script src="https://www.github.developerdan.com/table-to-json/javascripts/jquery.tabletojson.min.js"></script>
-    <script>
-
-        function SubmitResetForm()
-        {
-            $("#submit").trigger("click");
-        }
-
-    </script>
     <script type="text/javascript">
         $(function () {
+            $("#todate").attr("disabled","disabled");
             jQuery('#fromdate').datepicker({
                 changeMonth: true,
                 changeYear: true ,
                 onSelect: function (selected) {
                     var diff = 30;
-                    if($("#ddlRange").val() == "Yearly" || $("#ddlRange").val() == "Monthly"){
-                        diff = (365*5);
+                    if($("#ddlRange").val() == "Yearly" ){
+                        diff = (365*500);
+                    }
+                    if( $("#ddlRange").val() == "Monthly"){
+                        diff = (365*3);
                     }
                     if($("#ddlRange").val() == "Quarterly" ){
                         diff = (365);
                     }
                     if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily basis" || $("#ddlRange").val() == "Daily Bulk"){
-                        diff = (30);
+                        diff = (29);
                     }
                     var dt = new Date(selected);
                     dt.setDate(dt.getDate() + diff);
+                    $("#todate").removeAttr("disabled");
                     $("#todate").datepicker("option", "maxDate", dt);
+
                     $("#todate").datepicker("option", "minDate", new Date(selected));
                 }
             });
@@ -440,38 +756,82 @@
                 changeYear: true ,
                 onSelect: function (selected) {
 
-
+                    debugger;
                     var diff = 30;
-                    if($("#ddlRange").val() == "Yearly" || $("#ddlRange").val() == "Monthly"){
-                        diff = (365*5);
+                    if($("#ddlRange").val() == "Yearly"){
+                        diff = (365*500);
+                    }
+                    if( $("#ddlRange").val() == "Monthly"){
+                        diff = (365*3);
                     }
                     if($("#ddlRange").val() == "Quarterly"){
                         diff = (365);
                     }
-                    if($($("#ddlRange").val() == "Weekly" || "#ddlRange").val() == "Daily basis" || $("#ddlRange").val() == "Daily Bulk"){
-                        diff = (30);
+                    if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily basis" || $("#ddlRange").val() == "Daily Bulk"){
+                        diff = (29);
                     }
 
                     var dt = new Date(selected);
                     dt.setDate(dt.getDate() - diff);
-                    $("#fromdate").datepicker("option", "maxDate",new Date(selected) );
-                    $("#fromdate").datepicker("option", "minDate",dt );
+                    if($("#ddlRange").val() != "Yearly"){
+                        var dtt = $('#fromdate').datepicker('getDate');
+
+                        var dt = new Date(dtt);
+                        dt.setDate(dt.getDate() + diff);
+
+                        $("#todate").datepicker("option", "maxDate", dt);
+                        $("#todate").datepicker("option", "minDate", new Date(dtt));
+                    }
                 }
             });
 
         });
+        function resetdates(){
 
+            var diff = 30;
+            if($("#ddlRange").val() == "Yearly" ){
+                diff = (365*500);
+            }
+            if( $("#ddlRange").val() == "Monthly"){
+                diff = (365*3);
+            }
+            if($("#ddlRange").val() == "Quarterly"){
+                diff = (365);
+            }
+            if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily basis" || $("#ddlRange").val() == "Daily Bulk"){
+                diff = (29);
+            }
+
+            var dt = new Date();
+            // $('#todate').datepicker('setDate', dt);
+            dt.setDate(dt.getDate() - diff);
+            if($("#ddlRange").val() != "Yearly" ){
+
+                if( $("#ddlRange").val() == "Monthly"){
+                    var d = new Date();
+
+                    $('#fromdate').datepicker('setDate', new Date(d.getFullYear(),d.getMonth(),01));
+                    $('#todate').datepicker('setDate', 'today');
+                }else{
+                    $('#fromdate').datepicker('setDate', dt);
+                    $('#todate').datepicker('setDate', 'today');
+                }
+            }else{
+                $('#fromdate').val('');
+                $('#todate').val('');
+            }
+        }
 
         function exportToExcel(tableId, tableName) {
             //showloader();
-            debugger;
+
             setTimeout(function () { export_table_to_excel(tableId, 'xlsx' || 'xlsx', tableName); }, 100);
 
 
         }
 
         function export_table_to_excel(id, type, fn) {
-            debugger;
+
 
             var table ;
             if (id == 'tbllince') {
@@ -499,18 +859,21 @@
             //setTimeout(function () { hideloader(); }, 100);
         }
 
+
+    </script>
+    <script>
         $(document).ready(function () {
 
 
             var range = $(ddlRange).find("option:selected").val();
             var ddlCustomers = $("#ddlChart");
-            
+
             if (range == "Daily basis" || range == "Daily Bulk") {
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
             }
             else if(range == "Quarterly")
             {
-                ddlCustomers.empty().append('<option selected="selected" value="pie" >Pie Chart</option>');
+                ddlCustomers.empty().append('<option selected="selected" value="bar" >Bar Chart</option>');
             }
             else if(range == "Monthly")
             {
@@ -525,19 +888,55 @@
             }
 
             ShowCommentariesByDeafult()
+
+            $("#ddlProduct").change(function () {
+                debugger;
+                var ProductId=$(ddlProduct).find("option:selected").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "../ChemicalPricing/CheckAccess",
+                    data: "{ ProductId:"+ ProductId +"}" ,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: false,
+                    success: function (response) {
+                        debugger;
+                        if (response=="Access") {
+
+                        }
+                        else
+                        {
+                            $('#myModal').modal({backdrop: 'static', keyboard: false});
+                            event.preventDefault();
+                        }
+                    },
+                    failure: function (response) {
+                        // alert(response.responseText);
+                    },
+                    error: function (response) {
+                        // alert(response.responseText);
+                    }
+                });
+            });
+
+
+
+          
+
         });
 
         $("body").on("change", "#ddlRange", function () {
             var range=$(ddlRange).find("option:selected").val();
             var ddlCustomers = $("#ddlChart");
 
-            
+
             if (range == "Daily basis" || range == "Daily Bulk") {
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
             }
             else if(range == "Quarterly")
             {
-                ddlCustomers.empty().append('<option selected="selected" value="pie" >Pie Chart</option>');
+                ddlCustomers.empty().append('<option selected="selected" value="bar" >Bar Chart</option>');
             }
             else if(range == "Monthly")
             {
@@ -554,7 +953,7 @@
 
         function ShowCommentaries()
         {
-            debugger;
+
             var  ProductId = $('#ddlProduct').val();
             $.ajax({
                 type: "POST",
@@ -566,7 +965,7 @@
                 success: function (response) {
                     $("#Commentaries").html('');
                     $.each(response, function () {
-                        debugger;
+
                         //ddlCustomers.append($("<option></option>").val(this['Value']).html(this['Text']));
                         $("#Commentaries").append($("<h3 style='font-size:20px !important; font-weight: bold;'> "+this.Text+" </h3>")).append($("<p style='font-size:14px !important'> "+this.Value+" </p>"));
                     });
@@ -585,7 +984,7 @@
 
         function ShowCommentariesByDeafult()
         {
-            //debugger;
+            //
             var  ProductId = 'None';
             $.ajax({
                 type: "POST",
@@ -597,7 +996,7 @@
                 success: function (response) {
                     $("#Commentaries").html('');
                     $.each(response, function () {
-                        debugger;
+
                         //ddlCustomers.append($("<option></option>").val(this['Value']).html(this['Text']));
                         $("#Commentaries").append($("<h3 style='font-size:20px !important; font-weight: bold;'> "+this.Text+" </h3>")).append($("<p style='font-size:14px !important'> "+this.Value+" </p>"));
                     });
@@ -614,85 +1013,97 @@
             });
         }
 
-        function ResetForm()
-        {
-            $('#ClearValue').val('ClearMaxValue');
 
-        }
 
     </script>
     <script>
-        //donwload pdf from original canvas
-        function downloadPDF() {
+        function SubmitForm() {
+            $("#todate").removeAttr("disabled");
+            var Product = @Html.Raw(Product);
+            var ChartType = @Html.Raw(ChartType);
+            var range = @Html.Raw(range);
+            var Category = @Html.Raw(Category);
 
 
-            var canvas = document.querySelector('#canvas');
-            //creates image
-            var canvasImg = canvas.toDataURL("image/png", 1.0);//
+            //  $('#ddlProduct').val();
+            if ( $('#ddlProduct').val()!=Product && $('#ddlProduct').val()!='')// Calling validation function
+            {
+                $('#myModal').modal({backdrop: 'static', keyboard: false});
+                event.preventDefault();
+            }
 
-            //creates PDF from img
-            var doc = new jsPDF('landscape');
-            doc.setFontSize(20);
-
-            doc.setDrawColor(255, 0, 0);
-            doc.setFillColor(255, 255, 255);
-            doc.rect(10, 10, 150, 160, "F");
-            doc.setDrawColor(255, 0, 0);
-
-
-            doc.addImage(canvasImg, 'PNG', 10, 10, 280, 150 );
-            doc.save('ChemicalPricingData.pdf');
         }
-                document.getElementById('download-pdf').addEventListener("click", downloadPDF);
 
 
+        function ResetForm()
+        {
+            var Product = @Html.Raw(Product);
+            var ChartType = @Html.Raw(ChartType);
+            var range = @Html.Raw(range);
+            var Category = @Html.Raw(Category);
 
+            $('#ClearValue').val('ClearMaxValue');
+
+            //  $('#ddlProduct').val();
+            if ( $('#ddlProduct').val()!=Product && $('#ddlProduct').val()!='')// Calling validation function
+            {
+                $('#myModal').modal({backdrop: 'static', keyboard: false});
+                event.preventDefault();
+            }
+
+        }
         $("body").on("change", "#category", function () {
             var CatId=$(category).find("option:selected").val();
+
             var ddlCustomers = $("#ddlProduct");
-            var ddlCompare = $("#example-getting-started");
-            $("#example-getting-started").multiselect('destroy');
-            $('#example-getting-started').empty()
+            //  var ddlCompare = $("#example-getting-started");
             // example-getting-started
             ddlCustomers.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
-           // ddlCompare.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
-
             $.ajax({
                 type: "POST",
-                url: "./GetProductNameUser",
+                url: "../ChemicalPricing/GetProductName",
                 data: "{ CatId:"+ CatId +"}" ,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 async: false,
                 success: function (response) {
                     ddlCustomers.empty().append('<option selected="selected" value=""> select Product</option>');
-                  //  ddlCompare.empty().append('<option selected="selected" value=""> select compare Product</option>');
+                    //ddlCompare.empty().append('<option selected="selected" value="0"> select Product</option>');
 
                     $.each(response, function () {
                         ddlCustomers.append($("<option></option>").val(this['Value']).html(this['Text']));
-                        ddlCompare.append($("<option  ></option>").val(this['Value']).html(this['Text']));
+                        // ddlCompare.append($("<option  ></option>").val(this['Value']).html(this['Text']));
 
                     });
                     $("#example-getting-started").multiselect();
+                    // alert("category call");
                 },
                 failure: function (response) {
-                    //  alert(response.responseText);
+                    // alert(response.responseText);
                 },
                 error: function (response) {
-                    //  alert(response.responseText);
+                    // alert(response.responseText);
                 }
             });
-
         });
 
-   
+
+        //$("body").on("change", "#ddlProduct", function () {
+      
+
+
+
+
+
+
+
 
 
         function Drowchart(id, d) {
             var XLabels = @Html.Raw(XLabels);
             var YValues = @Html.Raw(YValues);
             var label = @Html.Raw(label2);
-            debugger
+
             var firstValue = label[0];
             var lasttValue = label[label.length-1];
             $("#myRange").attr("min", @fValue);
@@ -778,13 +1189,14 @@
                     color += letters[Math.floor(Math.random() * 16)];
                 }
                 Bcolor=color;
+                debugger;
                 return color;
                 //var o = Math.round,
                 //    r = Math.random,
                 //    s = 100;
                 //return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
             }
-            debugger
+
             var ctx = document.getElementById(id).getContext('2d');
             window.myLine =  new Chart(ctx, {      options: options,
                 data: barChartData,
@@ -795,7 +1207,6 @@
 
 
         window.onload = function () {
-
             var Product = @Html.Raw(Product);
             var ChartType = @Html.Raw(ChartType);
             var range = @Html.Raw(range);
@@ -803,7 +1214,7 @@
             var to = @Html.Raw(todate);
             var Category = @Html.Raw(Category);
 
-            $('#category').val(Category).trigger('change');
+            $('#category').val(Category).trigger('change');;
 
             $('#ddlProduct').val(Product);
             $('#ddlChart').val(ChartType);
@@ -812,20 +1223,6 @@
             $('#fromdate').val(from);
             $('#todate').val(to);
             $('#ddlChart').val(ChartType);
-
-            var compare = @Html.Raw(compare);
-            if(compare!='')
-            {
-                var array = compare.split(',');
-                for(var i=0;i<array.length;i++)
-                {
-                    //$("#example-getting-started").val(array[i]).find("option[value=" + array[i] +"]").attr('selected', 'selected');
-                    $("#example-getting-started option[value="+array[i]+"]").attr("selected","selected");
-                }
-                $("#example-getting-started").multiselect();
-            }
-
-
             Drowchart('canvas', ChartType);
             var  cyear ='@(ViewBag.CYear==null?"": ViewBag.CYear)'
 
@@ -835,8 +1232,8 @@
 
             //Drowchart('canvas2','bar');
             var selected = $("#ddlRange option:selected").text();
-            debugger
-            if (selected == "Yearly") {
+
+            if (selected == "Yearly" ) {
                 $("#slidecontainer1").show()
             }
             else
@@ -849,6 +1246,7 @@
         document.getElementById('drowchart').addEventListener('change', function () {
             var d = document.getElementById('drowchart').value;
             //alert(d);
+
             Drowchart('canvas', d);
         });
 
@@ -867,6 +1265,7 @@
 
         var colorNames = Object.keys(window.chartColors);
         document.getElementById('addDataset').addEventListener('click', function () {
+
             var colorName = colorNames[config.data.datasets.length % colorNames.length];
             var newColor = window.chartColors[colorName];
             var newDataset = {
@@ -913,14 +1312,17 @@
             window.myLine.update();
         });
 
-        function setdtval(){
 
-            if($("#ddlRange").val() =="Quarterly"){
+        function setdtval(){
+            $(".lgndchk").hide();
+            $('input[name="hiddenLegends"]').val("");
+            if($("#ddlRange").val() =="Quarterly"  || $("#ddlRange").val()   ==  "Weekly"){
                 $(".dtcol").hide();
                 $(".yrcol").show();
             }else{
                 $(".dtcol").show();
                 $(".yrcol").hide();
+                resetdates()
             }
 
             if($("#ddlRange").val() =="Quarterly"){
@@ -929,9 +1331,15 @@
             }
         }
 
-
         $(document).ready(function () {
-            $("#Chemprice").validate({
+
+            //if("#ddlRange option:selected").text()=="Yearly") {
+            //    $("#slidecontainer").show();
+            //}
+
+
+
+            $("#ShowChart").validate({
                 debug: true,
                 rules: {
                     ddlProduct: {
@@ -965,10 +1373,16 @@
                     ddlRange: "range Required",
                 },
             });
+
+
         })
 
-    </script>
 
+        //  $('#ddlRange').on('change', function() {
+        //alert( this.value );
+        //  });
+
+    </script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
@@ -994,6 +1408,10 @@
         }
     </script>
     <script>
+        //$(document).ready( function () {
+        //    $('.dailybasis').DataTable();
+        //} );
+
         //function generatePDF() {
         //  // Choose the element that our invoice is rendered in.
         //  const element = document.getElementById("invoice");
@@ -1012,7 +1430,7 @@
 
 
             var element = document.getElementById('invoice');
-            debugger
+
             // Choose pagebreak options based on mode.
             var mode = "avoid-all";
             var pagebreak = (mode === 'specify') ?
@@ -1023,20 +1441,24 @@
             $("#hrefComentery").hide();
             $("#slidecontainer1").hide();
             $("#submitReset").hide();
+            $("#exportpdf2").hide();
+            $("#viewAll").hide();
 
 
             // Generate the PDF.
             html2pdf().from(element).set({
                 filename: "Chemical-Pricing-Export" + '.pdf',
                 pagebreak: pagebreak,
-                //jsPDF: {orientation: 'landscape', unit: 'in', format: 'letter', compressPDF: true}
-                jsPDF: {orientation: 'landscape', unit: 'in', format: 'legal', compressPDF: true}
+                jsPDF: {orientation: 'landscape', unit: 'in', format: 'letter', compressPDF: true}
             }).save().then(function(pdf) {
                 //This logs the right base64
                 $("#hrefComentery").show();
                 $("#exportxls2").show();
                 $("#slidecontainer1").show();
                 $("#submitReset").show();
+                $("#exportpdf2").show();
+                $("#viewAll").show();
+
 
                 // window.location.reload();
             });;

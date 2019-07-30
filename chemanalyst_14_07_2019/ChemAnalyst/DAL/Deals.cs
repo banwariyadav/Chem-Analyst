@@ -38,8 +38,13 @@ namespace ChemAnalyst.DAL
 
         }
 
-        public IQueryable<SA_Deals> GetDealsBySearch(string id, DateTime search, DateTime searchto, string keyword)
+        public IQueryable<SA_Deals> GetDealsBySearch(string id, DateTime? from, DateTime? to, string keyword)
         {
+
+            DateTime search = from == null ? new DateTime(1990, 01, 01) : from.Value;
+            DateTime searchto = to == null ? new DateTime(2100, 01, 01) : to.Value;
+
+
             if (id == null) { id = ""; }
             IQueryable<SA_Deals> lst;
             if (id != "" && search != DateTime.MinValue)
@@ -48,7 +53,7 @@ namespace ChemAnalyst.DAL
                 lst = from r in _context.SA_Deals
                       join p in _context.SA_Product on r.Product equals ids
                       where p.status == 1 && r.status == 1 &&
-                       r.Keywords.Contains(keyword) &&
+                       r.DealsDiscription.Contains(keyword) &&
                       DbFunctions.TruncateTime(r.CreatedTime) >= DbFunctions.TruncateTime(search)
                       && DbFunctions.TruncateTime(r.CreatedTime) <= DbFunctions.TruncateTime(searchto)
                       select r;
@@ -58,7 +63,7 @@ namespace ChemAnalyst.DAL
 
                 lst = from r in _context.SA_Deals
                       where r.status == 1 &&
-                       r.Keywords.Contains(keyword)
+                       r.DealsDiscription.Contains(keyword)
                       && DbFunctions.TruncateTime(r.CreatedTime) >= DbFunctions.TruncateTime(search)
                       && DbFunctions.TruncateTime(r.CreatedTime) <= DbFunctions.TruncateTime(searchto)
                       select r;
@@ -68,13 +73,13 @@ namespace ChemAnalyst.DAL
                 var ids = Convert.ToInt32(id);
                 lst = from r in _context.SA_Deals
                       join p in _context.SA_Product on r.Product equals ids
-                      where p.status == 1 && r.Keywords.Contains(keyword) && r.status == 1
+                      where p.status == 1 && r.DealsDiscription.Contains(keyword) && r.status == 1
                       select r;
             }
             else
             {
                 lst = from r in _context.SA_Deals
-                      where r.Keywords.Contains(keyword) && r.status == 1
+                      where r.DealsDiscription.Contains(keyword) && r.status == 1
                       select r;
             }
             return lst.Distinct();
@@ -88,6 +93,7 @@ namespace ChemAnalyst.DAL
             EditDeals.DealsDiscription = Deals.DealsDiscription;
             EditDeals.URL = Deals.URL;
             EditDeals.MetaDiscription = Deals.MetaDiscription;
+            EditDeals.MetaTitle = Deals.MetaTitle;
             EditDeals.Keywords = Deals.Keywords;
             EditDeals.Product = Deals.Product;
             if(Deals.DealsImg!=null)

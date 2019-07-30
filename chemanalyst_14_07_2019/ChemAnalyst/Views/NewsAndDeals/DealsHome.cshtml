@@ -4,10 +4,7 @@
 @using PagedList.Mvc;
 @using PagedList;
 
-@*@{
 
-        Layout = "~/Views/Shared/_LayoutUser2.cshtml";
-    }*@
 @{
     if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
     {
@@ -15,140 +12,141 @@
     }
     else
     {
-        Layout = "~/Views/Shared/_LayoutUser1.cshtml";
+        Layout = "~/Views/Shared/_LayoutUser2.cshtml";
     }
 
 }
 
-<body>
+    <body>
+        <style>
+            ::placeholder { /* Firefox, Chrome, Opera */
+                color: #fff;
+            }
 
-    @if (Session["UserRole"] == null)
-    {
+            :-ms-input-placeholder { /* Internet Explorer 10-11 */
+                color: #fff;
+            }
 
-        <div class="inner-banner">
-            <img src="/images/about-banner.jpg">
-            <h1>Deals</h1>
+            ::-ms-input-placeholder { /* Microsoft Edge */
+                color: #fff;
+            }
+        </style>
 
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Deals</li>
-            </ol>
+        @if (Session["UserRole"] == null)
+        {
 
-        </div>
-    }
+            <div class="inner-banner">
+                <img src="~/images/about-banner.jpg">
+                <h1>Deals</h1>
 
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Deals</li>
+                </ol>
 
-    <div class="page-content">
-        <div class="static-page">
-            <div class="container">
-
-                @*<div class="blog-list">*@
-                <div >
-
-                    <div class="row">
-                        @if (Session["UserRole"] == null)
-                        {
-                            <div class="col-lg-12">
-                                <div class="searchbox">
-                                    @using (Html.BeginForm("DealsHome", "NewsAndDeals", null, FormMethod.Post, new { @class = "row", enctype = "multipart/form-data" }))
-                                    {
-                                        <div class="col-md-3">
-                                            @Html.TextBoxFor(m => m.search,
-                                         new { @id = "search", @class = "plbxt btn btn-primary fromdate width100" })
-
-                                        </div>
-                                        <div class="col-md-3">
-                                            @Html.TextBoxFor(m => m.searchto,
-                                         new { @id = "searchto", @class = "plbxt btn btn-primary todate width100" })
-                                        </div>
-                                                <div class="col-md-3 pl-0">
-                                                    @Html.TextBoxFor(m => m.keyword,
-                                         new { @id = "keyword", @placeholder = "Keyword", @class = "  btn btn-primary width100" })
+            </div>
+        }
 
 
-                                                </div>
-                                                <div class="col-md-2 pl-0">
-                                                    <button type="submit" class="btn btn-green">
-                                                        <i class="fa fa-filter"></i>
-                                                        Filter
-                                                    </button>
-                                                </div>
-                                    }
+        <div class="page-content">
+            <div class="static-page">
+                <div class="container">
+
+                    @* <div class="blog-list">*@
+                    <div>
+
+                        <div class="row">
+                            @if (Session["UserRole"] == null)
+                            {
+                                <div class="col-lg-12">
+                                    <div class="searchbox">
+                                        @using (Html.BeginForm("DealsHome", "NewsAndDeals", null, FormMethod.Post, new { @class = "row", enctype = "multipart/form-data" }))
+                                        {
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.search,
+                                             new { @id = "search", @class = "plbxt btn btn-primary fromdate width100", @placeholder = "From date", @autocomplete = "off" })
+
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.searchto,
+                                             new { @id = "searchto", @class = "plbxt btn btn-primary todate width100", @placeholder = "To date", @autocomplete = "off" })
+                                            </div>
+                                            <div class="col-md-3 pl-0">
+                                                @Html.TextBoxFor(m => m.keyword,
+                                     new { @id = "keyword", @placeholder = "Keyword", @class = "  btn btn-primary width100" })
+
+
+                                            </div>
+                                            <div class="col-md-2 pl-0">
+                                                <button type="submit" class="btn btn-green">
+                                                    <i class="fa fa-filter"></i>
+                                                    Filter
+                                                </button>
+                                            </div>
+                                        }
+                                    </div>
                                 </div>
-                            </div>
-                        }
-                        <div class="width100" style="height:30px"></div>
+                            }
+                            <div class="width100" style="height:30px"></div>
 
 
-                        @foreach (var item in Model.DealsList)
-                        {
+                            @foreach (var item in Model.DealsList)
+                            {
 
 
-                            <div class="col-md-6 col-sm-6">
+                                <div class="col-md-6 col-sm-6">
 
-                                <div class="post-item clearfix">
+                                    <div class="post-item clearfix">
 
-                                    <div class="row">
+                                        <div class="row">
 
-                                        <div class="col-md-4 col-sm-4 themestek-box-img-left">
-                                            <div class="news-pic">
-                                                @*<img src="~/ProductImages/@Model.DealsList.First().DealsImg" alt="">*@
-                                                <img src="~/images/deal.jpg" alt="">
-                                            </div>
-                                        </div>
-
-                                        <div class="themestek-box-content col-md-8 col-sm-8">
-                                            <div class="news-text">
-                                                <h4>@Model.DealsList.First().DealsName</h4>
-                                                <p>@Model.DealsList.First().DealsDiscription.Substring(0, 90)...</p>
-
-                                                <div class="row mt-3">
-                                                    <div class="col-6"><a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">Read More <i class="fa fa-arrow-right"></i></a></div>
-                                                    <div class="col-6"> <i class="fa fa-clock-o"></i>@item.CreatedTime.Value.Date.ToString("M/dd/yyyy") </div>
+                                            <div class="col-md-4 col-sm-4 themestek-box-img-left">
+                                                <div class="news-pic">
+                                                    @*<img src="~/ProductImages/@Model.DealsList.First().DealsImg" alt="">*@
+                                                    <img src="~/images/dealss.png" alt="">
                                                 </div>
+                                            </div>
 
+                                            <div class="themestek-box-content col-md-8 col-sm-8">
+                                                <div class="news-text">
+                                                    <h4><a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">@Model.DealsList.First().DealsName </a> </h4>
+                                                    <p>@(item.DealsDiscription.Length > 100 ? (item.DealsDiscription.Substring(0, 100)) : item.DealsDiscription)...</p>
+
+                                                    <div class="row mt-3">
+                                                        <div class="col-6"><a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">Read More <i class="fa fa-arrow-right"></i></a></div>
+                                                        <div class="col-6"> <i class="fa fa-clock-o"></i>@item.CreatedTime.Value.Date.ToString("MMM/yyyy") </div>
+                                                    </div>
+
+                                                </div>
                                             </div>
                                         </div>
+
                                     </div>
 
                                 </div>
+                            }
+                        </div>
 
-                            </div>
-                        }
                     </div>
-
+                    @Html.PagedListPager(Model.DealsList, page => Url.Action("DealsHome", new { page }))
                 </div>
-                @Html.PagedListPager(Model.DealsList, page => Url.Action("DealsHome", new { page }))
             </div>
         </div>
-    </div>
 
 
 
 
-    <style>
-        ::placeholder { /* Firefox, Chrome, Opera */
-            color: #fff;
-        }
-
-        :-ms-input-placeholder { /* Internet Explorer 10-11 */
-            color: #fff;
-        }
-
-        ::-ms-input-placeholder { /* Microsoft Edge */
-            color: #fff;
-        }
-    </style>
 
 
-    <script src="../js/jquery.js"></script>
-    <script src="../js/jquery-3.3.1.slim.min.js"></script>
-    <script src="../js/popper.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    @*<script src="http://cdnjs.cloudflare.com/ajax/libs/simplelightbox/1.17.1/simple-lightbox.js"></script>*@
-    <script src="../js/owl.carousel.js"></script>
-    <script src="../js/wow.min.js"></script>
-    <script>
+
+        <script src="../js/jquery.js"></script>
+        <script src="../js/jquery-3.3.1.slim.min.js"></script>
+        <script src="../js/popper.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        @*<script src="http://cdnjs.cloudflare.com/ajax/libs/simplelightbox/1.17.1/simple-lightbox.js"></script>*@
+        <script src="../js/owl.carousel.js"></script>
+        <script src="../js/wow.min.js"></script>
+        <script>
 
             $(function () {
 
@@ -173,5 +171,5 @@
                 $('.fromdate').val('@ViewBag.formdate');
                 $('.todate').val('@ViewBag.todate');
             });
-    </script>
-</body>
+        </script>
+    </body>

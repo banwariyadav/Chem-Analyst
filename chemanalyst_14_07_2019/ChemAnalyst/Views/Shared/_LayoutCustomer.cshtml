@@ -39,8 +39,8 @@
 
 
                                 <div class="dropdown-content">
-                                    <a href="@Url.Action("UpdateProfile", "User")"><i class="fa fa-pencil-square-o"></i>Profile Update</a>
-                                    <a href="@Url.Action("ChangePassword", "User")"><i class="fa fa-lock"></i>Change Password</a>
+                                    <a href="@Url.Action("CustUpdateProfile", "Login")"><i class="fa fa-pencil-square-o"></i>Profile Update</a>
+                                    <a href="@Url.Action("ChangePassword", "Login")"><i class="fa fa-lock"></i>Change Password</a>
                                     <a href="@Url.Action("LogOut", "User")"><i class="fa fa-sign-out"></i>Logout</a>
                                 </div>
                             </div>
@@ -50,10 +50,52 @@
             </div>
         </div>
     </section>
-    @{
-        List<ChemAnalyst.Models.CustWiseAccess> objAccess = (List<ChemAnalyst.Models.CustWiseAccess>)@Session["Access"];
+    @*@{
+        List<ChemAnalyst.Models.CustWiseAccess> objAccess = (List<ChemAnalyst.Models.CustWiseAccess>)@Session["Access"];*@
         <div class="side-wrapper">
+
             <ul>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-tachometer"></i>Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a href="~/ChemicalPricing/ChecmPriceChartuser">
+                        <i class="fa fa-tachometer"></i>Chemical Pricing
+                    </a>
+                </li>
+
+                <li>
+                    <a href="~/MarketAnalysis/MarketAnalysisChartUser">
+                        <i class="fa fa-tachometer"></i>Market Analysis
+                    </a>
+                </li>
+
+                <li>
+                    <a href="@Url.Action("CustCompaniesList","Login")">
+                        <i class="fa fa-tachometer"></i> Company Profile
+                    </a>
+
+                </li>
+
+                <li>
+                    <a href="~/NewsAndDeals/NewsHome">
+                        <i class="fa fa-tachometer"></i>News
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="fa fa-tachometer"></i>Deals
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+
+            @*<ul>
                 <li>
                     <a href="#">
                         <i class="fa fa-tachometer"></i>Dashboard
@@ -74,22 +116,19 @@
                             <i class="fa fa-tachometer"></i>Market Analysis
                         </a>
                     </li>
-                }
+                }*@
                 @*OROGINALY  PAGE ID WAS 3, I HAVE CHANGED IT*@
-                @if ((objAccess.Where(page => page.Pageid ==3).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
-                {
-                    //HERE I HAVE ADDED THE LINK, PASS LEAD_MASTER ID FROM HERE
-            <li>
-                @*<a href="@Url.Action("CustomerAndProduct","CustomerAndProduct", new { id = 1004 })">*@
+                @*@if ((objAccess.Where(page => page.Pageid == 3).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+    {
+        //HERE I HAVE ADDED THE LINK, PASS LEAD_MASTER ID FROM HERE
+        <li>
                 <a href="@Url.Action("CustCompaniesList","Login")">
                     <i class="fa fa-tachometer"></i> Company Profile
                 </a>
-                @*<a href="#">
-            <i class="fa fa-tachometer"></i> Company Profile
-        </a>*@
+
             </li>
                 }
-                @if ((objAccess.Where(page => page.Pageid == 4).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+               @if ((objAccess.Where(page => page.Pageid == 4).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
                 {
                     <li>
                         <a href="@Url.Action("CustIndustryList","Login")">
@@ -116,7 +155,7 @@
 
             </ul>
         </div>
-    }
+    }*@
     <div class="right-contant-bar">
         @RenderBody()
     </div>

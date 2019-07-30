@@ -12,6 +12,9 @@ namespace ChemAnalyst.Controllers
     public class SubsManagementController : Controller
     {
         // GET: SubsManagement
+
+        private ChemAnalystContext _contextDb = new ChemAnalystContext();
+
         private LeadDAL ObjLead;
         UserDataStore ObjUser = new UserDataStore();
         public SubsManagementController()
@@ -60,16 +63,53 @@ namespace ChemAnalyst.Controllers
             objLeadModel.StatusList = new List<SelectListItem> {
         new SelectListItem { Value = "Pending", Text = "Pending" },
         new SelectListItem { Value = "Assign", Text = "Assign" },
-        new SelectListItem { Value = "Reject", Text = "Reject" } };
+        new SelectListItem { Value = "Lost", Text = "Lost" } };
 
             objLeadModel.UserList = ObjLead.GetUserList();
 
             objLeadModel.hdId =Convert.ToString(Id);
+           
             objLeadModel.LeadMaster = new Lead_Master();
             objLeadModel.LeadMaster = ObjLead.GetLeadList().Where(x => x.Id == Id).FirstOrDefault();
             if (objLeadModel.LeadMaster.AssignTo == "NA"|| objLeadModel.LeadMaster.AssignTo==null)
                 objLeadModel.LeadMaster.AssignTo = "---";
             return View("ViewLeadDetails", objLeadModel);
+        }
+
+        public ActionResult ViewAllSubscriptions(int Id)
+        {
+            LeadViewModel objLeadModel = new LeadViewModel();
+            objLeadModel.StatusList = new List<SelectListItem>();
+            objLeadModel.StatusList = new List<SelectListItem> {
+        new SelectListItem { Value = "Pending", Text = "Pending" },
+        new SelectListItem { Value = "Assign", Text = "Assign" },
+        new SelectListItem { Value = "Lost", Text = "Lost" } };
+
+            objLeadModel.UserList = ObjLead.GetUserList();
+
+            objLeadModel.hdId = Convert.ToString(Id);
+            objLeadModel.LeadMaster = new Lead_Master();
+
+            int leadId = _contextDb.SalesPackageSubscription.Where(w => w.UserId == Id).FirstOrDefault().LeadId;
+            objLeadModel.LeadMaster = ObjLead.GetLeadList().Where(x => x.Id == leadId).FirstOrDefault();
+            if (objLeadModel.LeadMaster.AssignTo == "NA" || objLeadModel.LeadMaster.AssignTo == null)
+                objLeadModel.LeadMaster.AssignTo = "---";
+
+            var lstSubscription = _contextDb.SalesPackageSubscription.Where(w => w.UserId == Id).ToList().OrderByDescending(w => w.CreatedDate);
+
+            //foreach (var item in lstSubscription)
+            //{
+            //    string[] pages = item.ProductId.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            //}
+
+          
+
+            objLeadModel.SubscriptionList = lstSubscription.ToList();
+
+          
+
+            return View("ViewAllSubscriptions", objLeadModel);
         }
 
         public ActionResult AssignLeadDetails(LeadViewModel model)
@@ -128,6 +168,22 @@ namespace ChemAnalyst.Controllers
             SubscriptionDAL.SendMail("Chem Analyst", "info@chemanalyst", email, "Package Expiry Notification", EmailBody, "mrnickolasjames@gmail.com");
 
 
+
+            return Json(new { data = "Success" }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult RenewSubscription(int subId, DateTime fromDate, DateTime toDate)
+        {
+
+            ChemAnalystContext _context = new ChemAnalystContext();
+
+            var subsData = _context.SalesPackageSubscription.Where(w => w.Id == subId).FirstOrDefault();
+            subsData.FromDate = fromDate;
+            subsData.ToDate = toDate;
+            _context.SaveChanges();
+            //string EmailBody = SubscriptionDAL.GetHtml("PackageExpiry.html");
+            // SubscriptionDAL.SendMail("Chem Analyst", "info@chemanalyst", email, "Package Expiry Notification", EmailBody, "mrnickolasjames@gmail.com");
 
             return Json(new { data = "Success" }, JsonRequestBehavior.AllowGet);
         }

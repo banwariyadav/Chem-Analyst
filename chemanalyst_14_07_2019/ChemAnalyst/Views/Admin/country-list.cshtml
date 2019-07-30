@@ -1,0 +1,132 @@
+﻿
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<ChemAnalyst.Models.SA_Country>
+<head>
+    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Userlist').DataTable({
+                "ajax": {
+                    "url": "../Admin/LoadCountryData",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+
+                "columnDefs": [
+
+                    {
+                        "targets": [0],
+                        "visible": false
+                    }
+                ],
+                "columns": [
+
+
+                    //{
+
+                    //    "render": function (data, type, row, meta)
+                    //    { return '<input id="selectall" class="styled" type="checkbox">' }
+                    //},
+                    { "data": "id" },
+                    { "data": "CountryName", "autoWidth": true },
+                    //{ "data": "UserPassword", "autoWidth": true },
+                    //{
+                    //    "render": function (data, type, row, meta) {
+                    //        debugger
+                    //        if (row.Status) {
+                    //         return   '<button type="button" class="btn btn-success" id="btnStatus" onclick="UpdateStatus(' + row.id + ')">Approved</button>';
+                    //        }
+                    //        else {
+                    //          return  '<button type="button" class="btn btn-danger" id="btnStatus" onclick="UpdateStatus(' + row.id + ')">Disapprove</button>';
+                    //        }
+                    //    }
+                    //},
+                    {
+
+                        "render": function (data, type, row, meta) { return '<a href="../Admin/EditCountry/' + row.id + '"><i class="fa fa-pencil-square-o"></i></a>'; }
+                    },
+                    {
+                        data: null, render: function (data, type, row) {
+                            return '<a href="../Admin/Deletecountry/' + row.id + '"><i class="fa fa-trash-o fa-lg"></i></a>';
+                        }
+                    },
+                ]
+            });
+        });
+
+
+
+        function UpdateStatus(userId) {
+            $.ajax({
+                url: "UpdateStatus",
+                type: "POST",
+                data: { userId: userId },
+                cache: false,
+                async: true,
+                success: function (data) {
+                    window.location.reload(true);
+                }
+
+            })
+        }
+
+
+
+    </script>
+</head>
+
+
+
+
+<div class="update-profile-wrapper">
+
+    <h3><a href="@Url.Action("AddCountry", "Admin")" class="btn btn-info"><i class="fa fa-plus"></i> Add New Country</a></h3>
+
+    <div class="white-wrapper" style="padding-top:10px">
+
+        <div class="data-detail-wrapper table-responsive">
+
+            <table id="Userlist" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="checkbox checkbox-info">
+                                <input id="selectall" class="styled" type="checkbox">
+                                <label for="check4"></label>
+                            </div>
+                        </th>
+                        <th>Name</th>
+                        @*<th>Phone</th>
+                        <th>Role</th>
+                        <th>Email</th>
+                        <th>Status</th>*@
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+
+                </tbody>
+            </table>
+
+
+          
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+

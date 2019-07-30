@@ -24,10 +24,15 @@
                 <div class="eq-form-box">
                     @using (Html.BeginForm("SaveIndustry", "Industry", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
-
+                        @Html.HiddenFor(m=>m.CountryID)
                         @Html.AntiForgeryToken()
                         <div style="visibility:hidden">
                             @Html.TextBoxFor(model => model.id, new { @class = "form-control", @placeholder = "Title * ", required = "required" })
+                        </div>
+                        <div class="col-sm-4 col-lg-12 form-group">
+
+                            @Html.DropDownListFor(m => m.CountryID, ChemAnalyst.DAL.ProductDataStore.GetCountry(), "Select Country", new { @class = "form-control", required = "required" })
+
                         </div>
 
                         <div class="col-sm-4 col-lg-12 form-group">
@@ -46,24 +51,28 @@
 
 
                         <div class="col-md-4 col-lg-12 form-group">
+                            <label>Description</label>
                             @*<textarea rows="10" class="form-control" placeholder="Description"></textarea>*@
                             @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @rows = 200, @placeholder = "Description * ", id = "Desc", required = "required" })
 
 
                         </div>
                         <div class="col-md-4 col-lg-12 form-group">
+                            <label>Figures of Table</label>
                             @*<textarea rows="10" class="form-control" placeholder="Description"></textarea>*@
                             @Html.TextAreaFor(model => model.Figot, new { @class = "form-control", @rows = 200, @placeholder = "Fig of table * ", id = "Figot", required = "required" })
 
 
                         </div>
                         <div class="col-md-4 col-lg-12 form-group">
+                            <label>Related Reports</label>
                             @*<textarea rows="10" class="form-control" placeholder="Description"></textarea>*@
                             @Html.TextAreaFor(model => model.RelatedRep, new { @class = "form-control", @rows = 200, @placeholder = "Related Reports * ", id = "RelatedRep", required = "required" })
 
 
                         </div>
                         <div class="col-md-4 col-lg-12 form-group">
+                            <label>Table of Content</label>
                             @*<textarea rows="10" class="form-control" placeholder="Description"></textarea>*@
                             @Html.TextAreaFor(model => model.Tableoc, new { @class = "form-control", @rows = 200, @placeholder = "Table of Content * ", id = "Tableoc", required = "required" })
 
@@ -100,6 +109,7 @@
 
                         </div>
                         <div class="col-md-4 col-lg-12 form-group">
+                            <label>Pages</label>
                             @*<textarea rows="4" class="form-control" placeholder="Meta Title"></textarea>*@
                             @Html.EditorFor(model => model.Pages, new { @class = "form-control", @placeholder = "Pages * ", required = "required" })
 

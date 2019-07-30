@@ -1,0 +1,213 @@
+﻿@model ChemAnalyst.Models.LeadViewModel
+
+@using System.Data;
+@using System.Linq;
+
+@{
+
+
+
+
+
+    ViewBag.Title = "ViewLeadDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("AssignLeadDetails", "SubsManagement", FormMethod.Post))
+{
+    int i = 1;
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <br />
+        <a href="" class="btn btn-info"><i class="fa fa-list"></i> Lead Details</a>
+        <input type="hidden" value="" id="hdnSubId" />
+        <br />
+        <br />
+        <div class="data-detail-wrapper table-responsive">
+
+            <table class="table table-striped">
+
+                <tbody>
+                    @Html.HiddenFor(x => x.hdId)
+
+
+                    @*<tr><th>Name</th><td>@Model.LeadMaster.Name</td><th>Phone</th><td>@Model.LeadMaster.Phone</td></tr>
+                        <tr><th>Email</th><td>@Model.LeadMaster.CorpEmail</td><th>Company/Organization</th><td>@Model.LeadMaster.Organisation</td></tr>
+                        <tr><th>Designation</th><td>@Model.LeadMaster.Designation</td><th>Country</th><td>@Model.LeadMaster.Country</td></tr>
+                        <tr><th>State</th><td>@Model.LeadMaster.State</td><th>Industry Sector</th><td>Consumer</td></tr>
+                        <tr><th>Assign By</th><td>@Session["User"].ToString()</td><th>Assign To</th><td>@Model.LeadMaster.AssignTo</td></tr>
+                        <tr><th>Assign Date </th><td>@Model.LeadMaster.AssignDate</td><th>Terms and conditions checked </th><td>Yes</td></tr>
+                        <tr><th>Lead Date </th><td>@Model.LeadMaster.CreatedDate</td><th>Status</th><td><span class="label label-success">@Model.LeadMaster.Status</span></td></tr>*@
+                    @foreach (var item in Model.SubscriptionList)
+                    {
+                        int index = 0;
+                        string[] products = item.ProductId.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                        <tr>
+                            <td style="padding-left: 0;" colspan="4">
+                                <div class="eq-form" style="margin-top: 0;">
+                                    <div class="col-sm-4 col-lg-6 form-group" style="font-weight: bold;">
+                                        Subscription 0<span>@i</span>
+                                        @*@Html.DropDownListFor(m => m.LeadMaster.Status, Model.StatusList, "Status", new { @class = "form-control" })*@
+                                    </div>
+                                    <div class="col-sm-4 col-lg-6 form-group">
+
+
+                                       
+                                        @foreach (var p in products)
+                                        {
+                                            int pid = Convert.ToInt32(p);
+                                            var ProductName = @ChemAnalyst.DAL.ProductDataStore.GetProductName(pid);
+                                            <span>@ProductName</span>
+                                            index++;
+                                        }
+
+
+                                        @if (item.ToDate.Value.Date >= DateTime.Now.Date)
+                                        {
+                                            <span class="pull-right label label-success" style="text-align: right;">ACTIVE</span>
+                                        }
+                                        else
+                                        {
+                                            @*<span style="margin-left:20px" class="pull-right label label-default">Send Notification</span>*@
+                                            <a style="margin-left:20px" class="pull-right label label-default" href="javascript:void(0)" title="Send notification" onclick="SendNotification(@item.LeadId)"> <i class="fa fa-envelope" aria-hidden="true"></i></a>
+                                            <span style="margin-left:20px; cursor:pointer" class="pull-right label label-warning" onclick="ShowRenewModalPopUp(@item.Id)">RENEW</span>
+                                            <span class="pull-right label label-danger">EXPIRED</span>
+                                        }
+
+                                        @*@Html.DropDownListFor(m => m.LeadMaster.AssignTo, Model.UserList, "Assign To", new { @class = "form-control" })*@
+                                    </div>
+
+                                </div>
+
+                                <div class="row" style="margin-right: 3px;margin-left: 3px">
+                                    <div class="col-sm-3" style="background-color:lavender;font-weight: bold">Start Date :</div>
+                                    <div class="col-sm-3" style="background-color:lavenderblush;">@item.FromDate.Value.Date.ToString("dd/MM/yyyy")</div>
+                                    <div class="col-sm-3" style="background-color:lavender;font-weight: bold">End Date :</div>
+                                    <div class="col-sm-3" style="background-color:lavender;">@item.ToDate.Value.Date.ToString("dd/MM/yyyy")</div>
+                                </div>
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+
+
+
+
+        </div>
+
+
+    </div>
+        <!-- The Modal -->
+    <div class="modal" id="Comentery">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Renew Subscription </h4>
+                    <button type="button" class="close" data-dismiss="modal" onclick="closeModel()">×</button>
+                </div>
+                <!-- Modal body -->
+                <div id="Commentaries">
+                    <div class="col-md-4 col-lg-6 form-group" style="margin-top: 20px;">
+                        <input type="text" value="" size="40" class="form-control" placeholder="Date From" id="FromDatepicker">
+                    </div>
+                    <div class="col-md-4 col-lg-6 form-group" style="margin-top: 20px;">
+                        <input type="text" value="" size="40" class="form-control" placeholder="Date To" id="ToDatepicker">
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="RenewSubscription()">Save</button>
+
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="closeModel()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <link rel="stylesheet" type="text/css" href="~/css/jquery.datetimepicker.css"/ >
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script src="jquery.js"></script>
+    <script src="~/js/jquery.datetimepicker.full.min.js"></script>
+    <script>
+
+        $(function () {
+            jQuery('#FromDatepicker').datetimepicker();
+            jQuery('#ToDatepicker').datetimepicker();
+            //getProduct();
+            //var checkboxes = document.getElementById("checkboxes");
+            //if (checkboxes)
+            //    checkboxes.style.display = "none";
+        });
+
+        function SendNotification(LeadId) {
+            debugger
+            $.ajax({
+                //url: "../SubsManagement/SendNotification",
+                url: "/SubsManagement/SendNotification",
+                type: "POST",
+                data: { LeadId: LeadId },
+                cache: false,
+                async: true,
+                success: function (data) {
+                    alert("Notification sent successfully!!!")
+                    // window.location.reload(true);
+                }
+
+            })
+        }
+
+        function RenewSubscription() {
+            debugger
+            var subId = $("#hdnSubId").val();
+            var fromDate = $("#FromDatepicker").val();
+            var toDate = $("#ToDatepicker").val();
+            if (!fromDate) {
+                alert("Please Enter From Date");
+                return false;
+            }
+            if (!toDate) {
+                alert("Please Enter From ToDate");
+                return false;
+            }
+
+            $.ajax({
+                //url: "../SubsManagement/SendNotification",
+                url: "/SubsManagement/RenewSubscription",
+                type: "POST",
+                data: { subId: subId, fromDate: fromDate, toDate: toDate },
+                cache: false,
+                async: true,
+                success: function (data) {
+                    alert("Subscription Renewed successfully!!!")
+                    $("#FromDatepicker").val('');
+                    $("#ToDatepicker").val('');
+                    $("#Comentery").hide()
+                }
+
+            })
+        }
+
+
+        function ShowRenewModalPopUp(hdnSubId) {
+            debugger
+            $("#hdnSubId").val(hdnSubId);
+            $("#Comentery").show()
+        }
+
+        function closeModel() {
+            $("#FromDatepicker").val('');
+            $("#ToDatepicker").val('');
+            $("#Comentery").hide()
+        }
+    </script>
+}
+

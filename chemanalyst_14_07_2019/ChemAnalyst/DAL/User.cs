@@ -98,6 +98,11 @@ namespace ChemAnalyst.DAL
         {
             return _context.SA_User.Where(user => user.id == id).FirstOrDefault();
         }
+
+        internal SA_Customer GetCustomerByid(int id)
+        {
+            return _context.SA_Customers.Where(user => user.id == id).FirstOrDefault();
+        }
         internal int UpdatePassword(SA_User ObjPassChange)
         {
             SA_User UpdatedPass = _context.SA_User.Where(user => user.id == ObjPassChange.id).FirstOrDefault();

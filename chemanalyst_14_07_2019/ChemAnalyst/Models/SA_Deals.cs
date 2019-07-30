@@ -11,6 +11,11 @@ namespace ChemAnalyst.Models
     {
         public int id { get; set; }
 
+
+        [StringLength(500)]
+        public string MetaTitle { get; set; }
+
+
         [StringLength(50)]
         public string DealsName { get; set; }
 
@@ -35,6 +40,7 @@ namespace ChemAnalyst.Models
         [StringLength(500)]
         public string Keywords { get; set; }
 
+        public string CreatedBy { get; set; }
         public string GenerateItemNameAsParam()
         {
             string phrase = string.Format("{0}-{1}", id, URL);// Creates in the specific pattern  

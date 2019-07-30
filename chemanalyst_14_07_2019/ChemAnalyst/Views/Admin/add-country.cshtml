@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model ChemAnalyst.Models.SA_Country
+
+
+
+
+
+
+
+<div class="update-profile-wrapper">
+
+    <h3><a href="@Url.Action("UserCountry","Admin")" class="btn btn-info"><i class="fa fa-list"></i> Country List</a></h3>
+
+    <div class="white-wrapper">
+
+        <div class="col-md-6 col-lg-7 col-md-offset-2">
+
+            <div class="eq-form">
+             
+               <div class="change">
+                        <img src="~/images/change-img.jpg" alt="" />
+                        <p>Add New Country</p>
+                    </div>
+              
+
+            <div class="eq-form-box">
+                @using (Html.BeginForm("SaveCountry", "Admin", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div style="visibility:hidden">
+                        @Html.TextBoxFor(model => model.id, new { @class = "form-control", @placeholder = "Title * " })
+                    </div>
+                    <div class="col-md-4 col-lg-6 form-group">
+                        @Html.TextBoxFor(model => model.CountryName, new { @class = "form-control", @placeholder = "Name * ", required = "required" })
+
+
+                    </div>
+
+                  
+                   
+                    @*<div class="col-sm-6 col-lg-12">
+                        <div class="form-group">
+                            <input type="file" name="file" class="form-control" />
+                          
+                        </div>
+                    </div>*@
+
+                    <div class="btn-wrapper">
+
+                        <a class="gray-btn" href="@Url.Action("UserCountry","Admin")">Cancle</a>
+
+                        <input type="submit" class="blue-btn" value="Save">
+                    </div>
+
+                }
+            </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+

@@ -18,13 +18,16 @@
         @if (Session["UserRole"] == null)
         {
 
-            <div class="inner-banner">
-                <img src="/images/about-banner.jpg">
-                <h1>Latest News</h1>
+        <div class="inner-banner">
+            <img src="/images/about-banner.jpg">
+            <h1>Latest News</h1>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="@Url.Action("NewsHome", "NewsAndDeals")">All News</a></li>
+            </ol>
 
 
-
-            </div>
+        </div>
 
         }
             <div class="page-content">
@@ -101,14 +104,14 @@
                                                             <div class="left-news-pic"><img src="~/ProductImages/@item.NewsImg" alt=""></div>
                                                             <div class="right-news-desc">
                                                                 <p>@(item.NewsDiscription.Length > 50 ? (item.NewsDiscription.Substring(0, 50)) : item.NewsDiscription)...</p>
-                                                                <p><i class="fa fa-clock-o"></i>@item.CreatedTime.ToShortDateString()</p>
+                                                                <p><i class="fa fa-clock-o"></i>@item.CreatedTime.ToString("MMM/yyyy")</p>
                                                             </div>
                                                         }
                                                         else
                                                         {
                                                             <div class="right-newsdesc">
                                                                 <p>@(item.NewsDiscription.Length > 50 ? (item.NewsDiscription.Substring(0, 50)) : item.NewsDiscription)...</p>
-                                                                <p><i class="fa fa-clock-o"></i>@item.CreatedTime.ToShortDateString()</p>
+                                                                <p><i class="fa fa-clock-o"></i>@item.CreatedTime.ToString("MMM/yyyy")</p>
                                                             </div>
                                                         }
                                                     </a>
@@ -132,14 +135,14 @@
                                                             <div class="left-news-pic"><img src="~/ProductImages/@item.DealsImg" alt=""></div>
                                                             <div class="right-news-desc">
                                                                 <p>@(item.DealsDiscription.Length > 50 ? (item.DealsDiscription.Substring(0, 50)) : item.DealsDiscription)...</p>
-                                                                <p><i class="fa fa-clock-o"></i>@item.CreatedTime.Value.ToShortDateString()</p>
+                                                                <p><i class="fa fa-clock-o"></i>@item.CreatedTime.Value.ToString("MMM/yyyy")</p>
                                                             </div>
                                                         }
                                                         else
                                                         {
                                                             <div class="right-newsdesc">
                                                                 <p>@(item.DealsDiscription.Length > 50 ? (item.DealsDiscription.Substring(0, 50)) : item.DealsDiscription)...</p>
-                                                                <p><i class="fa fa-clock-o"></i>@item.CreatedTime.Value.ToShortDateString()</p>
+                                                                <p><i class="fa fa-clock-o"></i>@item.CreatedTime.Value.ToString("MMM/yyyy")</p>
                                                             </div>
                                                         }
 

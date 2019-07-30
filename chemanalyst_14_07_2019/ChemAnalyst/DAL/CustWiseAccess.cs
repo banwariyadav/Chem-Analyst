@@ -10,12 +10,12 @@ namespace ChemAnalyst.DAL
     public class CustWiseAccessDataStore
     {
         ChemAnalystContext _context = new ChemAnalystContext();
-        public async Task<bool> AddCustWiseAccess(string id,int Custid)
+        public async Task<bool> AddCustWiseAccess(string id, int Custid)
         {
             try
             {
                 int x = 0;
-               
+
                 string[] items = id.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var i in items)
                 {
@@ -109,26 +109,84 @@ namespace ChemAnalyst.DAL
         }
         internal List<CustWiseAccess> GetCustpage(int CustId)
         {
-            
+
             var RoleDetails = _context.CustWiseAccess.Where(Role => Role.CustId == CustId).ToList();
             return RoleDetails;
 
             // return x == 0 ? false : true;
         }
-        internal bool AddCustProduct(string ProdId,int CustId)
+        internal bool AddCustProduct(string ProdId, int CustId, string PageId)
         {
             int x = 0;
             CustProduct access = new Models.CustProduct();
-            
+
             string[] items = ProdId.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            string[] pages = PageId.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            int index = 0;
             foreach (var i in items)
             {
-                access.CustId = CustId;
-                access.ProdId = Convert.ToInt32(i);
+                int proid = Convert.ToInt32(i);
+                int pagid = 0;
+                if (pages.Length == 1)
+                    pagid = Convert.ToInt32(pages[0]);
+                else
+                    pagid = Convert.ToInt32(pages[index]);
 
-                _context.CustProduct.Add(access);
-                x = _context.SaveChanges();
+                var data = _context.CustProduct.Where(w => w.CustId == CustId && w.ProdId == proid && w.PageId == pagid).OrderByDescending(w => w.id).FirstOrDefault();
+                if (data == null)
+                {
+                    access.CustId = CustId;
+                    access.ProdId = Convert.ToInt32(i);
+                    access.PageId = pagid;
+
+                    _context.CustProduct.Add(access);
+                    x = _context.SaveChanges();
+                }
+                index++;
+
             }
+
+
+            int index1 = 0;
+            foreach (var i in pages)
+            {
+                int pgId = Convert.ToInt32(i);
+                int ProId = 0;
+
+                if (items.Length == 1)
+                    ProId = Convert.ToInt32(items[0]);
+                else
+                    ProId = Convert.ToInt32(items[index1]);
+
+                var data = _context.CustProduct.Where(w => w.CustId == CustId && w.PageId == pgId && w.ProdId == ProId).OrderByDescending(w => w.id).FirstOrDefault();
+                if (data == null)
+                {
+                    access.CustId = CustId;
+                    access.PageId = Convert.ToInt32(i);
+                    access.ProdId = ProId;
+
+                    _context.CustProduct.Add(access);
+                    x = _context.SaveChanges();
+                }
+                index1++;
+            }
+
+
+            //int index = 0;
+            //foreach (var i in items)
+            //{
+
+            //    int prodID = Convert.ToInt32(i);
+
+            //    var data = _context.CustProduct.Where(w => w.CustId == CustId && w.ProdId == prodID && w.PageId==0).OrderByDescending(w=>w.id).FirstOrDefault();
+            //    data.PageId = Convert.ToInt32(menus[index]);
+            //    x = _context.SaveChanges();
+
+            //    index++;
+            //}
+
             return x == 0 ? false : true;
         }
     }

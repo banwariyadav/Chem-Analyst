@@ -1,7 +1,19 @@
 ﻿@model IEnumerable<ChemAnalyst.Models.SA_Company>
-@{
+@*@{
     ViewBag.Title = "CompanyProfile";
     Layout = "~/Views/Shared/_LayoutUser7.cshtml";
+}*@
+
+@{
+    if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
+    {
+        Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutUser1.cshtml";
+    }
+
 }
 
 <div class="inner-banner">
@@ -22,114 +34,97 @@
 
                 <div class="com-top-3col">
                     <div class="row">
+
+                        @if (Session["UserRole"] == null)
+                        {
+                            <div class="col-lg-12">
+                                <div class="searchbox">
+                                    @using (Html.BeginForm("CompanyProfile", "Company", null, FormMethod.Post, new { @class = "row", enctype = "multipart/form-data" }))
+                                    {
+                                        
+                                                <div class="col-md-3">
+                                                    <select id="category" name="category" class="plbxt btn btn-primary  width100">
+                                                        <option value="">Select Category</option>
+
+                                                        @foreach (var item in ViewBag.Category)
+                                                        {
+                                                            <option value="@item">@item.CategoryName</option>
+                                                        }
+                                                    </select>
+                                                  
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <select id="products" name="products" class="plbxt btn btn-primary  width100">
+                                                        <option value="">Select Products</option>
+
+                                                        @foreach (var item in ViewBag.Product)
+                                                        {
+                                                            <option value="@item.id">@item.ProductName</option>
+                                                        }
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <select id="revsize" name="revsize" class="plbxt btn btn-primary  width100">
+                                                        <option value="">Revenue Size</option>
+                                                        <option value="10-100">10-100cr</option>
+                                                        <option value="100-500">100-500cr</option>
+                                                        <option value="500-1000">500-1000cr</option>
+                                                        <option value="1000-5000">1000-5000cr</option>
+                                                        <option value="5000">5000 +</option>
+                                                        
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <select id="empsize" name="empsize" class="plbxt btn btn-primary  width100">
+                                                        <option value="">Employee Size</option>
+                                                        <option value="10-100">10-100</option>
+                                                        <option value="100-500">100-500</option>
+                                                        <option value="500-1000">500-1000</option>
+                                                        <option value="1000-5000">1000-5000</option>
+                                                        <option value="5000">5000 +</option>
+                                                    </select>
+
+                                                </div>
+                                                <div class="col-md-2 pl-0">
+                                                    <button type="submit" class="btn btn-green">
+                                                        <i class="fa fa-filter"></i>
+                                                        Filter
+                                                    </button>
+                                                </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        <div class="width100" style="height:30px"></div>
                         @foreach (var item in Model)
                         {
-                        <div class="col-md-2 col-lg-2">
-                            <div class="ind-map-col">
-                                <img src="~/ProductImages/@item.Logo" class="img-responsive">
+
+                            <div class="col-md-6 col-sm-6">
+                                <div class="post-item clearfix">
+                                    <div class="row">
+                                        <div class="col-md-4 col-sm-4 themestek-box-img-left">
+                                            <div class="news-pic">
+                                                <img src="~/ProductImages/@item.Logo" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="themestek-box-content col-md-8 col-sm-8">
+                                            <div class="news-text">
+                                                <h4><a href="@Url.Action("CompanyProfileDetails", "Company", new { id = item.id })">@(item.Name.Length > 40 ? (item.Name.Substring(0, 40)) : item.Name)...</a></h4>
+                                                <p>@(item.Description.Length > 100 ? (item.Description.Substring(0, 100)) : item.Description)...</p>
+                                                <div class="row mt-3">
+                                                    <div class="col-6"><a href="@Url.Action("CompanyProfileDetails", "Company", new { id = item.id })">Read More <i class="fa fa-arrow-right"></i></a></div>
+                                                    <div class="col-6"> <i class="fa fa-clock-o"></i>@item.RegDate.ToShortDateString() </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="col-md-10 col-lg-10">
-                            <div class="info-text-col">
-                                <h4>@item.Name</h4>
-                                <p>@item.Description</p>
-     
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-lg-6">
-                            <div class="cm-detail-table">
-
-                                <h3>Basic Detail</h3>
-                                <table class="table table-bordered">
-                                    <tbody>
-                                        <tr>
-                                            <td>Name of the Company</td>
-                                            <td>@item.Name</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Registration Date</td>
-                                            <td>@item.RegDate.ToShortDateString()</td>
-                                        </tr>
-                                        <tr>
-                                            <td>CIN</td>
-                                            <td>@item.CIN</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Category/Sub-Category of Company</td>
-                                            <td>@item.Category</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Addtess</td>
-                                            <td>@item.Address</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Contact Details</td>
-                                            <td>Website:<Span>@item.website</span>
-                                                Email:<Span>@item.EmailId</Span>
-                                                fax:<Span>@item.fax</Span>
-                                                Phone No:<Span>@item.phoneNo</Span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Number of Employee</td>
-                                            <td>@item.NOE</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Managing Director/CEO</td>
-                                            <td>@item.CEO</td>
-                                        </tr>
-
-
-                                    </tbody>
-                                </table>
-
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-lg-6">
-                            <div class="cm-detail-table cm-detail-table2">
-
-                                <h3>Financial</h3>
-                                <table class="table table-bordered">
-                                    <tbody>
-                                        <tr>
-                                            <td>Revenue</td>
-                                            <td>2000 INR</td>
-                                        </tr>
-                                        <tr>
-                                            <td>% Growth</td>
-                                            <td>4%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>PBT</td>
-                                            <td>50 INR</td>
-                                        </tr>
-                                        <tr>
-                                            <td>%Margin</td>
-                                            <td>2%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>PAT</td>
-                                            <td>10</td>
-                                        </tr>
-                                        <tr>
-                                            <td>% Margin</td>
-                                            <td>10%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Liabilities</td>
-                                            <td>10%</td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-
-                            </div>
-                        </div>
-
-
+                            
                         }
                     </div>
                 </div>
@@ -141,6 +136,48 @@
         </div>
     </div>
 </div>
+ 
+ 
+<script src="../js/jquery.js"></script>
+<script src="../js/jquery-3.3.1.slim.min.js"></script>
+<script src="../js/popper.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+@*<script src="http://cdnjs.cloudflare.com/ajax/libs/simplelightbox/1.17.1/simple-lightbox.js"></script>*@
+<script src="../js/owl.carousel.js"></script>
+<script src="../js/wow.min.js"></script>
+
+<script>
+
+            $(function () {
+
+                $("#category").val('@ViewBag.Cat');
+                $("#products").val('@ViewBag.Prod');
+                $("#revsize").val('@ViewBag.RevS');
+                $("#empsize").val('@ViewBag.EmpSiz');
+                
+
+                jQuery('.fromdate').datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    onSelect: function (selected) {
+
+                    }
+                });
+                jQuery('.todate').datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    onSelect: function (selected) {
+
+
+
+                    }
+                });
+                var d = new Date();
+
+                $('.fromdate').val('@ViewBag.formdate');
+                $('.todate').val('@ViewBag.todate');
+            });
+</script>
 
 
 

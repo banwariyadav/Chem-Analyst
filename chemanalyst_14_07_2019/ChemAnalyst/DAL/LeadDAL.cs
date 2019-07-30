@@ -151,15 +151,18 @@ namespace ChemAnalyst.DAL
 
         public List<SubscriptionViewModel> SubscriptionListforAdminNew(string loggeduser)
         {
-            var query = _context.SA_Customers.ToList().Select(w => new SubscriptionViewModel
+            var query = _context.Lead_Master.ToList().Select(w => new SubscriptionViewModel
             {
-                Name = w.Fname,
+                UserId = _context.SalesPackageSubscription.ToList().Where(q => q.LeadId == w.Id).FirstOrDefault() != null ? _context.SalesPackageSubscription.ToList().Where(q => q.LeadId == w.Id).FirstOrDefault().UserId : 0,
+                LeadId =w.Id,
+                Name = w.Name,
                 Phone = w.Phone,
-                CorpEmail = w.Email,
-                Status = _context.SalesPackageSubscription.ToList().Where(q => q.LeadId == w.id && q.ToDate.Value.Date <= DateTime.Now.Date).OrderByDescending(d => d.CreatedDate).FirstOrDefault() != null ? "Active" : "Inactive",
-                Subscribe= _context.SalesPackageSubscription.ToList().Where(q => q.LeadId == w.id).ToList().Count().ToString(),
-
-            }).ToList();
+                CorpEmail = w.CorpEmail,
+                Status = _context.SalesPackageSubscription.ToList().Where(q => q.LeadId == w.Id && q.ToDate.Value.Date >= DateTime.Now.Date).OrderByDescending(d => d.CreatedDate).FirstOrDefault() != null ? "Active" : "Inactive",
+                Subscribe= _context.SalesPackageSubscription.ToList().Where(o => o.LeadId == w.Id).Count().ToString(),
+                //PackageStatus = _context.SalesPackageSubscription.ToList().Where(o => o.LeadId == w.Id).FirstOrDefault()!=null?_context.SalesPackageSubscription.ToList().Where(o => o.LeadId == w.Id).FirstOrDefault().ToDate.Value.Date >= DateTime.Now.Date ? "Expired" : "Active" :"",
+               //sub.Status = sub.ExpiryDate.Value.Date <= DateTime.Now.Date ? "Expired" : "Active",
+        }).ToList();
             //var query = from sales in _context.SalesPackageSubscription
             //            join sub in _context.SubscriptionType on sales.SubscriptionType equals sub.id
             //            //join mod in _context.Module on sales.MenuId equals mod.id
