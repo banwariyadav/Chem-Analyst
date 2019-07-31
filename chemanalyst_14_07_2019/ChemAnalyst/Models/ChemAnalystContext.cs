@@ -20,7 +20,9 @@ namespace ChemAnalyst.Models
 
         public virtual DbSet<SA_Chem6PriceWeekly> SA_Chem6PriceWeekly { get; set; }
 
+        public virtual DbSet<SA_Company_SWOT> SA_Company_SWOT { get; set; }
 
+        
         public virtual DbSet<SA_ChemPriceWeeklyNew> SA_ChemPriceWeeklyNew { get; set; }
         public virtual DbSet<SA_ChemPriceDailyAverage> SA_ChemPriceDailyAverage { get; set; }
 
@@ -110,7 +112,8 @@ namespace ChemAnalyst.Models
 
         public virtual DbSet<SA_MarketbyCompanySharetonnes> SA_MarketbyCompanySharetonnes { get; set; }
 
-
+        public DbSet<SA_NewsAndProductRelation> SA_NewsAndProductRelation { get; set; }
+        public DbSet<SA_DealsAndProductRelation> SA_DealsAndProductRelation { get; set; }
 
 
         public virtual DbSet<SA_World> SA_World { get; set; }

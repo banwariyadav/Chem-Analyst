@@ -42,7 +42,7 @@
 
                         <div class="col-md-4 col-lg-12 form-group">
                             @*<textarea rows="10" class="form-control" placeholder="Description"></textarea>*@
-                            @Html.TextAreaFor(model => model.NewsDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Description * ",  id = "Desc", required = "required" })
+                            @Html.TextAreaFor(model => model.NewsDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Description * ", id = "Desc", required = "required" })
 
 
                         </div>
@@ -51,13 +51,48 @@
                             CKEDITOR.replace("Desc");
 
                         </script>
-                        <div class="col-sm-4 col-lg-12 form-group">
+                        @*<div class="col-sm-4 col-lg-12 form-group">
                            
                             @Html.DropDownListFor(m => m.Product, Model.ProductList, "Select Product", new { @class = "form-control", required = "required" })
+                            
+
+                        </div>*@
+                        <div class="col-sm-6 col-lg-12 form-group">
+                             
+                            <div class="custom-select-option">
+                                <div class="multiselect">
+                                    <div id="dropdown1" class="selectbox" onclick="showCheckBoxes()">
+                                      
+                                        <select class="form-control">
+                                            <option>Select option</option>
+                                        </select>
+                                        <div class="overSelect"></div>
+                                    </div>
+                                    <div id="checkboxes" style="display:none; width:200px;">
+                                        @{ 
+
+                                            string ss = "";
+                                            foreach (var item in Model.ProductList)
+                                            {
+                                            <label style="width:100%;" id="@item.Value">
+                                                <input @(((List<ChemAnalyst.Models.SA_NewsAndProductRelation>)ViewBag.NewsProducts).Where(x => x.SA_ProductId == Convert.ToInt16(item.Value)).Count() > 0 ? "checked='checked'" : "") name="productList" onchange="selectProduct(this);"
+                                                       type="checkbox" id="@item.Value" />@item.Text
+                                                </label>
 
 
+                                                if (((List<ChemAnalyst.Models.SA_NewsAndProductRelation>)ViewBag.NewsProducts).Where(x => x.SA_ProductId == Convert.ToInt16(item.Value)).Count() > 0)
+                                                {
+                                                    ss = ss + "," + ((List<ChemAnalyst.Models.SA_NewsAndProductRelation>)ViewBag.NewsProducts).FirstOrDefault(x => x.SA_ProductId == Convert.ToInt16(item.Value)).SA_ProductId;
+                                                }
+                                            }
+
+
+                                            }
+                                    </div>
+                                    <input type="hidden" name="allProduct" id="allProduct" value="@ss" />
+                                </div>
+                            </div>
                         </div>
-
 
                         <div class="col-md-4 col-lg-12 form-group">
                             @*<textarea rows="4" class="form-control" placeholder="Meta Title"></textarea>*@
@@ -133,7 +168,28 @@
             enterMode: CKEDITOR.ENTER_BR,
             shiftEnterMode: CKEDITOR.ENTER_P
         });
+
+
     });
+    var productList = [];
+    function showCheckBoxes() {
+        $("#checkboxes").toggle();
+    }
+
+    function selectProduct(obj) {
+        if ($(obj).prop('checked') == true) {
+            productList.push(obj.id);
+            $("#allProduct").val($("#allProduct").val() + "," + obj.id);
+        } else {
+
+            $("#allProduct").val($("#allProduct").val().replace("," + obj.id, ""));
+
+            var index = productList.indexOf(obj.id);
+            if (index > -1) {
+                productList.splice(index, 1);
+            }
+        }
+    }
 </script>
 
 <script>

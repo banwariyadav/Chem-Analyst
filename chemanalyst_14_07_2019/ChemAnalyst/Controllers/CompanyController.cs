@@ -1,5 +1,6 @@
 ﻿using ChemAnalyst.DAL;
 using ChemAnalyst.Models;
+using ChemAnalyst.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +12,7 @@ namespace ChemAnalyst.Controllers
 {
     public class CompanyController : Controller
     {
+        private ChemAnalystContext _context = new ChemAnalystContext();
         CompanyDataStore Obj = new CompanyDataStore();
         // GET: Company
         public ActionResult Index()
@@ -26,6 +28,11 @@ namespace ChemAnalyst.Controllers
             return View("Company");
         }
 
+        public ActionResult CompanySWOT()
+        {
+            JobDataStore Obj = new JobDataStore();
+            return View("CompanySWOT");
+        }
         // GET: NewsAndDeals
         public ActionResult GetCompanyList()
         {
@@ -39,6 +46,20 @@ namespace ChemAnalyst.Controllers
             return Json(new { data = NewsList }, JsonRequestBehavior.AllowGet);
 
         }
+
+        public JsonResult CompanyListSWOT()
+        {
+
+            List<CompanySWOT> NewsList = _context.SA_Company_SWOT.ToList().Select(w=>new CompanySWOT {
+                Id=w.Id,
+                CompanyId=w.CompanyId,
+                Company=_context.SA_Company.Where(x=>x.id == w.CompanyId).FirstOrDefault().Name
+            }).ToList();
+
+            return Json(new { data = NewsList }, JsonRequestBehavior.AllowGet);
+
+        }
+
         public ActionResult AddCompany()
         {
             var Model = new SA_Company();
@@ -74,6 +95,44 @@ namespace ChemAnalyst.Controllers
                 Obj.EditCompany(UserNews);
             }
             return RedirectToAction("Company");
+        }
+
+
+        public ActionResult AddCompanySWOT(int id = 0)
+        {
+            //NewsDataStore ObjDal = new NewsDataStore();
+            //SA_NewsViewModel objCatViewModel = new SA_NewsViewModel();
+            //objCatViewModel.ProductList = ObjDal.GetProductList();
+            //return View("AddIndustry", objCatViewModel);
+
+            SA_Company_SWOT obj = new SA_Company_SWOT();
+            if (id > 0)
+            {
+                obj = _context.SA_Company_SWOT.Where(w => w.Id == id).FirstOrDefault();
+            }
+
+            if (obj == null)
+            {
+                obj = new SA_Company_SWOT();
+
+            }
+            //obj.ProductList = ObjDal.GetProductList();
+            //SA_Industry obj = new SA_Industry();
+            return View(obj);
+
+        }
+
+        public ActionResult SaveCompanySWOT(SA_Company_SWOT UserNews)
+        {
+            if (UserNews.Id == 0)
+            {
+                Obj.AddCompanySWOT(UserNews);
+            }
+            else
+            {
+                Obj.EditCompanySWOT(UserNews);
+            }
+            return RedirectToAction("CompanySWOT");
         }
 
 

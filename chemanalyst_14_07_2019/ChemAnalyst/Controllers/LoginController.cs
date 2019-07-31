@@ -15,6 +15,7 @@ namespace ChemAnalyst.Controllers
     public class LoginController : Controller
     {
         // GET: Login
+        
         public ActionResult Index()
         {
             return View();
@@ -69,10 +70,48 @@ namespace ChemAnalyst.Controllers
 
         public ActionResult CustIndustryList()
         {
-            return View("CustIndustry");
+            IndustryDataStore Obj = new IndustryDataStore();
+            string cate = Request.Form["categoryname"] != null ? Request.Form["categoryname"].ToString() : "";
+            string country = Request.Form["countryname"] != null ? Request.Form["countryname"].ToString() : "";
+            ViewBag.Cat = cate;
+            ViewBag.Cou = country;
+            CategoryDataStore d = new CategoryDataStore();
+            IndustryViewModel model = new IndustryViewModel();
+            List<SA_Industry> IndustryList = Obj.GetIndustryList().Where(x => (cate == "" || cate.Contains(x.CategoryID.ToString() + ",")) && (country == "" || country.Contains(x.CountryID.ToString() + ","))).OrderBy(w => w.id).OrderByDescending(w => w.id).ToList();
+            model.Industry = IndustryList;
+            List<SelectListItem> lstCategory = d.CategoryList();
+            model.lstCategory = lstCategory;
+
+            List<SelectListItem> lstCountry = d.CountryList();
+            model.lstCountry = lstCountry;
+
+            return View("CustIndustry", model);
+            //return View("CustIndustry");
+        }
+
+        public ActionResult Reportsection()
+        {
+            IndustryDataStore Obj = new IndustryDataStore();
+            string cate = Request.Form["categoryname"] != null ? Request.Form["categoryname"].ToString() : "";
+            string country = Request.Form["countryname"] != null ? Request.Form["countryname"].ToString() : "";
+            ViewBag.Cat = cate;
+            ViewBag.Cou = country;
+            CategoryDataStore d = new CategoryDataStore();
+            IndustryViewModel model = new IndustryViewModel();
+            List<SA_Industry> IndustryList = Obj.GetIndustryList().Where(x => (cate == "" || cate.Contains(x.CategoryID.ToString() + ",")) && (country == "" || country.Contains(x.CountryID.ToString() + ","))).OrderBy(w => w.id).OrderByDescending(w => w.id).ToList();
+            model.Industry = IndustryList;
+            List<SelectListItem> lstCategory = d.CategoryList();
+            model.lstCategory = lstCategory;
+
+            List<SelectListItem> lstCountry = d.CountryList();
+            model.lstCountry = lstCountry;
+
+            return View("CustIndustry", model);
+
         }
         public JsonResult GetCustIndustryList()
         {
+
             var LoginUser = Convert.ToInt32(Session["LoginUser"]);
             ProductDataStore ObjProduct = new ProductDataStore();
 

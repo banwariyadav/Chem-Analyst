@@ -198,6 +198,19 @@ namespace ChemAnalyst.DAL
             return cat;
         }
 
+        public static bool GetProductNewReletion(int newid, int product)
+        {
+            ChemAnalystContext _context1 = new ChemAnalystContext();
+             return _context1.SA_NewsAndProductRelation.Where(x=>x.SA_NewsId== newid  && x.SA_ProductId == product).Count()==0?false:true ;
+            
+        }
+
+          public static bool GetProductDealReletion(int newid, int product)
+        {
+            ChemAnalystContext _context1 = new ChemAnalystContext();
+            return _context1.SA_DealsAndProductRelation.Where(x => x.SA_DealID == newid && x.SA_ProductId == product).Count() == 0 ? false : true;
+
+        }
         public static string GetProductName( int ProductId)
         {
             ChemAnalystContext _context1 = new ChemAnalystContext();
@@ -221,6 +234,13 @@ namespace ChemAnalyst.DAL
             var category = _context.SA_Category.Where(w => w.id == cat).FirstOrDefault().CategoryName;
             return category;
 
+        }
+
+        public static IEnumerable<SelectListItem> GetCompany()
+        {
+            ChemAnalystContext _context1 = new ChemAnalystContext();
+            var cat = (from coun in _context1.SA_Company select new SelectListItem { Text = coun.Name, Value = coun.id.ToString() }).AsEnumerable();
+            return cat;
         }
 
         //internal List<SelectListItem> CategoryByCustomer(int id)

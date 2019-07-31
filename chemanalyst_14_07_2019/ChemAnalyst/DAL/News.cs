@@ -127,6 +127,10 @@ namespace ChemAnalyst.DAL
             return x == 0 ? false : true;
         }
 
+        internal List<SA_NewsAndProductRelation> GetNewsProduct(int id)
+        {
+            return _context.SA_NewsAndProductRelation.Where(x => x.SA_NewsId == id).ToList();
+        }
 
         public bool DeleteNews(int NewsId)
         {
@@ -136,14 +140,20 @@ namespace ChemAnalyst.DAL
             int x = _context.SaveChanges();
             return x == 0 ? false : true;
         }
-        public async Task<bool> AddNews(SA_News News)
+        public bool AddNews(SA_News News)
         {
             //  News.CreatedDate = DateTime.Now;
             _context.SA_News.Add(News);
-            int x = await _context.SaveChangesAsync();
+            int x =   _context.SaveChanges();
             return x == 0 ? false : true;
         }
-
+        public bool AddNewsProduct(SA_NewsAndProductRelation np)
+        {
+            //  News.CreatedDate = DateTime.Now;
+            _context.SA_NewsAndProductRelation.Add(np);
+            int x =  _context.SaveChanges();
+            return x == 0 ? false : true;
+        }
         public async Task<bool> UpdateNews(SA_News News)
         {
             _context.Entry(News).State = EntityState.Modified;
@@ -157,7 +167,14 @@ namespace ChemAnalyst.DAL
             return _context.SA_News.Where(x => x.id == id && x.status==1).SingleOrDefault();
         }
 
+        public bool DeleteNewsProduct(int DealsId)
+        {
+            //  Deals.CreatedDate = DateTime.Now;
 
+            _context.Database.ExecuteSqlCommand("delete from SA_NewsAndProductRelation where SA_NewsId = " + DealsId);
+
+            return true;
+        }
         internal List<SelectListItem> GetProductList()
         {
             return (from product in _context.SA_Product where product.status==1
@@ -165,7 +182,14 @@ namespace ChemAnalyst.DAL
                     select new SelectListItem { Text = product.ProductName, Value = product.id.ToString() }).ToList();
         }
 
+        internal int GetFirstProduct()
+        {
+            //var id= _context.SA_Product.OrderBy(x => new { x.Category, x.id }).FirstOrDefault().id;
+            var catId= _context.SA_Category.OrderBy(x => x.id ).FirstOrDefault().id;
 
+            
+            return _context.SA_Product.Where(w=>w.Category== catId).OrderBy(x =>x.id).FirstOrDefault().id;
+        }
     }
 
 

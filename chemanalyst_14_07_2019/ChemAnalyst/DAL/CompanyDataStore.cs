@@ -103,6 +103,24 @@ namespace ChemAnalyst.DAL
             return x == 0 ? false : true;
         }
 
+        public bool EditCompanySWOT(SA_Company_SWOT News)
+        {
+            //  News.CreatedDate = DateTime.Now;
+            SA_Company_SWOT EditNews = _context.SA_Company_SWOT.Where(Cat => Cat.Id == News.Id).FirstOrDefault();
+            EditNews.CompanyId = News.CompanyId;
+            EditNews.Opportunity = News.Opportunity;
+            EditNews.CompanyExpansionBlock = News.CompanyExpansionBlock;
+            EditNews.Perspective = News.Perspective;
+            EditNews.Strategy = News.Strategy;
+            EditNews.Weakness = News.Weakness;
+            EditNews.Threat = News.Threat;
+            EditNews.Strength = News.Strength;
+          
+            _context.Entry(EditNews).State = EntityState.Modified;
+            int x = _context.SaveChanges();
+            return x == 0 ? false : true;
+        }
+
         internal dynamic GetUniqueCategory()
         {
             //return _context.SA_Company.Select(x=>x.Category).Distinct().ToList();
@@ -121,6 +139,14 @@ namespace ChemAnalyst.DAL
         {
             //  News.CreatedDate = DateTime.Now;
             _context.SA_Company.Add(News);
+            int x = await _context.SaveChangesAsync();
+            return x == 0 ? false : true;
+        }
+     
+        public async Task<bool> AddCompanySWOT(SA_Company_SWOT News)
+        {
+            //  News.CreatedDate = DateTime.Now;
+            _context.SA_Company_SWOT.Add(News);
             int x = await _context.SaveChangesAsync();
             return x == 0 ? false : true;
         }

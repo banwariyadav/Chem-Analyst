@@ -37,4 +37,11 @@ namespace ChemAnalyst.ViewModel
         public string Revenue { get; set; }
         public string Growth { get; set; }
     }
+
+    public class CompanySWOT
+    {
+        public string Company { get; set; }
+        public int CompanyId { get; set; }
+        public int Id { get; set; }
+    }
 }

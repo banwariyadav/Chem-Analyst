@@ -47,10 +47,22 @@
             </div>
         }
 
+        @if (Session["UserRole"] == null)
+            {
+
+            }
+            else
+            {
+            <style>
+                .addMargin {
+                    margin-left: 10px;
+                }
+            </style>
+        }
 
         <div class="page-content">
             <div class="static-page">
-                <div class="container">
+                <div class="container addMargin">
 
                     @* <div class="blog-list">*@
                     <div>
@@ -87,13 +99,52 @@
                                     </div>
                                 </div>
                             }
+                            else
+                            {
+                                <div class="col-lg-12">
+                                    <p>&nbsp;</p>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="searchbox">
+                                        @using (Html.BeginForm("DealsHome", "NewsAndDeals", null, FormMethod.Post, new { @class = "row", enctype = "multipart/form-data" }))
+                                        {
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.search,
+                                             new { @id = "search", @class = "plbxt btn btn-primary fromdate width100", @placeholder = "From date", @autocomplete = "off" })
+
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.searchto,
+                                             new { @id = "searchto", @class = "plbxt btn btn-primary todate width100", @placeholder = "To date", @autocomplete = "off" })
+                                            </div>
+                                            <div class="col-md-3 pl-0">
+                                                @Html.TextBoxFor(m => m.keyword,
+                                     new { @id = "keyword", @placeholder = "Keyword", @class = "  btn btn-primary width100" })
+
+
+                                            </div>
+                                            <div class="col-md-2 pl-0">
+                                                <button type="submit" class="btn btn-green">
+                                                    <i class="fa fa-filter"></i>
+                                                    Filter
+                                                </button>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                            <p> &nbsp;</p>
                             <div class="width100" style="height:30px"></div>
 
 
                             @foreach (var item in Model.DealsList)
                             {
 
-
+                                <div class="col-lg-12">
+                                    <p>&nbsp;</p>
+                                </div>
                                 <div class="col-md-6 col-sm-6">
 
                                     <div class="post-item clearfix">
@@ -106,14 +157,46 @@
                                                     <img src="~/images/dealss.png" alt="">
                                                 </div>
                                             </div>
+                                            <script>
 
+                                                function showmodel() {
+                                                    $("#myModal").show();
+                                                }
+                                            </script>
                                             <div class="themestek-box-content col-md-8 col-sm-8">
                                                 <div class="news-text">
-                                                    <h4><a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">@Model.DealsList.First().DealsName </a> </h4>
+                                                    <h4>
+                                                    
+                                                    @if (ChemAnalyst.DAL.ProductDataStore.GetProductDealReletion(item.id, ViewBag.f))
+
+
+                                                    {<a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">@Model.DealsList.First().DealsName </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a onclick="showmodel()">@Model.DealsList.First().DealsName </a>
+                                                    }
+
+                                                     </h4>
                                                     <p>@(item.DealsDiscription.Length > 100 ? (item.DealsDiscription.Substring(0, 100)) : item.DealsDiscription)...</p>
 
                                                     <div class="row mt-3">
-                                                        <div class="col-6"><a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">Read More <i class="fa fa-arrow-right"></i></a></div>
+                                                        <div class="col-6">
+                                                        
+                                                        @if (ChemAnalyst.DAL.ProductDataStore.GetProductDealReletion(item.id, ViewBag.f))
+                                                        {
+                                                        <a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">Read More <i class="fa fa-arrow-right"></i></a>
+
+                                                        }
+                                                        else
+                                                        {
+
+                                                            <a onclick="showmodel()">Read More <i class="fa fa-arrow-right"></i></a>
+
+
+                                                        }
+                                                        
+                                                        </div>
                                                         <div class="col-6"> <i class="fa fa-clock-o"></i>@item.CreatedTime.Value.Date.ToString("MMM/yyyy") </div>
                                                     </div>
 
@@ -136,7 +219,27 @@
 
 
 
-
+        <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="login-pic">
+                                    <div class="freeSub">
+                                        <h2>Get Chemical Pricing in few-clicks.</h2>
+                                        <a href="@Url.Action("FreeTrail", "ChemAnalyst")" class="btn btn-yellow">Start your Free Trail today.</a>
+                                        <a href="@Url.Action("FreeTrail", "ChemAnalyst")" class="text-center">Click here to subscribe free trial to enjoy our benefits!</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
         <script src="../js/jquery.js"></script>

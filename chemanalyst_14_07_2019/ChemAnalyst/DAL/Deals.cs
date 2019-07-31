@@ -130,7 +130,14 @@ namespace ChemAnalyst.DAL
             return x == 0 ? false : true;
         }
 
-        
+        public bool DeleteDealsProduct(int DealsId)
+        {
+            //  Deals.CreatedDate = DateTime.Now;
+             
+            _context.Database.ExecuteSqlCommand("delete from SA_DealsAndProductRelation where SA_DealID = "+ DealsId);
+ 
+             return true;
+        }
         public bool DeleteDeals(int DealsId)
         {
             //  Deals.CreatedDate = DateTime.Now;
@@ -139,14 +146,20 @@ namespace ChemAnalyst.DAL
             int x = _context.SaveChanges();
             return x == 0 ? false : true;
         }
-        public async Task<bool> AddDeals(SA_Deals Deals)
+        public  bool AddDeals(SA_Deals Deals)
         {
             //  Deals.CreatedDate = DateTime.Now;
             _context.SA_Deals.Add(Deals);
-            int x = await _context.SaveChangesAsync();
+            int x =   _context.SaveChanges();
             return x == 0 ? false : true;
         }
-
+        public bool AddDealsProduct(SA_DealsAndProductRelation np)
+        {
+            //  News.CreatedDate = DateTime.Now;
+            _context.SA_DealsAndProductRelation.Add(np);
+            int x =   _context.SaveChanges();
+            return x == 0 ? false : true;
+        }
         public async Task<bool> UpdateDeals(SA_Deals Deals)
         {
             _context.Entry(Deals).State = EntityState.Modified;
@@ -159,12 +172,24 @@ namespace ChemAnalyst.DAL
         {
             return _context.SA_Deals.Where(x => x.id == id && x.status==1).SingleOrDefault();
         }
-
+        internal List<SA_DealsAndProductRelation> GetDealsProduct(int id)
+        {
+            return _context.SA_DealsAndProductRelation.Where(x => x.SA_DealID == id).ToList();
+        }
         internal List<SelectListItem> GetProductList()
         {
             return (from product in _context.SA_Product where product.status==1
                         //  select  { Fname = User.Fname+" "+User.Lname , Phone = User.Phone, Role=User.Role,Email=User.Email,UserPassword=User.Password});
                     select new SelectListItem { Text = product.ProductName, Value = product.id.ToString() }).ToList();
+        }
+
+        internal int GetFirstProduct()
+        {
+            //var id= _context.SA_Product.OrderBy(x => new { x.Category, x.id }).FirstOrDefault().id;
+            var catId = _context.SA_Category.OrderBy(x => x.id).FirstOrDefault().id;
+
+
+            return _context.SA_Product.Where(w => w.Category == catId).OrderBy(x => x.id).FirstOrDefault().id;
         }
     }
 }

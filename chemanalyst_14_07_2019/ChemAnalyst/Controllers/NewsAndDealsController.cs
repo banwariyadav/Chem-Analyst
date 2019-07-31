@@ -38,6 +38,7 @@ namespace ChemAnalyst.Controllers
         }
         public ActionResult AddNews()
         {
+            ViewBag.NewsProducts = new List<SA_NewsAndProductRelation>();
             NewsDataStore ObjDal = new NewsDataStore();
             SA_NewsViewModel objCatViewModel = new SA_NewsViewModel();
             objCatViewModel.ProductList = ObjDal.GetProductList();
@@ -72,10 +73,36 @@ namespace ChemAnalyst.Controllers
             if (UserNews.id == 0)
             {
                 Obj.AddNews(UserNews);
+
+                string np = Request.Form["allProduct"].ToString();
+
+                foreach (string s in np.Split(',')) {
+                    if (s != "") {
+                        Obj.AddNewsProduct(new SA_NewsAndProductRelation {
+                            SA_NewsId = UserNews.id,
+                            SA_ProductId = Convert.ToInt16( s)
+                        });
+                    }
+                }
+
             }
             else
             {
                 Obj.EditNews(UserNews);
+
+                string np = Request.Form["allProduct"].ToString();
+                Obj.DeleteNewsProduct(UserNews.id);
+                foreach (string s in np.Split(','))
+                {
+                    if (s != "")
+                    {
+                        Obj.AddNewsProduct(new SA_NewsAndProductRelation
+                        {
+                            SA_NewsId = UserNews.id,
+                            SA_ProductId = Convert.ToInt16(s)
+                        });
+                    }
+                }
             }
             return RedirectToAction("News");
         }
@@ -98,7 +125,7 @@ namespace ChemAnalyst.Controllers
             objSaCatV.ProductList = productList;
             objSaCatV.Product = obj.Product.ToString();
 
-
+            ViewBag.NewsProducts = Obj.GetNewsProduct(id);
 
             return View("add-News", objSaCatV);
         }
@@ -136,6 +163,8 @@ namespace ChemAnalyst.Controllers
         }
         public ActionResult AddDeals()
         {
+
+            ViewBag.DealProducts = new List<SA_DealsAndProductRelation>();
             DealsDataStore ObjDal = new DealsDataStore();
             SA_DealsViewModel objCatViewModel = new SA_DealsViewModel();
             objCatViewModel.ProductList = ObjDal.GetProductList();
@@ -170,10 +199,40 @@ namespace ChemAnalyst.Controllers
             if (UserDeals.id == 0)
             {
                 Obj.AddDeals(UserDeals);
+
+                string np = Request.Form["allProduct"].ToString();
+
+                foreach (string s in np.Split(','))
+                {
+                    if (s != "")
+                    {
+                        Obj.AddDealsProduct(new SA_DealsAndProductRelation
+                        {
+                            SA_DealID = UserDeals.id,
+                            SA_ProductId = Convert.ToInt16(s)
+                        });
+                    }
+                }
             }
             else
             {
                 Obj.EditDeals(UserDeals);
+
+                string np = Request.Form["allProduct"].ToString();
+                Obj.DeleteDealsProduct(UserDeals.id);
+                foreach (string s in np.Split(','))
+                {
+                    if (s != "")
+                    {
+                        Obj.AddDealsProduct(new SA_DealsAndProductRelation
+                        {
+                            SA_DealID = UserDeals.id,
+                            SA_ProductId = Convert.ToInt16(s)
+                        });
+                    }
+                }
+
+
             }
             return RedirectToAction("Deals");
         }
@@ -194,7 +253,7 @@ namespace ChemAnalyst.Controllers
             objSaCatV.Keywords = obj.Keywords;
             objSaCatV.MetaTitle = obj.MetaTitle;
             objSaCatV.ProductList = productList;
-
+            ViewBag.DealProducts = Obj.GetDealsProduct(id);
             objSaCatV.Product = obj.Product.ToString();
 
 
@@ -323,6 +382,7 @@ namespace ChemAnalyst.Controllers
             {
                 model.NewsList = n.GetNewsList().ToPagedList(page ?? 1, pageSize);
             }
+            ViewBag.f = n.GetFirstProduct();
             ViewBag.category=p.ProductList();
             return View(model);
         }
@@ -333,6 +393,7 @@ namespace ChemAnalyst.Controllers
             ViewBag.todate = searchto != null?Convert.ToDateTime( searchto).ToString("MM/dd/yyyy"):"";
             int pageSize = 6;
             NewsDataStore n = new NewsDataStore();
+            ViewBag.f = n.GetFirstProduct();
             ProductDataStore p = new ProductDataStore();
             NewsHomeViewModel model = new NewsHomeViewModel();
 
@@ -355,7 +416,8 @@ namespace ChemAnalyst.Controllers
             //DealsDataStore d = new DealsDataStore();
             //var model= d.GetDealsList().ToPagedList(page ?? 1, pageSize);
             //return View(model);
-           
+            NewsDataStore nc = new NewsDataStore();
+            ViewBag.f = nc.GetFirstProduct();
             int pageSize = 6;
             DealsDataStore n = new DealsDataStore();
             ProductDataStore p = new ProductDataStore();
@@ -370,6 +432,8 @@ namespace ChemAnalyst.Controllers
             {
                 model.DealsList = n.GetDealsList().ToPagedList(page ?? 1, pageSize);
             }
+
+            ViewBag.f = n.GetFirstProduct();
             ViewBag.category = p.ProductList();
             return View(model);
         }
@@ -380,6 +444,8 @@ namespace ChemAnalyst.Controllers
             ViewBag.formdate = search != null ? Convert.ToDateTime(search).ToString("MM/dd/yyyy") : "";
             ViewBag.todate = searchto != null ? Convert.ToDateTime(searchto).ToString("MM/dd/yyyy") : "";
             int pageSize = 6;
+            NewsDataStore nc = new NewsDataStore();
+            ViewBag.f = nc.GetFirstProduct();
             DealsDataStore n = new DealsDataStore();
             ProductDataStore p = new ProductDataStore();
             DealsHomeViewModel model = new DealsHomeViewModel();

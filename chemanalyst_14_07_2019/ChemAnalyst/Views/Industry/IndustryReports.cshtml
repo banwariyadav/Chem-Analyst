@@ -154,7 +154,7 @@ aside .subscription-btn a {
 <body>
     <div class="page-content">
         <div class="static-page">
-            <div class="container">
+            <div class="container" style="margin-left: 10px;">
 
                 <div class="row">
 
@@ -162,6 +162,7 @@ aside .subscription-btn a {
                         @foreach (var ind in Model.Industry)
                         {
                             <div class="industry-text">
+                                <h3>@ChemAnalyst.DAL.ProductDataStore.GetCategory(ind.CategoryID) </h3>
                                 <h3>@ind.Title </h3>
                                 <p>Format: @Html.Raw(WebUtility.HtmlDecode(@ind.format)) </p>
                                 @*<p>Pages: @ind.Pages</p>*@
