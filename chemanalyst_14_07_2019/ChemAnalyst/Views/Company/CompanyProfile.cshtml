@@ -11,11 +11,37 @@
     }
     else
     {
-        Layout = "~/Views/Shared/_LayoutUser1.cshtml";
+        Layout = "~/Views/Shared/_LayoutUser9.cshtml";
     }
 
 }
+<script>
 
+                                            function showmodel() {
+                                                $("#myModal").show();
+                                            }
+</script>
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="login-pic">
+                            <div class="freeSub">
+                                <h2>Get Chemical Pricing in few-clicks.</h2>
+                                <a href="@Url.Action("FreeTrail", "ChemAnalyst")" class="btn btn-yellow">Start your Free Trail today.</a>
+                                <a href="@Url.Action("FreeTrail", "ChemAnalyst")" class="text-center">Click here to subscribe free trial to enjoy our benefits!</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="inner-banner">
     <img src="/images/about-banner.jpg">
     <h1>Company Profile</h1>
@@ -48,7 +74,7 @@
 
                                                         @foreach (var item in ViewBag.Category)
                                                         {
-                                                            <option value="@item">@item.CategoryName</option>
+                                                            <option value="@item">@item</option>
                                                         }
                                                     </select>
                                                   
@@ -113,11 +139,28 @@
                                         </div>
                                         <div class="themestek-box-content col-md-8 col-sm-8">
                                             <div class="news-text">
-                                                <h4><a href="@Url.Action("CompanyProfileDetails", "Company", new { id = item.id })">@(item.Name.Length > 40 ? (item.Name.Substring(0, 40)) : item.Name)...</a></h4>
+                                                <h4>
+                                                @if (ChemAnalyst.DAL.ProductDataStore.GetProductCompanyReletion(item.id, ViewBag.f))
+                                                {
+                                                <a href="@Url.Action("CompanyProfileDetails", "Company", new { id = item.id })">@(item.Name.Length > 40 ? (item.Name.Substring(0, 40)) : item.Name)...</a>
+                                                }
+                                                else
+                                                {<a onclick="showmodel()">@(item.Name.Length > 40 ? (item.Name.Substring(0, 40)) : item.Name)...</a>
+                                                }
+                                                </h4>
                                                 <p>@(item.Description.Length > 100 ? (item.Description.Substring(0, 100)) : item.Description)...</p>
                                                 <div class="row mt-3">
-                                                    <div class="col-6"><a href="@Url.Action("CompanyProfileDetails", "Company", new { id = item.id })">Read More <i class="fa fa-arrow-right"></i></a></div>
-                                                    <div class="col-6"> <i class="fa fa-clock-o"></i>@item.RegDate.ToShortDateString() </div>
+                                                    <div class="col-6">
+                                                    @if (ChemAnalyst.DAL.ProductDataStore.GetProductCompanyReletion(item.id, ViewBag.f))
+                                                    {
+                                                    <a href="@Url.Action("CompanyProfileDetails", "Company", new { id = item.id })">Read More <i class="fa fa-arrow-right"></i></a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a onclick="showmodel()">Read More <i class="fa fa-arrow-right"></i></a>
+                                                    }
+                                                    </div>
+                                                    <div class="col-6"> <i class="fa fa-clock-o"></i>@item.CreatedTime.ToString("MMM/yyyy") </div>
                                                 </div>
                                             </div>
                                         </div>

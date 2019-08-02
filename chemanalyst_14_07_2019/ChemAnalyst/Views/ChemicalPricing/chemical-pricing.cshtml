@@ -333,8 +333,8 @@
                                     </p>
                                 </div>
                                 <div style="height:30px"></div>
-                               
-                             
+
+
                                 <div class="custom-table">
                                     @if (Model.FirstOrDefault().range.ToLower() == "weekly" || Model.FirstOrDefault().range.ToLower() == "quarterly")
                                     {
@@ -463,7 +463,8 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                                                             <td style=" width:93px">@column.Location</td>
                                                             <td style=" width:110px">@column.Price</td>
                                                             <td style=" width:110px">@column.MidValue</td>
-                                                            <td style=" width:40px">
+                                                            <td style="width:150px">
+                                                                @*<td style=" width:40px">*@
                                                                 @{
                                                                     if (column.Difference4WeekAgo.FirstOrDefault().ToString() == "(")
                                                                     {
@@ -476,8 +477,9 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                                                                         @*<span><i class="fa fa-arrow-circle-up" style="color:green"></i></span>*@
                                                                     }
                                                                 }
+                                                                @column.Difference4WeekAgo
                                                             </td>
-                                                            <td style="width:110px">@column.Difference4WeekAgo</td>
+                                                            @*<td style="width:110px">@column.Difference4WeekAgo</td>*@
                                                             @*<td>
                                                                     @{
                                                                         if (column.Difference4WeekAgo.FirstOrDefault().ToString() == "(")
@@ -498,7 +500,39 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                                             </table>
                                         </div>
                                                                     }
+                                                                    else if (Model.FirstOrDefault().range.ToLower() == "daily bulk")
+                                                                    {
+                                                                        <table class="table table-hover table-bordered" id="tblRegisteredUsers">
+                                                                            <thead>
+                                                                                <tr class="table-primary">
+                                                                                    <th>Days</th>
+                                                                                    @foreach (string column in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
+                                                                                    {
 
+                                                                                        <th>@column</th>
+                                                                                    }
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                @foreach (string count in Model.Select(x => x.StackedDimensionOne).ToList())
+                                                                                {
+                                                                                    <tr>
+                                                                                        @foreach (var data in Model.Where(x => x.StackedDimensionOne == count).ToList())
+
+                                                                                        {
+                                                                                            <th>@count</th>
+
+                                                                                            foreach (var value in data.LstData.Select(x => x.Quantity).ToList())
+                                                                                            {
+                                                                                                <th>@value</th>
+                                                                                            }
+
+                                                                                        }
+                                                                                    </tr>
+                                                                                }
+                                                                            </tbody>
+                                                                        </table>
+                                                                    }
 
                                                                     else
                                                                     {
@@ -539,7 +573,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                     </div>
                     <div class="col-md-3">
                         <aside>
-                            <div class="side-news-feed">
+                            <div class="side-news-feed" style="height: 540px;overflow-y: scroll;">
                                 <h3><i class="fa fa-bell-o"></i> News</h3>
                                 @foreach (var news in Model.Select(x => x.NewsDetailsViewModel.NewsList).FirstOrDefault())
                                 {
@@ -554,7 +588,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
 
                                 }
                             </div>
-                            <div class="side-news-feed mt-4">
+                            <div class="side-news-feed mt-4" style="height: 540px;overflow-y: scroll;">
                                 <h3><i class="fa fa-thumbs-up"></i> Top Deals</h3>
                                 @foreach (var item in Model.Select(x => x.NewsDetailsViewModel.DealList).FirstOrDefault())
                                 {
@@ -741,7 +775,10 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
     <script src="https://igniteui.com/js/external/FileSaver.js"></script>
     <script src="https://igniteui.com/js/external/Blob.js"></script>
     <script src="https://www.github.developerdan.com/table-to-json/javascripts/jquery.tabletojson.min.js"></script>
+
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
     <script type="text/javascript">
+
         $(function () {
             $("#todate").attr("disabled","disabled");
             jQuery('#fromdate').datepicker({
@@ -805,7 +842,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
 
         });
         function resetdates(){
-          
+
             var diff = 30;
             if($("#ddlRange").val() == "Yearly" ){
                 diff = (365*500);
@@ -827,7 +864,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
 
                 if( $("#ddlRange").val() == "Monthly"){
                     var d = new Date();
-                   
+
                     $('#fromdate').datepicker('setDate', new Date(d.getFullYear(),d.getMonth(),01));
                     $('#todate').datepicker('setDate', 'today');
                 }else{
@@ -914,6 +951,8 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
 
 
             if (range == "Daily basis" || range == "Daily Bulk") {
+                swal("Please select only 30 days to see daily basis data!")
+                //alert("Please select only 30 days to see daily basis data.");
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
             }
             else if(range == "Quarterly")
@@ -1421,7 +1460,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
             $("#submitReset").hide();
             $("#exportpdf2").hide();
             $("#viewAll").hide();
-            
+
 
             // Generate the PDF.
             html2pdf().from(element).set({
@@ -1436,7 +1475,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                 $("#submitReset").show();
                 $("#exportpdf2").show();
                 $("#viewAll").show();
-                
+
 
                 // window.location.reload();
             });;

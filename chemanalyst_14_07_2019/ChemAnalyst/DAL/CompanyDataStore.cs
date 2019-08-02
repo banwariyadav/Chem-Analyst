@@ -18,6 +18,11 @@ namespace ChemAnalyst.DAL
             return _context.SA_Company.ToList();
 
         }
+        public SA_Company_SWOT GetSWOTByCompany(int id)
+        {
+            return _context.SA_Company_SWOT.FirstOrDefault(x=>x.CompanyId == id);
+
+        }
         public List<SA_Company> GetCompanyList(string category, string products, string revsize, string empsize)
         {
 
@@ -34,6 +39,8 @@ namespace ChemAnalyst.DAL
                             Category = c.Category,
                             NOE = c.NOE,
                             Logo= c.Logo,
+                            RegDate = c.RegDate,
+                            CreatedTime = c.CreatedTime,
                             Product = gj.FirstOrDefault().SA_ProductId,
                             Revenu = r.Revenues
                         };
@@ -75,6 +82,8 @@ namespace ChemAnalyst.DAL
                 Description = c.Description,
                 Category = c.Category,
                 NOE = c.NOE,
+                RegDate = c.RegDate,
+                CreatedTime = c.CreatedTime,
                 Logo= c.Logo
             }).ToList();
 
@@ -123,8 +132,8 @@ namespace ChemAnalyst.DAL
 
         internal dynamic GetUniqueCategory()
         {
-            //return _context.SA_Company.Select(x=>x.Category).Distinct().ToList();
-            return _context.SA_Category.Where(w=>w.status==1).ToList();
+            return _context.SA_Company.Select(x=>x.Category).Distinct().ToList();
+           // return _context.SA_Category.Where(w=>w.status==1).ToList();
         }
 
         public bool DeleteCompany(int NewsId)

@@ -1,68 +1,318 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-    //Layout = "~/Views/Shared/_Layout.cshtml";
-     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+﻿@model IEnumerable<ChemAnalyst.Models.SA_Company>
+
+
+
+@using PagedList.Mvc;
+@using PagedList;
+
+@{
+    if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
+    {
+        Layout = "~/Views/Shared/_LayoutCustomer_company.cshtml";
+        <style>
+            .addMargin {
+                margin-left: 10px;
+            }
+        </style>
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutUser1.cshtml";
+    }
+
 }
-<title>Chem Analyst file list </title>
-<head>
-    <script src="~/js/jquery.js"></script>
-    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
-    <script src="https//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+
+<body>
+    <style>
+
+          #myModal .modal-content {
+	background-color: transparent;
+}
+#myModal .modal-dialog {
+	max-width: 790px;
+	height: 350px;
+	background-image: url(../images/subscribe-bg.png);
+	top: 15%;
+	background-size: cover;
+}
+
+.freeSub {
+	color: #fff;
+	padding: 50px 50px 0px 30px;
+}
+.freeSub h2 {
+	text-transform: uppercase;
+}
+.freeSub a.btn.btn-yellow {
+    color: #000000;
+    background: yellow;
+    text-transform: uppercase;
+}
+.freeSub a.text-center {
+    color: #fff;
+    margin-top: 10px;
+}
+        ::placeholder { /* Firefox, Chrome, Opera */
+            color: #fff;
+        }
+
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: #fff;
+        }
+
+        ::-ms-input-placeholder { /* Microsoft Edge */
+            color: #fff;
+        }
+    </style>
+
+    @if (Session["UserRole"] == null)
+    {
+        <div class="inner-banner">
+            <img src="~/images/about-banner.jpg">
+            <h1>News</h1>
+
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">News</li>
+            </ol>
+
+        </div>
+    }
+
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="login-pic">
+                                <div class="freeSub">
+                                    <h2>Get Chemical Pricing in few-clicks.</h2>
+                                    <a href="@Url.Action("FreeTrail", "ChemAnalyst")" class="btn btn-yellow">Start your Free Trail today.</a>
+                                    <a href="@Url.Action("FreeTrail", "ChemAnalyst")" class="text-center">Click here to subscribe free trial to enjoy our benefits!</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="static-page">
+
+            <div class="container addMargin" style="width:1380px; margin-top: 15px;" >
+
+                <div class="company-profile">
+
+                    <div class="com-top-3col">
+                        <div class="row">
+
+
+                            <div class="col-lg-12" >
+                                <div class="searchbox">
+                                    @using (Html.BeginForm("CompanyProfile", "Login", null, FormMethod.Post, new { @class = "row", enctype = "multipart/form-data" }))
+                                    {
+
+                                        <div class="col-md-3">
+                                            <select id="category" name="category" class="plbxt btn btn-primary  width100">
+                                                <option value="">Select Category</option>
+
+                                                @foreach (var item in ViewBag.Category)
+                                                {
+                                                    <option value="@item">@item</option>
+                                                }
+                                            </select>
+
+                                        </div>
+                                            <div class="col-md-3">
+                                                <select id="products" name="products" class="plbxt btn btn-primary  width100">
+                                                    <option value="">Select Products</option>
+
+                                                    @foreach (var item in ViewBag.Product)
+                                                    {
+                                                        <option value="@item.id">@item.ProductName</option>
+                                                    }
+                                                </select>
+
+                                            </div>
+
+                                                <div class="col-md-2">
+                                                    <select id="revsize" name="revsize" class="plbxt btn btn-primary  width100">
+                                                        <option value="">Revenue Size</option>
+                                                        <option value="10-100">10-100cr</option>
+                                                        <option value="100-500">100-500cr</option>
+                                                        <option value="500-1000">500-1000cr</option>
+                                                        <option value="1000-5000">1000-5000cr</option>
+                                                        <option value="5000">5000 +</option>
+
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <select id="empsize" name="empsize" class="plbxt btn btn-primary  width100">
+                                                        <option value="">Employee Size</option>
+                                                        <option value="10-100">10-100</option>
+                                                        <option value="100-500">100-500</option>
+                                                        <option value="500-1000">500-1000</option>
+                                                        <option value="1000-5000">1000-5000</option>
+                                                        <option value="5000">5000 +</option>
+                                                    </select>
+
+                                                </div>
+                                                <div class="col-md-2 pl-0">
+                                                    <button type="submit" class="btn btn-green">
+                                                        <i class="fa fa-filter"></i>
+                                                        Filter
+                                                    </button>
+                                                </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="width100" style="height:30px; margin-top: 30px;"></div>
+                            @foreach (var item in Model)
+                            {
+
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="post-item clearfix">
+                                        <div class="row">
+                                            <div class="col-md-4 col-sm-4 themestek-box-img-left">
+                                                <div class="news-pic">
+                                                    <img src="~/ProductImages/@item.Logo" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="themestek-box-content col-md-8 col-sm-8">
+                                                <div class="news-text">
+                                                    <h4>
+                                                        @if (ChemAnalyst.DAL.ProductDataStore.GetProductCompanyReletion(item.id, ViewBag.f))
+                                                        {
+                                                        <a href="@Url.Action("CompanyDetail", "Login", new { id = item.id })">@(item.Name.Length > 40 ? (item.Name.Substring(0, 40)) : item.Name)...</a>
+                                                        }
+                                                        else
+                                                        {<a onclick="showmodel()">@(item.Name.Length > 40 ? (item.Name.Substring(0, 40)) : item.Name)...</a>
+                                                        }
+                                                    </h4>
+                                                    <p>@(item.Description.Length > 100 ? (item.Description.Substring(0, 100)) : item.Description)...</p>
+                                                    <div class="row mt-3">
+                                                        <div class="col-6">
+                                                            @if (ChemAnalyst.DAL.ProductDataStore.GetProductCompanyReletion(item.id, ViewBag.f))
+                                                            {
+                                                            <a href="@Url.Action("CompanyDetail", "Login", new { id = item.id })">Read More <i class="fa fa-arrow-right"></i></a>
+                                                            }
+                                                            else
+                                                            {
+                                                            <a onclick="showmodel()">Read More <i class="fa fa-arrow-right"></i></a>
+                                                            }
+                                                        </div>
+                                                        <div class="col-6"> <i class="fa fa-clock-o"></i>@item.CreatedTime.ToString("MMM/yyyy") </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="login-pic">
+                                <div class="freeSub">
+                                    <h2>Get Chemical Pricing in few-clicks.</h2>
+                                    <a href="@Url.Action("FreeTrail", "ChemAnalyst")" class="btn btn-yellow">Start your Free Trail today.</a>
+                                    <a href="@Url.Action("FreeTrail", "ChemAnalyst")" class="text-center">Click here to subscribe free trial to enjoy our benefits!</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+    @*<script src="../js/jquery.js"></script>*@
+    @*<script src="../js/jquery-3.3.1.slim.min.js"></script>*@
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/owl.carousel.js"></script>
+    <script src="../js/wow.min.js"></script>
+
     <script>
 
-        $(document).ready(function () {
-            $('#FileList').DataTable({
-                "ajax": {
-                    "url": "GetCustCompaniesList",
-                    "type": "GET",
-                    "datatype": "json"
+            $(function () {
+
+                $("#category").val('@ViewBag.Cat');
+                $("#products").val('@ViewBag.Prod');
+                $("#revsize").val('@ViewBag.RevS');
+                $("#empsize").val('@ViewBag.EmpSiz');
+
+
+               
+            });
+
+
+        $("#products").change(function () {
+            debugger;
+            var ProductId = $(products).find("option:selected").val();
+
+            $.ajax({
+                type: "POST",
+                url: "../Company/CheckAccess",
+                data: "{ ProductId:" + ProductId + "}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (response) {
+                    debugger;
+                    if (response == "Access") {
+
+                    }
+                    else {
+                        $('#myModal').modal({ backdrop: 'static', keyboard: false });
+                        event.preventDefault();
+                    }
                 },
-                fields: [{
-                    label: 'RegDate:',
-
-                }],
-
-                "columns": [
-                   //{ "data": "id" },
-                    { "data": "Name", "autoWidth": true },
-                    { "data": "EmailId", "autoWidth": true },
-                    { "data": "RegDate", "autoWidth": true },
-                   
-                      {
-
-                        "render": function (data, type, row, meta) { return '<a href="../Login/CompanyDetail/' + row.id + '"><i class="fa fa-eye"></i></a>'; }
-                    },
-
-
-                ]
+                failure: function (response) {
+                    // alert(response.responseText);
+                },
+                error: function (response) {
+                    // alert(response.responseText);
+                }
             });
         });
 
-
     </script>
-</head>
-
-<div class="update-profile-wrapper">
-
-    <div class="white-wrapper">
-
-        <div class="data-detail-wrapper table-responsive">
-
-            <table id="FileList" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Created</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
-
-            </table>
-        </div>
-
-    </div>
-</div>
+</body>

@@ -172,20 +172,20 @@
                                 <i class="fa fa-users"></i>Role Management
                             </a>
                         </li>
-                        <li>
+                        @*<li>
                             <a href="@Url.Action("ShowCountryList", "Admin")">
                                 <i class="fa fa-circle-o text-aqua"></i> Country Management
                             </a>
-                        </li>
+                        </li>*@
                         <li>
                             <a href="@Url.Action("ShowIndustryList", "Admin")">
-                                <i class="fa fa-circle-o text-aqua"></i> Industry Report
+                                <i class="fa fa-bar-chart"></i> Industry Report
                             </a>
                         </li>
 
                         <li>
                             <a href="@Url.Action("ShowCommentaryList", "Admin")">
-                                <i class="fa fa-circle-o text-aqua"></i> Commentary Management
+                                <i class="fa fa-bar-chart"></i> Commentary Management
                             </a>
                         </li>
 
@@ -254,28 +254,28 @@
                         <li>
                             <a data-toggle="collapse" data-target="#comprofmenu" class="drop-menu" aria-expanded="true" href="#">
 
-                                <i class="fa fa-signal"></i>Company Profile &amp; Product
+                                <i class="fa fa-signal"></i>Company Management
 
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span>
                             </a>
                             <ul class="sub-menu collapse" id="comprofmenu" aria-expanded="true" style="">
-                                <li>
+                                @*<li>
                                     <a href="@Url.Action("Index", "CompanyProf")">
                                         <i class="fa fa-circle-o text-aqua"></i> Upload Company Profile
                                     </a>
-                                </li>
+                                </li>*@
                                 <li>
                                     <a href="@Url.Action("Index", "CompanyAndProductRelation")">
                                         <i class="fa fa-circle-o text-aqua"></i> Company &amp; Product Relation
                                     </a>
                                 </li>
-                                <li>
+                                @*<li>
                                     <a href="@Url.Action("Index", "CompanyProfRecord")">
                                         <i class="fa fa-circle-o text-aqua"></i> Upload Company FY Data
                                     </a>
-                                </li>
+                                </li>*@
                                 <li>
                                     <a href="@Url.Action("AllCompanyProf", "CompanyProf")">
                                         <i class="fa fa-circle-o text-aqua"></i> Manage Company Profile
@@ -294,11 +294,11 @@
                                         <i class="fa fa-circle-o text-aqua"></i> Manage FY Data
                                     </a>
                                 </li>
-                                <li>
+                                @*<li>
                                     <a href="@Url.Action("CompanySWOT", "Company")">
                                         <i class="fa fa-circle-o text-aqua"></i> Manage Company SWOT
                                     </a>
-                                </li>
+                                </li>*@
                             </ul>
                         </li>
                     }

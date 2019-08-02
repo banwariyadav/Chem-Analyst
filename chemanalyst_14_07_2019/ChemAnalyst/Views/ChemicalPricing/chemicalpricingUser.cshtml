@@ -59,7 +59,7 @@
 @{
     if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
     {
-        Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+        Layout = "~/Views/Shared/_LayoutCustomer_chemical.cshtml";
     }
 
 
@@ -185,7 +185,7 @@
 
     <div class="page-content">
         <div class="static-page">
-            <div class="container">
+            <div class="container" style="margin-left: 10px;">
 
 
 
@@ -477,7 +477,8 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                                                     <td style=" width:93px">@column.Location</td>
                                                     <td style=" width:110px">@column.Price</td>
                                                     <td style=" width:110px">@column.MidValue</td>
-                                                    <td style=" width:40px">
+                                                    <td style="width:150px">
+                                                        @*<td style=" width:40px">*@
                                                         @{
                                                             if (column.Difference4WeekAgo.FirstOrDefault().ToString() == "(")
                                                             {
@@ -490,8 +491,9 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                                                                 @*<span><i class="fa fa-arrow-circle-up" style="color:green"></i></span>*@
                                                             }
                                                         }
+                                                        @column.Difference4WeekAgo
                                                     </td>
-                                                    <td style="width:110px">@column.Difference4WeekAgo</td>
+                                                    @*<td style="width:110px">@column.Difference4WeekAgo</td>*@
                                                     @*
                                                         <td>
                                                             @{
@@ -707,7 +709,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
 
     <link rel="stylesheet" type="text/css" href="~/css/jquery.datetimepicker.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="jquery.js"></script>
+    @*<script src="jquery.js"></script>*@
     <script src="~/js/jquery.datetimepicker.full.min.js"></script>
 
     <script src="~/js/html2pdf.bundle.min.js"></script>
@@ -723,6 +725,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
 
 
     <script src="https://www.github.developerdan.com/table-to-json/javascripts/jquery.tabletojson.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
     <script type="text/javascript">
         $(function () {
             $("#todate").attr("disabled","disabled");
@@ -932,6 +935,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
 
 
             if (range == "Daily basis" || range == "Daily Bulk") {
+                swal("Please select only 30 days to see daily basis data!")
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
             }
             else if(range == "Quarterly")
@@ -1075,7 +1079,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                         // ddlCompare.append($("<option  ></option>").val(this['Value']).html(this['Text']));
 
                     });
-                    $("#example-getting-started").multiselect();
+                    //$("#example-getting-started").multiselect();
                     // alert("category call");
                 },
                 failure: function (response) {

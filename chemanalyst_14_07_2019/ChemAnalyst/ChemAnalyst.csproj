@@ -412,6 +412,8 @@
     <Content Include="Views\Company\CompanyProfileDetails.cshtml" />
     <Content Include="Views\Login\custChangePassword.cshtml" />
     <Content Include="Views\Login\cust-update-profile.cshtml" />
+    <Content Include="Views\Company\AddCompanySWOT.cshtml" />
+    <Content Include="Views\Company\CompanySWOT.cshtml" />
     <None Include="Views\ProductAndCategory\category1.cshtml" />
     <Content Include="Views\Admin\grid.cshtml" />
     <Content Include="Views\Admin\role1 - Copy.cshtml" />
@@ -480,13 +482,13 @@
     <Compile Include="DAL\Deals.cs" />
     <Compile Include="DAL\Commentary.cs" />
     <Compile Include="DAL\MarketAnalysis.cs" />
+    <Compile Include="DAL\Product.cs" />
     <Compile Include="DAL\SubscriptionDAL.cs" />
     <Compile Include="DAL\FreeTrialDal.cs" />
     <Compile Include="DAL\Industry.cs" />
     <Compile Include="DAL\JOb.cs" />
     <Compile Include="DAL\LeadDAL.cs" />
     <Compile Include="DAL\News.cs" />
-    <Compile Include="DAL\Product.cs" />
     <Compile Include="DAL\Login.cs" />
     <Compile Include="DAL\Category.cs" />
     <Compile Include="DAL\Quote.cs" />
@@ -528,7 +530,10 @@
     <Compile Include="Models\SA_ChemPriceYearly.cs" />
     <Compile Include="Models\SA_CMS.cs" />
     <Compile Include="Models\SA_Commentary.cs" />
+    <Compile Include="Models\SA_CompanyAndProductRelation.cs" />
+    <Compile Include="Models\SA_Company_SWOT.cs" />
     <Compile Include="Models\SA_Country.cs" />
+    <Compile Include="Models\SA_DealsAndProductRelation.cs" />
     <Compile Include="Models\SA_MarketbyCompanySharetonnes.cs" />
     <Compile Include="Models\SA_MarketbyCompanySharepercent.cs" />
     <Compile Include="Models\SA_MarketbyDemandsupply.cs" />
@@ -559,6 +564,7 @@
     <Compile Include="Models\SA_MarketbyProcess.cs" />
     <Compile Include="Models\SA_MarketbyLoc.cs" />
     <Compile Include="Models\SA_News.cs" />
+    <Compile Include="Models\SA_NewsAndProductRelation.cs" />
     <Compile Include="Models\SA_PageList.cs" />
     <Compile Include="Models\SA_Product.cs" />
     <Compile Include="Models\SA_Quote.cs" />
@@ -624,6 +630,8 @@
     <Content Include="Views\World\AddWorld.cshtml" />
     <Content Include="Views\Shared\_LayoutUser7.cshtml" />
     <Content Include="Views\SubsManagement\ViewAllSubscriptions.cshtml" />
+    <Content Include="Views\Shared\_LayoutCustomer_chemical.cshtml" />
+    <Content Include="Views\Shared\_LayoutCustomer_company.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

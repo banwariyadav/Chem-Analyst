@@ -436,7 +436,7 @@
     <script src="https://igniteui.com/js/external/Blob.js"></script>
 
     <script src="https://www.github.developerdan.com/table-to-json/javascripts/jquery.tabletojson.min.js"></script>
-
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
     <script>
 
         function SubmitResetForm()
@@ -571,6 +571,7 @@
 
             
             if (range == "Daily basis" || range == "Daily Bulk") {
+                swal("Please select only 30 days to see daily basis data!")
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
             }
             else if(range == "Quarterly")

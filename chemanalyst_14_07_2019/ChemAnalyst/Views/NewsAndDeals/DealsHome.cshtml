@@ -9,6 +9,11 @@
     if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
     {
         Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+        <style>
+            .addMargin {
+                margin-left: 10px;
+            }
+        </style>
     }
     else
     {
@@ -47,22 +52,11 @@
             </div>
         }
 
-        @if (Session["UserRole"] == null)
-            {
-
-            }
-            else
-            {
-            <style>
-                .addMargin {
-                    margin-left: 10px;
-                }
-            </style>
-        }
+      
 
         <div class="page-content">
             <div class="static-page">
-                <div class="container addMargin">
+                <div class="container addMargin" style="width:1380px">
 
                     @* <div class="blog-list">*@
                     <div>
@@ -101,12 +95,10 @@
                             }
                             else
                             {
-                                <div class="col-lg-12">
-                                    <p>&nbsp;</p>
-                                </div>
+                               
 
-                                <div class="col-lg-12">
-                                    <div class="searchbox">
+                                <div class="col-lg-12" style="margin-bottom: 20px;">
+                                    <div class="searchbox" style="margin-top: 20px;">
                                         @using (Html.BeginForm("DealsHome", "NewsAndDeals", null, FormMethod.Post, new { @class = "row", enctype = "multipart/form-data" }))
                                         {
                                             <div class="col-md-3">
@@ -135,16 +127,14 @@
                                 </div>
                             }
 
-                            <p> &nbsp;</p>
+                          
                             <div class="width100" style="height:30px"></div>
 
 
                             @foreach (var item in Model.DealsList)
                             {
 
-                                <div class="col-lg-12">
-                                    <p>&nbsp;</p>
-                                </div>
+                                
                                 <div class="col-md-6 col-sm-6">
 
                                     <div class="post-item clearfix">
@@ -166,24 +156,23 @@
                                             <div class="themestek-box-content col-md-8 col-sm-8">
                                                 <div class="news-text">
                                                     <h4>
-                                                    
-                                                    @if (ChemAnalyst.DAL.ProductDataStore.GetProductDealReletion(item.id, ViewBag.f))
-
-
-                                                    {<a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">@Model.DealsList.First().DealsName </a>
+                                                        <a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">@Model.DealsList.First().DealsName </a>
+                                                    @*@if (ChemAnalyst.DAL.ProductDataStore.GetProductDealReletion(item.id, ViewBag.f))
+                                                    {
+                                                        <a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">@Model.DealsList.First().DealsName </a>
                                                     }
                                                     else
                                                     {
                                                         <a onclick="showmodel()">@Model.DealsList.First().DealsName </a>
-                                                    }
+                                                    }*@
 
                                                      </h4>
                                                     <p>@(item.DealsDiscription.Length > 100 ? (item.DealsDiscription.Substring(0, 100)) : item.DealsDiscription)...</p>
 
                                                     <div class="row mt-3">
                                                         <div class="col-6">
-                                                        
-                                                        @if (ChemAnalyst.DAL.ProductDataStore.GetProductDealReletion(item.id, ViewBag.f))
+                                                            <a style="font-size:11px" href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">Read More <i class="fa fa-arrow-right"></i></a>
+                                                        @*@if (ChemAnalyst.DAL.ProductDataStore.GetProductDealReletion(item.id, ViewBag.f))
                                                         {
                                                         <a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">Read More <i class="fa fa-arrow-right"></i></a>
 
@@ -194,10 +183,11 @@
                                                             <a onclick="showmodel()">Read More <i class="fa fa-arrow-right"></i></a>
 
 
-                                                        }
+                                                        }*@
                                                         
                                                         </div>
-                                                        <div class="col-6"> <i class="fa fa-clock-o"></i>@item.CreatedTime.Value.Date.ToString("MMM/yyyy") </div>
+                                                        <div class="col-6" style="font-size: 11px;"> <i class="fa fa-clock-o"></i> @item.CreatedTime.Value.Date.ToString("MMM/yyyy") </div>
+                                                        @*<div class="col-4" style="font-size: 11px;font-weight: bold;"> <i class="fa fa-user" aria-hidden="true"></i> @item.CreatedBy </div>*@
                                                     </div>
 
                                                 </div>

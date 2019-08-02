@@ -160,7 +160,8 @@ namespace ChemAnalyst.Controllers
             ViewBag.Prod = "";
             ViewBag.RevS = "";
             ViewBag.EmpSiz = "";
-
+            NewsDataStore n = new NewsDataStore();
+            ViewBag.f = n.GetFirstProduct();
             return View(Obj.GetCompanyList().OrderBy(x => x.CreatedTime));
 
         }
@@ -169,6 +170,8 @@ namespace ChemAnalyst.Controllers
         {
             List<SA_Company> NewsList = Obj.GetCompanyList().Where(w=>w.id==id).OrderBy(w => w.id).ToList();
             NewsList.OrderBy(x => x.CreatedTime).Take(1);
+            ViewBag.S = Obj.GetSWOTByCompany(id);
+
             return View(NewsList);
 
         }
@@ -176,6 +179,8 @@ namespace ChemAnalyst.Controllers
         [HttpPost]
         public ActionResult CompanyProfile(string category,string products,string revsize,string empsize)
         {
+            NewsDataStore n = new NewsDataStore();
+            ViewBag.f = n.GetFirstProduct();
             ViewBag.Cat = category;
             ViewBag.Prod = products;
             ViewBag.RevS = revsize;
@@ -185,5 +190,42 @@ namespace ChemAnalyst.Controllers
             return View(Obj.GetCompanyList(category, products,revsize,empsize).OrderBy(x => x.CreatedTime));
 
         }
+
+
+        [HttpPost]
+        public JsonResult CheckAccess(string ProductId)
+        {
+            int custid = int.Parse(Session["LoginUser"].ToString());
+            if (!string.IsNullOrEmpty(ProductId))
+            {
+                int PId = int.Parse(ProductId);
+
+                try
+                {
+
+                    var IsAccess = _context.CustProduct.Where(w => w.CustId == custid && w.ProdId == PId).OrderByDescending(w => w.id).FirstOrDefault();
+
+                    if (IsAccess == null)
+                    {
+                        return Json("NoAcesss");
+                    }
+                    else
+                    {
+                        return Json("Access");
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
+            }
+            else
+            {
+                //var Commentaries = ObjCommentary.GetCommentaryList().Select(w => new SelectListItem { Text = w.Title, Value = w.Description }).ToList();
+                return Json("ProductNotFound");
+            }
+        }
+
     }
 }

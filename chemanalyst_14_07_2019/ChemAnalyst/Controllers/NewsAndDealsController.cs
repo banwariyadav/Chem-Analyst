@@ -399,7 +399,8 @@ namespace ChemAnalyst.Controllers
 
             if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
             {
-                model.NewsList = n.GetCustNewsList(Convert.ToInt32(Session["LoginUser"])).ToPagedList(page ?? 1, pageSize);
+                model.NewsList = n.GetNewsBySearch(id, search, searchto, keyword).OrderByDescending(x => x.CreatedTime).ToPagedList(page ?? 1, pageSize);
+                //model.NewsList = n.GetCustNewsList(Convert.ToInt32(Session["LoginUser"])).ToPagedList(page ?? 1, pageSize);
             }
 
             else
@@ -452,7 +453,8 @@ namespace ChemAnalyst.Controllers
 
             if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
             {
-                model.DealsList = n.GetCustDealsList(Convert.ToInt32(Session["LoginUser"])).ToPagedList(page ?? 1, pageSize);
+                model.DealsList = n.GetDealsBySearch(id, search, searchto, keyword).OrderByDescending(x => x.CreatedTime).ToPagedList(page ?? 1, pageSize);
+                //model.DealsList = n.GetCustDealsList(Convert.ToInt32(Session["LoginUser"])).ToPagedList(page ?? 1, pageSize);
             }
 
             else

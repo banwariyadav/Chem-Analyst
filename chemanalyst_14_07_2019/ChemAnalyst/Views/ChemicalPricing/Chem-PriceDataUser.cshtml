@@ -12,7 +12,7 @@
 @{
     if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
     {
-        Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+        Layout = "~/Views/Shared/_LayoutCustomer_chemical.cshtml";
     }
 
 
@@ -115,7 +115,7 @@
 
                             </div>
 
-                            <div class="col-md-4 mt10">
+                            <div class="col-md-4 mt10"  style="display:none">
                                 <p>
                                     <i class="fa fa-compress"></i> Comparision
                                 </p>
@@ -221,8 +221,9 @@
     <script src="~/js/utils.js"></script>
     <link rel="stylesheet" type="text/css" href="~/css/jquery.datetimepicker.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="jquery.js"></script>
+    @*<script src="jquery.js"></script>*@
     <script src="~/js/jquery.datetimepicker.full.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
     <script>
 
         function SubmitResetForm()
@@ -382,13 +383,14 @@
                 });
             });
         });
-
         $("body").on("change", "#ddlRange", function () {
             var range=$(ddlRange).find("option:selected").val();
             var ddlCustomers = $("#ddlChart");
 
 
             if (range == "Daily basis" || range == "Daily Bulk") {
+                swal("Please select only 30 days to see daily basis data!")
+                //alert("Please select only 30 days to see daily basis data.");
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
             }
             else if(range == "Quarterly")
@@ -407,6 +409,7 @@
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
             }
         });
+      
         function ShowCommentaries()
         {
 
@@ -531,7 +534,7 @@
                         // ddlCompare.append($("<option  ></option>").val(this['Value']).html(this['Text']));
 
                     });
-                    $("#example-getting-started").multiselect();
+                    //$("#example-getting-started").multiselect();
                     // alert("category call");
                 },
                 failure: function (response) {
@@ -662,13 +665,15 @@
 
 
         function setdtval(){
-
-            if($("#ddlRange").val() =="Quarterly"){
+            $(".lgndchk").hide();
+            $('input[name="hiddenLegends"]').val("");
+            if($("#ddlRange").val() =="Quarterly"  || $("#ddlRange").val()   ==  "Weekly"){
                 $(".dtcol").hide();
                 $(".yrcol").show();
             }else{
                 $(".dtcol").show();
                 $(".yrcol").hide();
+                resetdates()
             }
 
             if($("#ddlRange").val() =="Quarterly"){

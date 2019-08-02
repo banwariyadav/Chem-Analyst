@@ -201,21 +201,53 @@ namespace ChemAnalyst.DAL
         public static bool GetProductNewReletion(int newid, int product)
         {
             ChemAnalystContext _context1 = new ChemAnalystContext();
-             return _context1.SA_NewsAndProductRelation.Where(x=>x.SA_NewsId== newid  && x.SA_ProductId == product).Count()==0?false:true ;
-            
-        }
+            return _context1.SA_NewsAndProductRelation.Where(x => x.SA_NewsId == newid && x.SA_ProductId == product).Count() == 0 ? false : true;
 
-          public static bool GetProductDealReletion(int newid, int product)
+        }
+        public static bool GetProductCompanyReletion(int companyid, int product)
+        {
+            ChemAnalystContext _context1 = new ChemAnalystContext();
+            return _context1.CompanyAndProductRelations.Where(x => x.SA_CompanyId == companyid && x.SA_ProductId == product).Count() == 0 ? false : true;
+
+        }
+        public static bool GetProductDealReletion(int newid, int product)
         {
             ChemAnalystContext _context1 = new ChemAnalystContext();
             return _context1.SA_DealsAndProductRelation.Where(x => x.SA_DealID == newid && x.SA_ProductId == product).Count() == 0 ? false : true;
 
         }
-        public static string GetProductName( int ProductId)
+        public static string GetProductName(int ProductId)
         {
+            string ProductName = "";
             ChemAnalystContext _context1 = new ChemAnalystContext();
-            var cat = (from coun in _context1.SA_Product where coun.id==ProductId select new { Text = coun.ProductName}).FirstOrDefault().Text;
-            return cat;
+            var cat = _context1.SA_Product.Where(w => w.id == ProductId).FirstOrDefault();
+
+            if (cat != null)
+            {
+                ProductName = cat.ProductName;
+            }
+            else
+            {
+                ProductName = "N/A";
+            }
+            return ProductName;
+        }
+
+        public static string GetModuleName(int PageId)
+        {
+            string PageName = "";
+            ChemAnalystContext _context1 = new ChemAnalystContext();
+            var cat = _context1.SA_PageList.Where(w => w.id == PageId).FirstOrDefault();
+            if (cat != null)
+            {
+                PageName = cat.PageDiscription;
+            }
+            else
+            {
+                PageName = "N/A";
+            }
+            return PageName;
+            
         }
 
         public List<string> GetCustProductList(int custId)

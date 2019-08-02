@@ -132,8 +132,37 @@ namespace ChemAnalyst.Controllers
 
         public ActionResult CustCompaniesList()
         {
-            return View("CustCompanies");
+            CompanyDataStore Obj = new CompanyDataStore();
+
+            ViewBag.Product = Obj.GetCompanyProducts();
+            ViewBag.Category = Obj.GetUniqueCategory();
+            ViewBag.Cat = "";
+            ViewBag.Prod = "";
+            ViewBag.RevS = "";
+            ViewBag.EmpSiz = "";
+            NewsDataStore n = new NewsDataStore();
+            ViewBag.f = n.GetFirstProduct();
+            return View("CustCompanies", Obj.GetCompanyList().OrderBy(x => x.CreatedTime));
+           // return View("CustCompanies");
         }
+
+        [HttpPost]
+        public ActionResult CompanyProfile(string category, string products, string revsize, string empsize)
+        {
+            CompanyDataStore Obj = new CompanyDataStore();
+
+            NewsDataStore n = new NewsDataStore();
+            ViewBag.f = n.GetFirstProduct();
+            ViewBag.Cat = category;
+            ViewBag.Prod = products;
+            ViewBag.RevS = revsize;
+            ViewBag.EmpSiz = empsize;
+            ViewBag.Product = Obj.GetCompanyProducts();
+            ViewBag.Category = Obj.GetUniqueCategory();
+            return View("CustCompanies", Obj.GetCompanyList(category, products, revsize, empsize).OrderBy(x => x.CreatedTime));
+
+        }
+
         public JsonResult GetCustcompaniesList()
         {
             var LoginUser = Convert.ToInt32(Session["LoginUser"]);
@@ -147,7 +176,6 @@ namespace ChemAnalyst.Controllers
 
         public ActionResult CompanyDetail(int id)
         {
-           
             ChemAnalystContext db = new ChemAnalystContext();
             
             CompanyDataStore obj = new CompanyDataStore();
@@ -178,6 +206,7 @@ namespace ChemAnalyst.Controllers
                 Revenue=x.Revenues
             }).ToList();
 
+            ViewBag.S = obj.GetSWOTByCompany(id);
             return View(model);
 
         }

@@ -3126,7 +3126,7 @@ namespace ChemAnalyst.Controllers
                 List<SA_ChemPriceDailyAverage> Chartdata = obj.Where(Chart => Chart.year == DateTime.Now.Year.ToString() && Chart.day == Day[i]).ToList();
                 //sales of product sales by quarter  
                 StackedViewModel Report = new StackedViewModel();
-                Report.StackedDimensionOne = Day[i];
+                Report.StackedDimensionOne = Day[i] + " " +Chartdata.FirstOrDefault().Month;
                 Report.Discription = Discription;
                 Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
                 Report.Product = (obj[0].Product).ToString();
@@ -3504,15 +3504,25 @@ namespace ChemAnalyst.Controllers
             if (!string.IsNullOrEmpty(ProductId))
             {
                 int PId = int.Parse(ProductId);
-                var IsAccess = dbcontext.CustProduct.Where(w => w.CustId == custid && w.ProdId == PId).FirstOrDefault();
 
-                if (IsAccess == null)
+                try
                 {
-                    return Json("NoAcesss");
+
+                    var IsAccess = dbcontext.CustProduct.Where(w => w.CustId == custid && w.ProdId == PId).OrderByDescending(w => w.id).FirstOrDefault();
+
+                    if (IsAccess == null)
+                    {
+                        return Json("NoAcesss");
+                    }
+                    else
+                    {
+                        return Json("Access");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    return Json("Access");
+
+                    throw;
                 }
             }
             else

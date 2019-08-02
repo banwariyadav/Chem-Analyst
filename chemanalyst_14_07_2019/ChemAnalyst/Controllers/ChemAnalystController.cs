@@ -251,9 +251,11 @@ namespace ChemAnalyst.Controllers
                 Report.LstData = QuantityList;
 
                 lstModel.Add(Report);
-            }
 
-            lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+
+
+                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+            }
 
 
             if (lstModel.Count() > 0)
@@ -322,9 +324,10 @@ namespace ChemAnalyst.Controllers
                 Report.LstData = QuantityList;
 
                 lstModel.Add(Report);
+                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
             }
 
-            lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+           
 
             if (lstModel.Count() > 0)
                 return PartialView("~/Views/PartialView/YearlyChartChemical2.cshtml", lstModel);
@@ -393,9 +396,11 @@ namespace ChemAnalyst.Controllers
                 Report.LstData = QuantityList;
 
                 lstModel.Add(Report);
+
+                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
             }
 
-            lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+           
 
             if (lstModel.Count() > 0)
                 return PartialView("~/Views/PartialView/YearlyChartChemical3.cshtml", lstModel);
@@ -464,9 +469,11 @@ namespace ChemAnalyst.Controllers
                 Report.LstData = QuantityList;
 
                 lstModel.Add(Report);
+
+                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
             }
 
-            lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+            
 
             if (lstModel.Count() > 0)
                 return PartialView("~/Views/PartialView/YearlyChartChemical4.cshtml", lstModel);
@@ -535,9 +542,11 @@ namespace ChemAnalyst.Controllers
                 Report.LstData = QuantityList;
 
                 lstModel.Add(Report);
+
+                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
             }
 
-            lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+           
 
             if (lstModel.Count() > 0)
                 return PartialView("~/Views/PartialView/YearlyChartChemical5.cshtml", lstModel);
@@ -606,9 +615,11 @@ namespace ChemAnalyst.Controllers
                 Report.LstData = QuantityList;
 
                 lstModel.Add(Report);
+
+                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
             }
 
-            lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
+          
 
             if (lstModel.Count() > 0)
                 return PartialView("~/Views/PartialView/YearlyChartChemical6.cshtml", lstModel);

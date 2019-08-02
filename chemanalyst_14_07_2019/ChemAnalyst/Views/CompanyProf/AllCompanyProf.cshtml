@@ -3,65 +3,77 @@
     ViewBag.Title = "All Company Prof";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
 
+    .btns {
+    
+    float:right;
+    margin-left:5px;
+    margin-bottom:5px;
+    }
+</style>
 <div class="update-profile-wrapper">
 
-
     <div class="white-wrapper" style="padding-top:10px">
-
         <div class="data-detail-wrapper table-responsive">
-
-           <table class="table table-bordered">
-               <thead>
-                   <tr>
-                       <th>@Html.DisplayNameFor(b => b.Name)</th>
-                       @*<th>@Html.DisplayNameFor(b => b.Description)</th>*@
-                       <th>@Html.DisplayNameFor(b => b.RegDate)</th>
-                       <th>@Html.DisplayNameFor(b => b.CIN)</th>
-                       <th>@Html.DisplayNameFor(b => b.Category)</th>
-                       <th>@Html.DisplayNameFor(b => b.Address)</th>
-                       <th>@Html.DisplayNameFor(b => b.NOE)</th>
-                       <th>@Html.DisplayNameFor(b => b.CEO)</th>
-                       @*<th>@Html.DisplayNameFor(b => b.Meta)</th>
-                       <th>@Html.DisplayNameFor(b => b.MetaDescription)</th>*@
-                       <th>@Html.DisplayNameFor(b => b.website)</th>
-                       <th>@Html.DisplayNameFor(b => b.phoneNo)</th>
-                       @*<th>@Html.DisplayNameFor(b => b.fax)</th>*@
-                       <th>@Html.DisplayNameFor(b => b.EmailId)</th>
-                       <th>@Html.DisplayNameFor(b => b.CreatedTime)</th>
-                       <th>Action</th>
-                   </tr>
-               </thead>
-               <tbody>
-                   @foreach(var comp in Model)
-                   {
-                   <tr>
-                       <td>@comp.Name</td>
-                       @*<td>@comp.Description</td>*@
-                       <td>@comp.RegDate</td>
-                       <td>@comp.CIN</td>
-                       <td>@comp.Category</td>
-                       <td>@comp.Address</td>
-                       <td>@comp.NOE</td>
-                       <td>@comp.CEO</td>
-                       @*<td>@comp.Meta</td>
-                       <td>@comp.MetaDescription</td>*@
-                       <td>@comp.website</td>
-                       <td>@comp.phoneNo</td>
-                       @*<td>@comp.fax</td>*@
-                       <td>@comp.EmailId</td>
-                       <td>@comp.CreatedTime</td>
-                       <td>
-                           @Html.ActionLink("Edit", "Edit", "CompanyProf", new { id = comp.id }, new { @class = "btn btn-primary btn-xs" })
-                       </td>
-                   </tr>
-                   }
-               </tbody>
-           </table>
-
+            <div class="col-md-12">
+                <a class="btn btn-success btns" href="@Url.Action("CompanySWOT", "Company")">
+                    <i class="fa fa-users"></i> Manage Company SWOT
+                </a>
+                <a class="btn btn-success btns" href="@Url.Action("Index", "CompanyProfRecord")">
+                    <i class="fa fa-plus"></i> Upload Company FY Data
+                </a>
+                <a class="btn btn-success btns" href="@Url.Action("Index", "CompanyProf")">
+                    <i class="fa fa-plus"></i> Upload Company Profile
+                </a>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(b => b.Name)</th>
+                        @*<th>@Html.DisplayNameFor(b => b.Description)</th>*@
+                        <th>@Html.DisplayNameFor(b => b.RegDate)</th>
+                        <th>@Html.DisplayNameFor(b => b.CIN)</th>
+                        <th>@Html.DisplayNameFor(b => b.Category)</th>
+                        <th>@Html.DisplayNameFor(b => b.Address)</th>
+                        <th>@Html.DisplayNameFor(b => b.NOE)</th>
+                        <th>@Html.DisplayNameFor(b => b.CEO)</th>
+                        @*<th>@Html.DisplayNameFor(b => b.Meta)</th>
+                            <th>@Html.DisplayNameFor(b => b.MetaDescription)</th>*@
+                        <th>@Html.DisplayNameFor(b => b.website)</th>
+                        <th>@Html.DisplayNameFor(b => b.phoneNo)</th>
+                        @*<th>@Html.DisplayNameFor(b => b.fax)</th>*@
+                        <th>@Html.DisplayNameFor(b => b.EmailId)</th>
+                        <th>@Html.DisplayNameFor(b => b.CreatedTime)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var comp in Model)
+                    {
+                        <tr>
+                            <td>@comp.Name</td>
+                            @*<td>@comp.Description</td>*@
+                            <td>@comp.RegDate</td>
+                            <td>@comp.CIN</td>
+                            <td>@comp.Category</td>
+                            <td>@comp.Address</td>
+                            <td>@comp.NOE</td>
+                            <td>@comp.CEO</td>
+                            @*<td>@comp.Meta</td>
+                                <td>@comp.MetaDescription</td>*@
+                            <td>@comp.website</td>
+                            <td>@comp.phoneNo</td>
+                            @*<td>@comp.fax</td>*@
+                            <td>@comp.EmailId</td>
+                            <td>@comp.CreatedTime</td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", "CompanyProf", new { id = comp.id }, new { @class = "btn btn-primary btn-xs" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
-
     </div>
-
 </div>
-
