@@ -6,95 +6,100 @@
 
 <div class="update-profile-wrapper">
 
+    <h3><a href="@Url.Action("AllCompanyProf", "CompanyProf")" class="btn btn-info"><i class="fa fa-list"></i> Companies List</a></h3>
 
-    <div class="white-wrapper" style="padding-top:10px">
+    <div class="white-wrapper">
 
-        <div class="data-detail-wrapper table-responsive">
+        <div class="col-md-6 col-lg-7 col-md-offset-2">
 
-            @using (Html.BeginForm("SaveCompanyProf", "CompanyProf", FormMethod.Post))
-            {
-                <div class="form-group">
-                    @Html.DisplayNameFor(c => c.Name)
-                    @Html.TextBoxFor(c => c.Name, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(c => c.Name)
+            <div class="eq-form">
+                @if (Model.id > 0)
+                {
+                    <div class="change">
+                        <img src="~/images/@Model.Logo" alt="" height="95px" width="95px" />
+                        <p>Update Company Profile</p>
+                    </div>
+                }
+                else
+                { <div class="change">
+                    <img src="~/images/change-img.jpg" alt="" />
+                    <p>Add New User</p>
                 </div>
-                <div class="form-group">
-                    @Html.DisplayNameFor(c => c.Description)
-                    @Html.TextBoxFor(c => c.Description, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(c => c.Description)
-                </div>
-                <div class="form-group">
-                    @Html.DisplayNameFor(c => c.Logo)
-                    @Html.TextBoxFor(c => c.Logo, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(c => c.Logo)
-                </div>
-                <div class="form-group">
-                    @Html.DisplayNameFor(c => c.RegDate)
-                    @Html.TextBoxFor(c => c.RegDate, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(c => c.RegDate)
-                </div>
-                <div class="form-group">
-                    @Html.DisplayNameFor(c => c.CIN)
-                    @Html.TextBoxFor(c => c.CIN, new { @class = "form-control" })
-                </div>
-                <div class="form-group">
-                    @Html.DisplayNameFor(c => c.Category)
-                    @Html.TextBoxFor(c => c.Category, new { @class = "form-control" })
-                </div>
-                <div class="form-group">
-                    @Html.DisplayNameFor(c => c.Address)
-                    @Html.TextBoxFor(c => c.Address, new { @class = "form-control" })
-                </div>
-                <div class="form-group">
-                    @Html.DisplayNameFor(c => c.NOE)
-                    @Html.TextBoxFor(c => c.NOE, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(c => c.NOE)
-                </div>
-                <div class="form-group">
-                    @Html.DisplayNameFor(c => c.CEO)
-                    @Html.TextBoxFor(c => c.CEO, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(c => c.CEO)
-                </div>
-                <div class="form-group">
-                    @Html.DisplayNameFor(c => c.Meta)
-                    @Html.TextBoxFor(c => c.Meta, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(c => c.Meta)
-                </div>
-                <div class="form-group">
-                    @Html.DisplayNameFor(c => c.MetaDescription)
-                    @Html.TextBoxFor(c => c.MetaDescription, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(c => c.MetaDescription)
-                </div>
-                <div class="form-group">
-                    @Html.DisplayNameFor(c => c.website)
-                    @Html.TextBoxFor(c => c.website, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(c => c.website)
-                </div>
-                <div class="form-group">
-                    @Html.DisplayNameFor(c => c.phoneNo)
-                    @Html.TextBoxFor(c => c.phoneNo, new { @class = "form-control" })
-                </div>
-                <div class="form-group">
-                    @Html.DisplayNameFor(c => c.fax)
-                    @Html.TextBoxFor(c => c.fax, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(c => c.fax)
-                </div>
-                <div class="form-group">
-                    @Html.DisplayNameFor(c => c.EmailId)
-                    @Html.TextBoxFor(c => c.EmailId, new { @class = "form-control" })
-                </div>
-                <div class="form-group">
-                    @Html.DisplayNameFor(c => c.CreatedTime)
-                    @Html.TextBoxFor(c => c.CreatedTime, new { @class = "form-control" })
+                }
+
+                <div class="eq-form-box">
+                    @using (Html.BeginForm("SaveCompanyProf", "CompanyProf", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div style="visibility:hidden">
+                            @Html.TextBoxFor(model => model.id, new { @class = "form-control", @placeholder = "Title * ", required = "required" })
+                        </div>
+                        <div class="col-md-4 col-lg-6 form-group">
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @placeholder = "Company Name * ", required = "required" })
+                        </div>
+                        <div class="col-md-4 col-lg-6 form-group">
+                            @Html.TextBoxFor(model => model.Description, new { @class = "form-control", @placeholder = "Description* ", required = "required" })
+                        </div>
+
+                        <div class="col-md-4 col-lg-6 form-group">
+                            @Html.TextBoxFor(model => model.RegDate, new { @class = "form-control", @placeholder = "RegDate * ", required = "required" })
+                        </div>
+
+                        <div class="col-md-4 col-lg-6 form-group">
+                            @Html.TextBoxFor(model => model.CIN, new { @class = "form-control", @placeholder = "CIN * " })
+                        </div>
+                        <div class="col-md-4 col-lg-6 form-group">
+                            @Html.TextBoxFor(model => model.Category, new { @class = "form-control", @placeholder = "Category * ", required = "required" })
+                        </div>
+                        <div class="col-md-4 col-lg-6 form-group">
+                            @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @placeholder = "Address * ", required = "required" })
+                        </div>
+                        <div class="col-md-4 col-lg-6 form-group">
+                            @Html.TextBoxFor(model => model.NOE, new { @class = "form-control", @placeholder = "No. of employee * ", required = "required"})
+                        </div>
+                        <div class="col-md-4 col-lg-6 form-group">
+                            @Html.TextBoxFor(model => model.CEO, new { @class = "form-control", @placeholder = "CEO* ", required = "required" })
+                        </div>
+                        <div class="col-md-4 col-lg-6 form-group">
+                            @Html.TextBoxFor(model => model.Meta, new { @class = "form-control", @placeholder = "Meta* ", required = "required" })
+                        </div>
+                        <div class="col-md-4 col-lg-6 form-group">
+                            @Html.TextBoxFor(model => model.MetaDescription, new { @class = "form-control", @placeholder = "MetaDescription* ", required = "required" })
+                        </div>
+                        <div class="col-md-4 col-lg-6 form-group">
+                            @Html.TextBoxFor(model => model.website, new { @class = "form-control", @placeholder = "Website* ", required = "required" })
+                        </div>
+                        <div class="col-md-4 col-lg-6 form-group">
+                            @Html.TextBoxFor(model => model.phoneNo, new { @class = "form-control", @placeholder = "PhoneNo* ", required = "required" })
+                        </div>
+                        <div class="col-md-4 col-lg-6 form-group">
+                            @Html.TextBoxFor(model => model.fax, new { @class = "form-control", @placeholder = "Fax* ", required = "required" })
+                        </div>
+                        <div class="col-md-4 col-lg-6 form-group">
+                            @Html.TextBoxFor(model => model.EmailId, new { @class = "form-control", @placeholder = "FEmailId* ", type = "email", required = "required" })
+                        </div>
+                        @Html.HiddenFor(c => c.id)
+                        @Html.HiddenFor(c => c.Logo)
+
+                        <div class="col-sm-6 col-lg-12">
+                            <div class="form-group">
+                                <input type="file" name="file" class="form-control" />
+
+                            </div>
+                        </div>
+
+                        <div class="btn-wrapper">
+                            <a class="gray-btn" href="@Url.Action("AllCompanyProf","CompanyProf")">Cancle</a>
+                            <input type="submit" class="btn btn-success" value="Update Entry">
+                        </div>
+
+                    }
                 </div>
 
-                @Html.HiddenFor(c => c.id)
-                @Html.AntiForgeryToken()
-                <button type="submit" class="btn btn-success">Update Entry</button>
-            }
+
+            </div>
 
         </div>
-
     </div>
 
 </div>

@@ -143,9 +143,22 @@ namespace ChemAnalyst.Controllers
             if (companyProfInDb == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                var file = Request.Files[i];
+
+                if (file != null && file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    var path = Path.Combine(Server.MapPath("~/images"), fileName);
+                    file.SaveAs(path);
+                    companyProfInDb.Logo = fileName;
+                }
+            }
+
             companyProfInDb.Name = model.Name;
             companyProfInDb.Description = model.Description;
-            companyProfInDb.Logo = model.Logo;
+            //companyProfInDb.Logo = model.Logo;
             companyProfInDb.RegDate = Convert.ToDateTime(model.RegDate);
             companyProfInDb.CIN = model.CIN;
             companyProfInDb.Category = model.Category;
@@ -158,7 +171,7 @@ namespace ChemAnalyst.Controllers
             companyProfInDb.phoneNo = model.phoneNo;
             companyProfInDb.fax = model.fax;
             companyProfInDb.EmailId = model.EmailId;
-            companyProfInDb.CreatedTime = model.CreatedTime;
+            //companyProfInDb.CreatedTime = model.CreatedTime;
 
             _context.SaveChanges();
 

@@ -135,83 +135,84 @@
                 <div class="row">
                     <div class="col-lg-3 col-md-3 col-sm-4 mb-30 scrolla">
                         <div style="box-shadow:2px 2px 2px #ccc;box-shadow: 0px 0px 12px 1px #ccc; padding: 15px;">
-@using (Html.BeginForm("Reportsection", "Industry", null, FormMethod.Post, new {@id= "myForm" , enctype = "multipart/form-data" }))
-{
-    <input type="hidden" id="categoryname" name="categoryname" value="@ViewBag.Cat" />
-    <input type="hidden" id="countryname" name="countryname" value="@ViewBag.Cou" />
-                            <h2 class="box-title">
-                                Categories
-                            </h2>
-                            <script>
-                                function setcategory(id,el) {
-                                    if ($(el).prop("checked") == true) {
-                                        $("#categoryname").val( $("#categoryname").val()+(id + ","));
-                                    } else {
-                                        var nval = $("#categoryname").val().replace(id + ",", "");
-                                        $("#categoryname").val(nval);
-                                    }
-                                    $("#myForm").submit();
-                                }
-                                function setcountry(id, el) {
-                                    if ($(el).prop("checked") == true) {
-                                        $("#countryname").val($("#countryname").val() + (id + ","));
-                                    } else {
-                                        var nval = $("#countryname").val().replace(id + ",", "");
-                                        $("#countryname").val(nval);
-                                    }
-                                    $("#myForm").submit();
-                                }
-                            </script>
-                            <div style="max-height: 300px; overflow-y: scroll; margin-bottom: 20px ">
-                                <div class="checkbox">
-                                    <label>
-                                        @foreach (var cat in Model.lstCategory)
-                                        {
-                                        <div id="accordion-first" class="clearfix">
-                                            <div class="accordion" id="accordion1">
-                                                <div class="accordion-group">
-                                                    <div class="accordion-heading">
-                                                        <span type="checkbox">
-                                                        <input @(((string)ViewBag.Cat).Contains(cat.Value+",")?"checked='checked'":"") type="checkbox" onclick="setcategory(@cat.Value,this)">
-                                                        </span>
-                                                        <label class="checkbox-inline mt-3">
-                                                            @cat.Text
-                                                        </label>
-                                                    </div>
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
+                            @using (Html.BeginForm("Reportsection", "Industry", null, FormMethod.Post, new { @id = "myForm", enctype = "multipart/form-data" }))
+                            {
+                                <input type="hidden" id="categoryname" name="categoryname" value="@ViewBag.Cat" />
+                                <input type="hidden" id="countryname" name="countryname" value="@ViewBag.Cou" />
+                                <h2 class="box-title">
+                                    Categories
+                                </h2>
+                                <script>
+                                    function setcategory(id, el) {
+                                        if ($(el).prop("checked") == true) {
+                                            $("#categoryname").val($("#categoryname").val() + (id + ","));
+                                        } else {
+                                            var nval = $("#categoryname").val().replace(id + ",", "");
+                                            $("#categoryname").val(nval);
                                         }
+                                        $("#myForm").submit();
+                                    }
+                                    function setcountry(id, el) {
+                                        if ($(el).prop("checked") == true) {
+                                            $("#countryname").val($("#countryname").val() + (id + ","));
+                                        } else {
+                                            var nval = $("#countryname").val().replace(id + ",", "");
+                                            $("#countryname").val(nval);
+                                        }
+                                        $("#myForm").submit();
+                                    }
+                                </script>
+                                <div style="max-height: 300px; overflow-y: scroll; margin-bottom: 20px ">
+                                    <div class="checkbox">
+                                        <label>
+                                            @foreach (var cat in Model.lstCategory)
+                                            {
+                                                <div id="accordion-first" class="clearfix">
+                                                    <div class="accordion" id="accordion1">
+                                                        <div class="accordion-group">
+                                                            <div class="accordion-heading">
+                                                                <span type="checkbox">
+                                                                    <input @(((string)ViewBag.Cat).Contains(cat.Value + ",") ? "checked='checked'" : "") type="checkbox" onclick="setcategory(@cat.Value,this)">
+                                                                </span>
+                                                                <label class="checkbox-inline mt-3">
+                                                                    @cat.Text
+                                                                </label>
+                                                            </div>
 
-                                    </label>
-                                </div>
-                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
 
-                            <h2 class="box-title">
-                                Countries
-                            </h2>
-                            <div>
-                                <div class="checkbox sm_chk_be" id="sm_chk">
-                                    <label>
-                                        <table   border="0">
-                                            <tbody>
-                                                @foreach (var item in Model.lstCountry)
-                                                {
-                                                <tr>
-                                                    <td>
-                                                    
-                                                    <input @(((string)ViewBag.Cou).Contains(item.Value+",")?"checked='checked'":"")  onclick="setcountry(@item.Value,this)" value="@item.Value" type="checkbox"><label>@item.Text</label></td>
-                                                </tr> 
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </label>
+                                        </label>
+                                    </div>
                                 </div>
+
+                                <h2 class="box-title">
+                                    Countries
+                                </h2>
                                 <div>
+                                    <div class="checkbox sm_chk_be" id="sm_chk">
+                                        <label>
+                                            <table border="0">
+                                                <tbody>
+                                                    @foreach (var item in Model.lstCountry)
+                                                    {
+                                                        <tr>
+                                                            <td>
+
+                                                                <input @(((string)ViewBag.Cou).Contains(item.Value + ",") ? "checked='checked'" : "") onclick="setcountry(@item.Value,this)" value="@item.Value" type="checkbox"><label>@item.Text</label>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </label>
+                                    </div>
+                                    <div>
+                                    </div>
                                 </div>
-                            </div>
-}
+                            }
                         </div>
                         <div class="cat-box">
                         </div>
@@ -219,7 +220,7 @@
                         </div>
                     </div>
                     <div class="col-lg-9 col-md-9 col-sm-8">
-                        <h1 id="ctl00_ContentPlaceHolder1_cat_type" class="r-title mb-20" >All Report</h1>
+                        <h1 id="ctl00_ContentPlaceHolder1_cat_type" class="r-title mb-20">All Report</h1>
                         <div class="table-responsive mt-10">
                             <div class="table">
                                 <div id="ctl00_ContentPlaceHolder1_sec_data"></div><table class="table table-hover ">
@@ -234,22 +235,22 @@
                                                     </h5>
                                                     <p class="text-justify">
                                                         @Html.Raw(WebUtility.HtmlDecode(@item.Description))
-                                                    <span style="white-space:nowrap"><a style="margin-left:8px;" href="@Url.Action("IndustryReport", "Industry", new { id= item .id})" class="read-more-l">Read More</a></span>
-                                                </p>
-                                                <ul class="r_ul">
-                                                    <li>
-                                                        <span style="font-weight:bold">Industry :</span>
-                                                        <a target="_blank" style="color:#107693!important;" href="#">@item.Industry</a>
-                                                    </li>
-                                                    <li><span style="font-weight:bold">Format :</span> @item.format</li>
-                                                    <li><span style="font-weight:bold">Pages :</span> @item.Pages</li>
-                                                    <li><span style="font-weight:bold">Published Date :</span> July 2019</li>
-                                                    <li><span style="font-weight:bold"><a href="@Url.Action("FreeTrail", "ChemAnalyst")"><i class="fa fa-download"></i> Download Sample </a></span> </li>
-                                                    @*<li class="hidden-lg hidden-md hidden-sm"><span style="font-weight:bold">Price :  USD 4450</span> </li>*@
-                                                </ul>
-                                            </td>
-                                            @*<td style="width: 15%" class="borderd_l text-center hidden-xs">USD 4450</td>*@
-                                        </tr>
+                                                        <span style="white-space:nowrap"><a style="text-transform: uppercase;color: #2257b5;    font-size: 11px;" href="@Url.Action("IndustryReport", "Industry", new { id= item .id})" class="read-more-l">Read More</a></span>
+                                                    </p>
+                                                    <ul class="r_ul">
+                                                        <li>
+                                                            <span style="font-weight:bold;   font: 100% Work Sans, sans-serif; ">Industry :</span>
+                                                            <a target="_blank" style="color:#107693!important;" href="#">@item.Industry</a>
+                                                        </li>
+                                                        <li><span style="font-weight:bold ;font: 100% Work Sans, sans-serif;">Format :</span> @item.format</li>
+                                                        <li><span style="font-weight:bold ;font: 100% Work Sans, sans-serif;">Pages :</span> @item.Pages</li>
+                                                        <li><span style="font-weight:bold ;font: 100% Work Sans, sans-serif;">Published Date :</span> July 2019</li>
+                                                        <li><span style="font-weight:bold ;font: 100% Work Sans, sans-serif;"><a href="@Url.Action("FreeTrail", "ChemAnalyst")"><i class="fa fa-download"></i> Download Sample </a></span> </li>
+                                                        @*<li class="hidden-lg hidden-md hidden-sm"><span style="font-weight:bold">Price :  USD 4450</span> </li>*@
+                                                    </ul>
+                                                </td>
+                                                @*<td style="width: 15%" class="borderd_l text-center hidden-xs">USD 4450</td>*@
+                                            </tr>
                                         }
                                     </tbody>
                                 </table>
@@ -376,14 +377,25 @@
         }
 
         h2 {
-            font-size: 20px;
+            /*font-size: 20px;*/
             letter-spacing: 0.06em;
             font-family: Roboto;
             font-weight: 300;
             margin-top: 10px;
             margin-bottom: 10px;
-            color: #605758;
+            /*color: #605758;*/
+            color: #3368c6;
+    font-size: 15px;
+    font-family: "Roboto Condensed", sans-serif;
         }
+        h5{
+                font-family: "Roboto Condensed", sans-serif;
+    font-weight: 700;
+    margin-top: 15px;
+    font-size: 18px;
+        }
+
+        
 
         .checkbox {
             position: relative;
@@ -391,7 +403,7 @@
             margin-top: 10px;
             margin-bottom: 10px;
             font-size: 13px;
-            font-weight: bold important;
+            font-weight: bold !important;
         }
 
             .checkbox label {
@@ -405,7 +417,7 @@
                 margin-bottom: 0;
                 font-weight: bold;
                 cursor: pointer;
-                font-size: 11px;
+                /*font-size: 11px;*/
             }
 
         .sm_chk_be {
@@ -433,15 +445,16 @@
             margin-top: 0;
         }
 
-        p {
-            line-height: 24px;
-        }
+
 
         p {
-            font-size: 12px;
+            font: 100% "Work Sans", sans-serif;
+            font-size: 14px;
             line-height: 20px;
             margin: 0 0 8px;
             letter-spacing: 0.2px;
+            color: #2a2a2a;
+            font-weight: 300;
         }
 
         .r_ul {
