@@ -122,6 +122,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
+        [ValidateInput(false)]
         public ActionResult SaveCompanySWOT(SA_Company_SWOT UserNews)
         {
             if (UserNews.Id == 0)
@@ -156,10 +157,13 @@ namespace ChemAnalyst.Controllers
         {
             ViewBag.Product = Obj.GetCompanyProducts();
             ViewBag.Category = Obj.GetUniqueCategory();
+            ViewBag.Fyear = Obj.GetUniqueFyear();
             ViewBag.Cat = "";
             ViewBag.Prod = "";
             ViewBag.RevS = "";
             ViewBag.EmpSiz = "";
+            ViewBag.CName = "";
+            ViewBag.Fy = DateTime.Now.Year;
             NewsDataStore n = new NewsDataStore();
             ViewBag.f = n.GetFirstProduct();
             return View(Obj.GetCompanyList().OrderBy(x => x.CreatedTime));
@@ -168,16 +172,50 @@ namespace ChemAnalyst.Controllers
 
         public ActionResult CompanyProfileDetails(int id)
         {
-            List<SA_Company> NewsList = Obj.GetCompanyList().Where(w=>w.id==id).OrderBy(w => w.id).ToList();
-            NewsList.OrderBy(x => x.CreatedTime).Take(1);
-            ViewBag.S = Obj.GetSWOTByCompany(id);
+            ChemAnalystContext db = new ChemAnalystContext();
 
-            return View(NewsList);
+            CompanyDataStore obj = new CompanyDataStore();
+            CustCompanyVM model = new CustCompanyVM();
+            var data = obj.GetCompanyByid(id);
+            model.Name = data.Name;
+            model.Description = data.Description;
+            model.Logo = data.Logo;
+
+            model.EmailId = data.EmailId;
+            model.Address = data.Address;
+            model.phoneNo = data.phoneNo;
+            model.fax = data.fax;
+            model.website = data.website;
+            model.RegDate = data.RegDate.Date.ToString("dd/MM/yyyy");
+            model.CreatedTime = data.RegDate.Date.Year.ToString();
+            model.NOE = data.NOE;
+            model.CEO = data.CEO;
+            model.CIN = data.CIN;
+            model.Category = data.Category;
+            model.id = data.id;
+            model.Meta = data.Meta;
+            model.MetaDescription = data.MetaDescription;
+            model.lstFinacialData = db.CompanyProfRecordNew.Where(w => w.SA_CompanyId == data.id).Select(x => new CompanyFinacialData
+            {
+                FinacialYear = db.FinancialYears.Where(f => f.Id == x.FinancialYearId).FirstOrDefault().FinYear,
+                Growth = x.Growth,
+                Revenue = x.Revenue,
+                PBT = x.PBT,
+                Liablities = x.Liablities,
+                Margin = x.Margin,
+                Pat = x.Pat
+
+
+            }).ToList();
+
+            ViewBag.S = obj.GetSWOTByCompany(id);
+
+            return View(model);
 
         }
 
         [HttpPost]
-        public ActionResult CompanyProfile(string category,string products,string revsize,string empsize)
+        public ActionResult CompanyProfile(string category, string products, string revsize, string empsize, string fyear, string companyname)
         {
             NewsDataStore n = new NewsDataStore();
             ViewBag.f = n.GetFirstProduct();
@@ -185,11 +223,15 @@ namespace ChemAnalyst.Controllers
             ViewBag.Prod = products;
             ViewBag.RevS = revsize;
             ViewBag.EmpSiz = empsize;
+            ViewBag.Fy = fyear;
+            ViewBag.CName = companyname;
+            ViewBag.Fyear = Obj.GetUniqueFyear();
             ViewBag.Product = Obj.GetCompanyProducts();
             ViewBag.Category = Obj.GetUniqueCategory();
-            return View(Obj.GetCompanyList(category, products,revsize,empsize).OrderBy(x => x.CreatedTime));
+            return View(Obj.GetCompaniesList(category, products, revsize, empsize, fyear, companyname).OrderBy(x => x.CreatedTime));
 
         }
+
 
 
         [HttpPost]

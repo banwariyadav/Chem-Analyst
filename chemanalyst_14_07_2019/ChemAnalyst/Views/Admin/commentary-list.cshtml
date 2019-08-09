@@ -36,11 +36,22 @@
                     //},
                     { "data": "id" },
                     { "data": "Title", "autoWidth": true },
+                     { "data": "Type", "autoWidth": true },
                     { "data": "Product", "autoWidth": true },
                     { "data": "CreateTime", "autoWidth": true },
                     {
 
-                        "render": function (data, type, row, meta) { return '<a href="../Admin/AddCommentary/' + row.id + '"><i class="fa fa-pencil-square-o"></i></a>'; }
+                        "render": function (data, type, row, meta) {
+                            debugger
+                            if (row.Type == "Chemical Pricing") {
+                                return '<a href="../Admin/AddCommentary/' + row.id + '"><i class="fa fa-pencil-square-o"></i></a>';
+                            }
+                            else
+                            {
+                                return '<a href="../Admin/AddCommentaryMarket/' + row.id + '"><i class="fa fa-pencil-square-o"></i></a>';
+                            }
+                            
+                        }
                     },
                     {
                         data: null, render: function (data, type, row) {
@@ -60,7 +71,11 @@
 
 <div class="update-profile-wrapper">
 
-    <h3><a href="@Url.Action("AddCommentary", "Admin")" class="btn btn-info"><i class="fa fa-plus"></i> Add New Commentary</a></h3>
+    <h3><a href="@Url.Action("AddCommentary", "Admin")" class="btn btn-success"><i class="fa fa-plus"></i> Add Chemical Pricing Commentary</a>
+        <a href="@Url.Action("AddCommentaryMarket", "Admin")" class="btn btn-success"><i class="fa fa-plus"></i> Add Market Analysis Commentary</a>
+    </h3>
+
+
 
     <div class="white-wrapper" style="padding-top:10px">
 
@@ -73,6 +88,7 @@
                            Id
                         </th>
                         <th>Title</th>
+                        <th>Type</th>
                         <th>Product</th>
                         <th>Created</th>
                         <th>Edit</th>

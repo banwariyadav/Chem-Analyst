@@ -173,19 +173,19 @@
                 <nav class="navbar navbar-expand-lg p-0" id="mainNav">
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"><span class="fa fa-bars 2x"></span> Menu</button>
                     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                        <ul class="navbar-nav">
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")">Analysis </a></li>
-                            <li class="nav-item active"><a class="nav-link" href="@Url.Action("ChecmPriceChart", "ChemicalPricing")">Chemical Pricing</a></li>
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("IndustryReport", "Industry")">Industry Reports</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">Company Profile</a></li>
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("NewsHome", "NewsAndDeals")">News</a></li>
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("DealsHome", "NewsAndDeals")">Deals</a></li>
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Contact", "ChemAnalyst")">Contact Us</a></li>
+                        <ul  class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")">Analysis </a></li>
+                        <li class="nav-item active"><a class="nav-link" href="@Url.Action("ChecmPriceChart", "ChemicalPricing")">Chemical Pricing</a></li>
+                        <li class="nav-item"><a class="nav-link" href="@Url.Action("Reportsection", "Industry")">Industry Reports</a></li>
+                        <li class="nav-item"><a class="nav-link" href="@Url.Action("CompanyProfile", "Company")">Company Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="@Url.Action("NewsHome", "NewsAndDeals")">News</a></li>
+                        <li class="nav-item"><a class="nav-link" href="@Url.Action("DealsHome", "NewsAndDeals")">Deals</a></li>
+                        <li class="nav-item"><a class="nav-link" href="@Url.Action("Contact", "ChemAnalyst")">Contact Us</a></li>
                         </ul>
                     </div>
                     <div class="book-demo-b">
                         <a href="@Url.Action("FreeTrail", "ChemAnalyst")"><i class="fa fa-clock-o"></i> Free Trail</a>
-                        <a href="@Url.Action("Index", "Admin")"><i class="fa fa-user"></i> Login</a>
+                        <a href="@Url.Action("Index", "Login")"><i class="fa fa-user"></i> Login</a>
                     </div>
                 </nav>
             </div>
@@ -307,6 +307,13 @@
                             @*</ul>*@
                         </div>
                         <div id="invoice">
+                            <div class="pdfheader" style="display:none">
+                                <div style="text-align:center; padding-top:20px;"><img src="/images/logo.png" alt="">
+                                <h2 id="ptitle">Chemical pricing monthly report </h2>
+                                </div>
+
+                            </div>
+
                             <span class="pull-right" style="font-size:12px;margin-right: 2px; font-weight:bold">[Unit = INR/Tonnes]</span>
                             <canvas id="canvas"></canvas>
                             @*<div style="height:20px"></div>*@
@@ -324,7 +331,7 @@
                                     <h4 style="border-bottom: 1px solid #ccc">
                                         @Model.FirstOrDefault().CommentaryTitle
                                         @*<a href="#" id="hrefComentery" style="cursor: pointer;font-size: 14px;float: right;" data-toggle="modal" data-target="#Comentery" onclick="ShowCommentaries()"><span>View all</span></a>*@
-                                        <a id="viewAll" href="@Url.Action("CommentaryHome", "ChemicalPricing", new { ProductId = Model.Select(x => x.Product).FirstOrDefault() })" style="cursor: pointer;font-size: 14px;float: right;"><span>View all</span></a>
+                                        <a id="viewAll" target="_blank" href="@Url.Action("CommentaryHome", "ChemicalPricing", new { ProductId = Model.Select(x => x.Product).FirstOrDefault(), Type="Chemical Pricing" })" style="cursor: pointer;font-size: 14px;float: right;"><span>View all</span></a>
                                     </h4>
                                     <p>
 
@@ -365,8 +372,9 @@
                                                             }
                                                             @foreach (string x in Model.Select(x => x.StackedDimensionOne).ToList())
                                                             {
+                                                                var count = Model.FirstOrDefault(c => c.StackedDimensionOne == x).LstData.FirstOrDefault(e => e.DimensionOne == column).Quantity;
 
-                                                                <th>@Model.FirstOrDefault(c => c.StackedDimensionOne == x).LstData.FirstOrDefault(e => e.DimensionOne == column).Quantity </th>
+                                                                <th>@(count == 0?"NA":count.ToString("0")) </th>
                                                             }
                                                         </tr>
                                                     }
@@ -412,11 +420,12 @@
 Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrDefault(e => e.DimensionOne == column) != null
 )
                                                                         {
-                                                                            <span>@Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrDefault(e => e.DimensionOne == column).Quantity</span>
+                                                                            var count = Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrDefault(e => e.DimensionOne == column).Quantity;
+                                                                        <span>@(count == 0 ? "NA" : count.ToString("0")) </span>
                                                                         }
                                                                         else
                                                                         {
-                                                                            <span>0</span>
+                                                                            <span>NA</span>
                                                                         }
                                                                     </td>
                                                                 }
@@ -558,7 +567,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
 
                                                                                             foreach (var value in data.LstData.Select(x => x.Quantity).ToList())
                                                                                             {
-                                                                                                <th>@value</th>
+                                                                                                <th>@value.ToString("0")</th>
                                                                                             }
 
                                                                                         }
@@ -573,39 +582,43 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                     </div>
                     <div class="col-md-3">
                         <aside>
-                            <div class="side-news-feed" style="height: 540px;overflow-y: scroll;">
+                            <div class="side-news-feed" style="height: 540px">
                                 <h3><i class="fa fa-bell-o"></i> News</h3>
-                                @foreach (var news in Model.Select(x => x.NewsDetailsViewModel.NewsList).FirstOrDefault())
-                                {
-                                    <div class="news-feed-col">
-                                        <a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = news.GenerateItemNameAsParam() })">
-                                            <div class="right-news-desc2">
-                                                <p>@(news.NewsDiscription.Length > 60 ? (news.NewsDiscription.Substring(0, 60)) : news.NewsDiscription)</p>
-                                                <p><i class="fa fa-clock-o"></i>@news.CreatedTime.ToShortDateString()</p>
-                                            </div>
-                                        </a>
-                                    </div>
+                                <marquee behavior="scroll" direction="up" style="height: 450px;" scrollamount="3" onmouseover="stop()" onmouseout="start()">
+                                    @foreach (var news in Model.Select(x => x.NewsDetailsViewModel.NewsList).FirstOrDefault())
+                                    {
+                                        <div class="news-feed-col">
+                                            <a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = news.GenerateItemNameAsParam() })">
+                                                <div class="right-news-desc2">
+                                                    <p>@(news.NewsDiscription.Length > 60 ? (news.NewsDiscription.Substring(0, 60)) : news.NewsDiscription)</p>
+                                                    <p><i class="fa fa-clock-o"></i>@news.CreatedTime.ToShortDateString()</p>
+                                                </div>
+                                            </a>
+                                        </div>
 
-                                }
-                            </div>
-                            <div class="side-news-feed mt-4" style="height: 540px;overflow-y: scroll;">
+                                    }
+                                </marquee>
+</div>
+                            <div class="side-news-feed mt-4" style="height: 540px;">
                                 <h3><i class="fa fa-thumbs-up"></i> Top Deals</h3>
-                                @foreach (var item in Model.Select(x => x.NewsDetailsViewModel.DealList).FirstOrDefault())
-                                {
-                                    <div class="news-feed-col">
-                                        <a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">
-                                            @if (item.DealsImg != string.Empty)
-                                            {
-                                                <div class="left-news-pic"><img src="/images/@item.DealsImg" alt=""></div>
-                                            }
-                                            <div class="right-news-desc">
-                                                <p>@item.DealsDiscription</p>
-                                                <p><i class="fa fa-clock-o"></i>@item.CreatedTime.Value.ToShortDateString()</p>
-                                            </div>
-                                        </a>
-                                    </div>
-                                }
-                            </div>
+                                <marquee behavior="scroll" direction="up" style="height: 450px;" scrollamount="3" onmouseover="stop()" onmouseout="start()">
+                                    @foreach (var item in Model.Select(x => x.NewsDetailsViewModel.DealList).FirstOrDefault())
+                                    {
+                                        <div class="news-feed-col">
+                                            <a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">
+                                                @if (item.DealsImg != string.Empty)
+                                                {
+                                                    <div class="left-news-pic"><img src="/images/@item.DealsImg" alt=""></div>
+                                                }
+                                                <div class="right-news-desc">
+                                                    <p>@item.DealsDiscription</p>
+                                                    <p><i class="fa fa-clock-o"></i>@item.CreatedTime.Value.ToShortDateString()</p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+                                </marquee>
+</div>
                         </aside>
                     </div>
                 </div>
@@ -635,7 +648,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
         </div>
     </div>
     <!-- The Modal -->
-    <div class="modal" id="Comentery">
+    @*<div class="modal" id="Comentery">
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <!-- Modal Header -->
@@ -653,7 +666,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
 
 
     <footer>
@@ -865,7 +878,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                 if( $("#ddlRange").val() == "Monthly"){
                     var d = new Date();
 
-                    $('#fromdate').datepicker('setDate', new Date(d.getFullYear(),d.getMonth(),01));
+                    $('#fromdate').datepicker('setDate', new Date(dt));
                     $('#todate').datepicker('setDate', 'today');
                 }else{
                     $('#fromdate').datepicker('setDate', dt);
@@ -1460,8 +1473,8 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
             $("#submitReset").hide();
             $("#exportpdf2").hide();
             $("#viewAll").hide();
-
-
+            $(".pdfheader").show();
+            $("#ptitle").html("Chemical pricing "+$("#ddlRange").val().toLowerCase()+" report ");
             // Generate the PDF.
             html2pdf().from(element).set({
                 filename: "Chemical-Pricing-Export" + '.pdf',
@@ -1475,7 +1488,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                 $("#submitReset").show();
                 $("#exportpdf2").show();
                 $("#viewAll").show();
-
+                $(".pdfheader").hide();
 
                 // window.location.reload();
             });;

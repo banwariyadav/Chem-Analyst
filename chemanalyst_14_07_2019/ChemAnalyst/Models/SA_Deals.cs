@@ -12,32 +12,32 @@ namespace ChemAnalyst.Models
         public int id { get; set; }
 
 
-        [StringLength(500)]
+        [StringLength(1000)]
         public string MetaTitle { get; set; }
 
 
-        [StringLength(50)]
+        [StringLength(1000)]
         public string DealsName { get; set; }
 
-        [StringLength(500)]
+        [StringLength(10000)]
         public string DealsDiscription { get; set; }
 
-        [StringLength(50)]
+        [StringLength(500)]
         public string URL { get; set; }
 
-        [StringLength(500)]
+        [StringLength(1000)]
         public string MetaDiscription { get; set; }
 
         public int? status { get; set; }
 
         public DateTime? CreatedTime { get; set; }
 
-        [StringLength(50)]
+        [StringLength(1009)]
         public string DealsImg { get; set; }
 
         public int? Product { get; set; }
 
-        [StringLength(500)]
+        [StringLength(1000)]
         public string Keywords { get; set; }
 
         public string CreatedBy { get; set; }

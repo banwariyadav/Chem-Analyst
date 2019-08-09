@@ -15,6 +15,8 @@ namespace ChemAnalyst.Models
         [StringLength(255)]
         public string Title { get; set; }
 
+        public string Type { get; set; }
+
         [StringLength(50000)]
         public string Description { get; set; }
 
@@ -29,6 +31,8 @@ namespace ChemAnalyst.Models
         public bool IsActive { get; set; }
 
         public bool IsDelete { get; set; }
+
+        public string ImgPath { get; set; }
 
         //public List<SelectListItem> ProductList { get; set; }
 

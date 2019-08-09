@@ -17,7 +17,8 @@ namespace ChemAnalyst.Models
         [StringLength(500)]
         public string RoleDiscription { get; set; }
 
-        public DateTime? CreatedTime { get; set; }
+        //public DateTime? CreatedTime { get; set; }
+        public string CreatedTime { get; set; }
 
         public bool ChemicalPricing { get; set; }
         public bool MarketAnalysis { get; set; }

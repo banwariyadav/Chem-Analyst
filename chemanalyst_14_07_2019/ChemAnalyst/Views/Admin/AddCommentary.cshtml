@@ -9,7 +9,7 @@
 @model ChemAnalyst.Models.SA_Commentary
 <div class="update-profile-wrapper">
 
-    <h3><a href="@Url.Action( "ShowCommentaryList","Admin" )"><i class="fa fa-list"></i>Commentary List</a></h3>
+    <h3><a href="@Url.Action("ShowCommentaryList", "Admin")"><i class="fa fa-list"></i>Commentary List</a></h3>
 
     <div class="white-wrapper">
 
@@ -17,7 +17,16 @@
 
             <div class="eq-form">
                 <div class="change">
-                    <img src="~/images/change-img.jpg" alt="" />
+                    @{ 
+                        if (Model.ImgPath != null)
+                        {
+                    <img src="~/ProductImages/@Model.ImgPath" alt="" style="width:95px; height:95px" />
+                        }
+                        else
+                        {
+                            <img src="~/images/change-img.jpg" alt="" style="width:95px; height:95px"/>
+                        }
+                    }
                     <p>Add New Commentary</p>
                 </div>
 
@@ -79,8 +88,15 @@
 
                         </div>
 
-                                             
 
+                        <div class="col-sm-6 col-lg-12">
+                            <div class="form-group">
+
+                                <input type="hidden" name="ImgPath" value="@Model.ImgPath" />
+                                <input type="file" name="file" class="form-control" />
+
+                            </div>
+                        </div>
                         <div class="btn-wrapper">
 
                             @*<a class="gray-btn" href="@Url.Action("Job","Job")">Cancel</a>*@

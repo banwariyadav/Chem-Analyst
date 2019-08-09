@@ -34,8 +34,13 @@ namespace ChemAnalyst.ViewModel
     public class CompanyFinacialData
     {
         public string FinacialYear { get; set; }
-        public string Revenue { get; set; }
-        public string Growth { get; set; }
+        public decimal Revenue { get; set; }
+        public decimal Growth { get; set; }
+
+        public int PBT { get; set; }
+        public decimal Margin { get; set; }
+        public decimal Pat { get; set; }
+        public decimal Liablities { get; set; }
     }
 
     public class CompanySWOT
@@ -44,4 +49,12 @@ namespace ChemAnalyst.ViewModel
         public int CompanyId { get; set; }
         public int Id { get; set; }
     }
+
+    public class AdvisoryContentVM
+    {
+        public string Advisory { get; set; }
+        public int AdsId { get; set; }
+        public int Id { get; set; }
+    }
+
 }

@@ -1,45 +1,47 @@
 ﻿@model ChemAnalyst.ViewModel.CompanyProfRecordViewModel
-
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-
-
 <div class="update-profile-wrapper">
+     
+    <div class="white-wrapper">
+        <div class="col-md-6 col-lg-7 col-md-offset-2">
+            <div class="eq-form">
 
-    <div class="white-wrapper" style="padding-top:10px">
-
-        <div class="data-detail-wrapper table-responsive">
-
-            @using (Html.BeginForm("Import", "CompanyProfRecord", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                <div class="change">
+                    <img src="~/images/change-img.jpg" alt="" />
+                    <p> Upload Company FY Data </p>
+                </div>
+                <div class="eq-form-box">
+                    @using (Html.BeginForm("Import", "CompanyProfRecord", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
-                <div class="form-group">
-                    @Html.DisplayNameFor(f => f.FinancialYearId)
-                    @Html.DropDownListFor(f => f.FinancialYearId, new SelectList(Model.FinancialYear, "Id", "FinYear"), "Select....", new { @class = "form-control" })
-                    @Html.ValidationMessageFor(f => f.FinancialYearId)
-                </div>
-                <div class="form-group">
-                    @Html.DisplayNameFor(f => f.SA_CompanyId)
-                    @Html.DropDownListFor(f => f.SA_CompanyId, new SelectList(Model.SA_Company, "Id", "Name"), "Select....", new { @class = "form-control" })
-                    @Html.ValidationMessageFor(f => f.SA_CompanyId)
-                </div>
-                <div class="from-group">
-                    @Html.DisplayNameFor(f => f.excelFile)
-                    <input type="file" name="excelFile" class="form-control" />
-                    <p class="text-danger">@Html.Raw(ViewBag.ErrorMessage)</p>
+                        <div class="form-group">
+                           <label style="font-weight:normal">Financial Year</label>
+                            @Html.DropDownListFor(f => f.FinancialYearId, new SelectList(Model.FinancialYear, "Id", "FinYear"), "Select....", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(f => f.FinancialYearId)
+                        </div>
+                        <div class="form-group">
+                            <label style="font-weight:normal">Company</label>
+                            @Html.DropDownListFor(f => f.SA_CompanyId, new SelectList(Model.SA_Company, "Id", "Name"), "Select....", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(f => f.SA_CompanyId)
+                        </div>
+                        <div class="from-group">
+                            <label style="font-weight:normal">Excel File</label>
+                            <input type="file" name="excelFile" class="form-control" required />
+                            <p class="text-danger">@Html.Raw(ViewBag.ErrorMessage)</p>
+                        </div>
+                        <input type="submit" value="Import" class="btn btn-success" />
+                    }
 
                 </div>
-                <input type="submit" value="Import" class="btn btn-success" />
-            }
 
+            </div>
         </div>
-
     </div>
-
 </div>
+
 
 
 @section scripts
@@ -49,6 +51,4 @@
     <script src="~/scripts/jquery.validate.min.js"></script>
     <script src="~/scripts/jquery.validate.unobtrusive.js"></script>
     <script src="~/scripts/jquery.validate.unobtrusive.min.js"></script>
-
 }
-

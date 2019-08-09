@@ -30,8 +30,10 @@ namespace ChemAnalyst.Models
             [StringLength(50)]
             public string AdvisoryImg { get; set; }
 
-        
-    
+          public string AdsContent { get; set; }
 
-}
+
+
+
+    }
 }

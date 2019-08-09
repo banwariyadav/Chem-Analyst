@@ -36,18 +36,34 @@
                                         </div>
                                         <form class="eq-form">
                                             <div class="col-sm-12 form-group">
-                                                <input type="text" value="" size="40" class="form-control" placeholder="First Name">
+                                                <input type="text" value="" id="Name" name="Name" size="40" class="form-control" placeholder="Name">
                                             </div>
                                             <div class="col-sm-12 form-group">
-                                                <input type="text" value="" size="40" class="form-control" placeholder="Last Name">
+                                                <input type="email" id="OfficialEmail" name="OfficialEmail" value="" size="40" class="form-control" placeholder="Official Email">
                                             </div>
                                             <div class="col-sm-12 form-group">
-                                                <input type="email" value="" size="40" class="form-control" placeholder="Email">
+                                                <input type="text" value="" id="Mobile" name="Mobile" size="40" class="form-control" placeholder="Mobile No.">
                                             </div>
                                             <div class="col-sm-12 form-group">
+                                                <input type="text" value="" size="40" id="Organization" name="Organization" class="form-control" placeholder="Organization">
+                                            </div>
+                                            <div class="col-sm-12 form-group">
+                                                <input type="text" value="" size="40" id="Country" name="Country" class="form-control" placeholder="Country">
+                                            </div>
+                                            <div class="col-sm-12 form-group">
+                                                <input type="text" value="" size="40" id="State" name="State" class="form-control" placeholder="State">
+                                            </div>
+                                            <div class="col-sm-12 form-group">
+                                                <input type="text" value="" size="40" class="form-control" placeholder="City" id="City" name="City">
+                                            </div>
+                                            @*<div class="col-sm-12 form-group">
                                                 <textarea class="form-control" rows="3" id="comment" placeholder="Description"></textarea>
-                                            </div>
-                                            <div class="col-sm-12 form-group btn-submit"> <a class="send-btn" href="#">Send Message</a> </div>
+                                            </div>*@
+                                            @*<div class="col-sm-12 form-group btn-submit"> <a class="send-btn" href="#">Send Message</a> </div>*@
+
+                                            <div class="col-sm-12 form-group btn-submit"> <button id="btnSaveContact" type="submit" class="common-btn" data-loading-text="Please wait...">Send Message</button></div>
+                                           
+
                                         </form>
                                     </div>
                                 </div>
@@ -136,3 +152,54 @@
         </section>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="../js/popper.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+
+<script>
+
+    $(function () {
+        $("#btnSaveContact").click(function () {
+            debugger
+            var freeTrail = {};
+            freeTrail.Name = $("#Name").val();
+            freeTrail.OfficalEmail = $("#OfficialEmail").val();
+            freeTrail.Mobile = $("#Mobile").val();
+            freeTrail.Organisation = $("#Organization").val();
+            freeTrail.State = $("#State").val();
+            freeTrail.Country = $("#Country").val();
+            freeTrail.City = $("#City").val();
+
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SendContactUs")',
+                data: freeTrail,
+                success: function (data) {
+                    debugger
+                    if (data.data == "Success") {
+                        //alert("Data has been added successfully.");
+                        swal("Thank you!", "Data has been added successfully.", "success");
+                        $("#Name").val('');
+                        $("#OfficialEmail").val('');
+                        $("#Mobile").val('');
+                        $("#Organization").val('');
+                        $("#State").val('');
+                        $("#Country").val();
+                        $("#City").val('');
+
+                    }
+                    else {
+                        alert("Error while inserting data");
+                    }
+                },
+                error: function () {
+                    alert("Error while inserting data");
+                }
+            });
+            return false;
+        });
+    });
+</script>

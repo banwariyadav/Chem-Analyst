@@ -95,11 +95,11 @@
                                     </a>
                                 </li>
 
-                                <li>
+                                @*<li>
                                     <a href="@Url.Action("Quote", "Quote")">
                                         <i class="fa fa-circle-o text-aqua"></i> Testimonials
                                     </a>
-                                </li>
+                                </li>*@
 
 
                             </ul>
@@ -215,7 +215,7 @@
                     @if ((objAccess.Where(page => page.Pageid == 1).Count() > 0) || (Session["UserRole"].ToString().ToUpper() == "ADMIN"))
                     {
                         <li>
-                            <a href="@Url.Action("Index", "MarketAnalysis")">
+                            <a href="@Url.Action("MarketAnalysisList", "MarketAnalysis")">
                                 <i class="fa fa-bar-chart"></i>Market Analysis
                             </a>
                         </li>
@@ -261,44 +261,46 @@
                                 </span>
                             </a>
                             <ul class="sub-menu collapse" id="comprofmenu" aria-expanded="true" style="">
-                                @*<li>
-                                    <a href="@Url.Action("Index", "CompanyProf")">
-                                        <i class="fa fa-circle-o text-aqua"></i> Upload Company Profile
-                                    </a>
-                                </li>*@
-                                <li>
-                                    <a href="@Url.Action("Index", "CompanyAndProductRelation")">
-                                        <i class="fa fa-circle-o text-aqua"></i> Company &amp; Product Relation
-                                    </a>
-                                </li>
-                                @*<li>
-                                    <a href="@Url.Action("Index", "CompanyProfRecord")">
-                                        <i class="fa fa-circle-o text-aqua"></i> Upload Company FY Data
-                                    </a>
-                                </li>*@
                                 <li>
                                     <a href="@Url.Action("AllCompanyProf", "CompanyProf")">
                                         <i class="fa fa-circle-o text-aqua"></i> Manage Company Profile
                                     </a>
                                 </li>
-
-
-                                <li>
-                                    <a href="@Url.Action("AllComAndProductRelationRecords", "CompanyAndProductRelation")">
-                                        <i class="fa fa-circle-o text-aqua"></i> Edit Company &amp; Product Listing
-                                    </a>
-                                </li>
-
                                 <li>
                                     <a href="@Url.Action("AllCompanyProfileRecords", "CompanyProfRecord")">
                                         <i class="fa fa-circle-o text-aqua"></i> Manage FY Data
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="@Url.Action("Index", "CompanyAndProductRelation")">
+                                        <i class="fa fa-circle-o text-aqua"></i> Company &amp; Product Relation
+                                    </a>
+                                </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                               
+                                
+                               
+
                                 @*<li>
-                                    <a href="@Url.Action("CompanySWOT", "Company")">
-                                        <i class="fa fa-circle-o text-aqua"></i> Manage Company SWOT
+                                    <a href="@Url.Action("AllComAndProductRelationRecords", "CompanyAndProductRelation")">
+                                        <i class="fa fa-circle-o text-aqua"></i> Edit Company &amp; Product Listing
                                     </a>
                                 </li>*@
+
+                              
+                               
                             </ul>
                         </li>
                     }

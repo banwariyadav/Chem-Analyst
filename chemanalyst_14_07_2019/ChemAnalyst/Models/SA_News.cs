@@ -13,13 +13,13 @@ namespace ChemAnalyst.Models
     {
         public int id { get; set; }
 
-        [StringLength(500)]
+        [StringLength(1000)]
         public string NewsName { get; set; }
 
-        [StringLength(500)]
+        [StringLength(1000)]
         public string MetaTitle { get; set; }
 
-        [StringLength(5000)]
+        [StringLength(10000)]
         public string NewsDiscription { get; set; }
 
         [StringLength(500)]

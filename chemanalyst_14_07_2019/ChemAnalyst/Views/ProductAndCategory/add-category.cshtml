@@ -19,14 +19,14 @@
 
 
 <div class="change">
-<img src="~/images/change-img.jpg" alt=""/>
+<img src="~/ProductImages/@Model.CategoryImg" alt="" style="width:95px; height:95px"/>
 <p>Add New Category</p>	
 </div>
 
 <div class="eq-form-box">
 @using (Html.BeginForm("SaveCategory", "ProductAndCategory", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-
+    @Html.HiddenFor(m=>m.CategoryImg)
     @Html.AntiForgeryToken()
     <div style="visibility:hidden">
         @Html.TextBoxFor(model => model.id, new { @class = "form-control", @placeholder = "Title * ", required = "required" })
@@ -42,7 +42,7 @@
 
 <div class="col-md-4 col-lg-12 form-group">
     @*<textarea rows="10" class="form-control" placeholder="Description"></textarea>*@    
-    @Html.TextAreaFor(model => model.CategoryDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Description * ", required = "required" })
+    @Html.TextBoxFor(model => model.CategoryDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Meta Keyword" })
 
 
 </div>
@@ -50,14 +50,14 @@
 
 <div class="col-md-4 col-lg-12 form-group"> 
 @*<textarea rows="4" class="form-control" placeholder="Meta Title"></textarea>*@   
-    @Html.TextBoxFor(model => model.Meta, new { @class = "form-control", @placeholder = "Meta Title * ", required = "required" })
+    @Html.TextBoxFor(model => model.Meta, new { @class = "form-control", @placeholder = "Meta Title"})
 
 
 </div>
 
 <div class="col-md-4 col-lg-12 form-group"> 
 @*<textarea rows="4" class="form-control" placeholder="Meta Description"></textarea>*@   
-    @Html.TextAreaFor(model => model.MetaDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Meta Description * ", required = "required" })
+    @Html.TextAreaFor(model => model.MetaDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Meta Description" })
 
 
 </div>
@@ -65,25 +65,34 @@
 
 
 
-    @*<div class="col-sm-6 col-lg-12">
-      <div class="form-group">
-   
-          @Html.DropDownListFor(m => m.Product, Model.ProductList, "Select Product", new { @class = "form-control" })
+    
+
+    {
+        if (Model.CategoryImg != null)
+        {
+            <div class="col-sm-6 col-lg-12">
+                <div class="form-group">
+                    <input type="file" name="file" class="form-control"  />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col-sm-6 col-lg-12">
+                <div class="form-group">
+                    <input type="file" name="file" class="form-control" required />
+                </div>
+            </div>
+
+        }
+    }
 
 
-  </div>*@
 
-    <div class="col-sm-6 col-lg-12">
-        <div class="form-group">
-            <input type="file" name="file" class="form-control" />
-            
-          
-        </div>
-    </div>
 
      <div class="btn-wrapper">
     
-         <a class="gray-btn" href="@Url.Action("ProductAndCategory","Category")">Cancle</a>
+         <a class="gray-btn" href="@Url.Action("Category","ProductAndCategory")">Cancel</a>
          <input type="submit" class="blue-btn" value="Save">			
     	
     </div>

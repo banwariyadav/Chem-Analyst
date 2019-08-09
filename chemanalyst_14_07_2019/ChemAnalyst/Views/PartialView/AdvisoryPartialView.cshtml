@@ -11,14 +11,16 @@
             <div class="row">
                 @foreach (var item in Model)
                 {
-
-                    <div class="col-sm-6 col-lg-4 text-center">
-                        <div class="eva-lab-cl">
-                            <img src="~/ProductImages/@item.AdvisoryImg" alt="">
-                            <h4>@item.AdvisoryName</h4>
-                            <p>@(item.AdvisoryDiscription.Length > 150 ? (item.AdvisoryDiscription.Substring(0, 150)) : item.AdvisoryDiscription )</p>
+                   
+                        <div class="col-sm-6 col-lg-4 text-center">
+                            <div class="eva-lab-cl">
+                                <img src="~/ProductImages/@item.AdvisoryImg" alt="">
+                                @*<a href="@Url.Action("AdvisoryDetails", "AdvisorySolutions", new {id=item.id })"><h4>@item.AdvisoryName</h4></a>*@
+                                <h4><a style="color:#ffffff" href="@Url.Action("AdvisoryDetails", "AdvisorySolutions", new {id=item.id })">  @item.AdvisoryName </a></h4>
+                                <p>@(item.AdvisoryDiscription.Length > 150 ? (item.AdvisoryDiscription.Substring(0, 150)) : item.AdvisoryDiscription )</p>
+                            </div>
                         </div>
-                    </div>
+                    
 
                 }
             </div>

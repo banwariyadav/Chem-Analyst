@@ -6,7 +6,7 @@
     }
     else
     {
-        Layout = "~/Views/Shared/_LayoutUser2.cshtml";
+        Layout = "~/Views/Shared/_LayoutUser6.cshtml";
     }
 
 }
@@ -26,19 +26,19 @@
         }
 
             <div class="page-content">
-                <div class="static-page">
-                    <div class="container">
+                <div class="static-page" style="    background: #fff;">
+                    <div class="container addMargin" style="width:1380px">
 
                         <div class="row">
 
                             <div class="col-md-9">
 
-                                <div class="blog-detail">
+                                <div class="blog-detail" style="margin-top: 20px;">
                                     @{
 
                                         if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
                                         {
-                                            if (Model.Deals.DealsImg != string.Empty)
+                                            if (!string.IsNullOrEmpty(Model.Deals.DealsImg))
                                             {
                                                 <div class="blog-big-pic"><img src="~/ProductImages/@Model.Deals.DealsImg" alt=""></div>
                                             }
@@ -57,22 +57,32 @@
                                         }
                                         else
                                         {
-                                            if (Model.Deals.DealsImg != string.Empty)
+                                            if (!string.IsNullOrEmpty(Model.Deals.DealsImg))
                                             {
                                                 <div class="blog-big-pic"><img src="~/ProductImages/@Model.Deals.DealsImg" alt=""></div>
                                             }
 
-                                            <div class="blog-detail-summary">
+                                <div class="blog-detail-summary">
 
-                                                <h3>@Model.Deals.DealsName</h3>
+                                    <h3>@Model.Deals.DealsName</h3>
 
 
 
-                                                <p>@(Model.Deals.DealsDiscription.Length > 30 ? (Model.Deals.DealsDiscription.Substring(0, 30)) : Model.Deals.DealsDiscription)</p>
 
-                                                <div class="btn subscription-btn"><a href="~/ChemAnalyst/FreeTrail">Click Here to Subscribe</a></div>
+                                    @{
+                                        if (Model.Deals.DealsDiscription.Length > 300)
+                                        {
+                                            <p>@Html.Raw(WebUtility.HtmlDecode(Model.Deals.DealsDiscription.Substring(0, 300)))) </p>
+                                        }
+                                        else
+                                        {
+                                            <p>item.DealsDiscription... </p>
+                                        }
+                                    }
 
-                                            </div>
+                                    <div class="btn subscription-btn"><a href="~/ChemAnalyst/FreeTrail">Click Here to Subscribe</a></div>
+
+                                </div>
                                         }
 
                                     }

@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <div class="update-profile-wrapper">
+    @*<div class="update-profile-wrapper">
 
 
         <div class="white-wrapper" style="padding-top:10px">
@@ -25,5 +25,43 @@
 
         </div>
 
+    </div>*@
+
+<div class="update-profile-wrapper">
+
+    <div class="white-wrapper">
+
+        <div class="col-md-6 col-lg-7 col-md-offset-2">
+
+            <div class="eq-form">
+
+                <div class="change" style="font-size: 95px;">
+                    <i class="fa fa fa-users" aria-hidden="true"></i>
+                    <p>Upload Company Profile</p>
+                </div>
+
+                <div class="eq-form-box">
+                    @using (Html.BeginForm("Import", "CompanyProf", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+
+                        <div class="col-md-4 col-lg-12 form-group">
+                            <input type="file" name="excelFile" class="form-control" required/>
+                            <p class="text-danger">@Html.Raw(ViewBag.ErrorMessage)</p>
+                        </div>
+
+                        <div class="btn-wrapper">
+
+                            <input type="submit" value="Import" class="btn btn-success" />
+                        </div>
+
+                    }
+
+                </div>
+
+
+            </div>
+
+        </div>
     </div>
 
+</div>

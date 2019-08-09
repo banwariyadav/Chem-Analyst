@@ -19,7 +19,7 @@
 
 
                 <div class="change">
-                    <img src="~/images/change-img.jpg" alt="" />
+                    <img src="~/images/dealss.png" alt="" style="width:95px; height:95px"/>
                     <p>Add New Deals</p>
                 </div>
 
@@ -29,10 +29,10 @@
 
                         @Html.AntiForgeryToken()
                         <div style="visibility:hidden">
-                            @Html.TextBoxFor(model => model.id, new { @class = "form-control", @placeholder = "Title * ", required = "required" })
+                            @Html.TextBoxFor(model => model.id, new { @class = "form-control", @placeholder = "Title "})
                         </div>
                         <div class="col-md-4 col-lg-12 form-group">
-                            @Html.TextBoxFor(model => model.DealsName, new { @class = "form-control", @placeholder = "Title * ", required = "required" })
+                            @Html.TextBoxFor(model => model.DealsName, new { @class = "form-control", @placeholder = "Title "})
 
 
                             @*<input type="text" value="" size="40" class="form-control" placeholder="Title">*@
@@ -42,7 +42,8 @@
 
                         <div class="col-md-4 col-lg-12 form-group">
                             @*<textarea rows="10" class="form-control" placeholder="Description"></textarea>*@
-                            @Html.TextAreaFor(model => model.DealsDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Description * ", id = "Desc", required = "required" })
+                            <label>Deal Description</label>
+                            @Html.TextAreaFor(model => model.DealsDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Description * ", id = "Desc"})
 
 
                         </div>
@@ -75,7 +76,7 @@
                                       {
                                             <label style="width:100%;" id="@item.Value">
                                                 <input @(((List<ChemAnalyst.Models.SA_DealsAndProductRelation>)ViewBag.DealProducts).Where(x => x.SA_ProductId == Convert.ToInt16(item.Value)).Count() > 0 ? "checked='checked'" : "") name="productList" onchange="selectProduct(this);"
-                                                       type="checkbox" id="@item.Value" />@item.Text
+                                                       type="checkbox" id="@item.Value" required />@item.Text
                                                 </label>
 
                                               if (((List<ChemAnalyst.Models.SA_DealsAndProductRelation>)ViewBag.DealProducts).Where(x => x.SA_ProductId == Convert.ToInt16(item.Value)).Count() > 0)
@@ -94,25 +95,25 @@
 
                         <div class="col-md-4 col-lg-12 form-group">
                             @*<textarea rows="4" class="form-control" placeholder="Meta Title"></textarea>*@
-                            @Html.TextBoxFor(model => model.URL, new { @class = "form-control", @placeholder = "Custom URL * ", required = "required" })
+                            @Html.TextBoxFor(model => model.URL, new { @class = "form-control", @placeholder = "Custom URL"})
 
 
                         </div>
                         <div class="col-md-4 col-lg-12 form-group">
                             @*<textarea rows="4" class="form-control" placeholder="Meta Title"></textarea>*@
-                            @Html.TextBoxFor(model => model.Keywords, new { @class = "form-control", @placeholder = "Meta Keywords * ", required = "required" })
+                            @Html.TextBoxFor(model => model.Keywords, new { @class = "form-control", @placeholder = "Meta Keywords"})
 
 
                         </div>
                         <div class="col-md-4 col-lg-12 form-group">
                             @*<textarea rows="4" class="form-control" placeholder="Meta Description"></textarea>*@
-                            @Html.TextAreaFor(model => model.MetaTitle, new { @class = "form-control", @rows = 4, @placeholder = "Meta Title * ", required = "required" })
+                            @Html.TextAreaFor(model => model.MetaTitle, new { @class = "form-control", @rows = 4, @placeholder = "Meta Title"})
 
 
                         </div>
                         <div class="col-md-4 col-lg-12 form-group">
                             @*<textarea rows="4" class="form-control" placeholder="Meta Description"></textarea>*@
-                            @Html.TextAreaFor(model => model.MetaDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Meta Description * ", required = "required" })
+                            @Html.TextAreaFor(model => model.MetaDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Meta Description"})
 
 
                         </div>
@@ -138,8 +139,8 @@
 
                         <div class="btn-wrapper">
 
-                            <a class="gray-btn" href="@Url.Action("NewsAndDeals","Deals")">Cancle</a>
-                            <input type="submit" class="blue-btn" value="Save">
+                            <a class="gray-btn" href="@Url.Action("NewsAndDeals","Deals")">Cancel</a>
+                            <input type="submit" class="btn blue-btn" value="Save">
 
                         </div>
 

@@ -21,5 +21,7 @@
         public string FileName { get; set; }
         public string Range { get; set; }
         public string CreatedDate { get; set; }
+
+        public string CreatedBy { get; set; }
     }
 }

@@ -1,0 +1,61 @@
+﻿@model ChemAnalyst.Models.SA_Advisory
+@{
+    ViewBag.Title = "CompanyProfile";
+    Layout = "~/Views/Shared/_LayoutUser7.cshtml";
+}
+<div class="inner-banner">
+    <img src="/images/about-banner.jpg">
+    <h1>Advisory Details</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Advisory Details</li>
+    </ol>
+</div>
+<div class="page-content">
+    <div class="static-page">
+        <div class="container">
+            <div class="company-profile">
+                <div class="com-top-3col">
+                    <div class="row">
+
+                        @*<div class="col-md-2 col-lg-2">
+                                <div class="ind-map-col">
+                                    <img src="~/ProductImages/@item.Logo" class="img-responsive">
+                                </div>
+                            </div>*@
+
+                        <div class="col-md-12 col-lg-10">
+                            <div class="info-text-col">
+                                <h4>@Model.AdvisoryName</h4>
+                                <p>@Html.Raw(Model.AdsContent)</p>
+
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $("navbarNavDropdown ul > li").removeClass("active");
+    })
+</script>
+
+<script src="~/js/jquery.js"></script>
+<script src="~/js/jquery-3.3.1.slim.min.js"></script>
+<script src="~/js/popper.min.js"></script>
+<script src="~/js/bootstrap.min.js"></script>
+@*<script src="http://cdnjs.cloudflare.com/ajax/libs/simplelightbox/1.17.1/simple-lightbox.js"></script>*@
+<script src="~/js/owl.carousel.js"></script>
+<script src="~/js/wow.min.js"></script>
+<script src="~/js/honey-custom.js"></script>

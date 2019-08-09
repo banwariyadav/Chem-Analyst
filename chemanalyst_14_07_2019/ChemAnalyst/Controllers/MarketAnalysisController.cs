@@ -17,6 +17,7 @@ namespace ChemAnalyst.Controllers
     public class MarketAnalysisController : Controller
     {
         ProductDataStore ObjProduct = new ProductDataStore();
+        CommentaryDataStore ObjCommentary = new CommentaryDataStore();
         MarketAnalysis Marketanalysisobj;
         // GET: MarketAnalysis
         public MarketAnalysisController()
@@ -85,6 +86,9 @@ namespace ChemAnalyst.Controllers
             string product = FilterObject["ddlProduct"];
             string ChartType = FilterObject["ddlChart"];
             string Range = FilterObject["ddlRange"];
+            string FromYear = FilterObject["ddlFyear"];
+            string ToYear = FilterObject["ddlToYear"];
+
             string CompareProject = FilterObject["example-getting-started"];
             bool Customer = false;
             if (Range == "Company")
@@ -95,7 +99,9 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear
                 });
                 // ChecmPriceYearlyChartUser(product, ChartType, Range);
             }
@@ -105,9 +111,287 @@ namespace ChemAnalyst.Controllers
                 {
                     product,
                     ChartType,
-                    Range
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
                 });
             }
+            else if (Range == "Technology")
+            {
+                return RedirectToAction("MarketbyTechnologyChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Process")
+            {
+                return RedirectToAction("MarketbyProcessChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Production")
+            {
+                return RedirectToAction("MarketbyProductionChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Operating Efficiency")
+            {
+                return RedirectToAction("MarketbyEfficiencyChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Demand By EndUse(%)")
+            {
+                return RedirectToAction("MarketbyEndUsePercentChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Demand By EndUse(%)")
+            {
+                return RedirectToAction("MarketbyEndUsePercentChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Demand By EndUse(T)")
+            {
+                return RedirectToAction("MarketbyEndUseTonneChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Demand By Grade(%)")
+            {
+                return RedirectToAction("MarketbyGradePercentChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Demand By Grade(T)")
+            {
+                return RedirectToAction("MarketbyGradeTonneChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Demand By Type(%)")
+            {
+                return RedirectToAction("MarketbyTypePercentChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Demand By Type(T)")
+            {
+                return RedirectToAction("MarketbyTypeTonneChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Demand By SalesChannel(T)")
+            {
+                return RedirectToAction("MarketbySalesChannelTonneChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Demand By SalesChannel(%)")
+            {
+                return RedirectToAction("MarketbySalesChannelPercentChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Demand By GradePricing")
+            {
+                return RedirectToAction("MarketbyGradePricingChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Demand By Region(%)")
+            {
+                return RedirectToAction("MarketbyRegionPercentChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Demand By Region(T)")
+            {
+                return RedirectToAction("MarketbyRegionTonneChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Demand By TradeExport")
+            {
+                return RedirectToAction("MarketbyTradeExportChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Demand By TradeImport")
+            {
+                return RedirectToAction("MarketbyTradeImportChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Demand Supply Gap")
+            {
+                return RedirectToAction("MarketbySupplyGapChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Demand By CompanyShares(%)")
+            {
+                return RedirectToAction("MarketbyCompanySharesPercentChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+            else if (Range == "Demand By CompanyShares(T)")
+            {
+                return RedirectToAction("MarketbyCompanySharesTonneChart", "MarketAnalysis", new
+                {
+                    product,
+                    ChartType,
+                    Range,
+                    CompareProject,
+                    Customer,
+                    FromYear,
+                    ToYear
+                });
+            }
+
 
             return RedirectToAction("index");
         }
@@ -375,7 +659,14 @@ namespace ChemAnalyst.Controllers
             }
 
 
-            return RedirectToAction("MarketbycompanyChart");
+            return RedirectToAction("MarketbycompanyChart", "MarketAnalysis", new
+            {
+                product,
+                ChartType,
+                Range,
+                CompareProject,
+                Customer
+            });
         }
 
 
@@ -389,6 +680,7 @@ namespace ChemAnalyst.Controllers
             string ImportType = formcollection["Typelist"];
             string UploadFileDiscription = formcollection["UploadFileDiscription"];
             bool ReplaceData = Convert.ToBoolean(formcollection["ReplaceData"].Split(',')[0]);
+            string productName = ObjProduct.GetProductByid(Convert.ToInt32(product)).ProductName;
             string path = string.Empty;
             for (int i = 0; i < Request.Files.Count; i++)
             {
@@ -408,8 +700,9 @@ namespace ChemAnalyst.Controllers
                         if (data == 1)
                         {
                             ViewBag.ProductList = ObjProduct.ProductList();
-                            ViewBag.Messge = "File is already uploaded.";
-                            return View("marketanalysisreport");
+                            ViewBag.Status = "Fail";
+                            ViewBag.Messge = "File is already mapped with " + ImportType + " Parameter.Kindly check if you want to Replace the existing file.";
+                            return View("marketanalysisimport");
                         }
 
                     }
@@ -422,11 +715,13 @@ namespace ChemAnalyst.Controllers
                         if (InsertCompExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName) == true)
                         {
                             ViewBag.ProductList = ObjProduct.ProductList();
-                            ViewBag.Messge = "Data already Imported .";
+                            ViewBag.Status = "Success";
+                            ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                             return View("marketanalysisimport");
                         }
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Location")
@@ -435,7 +730,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToLocDataTable();
                         InsertLocExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Technology")
@@ -444,7 +740,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToLocDataTable();
                         InsertTechnologyExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Process")
@@ -453,7 +750,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToLocDataTable();
                         InsertProcessExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Demand By GradePricing")
@@ -462,7 +760,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToLocDataTable();
                         InsertGradepricingExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Demand By TradeExport")
@@ -471,7 +770,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToLocDataTable();
                         InsertDemandByTradeExportExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Demand By TradeImport")
@@ -480,7 +780,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToLocDataTable();
                         InsertDemandByTradeImportExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Production")
@@ -489,7 +790,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToDataTable();
                         InsertProductionExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Demand By CompanyShares(%)")
@@ -498,7 +800,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToDataTable();
                         InsertCompanySharepercentExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Demand By CompanyShares(T)")
@@ -507,7 +810,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToDataTable();
                         InsertCompanySharetonnesExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Operating Efficiency")
@@ -516,7 +820,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToDataTable();
                         InsertEfficiencyExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Demand By EndUse(%)")
@@ -525,7 +830,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToDataTable();
                         InsertEndUsepercentExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Demand By EndUse(T)")
@@ -534,7 +840,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToDataTable();
                         InsertEndUsetonnesExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Demand By Grade(%)")
@@ -543,7 +850,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToDataTable();
                         InsertGradepercentExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Demand By Grade(T)")
@@ -552,7 +860,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToDataTable();
                         InsertGradetonnesExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Demand By Region(%)")
@@ -561,7 +870,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToDataTable();
                         InsertRegionpercentExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Demand By Region(T)")
@@ -570,7 +880,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToDataTable();
                         InsertRegiontonnesExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Demand By SalesChannel(%)")
@@ -579,7 +890,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToDataTable();
                         InsertSalespercentExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Demand By SalesChannel(T)")
@@ -588,7 +900,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToDataTable();
                         InsertSalestonnesExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Demand By Type(%)")
@@ -597,7 +910,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToDataTable();
                         InsertTypepercentExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Demand By Type(T)")
@@ -606,7 +920,8 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToDataTable();
                         InsertTypetonnesExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
                     else if (ImportType == "Demand Supply Gap")
@@ -615,14 +930,26 @@ namespace ChemAnalyst.Controllers
                         dt = excel.ToDataTable();
                         InsertDemandsupplyExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
                         ViewBag.ProductList = ObjProduct.ProductList();
-                        ViewBag.Messge = "Data Imported successfully.";
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
+                        return View("marketanalysisimport");
+                    }
+                    else if (ImportType == "Demand Supply Gap Graph")
+                    {
+                        var excel = new ExcelPackage(file.InputStream);
+                        dt = excel.ToDataTable();
+                        InsertDemandsupplyGraphExcelRecords(product, ImportType, UploadFileDiscription, path, dt, fileName);
+                        ViewBag.ProductList = ObjProduct.ProductList();
+                        ViewBag.Status = "Success";
+                        ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("marketanalysisimport");
                     }
 
                 }
             }
             ViewBag.ProductList = ObjProduct.ProductList();
-            ViewBag.Messge = "Data Imported successfully.";
+            ViewBag.Status = "Success";
+            ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
             return RedirectToAction("Index");
         }
 
@@ -1578,8 +1905,66 @@ namespace ChemAnalyst.Controllers
             return false;
         }
 
+        private bool InsertDemandsupplyGraphExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
+        {
+            try
+            {
+                Exceldt.Columns.Add("Product", typeof(int));
+                Exceldt.Columns.Add("Discription", typeof(string));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (Exceldt.Rows[i]["DemandSupply"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
+                    {
+                        Exceldt.Rows[i].Delete();
+                    }
+                    else
+                    {
+                        Exceldt.Rows[i]["Product"] = product;
+                        Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                    }
+                }
+                Exceldt.AcceptChanges();
+                string productid = Exceldt.Rows[0]["DemandSupply"].ToString();
+                string year = Exceldt.Rows[0]["Year"].ToString();
+
+                var connectionString = ConfigurationManager.ConnectionStrings["ChemAnalystContext"].ConnectionString;
+                SqlConnection sqlConnection = new SqlConnection();
+
+                //Connection Details  
+                sqlConnection.ConnectionString = connectionString;
+
+                //creating object of SqlBulkCopy      
+                SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection);
+
+                //assigning Destination table name      
+                objbulk.DestinationTableName = "SA_MarketbyDemandsupplyGraph";
+
+                //Mapping Table column    
+                objbulk.ColumnMappings.Add("[Product]", "Product");
+                objbulk.ColumnMappings.Add("[DemandSupply]", "DemandSupply");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[count]", "count");
+                objbulk.ColumnMappings.Add("[Discription]", "Discription");
+                objbulk.ColumnMappings.Add("[FileName]", "FileName");
+                objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                sqlConnection.Open();
+                objbulk.WriteToServer(Exceldt);
+                sqlConnection.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
 
 
+        
         private bool InsertLocExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
         {
 
@@ -1983,7 +2368,7 @@ namespace ChemAnalyst.Controllers
 
         #region Front end functions
 
-        public ActionResult MarketbycompanyChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbycompanyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -2025,8 +2410,26 @@ namespace ChemAnalyst.Controllers
             }
             else
                 obj = Objdal.GetCompanyWiseProductList(product);
-            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Year = obj.OrderBy(w => w.year).Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
 
             var lstModel = new List<MA_StackViewModel>();
 
@@ -2053,6 +2456,13 @@ namespace ChemAnalyst.Controllers
                     };
                     QuantityList.Add(Quantity);
                 }
+                SimpleReportViewModel TotalQuantity = new SimpleReportViewModel()
+                {
+                    MDimensionOne = "Total Capacity",
+                    Quantity = QuantityList.Sum(x => x.Quantity)
+
+                };
+                QuantityList.Add(TotalQuantity);
                 Report.LstData = QuantityList;
                 if (product == null)
                 {
@@ -2098,6 +2508,13 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
+                lstModel[0].FromYear = string.IsNullOrEmpty(FromYear) ? Year.First() : "";
+                lstModel[0].ToYear = string.IsNullOrEmpty(ToYear) ? Year.Last() : "";
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -2109,18 +2526,28 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
+                lstModel[0].FromYear = string.IsNullOrEmpty(FromYear) ? Year.First() : "";
+                lstModel[0].ToYear = string.IsNullOrEmpty(ToYear) ? Year.Last() : "";
+
                 return View("marketanalysis", lstModel);
-               
+
             }
 
 
 
         }
 
-        public ActionResult MarketbylocationChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+
+        public ActionResult MarketbylocationChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
+            ViewBag.Fy = FromYear;
+            ViewBag.Ty = ToYear;
             if (product == null && Customer == true)
             {
                 ViewBag.product = product;
@@ -2158,9 +2585,30 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetLocationWiseProductList(product);
+                obj = Objdal.GetLocationWiseProductList(product, FromYear, ToYear);
+
+            ViewBag.R = Objdal.GetLocationWiseProductListReport(product, FromYear, ToYear);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
 
             var lstModel = new List<MA_StackViewModel>();
 
@@ -2232,6 +2680,12 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
+                lstModel[0].FromYear = string.IsNullOrEmpty(FromYear) ? Year.First() : "";
+                lstModel[0].ToYear = string.IsNullOrEmpty(ToYear) ? Year.Last() : "";
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -2243,6 +2697,12 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
+                lstModel[0].FromYear = string.IsNullOrEmpty(FromYear) ? Year.First() : "";
+                lstModel[0].ToYear = string.IsNullOrEmpty(ToYear) ? Year.Last() : "";
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -2250,10 +2710,12 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyTechnologyChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbyTechnologyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
+            ViewBag.Fy = FromYear;
+            ViewBag.Ty = ToYear;
             if (product == null && Customer == true)
             {
                 ViewBag.product = product;
@@ -2291,9 +2753,32 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetTechnologyWiseProductList(product);
+                obj = Objdal.GetTechnologyWiseProductList(product, FromYear, ToYear);
+
+            ViewBag.R = Objdal.GetTechnologyWiseProductListReport(product, FromYear, ToYear);
+
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
+
 
             var lstModel = new List<MA_StackViewModel>();
 
@@ -2365,6 +2850,8 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -2376,6 +2863,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -2383,10 +2874,12 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyProcessChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbyProcessChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
+            ViewBag.Fy = FromYear;
+            ViewBag.Ty = ToYear;
             if (product == null && Customer == true)
             {
                 ViewBag.product = product;
@@ -2424,9 +2917,32 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetProcessWiseProductList(product);
+                obj = Objdal.GetProcessWiseProductList(product, FromYear, ToYear);
+
+            ViewBag.R = Objdal.GetProcessWiseProductListReport(product, FromYear, ToYear);
+
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
+
 
             var lstModel = new List<MA_StackViewModel>();
 
@@ -2498,6 +3014,10 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -2509,6 +3029,9 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -2516,7 +3039,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyProductionChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbyProductionChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -2561,6 +3084,24 @@ namespace ChemAnalyst.Controllers
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
 
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
             var lstModel = new List<MA_StackViewModel>();
 
             for (int i = 0; i < Year.Count; i++)
@@ -2586,6 +3127,13 @@ namespace ChemAnalyst.Controllers
                     };
                     QuantityList.Add(Quantity);
                 }
+                SimpleReportViewModel TotalQuantity = new SimpleReportViewModel()
+                {
+                    MDimensionOne = "Total Capacity",
+                    Quantity = QuantityList.Sum(x => x.Quantity)
+
+                };
+                QuantityList.Add(TotalQuantity);
                 Report.LstData = QuantityList;
                 if (product == null)
                 {
@@ -2631,6 +3179,10 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -2642,6 +3194,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -2649,7 +3205,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyEfficiencyChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbyEfficiencyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -2694,6 +3250,24 @@ namespace ChemAnalyst.Controllers
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
 
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
             var lstModel = new List<MA_StackViewModel>();
 
             for (int i = 0; i < Year.Count; i++)
@@ -2719,6 +3293,15 @@ namespace ChemAnalyst.Controllers
                     };
                     QuantityList.Add(Quantity);
                 }
+
+                SimpleReportViewModel TotalQuantity = new SimpleReportViewModel()
+                {
+                    MDimensionOne = "Total Capacity",
+                    Quantity = QuantityList.Sum(x => x.Quantity)
+
+                };
+                QuantityList.Add(TotalQuantity);
+
                 Report.LstData = QuantityList;
                 if (product == null)
                 {
@@ -2764,6 +3347,10 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -2775,6 +3362,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -2782,7 +3373,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyEndUsePercentChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbyEndUsePercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -2826,6 +3417,26 @@ namespace ChemAnalyst.Controllers
                 obj = Objdal.GetEndUsepercentWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
+
 
             var lstModel = new List<MA_StackViewModel>();
 
@@ -2897,6 +3508,10 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -2908,6 +3523,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -2915,7 +3534,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyEndUseTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbyEndUseTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -2959,6 +3578,26 @@ namespace ChemAnalyst.Controllers
                 obj = Objdal.GetEndUsetonnesWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
+
 
             var lstModel = new List<MA_StackViewModel>();
 
@@ -3030,6 +3669,10 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -3041,6 +3684,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -3048,7 +3695,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyGradePercentChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbyGradePercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -3092,6 +3739,26 @@ namespace ChemAnalyst.Controllers
                 obj = Objdal.GetGradepercentWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
+
 
             var lstModel = new List<MA_StackViewModel>();
 
@@ -3163,6 +3830,10 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -3174,6 +3845,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -3181,7 +3856,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyGradeTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbyGradeTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -3225,6 +3900,25 @@ namespace ChemAnalyst.Controllers
                 obj = Objdal.GetGradetonnesWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
 
             var lstModel = new List<MA_StackViewModel>();
 
@@ -3296,6 +3990,10 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -3307,6 +4005,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -3314,7 +4016,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyTypePercentChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbyTypePercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -3358,6 +4060,26 @@ namespace ChemAnalyst.Controllers
                 obj = Objdal.GetTypepercentWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
+
 
             var lstModel = new List<MA_StackViewModel>();
 
@@ -3429,6 +4151,11 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -3440,6 +4167,11 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -3447,7 +4179,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyTypeTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbyTypeTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -3491,6 +4223,26 @@ namespace ChemAnalyst.Controllers
                 obj = Objdal.GetTypetonnesWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
+
 
             var lstModel = new List<MA_StackViewModel>();
 
@@ -3562,6 +4314,10 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -3573,6 +4329,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -3580,7 +4340,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbySalesChannelPercentChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbySalesChannelPercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -3624,6 +4384,26 @@ namespace ChemAnalyst.Controllers
                 obj = Objdal.GetSalespercentWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
+
 
             var lstModel = new List<MA_StackViewModel>();
 
@@ -3695,6 +4475,10 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -3706,6 +4490,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -3713,7 +4501,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbySalesChannelTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbySalesChannelTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -3757,6 +4545,25 @@ namespace ChemAnalyst.Controllers
                 obj = Objdal.GetSalestonnesWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
 
             var lstModel = new List<MA_StackViewModel>();
 
@@ -3828,6 +4635,9 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -3839,6 +4649,9 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -3846,7 +4659,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-         public ActionResult MarketbyGradePricingChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbyGradePricingChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -3890,6 +4703,26 @@ namespace ChemAnalyst.Controllers
                 obj = Objdal.GetGradepricingWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
+
 
             var lstModel = new List<MA_StackViewModel>();
 
@@ -3961,6 +4794,11 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -3972,6 +4810,11 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -3979,7 +4822,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-         public ActionResult MarketbyRegionPercentChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbyRegionPercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -4023,6 +4866,27 @@ namespace ChemAnalyst.Controllers
                 obj = Objdal.GetRegionpercentWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
+
+
 
             var lstModel = new List<MA_StackViewModel>();
 
@@ -4094,6 +4958,11 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -4105,6 +4974,11 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -4112,7 +4986,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyRegionTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbyRegionTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -4156,6 +5030,26 @@ namespace ChemAnalyst.Controllers
                 obj = Objdal.GetRegiontonnesWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
+
 
             var lstModel = new List<MA_StackViewModel>();
 
@@ -4227,6 +5121,11 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -4238,6 +5137,11 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -4245,7 +5149,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyTradeExportChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbyTradeExportChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -4290,6 +5194,26 @@ namespace ChemAnalyst.Controllers
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
 
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
+
+
             var lstModel = new List<MA_StackViewModel>();
 
             for (int i = 0; i < Year.Count; i++)
@@ -4311,7 +5235,7 @@ namespace ChemAnalyst.Controllers
                     SimpleReportViewModel Quantity = new SimpleReportViewModel()
                     {
                         MDimensionOne = item.Country,
-                        Quantity = item.value                              
+                        Quantity = item.value
                     };
                     QuantityList.Add(Quantity);
                 }
@@ -4360,6 +5284,10 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -4371,6 +5299,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -4378,7 +5310,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyTradeImportChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbyTradeImportChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -4422,6 +5354,26 @@ namespace ChemAnalyst.Controllers
                 obj = Objdal.GetTradeImportWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
+
 
             var lstModel = new List<MA_StackViewModel>();
 
@@ -4493,6 +5445,10 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -4504,6 +5460,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -4511,7 +5471,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbySupplyGapChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbySupplyGapChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -4535,7 +5495,7 @@ namespace ChemAnalyst.Controllers
 
             }
 
-            List<SA_MarketbyDemandsupply> obj = null;
+            List<SA_MarketbyDemandsupplyGraph> obj = null;
             string compare = string.Empty;
             if (CompareProject != null)
             {
@@ -4552,16 +5512,40 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetDemandsupplyWiseProductList(product);
+                obj = Objdal.GetDemandsupplyGraphWiseProductList(product);
+
+
+            ViewBag.R = Objdal.GetDemandsupplyWiseProductList(product);
+
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
+
 
             var lstModel = new List<MA_StackViewModel>();
 
             for (int i = 0; i < Year.Count; i++)
             {
 
-                List<SA_MarketbyDemandsupply> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                List<SA_MarketbyDemandsupplyGraph> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
                 //sales of product sales by quarter  
                 MA_StackViewModel Report = new MA_StackViewModel();
                 Report.MStackedDimensionOne = Year[i];
@@ -4626,6 +5610,10 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -4637,6 +5625,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -4644,7 +5636,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyCompanySharesPercentChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbyCompanySharesPercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -4688,6 +5680,26 @@ namespace ChemAnalyst.Controllers
                 obj = Objdal.GetCompanySharepercentWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
+
 
             var lstModel = new List<MA_StackViewModel>();
 
@@ -4759,6 +5771,10 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -4770,6 +5786,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -4777,7 +5797,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyCompanySharesTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer)
+        public ActionResult MarketbyCompanySharesTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -4821,6 +5841,26 @@ namespace ChemAnalyst.Controllers
                 obj = Objdal.GetCompanySharetonnesWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            string CommentaryTitle = "";
+            string CommentaryDescription = "";
+            int PId = 0;
+            if (product != null)
+            {
+                int ProductId = int.Parse(product);
+                PId = ProductId;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+            }
+            else
+            {
+                PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
+
+            }
+
+
 
             var lstModel = new List<MA_StackViewModel>();
 
@@ -4892,6 +5932,10 @@ namespace ChemAnalyst.Controllers
             else if (Customer == true)
             {
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -4903,6 +5947,10 @@ namespace ChemAnalyst.Controllers
                 d.NewsList = Obj2.GetNewsList();
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
+
+                lstModel[0].CommentaryTitle = CommentaryTitle;
+                lstModel[0].CommentaryDescription = CommentaryDescription;
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -4911,5 +5959,129 @@ namespace ChemAnalyst.Controllers
         }
         #endregion
 
+
+        [HttpPost]
+        public JsonResult CheckAccess(string ProductId)
+        {
+            ChemAnalystContext dbcontext = new ChemAnalystContext();
+            if (!string.IsNullOrEmpty(ProductId))
+            {
+                int PId = int.Parse(ProductId);
+
+                try
+                {
+                    var catId = dbcontext.SA_Category.OrderBy(x => x.id).FirstOrDefault().id;
+
+
+                    var Firstpid = dbcontext.SA_Product.Where(w => w.Category == catId).OrderBy(x => x.id).FirstOrDefault().id;
+
+                    //var IsAccess = dbcontext.CustProduct.Where(w=>w.ProdId == Firstpid).OrderByDescending(w => w.id).FirstOrDefault();
+
+                    if (Firstpid == PId)
+                    {
+                        return Json("Access");
+                    }
+                    else
+                    {
+                        return Json("NoAcesss");
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
+            }
+            else
+            {
+                var Commentaries = ObjCommentary.GetCommentaryList().Select(w => new SelectListItem { Text = w.Title, Value = w.Description }).ToList();
+                return Json(Commentaries);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult GetUniqueYears(string rangeId)
+        {
+            ChemAnalystContext _context1 = new ChemAnalystContext();
+            if (rangeId== "Company")
+            {
+                var cat = (from coun in _context1.SA_MarketbyComp select new SelectListItem { Text = coun.year, Value = coun.year.ToString() }).OrderBy(w => w.Value).Distinct().AsEnumerable();
+
+                return Json(cat);
+            }
+            else if (rangeId == "Location")
+            {
+                var cat = (from coun in _context1.SA_MarketbyLoc select new SelectListItem { Text = coun.year, Value = coun.year.ToString() }).OrderBy(w => w.Value).Distinct().AsEnumerable();
+
+                return Json(cat);
+            }
+            else if (rangeId == "Process")
+            {
+                var cat = (from coun in _context1.SA_MarketbyProcess select new SelectListItem { Text = coun.year, Value = coun.year.ToString() }).OrderBy(w => w.Value).Distinct().AsEnumerable();
+
+                return Json(cat);
+            }
+            else if (rangeId == "Production")
+            {
+                var cat = (from coun in _context1.SA_MarketbyProducer select new SelectListItem { Text = coun.year, Value = coun.year.ToString() }).OrderBy(w => w.Value).Distinct().AsEnumerable();
+
+                return Json(cat);
+            }
+            else if (rangeId == "Operating Efficiency")
+            {
+                var cat = (from coun in _context1.SA_MarketbyEfficiency select new SelectListItem { Text = coun.year, Value = coun.year.ToString() }).OrderBy(w => w.Value).Distinct().AsEnumerable();
+
+                return Json(cat);
+            }
+            else if (rangeId == "Demand By EndUse(T)")
+            {
+                var cat = (from coun in _context1.SA_MarketbyEndUsetonnes select new SelectListItem { Text = coun.year, Value = coun.year.ToString() }).OrderBy(w => w.Value).Distinct().AsEnumerable();
+
+                return Json(cat);
+            }
+            else if (rangeId == "Demand By Grade(T)")
+            {
+                var cat = (from coun in _context1.SA_MarketbyGradetonnes select new SelectListItem { Text = coun.year, Value = coun.year.ToString() }).OrderBy(w => w.Value).Distinct().AsEnumerable();
+
+                return Json(cat);
+            }
+            else if (rangeId == "Demand By SalesChannel(T)")
+            {
+                var cat = (from coun in _context1.SA_MarketbySalestonnes select new SelectListItem { Text = coun.year, Value = coun.year.ToString() }).OrderBy(w => w.Value).Distinct().AsEnumerable();
+
+                return Json(cat);
+            }
+            else if (rangeId == "Demand By Region(T)")
+            {
+                var cat = (from coun in _context1.SA_MarketbyRegiontonnes select new SelectListItem { Text = coun.year, Value = coun.year.ToString() }).OrderBy(w => w.Value).Distinct().AsEnumerable();
+
+                return Json(cat);
+            }
+            else if (rangeId == "Demand By TradeExport")
+            {
+                var cat = (from coun in _context1.SA_MarketbyTradeExport select new SelectListItem { Text = coun.year, Value = coun.year.ToString() }).OrderBy(w => w.Value).Distinct().AsEnumerable();
+
+                return Json(cat);
+            }
+            else if (rangeId == "Demand By TradeImport")
+            {
+                var cat = (from coun in _context1.SA_MarketbyTradeImport select new SelectListItem { Text = coun.year, Value = coun.year.ToString() }).OrderBy(w => w.Value).Distinct().AsEnumerable();
+
+                return Json(cat);
+            }
+            else if (rangeId == "Demand Supply Gap")
+            {
+                var cat = (from coun in _context1.SA_MarketbyDemandsupply select new SelectListItem { Text = coun.year, Value = coun.year.ToString() }).OrderBy(w => w.Value).Distinct().AsEnumerable();
+
+                return Json(cat);
+            }
+            else 
+            {
+                var cat = (from coun in _context1.SA_MarketbyCompanySharetonnes select new SelectListItem { Text = coun.year, Value = coun.year.ToString() }).OrderBy(w => w.Value).Distinct().AsEnumerable();
+
+                return Json(cat);
+            }
+
+        }
     }
 }

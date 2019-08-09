@@ -211,39 +211,47 @@
 
                                         <h3>Basic Detail</h3>
                                         <table class="table table-bordered">
-                                            <tbody>
-                                                <tr>
-                                                    <td>Founded Year</td>
-                                                    <td>@Model.CreatedTime</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Employee Count</td>
-                                                    <td>@Model.NOE</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Headquater</td>
-                                                    <td>@Model.Address</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Key Contact Person</td>
-                                                    <td>@Model.CEO</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Email</td>
-                                                    <td>@Model.EmailId</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Phone</td>
-                                                    <td>@Model.phoneNo</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Website</td>
-                                                    <td>@Model.website</td>
-                                                </tr>
+                                        <tbody>
+                                            <tr>
+                                                <td>Name of the Company</td>
+                                                <td>@Model.Name</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Registration Date</td>
+                                                <td>@Model.RegDate.ToString()</td>
+                                            </tr>
+                                            <tr>
+                                                <td>CIN</td>
+                                                <td>@Model.CIN</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Category/Sub-Category of Company</td>
+                                                <td>@Model.Category</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Addtess</td>
+                                                <td>@Model.Address</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Contact Details</td>
+                                                <td>
+                                                    Website:<Span>@Model.website</Span>
+                                                    Email:<Span>@Model.EmailId</Span>
+                                                    fax:<Span>@Model.fax</Span>
+                                                    Phone No:<Span>@Model.phoneNo</Span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Number of Employee</td>
+                                                <td>@Model.NOE</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Managing Director/CEO</td>
+                                                <td>@Model.CEO</td>
+                                            </tr>
 
-
-                                            </tbody>
-                                        </table>
+                                        </tbody>
+                                    </table>
 
                                     </div>
                                 </div>
@@ -264,6 +272,23 @@
                                                         <td>% Growth - @item.FinacialYear</td>
                                                         <td>@item.Growth %</td>
                                                     </tr>
+                                                    <tr>
+                                                        <td>PBT - @item.FinacialYear</td>
+                                                        <td>@item.PBT</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Pat - @item.FinacialYear</td>
+                                                        <td>@item.Pat</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Margin - @item.FinacialYear</td>
+                                                        <td>@item.Margin</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Liablities - @item.FinacialYear</td>
+                                                        <td>@item.Liablities</td>
+                                                    </tr>
+
                                                 }
                                             </tbody>
                                         </table>
@@ -272,7 +297,7 @@
 
 
 
-                                <div class="col-md-12">
+                                <div class="col-md-12" style="    margin-bottom: 20px;">
                                     <div class="mains-indus-tabs">
                                         <ul class="nav nav-tabs" role="tablist">
                                             <li class="nav-item">
@@ -296,7 +321,7 @@
                                         @if (ViewBag.S != null)
                                         {
                                             <div class="tab-content">
-                                                <div id="home" class="container tab-pane active">
+                                                <div id="home" class="tab-pane active">
                                                     <br /><p>@Html.Raw(ViewBag.S.Strength)</p>
                                                 </div>
                                                 <div id="menu1" class="container tab-pane fade">
@@ -313,7 +338,7 @@
                                         else
                                         {
                                             <div class="tab-content">
-                                                <div id="home" class="container tab-pane active">
+                                                <div id="home" class="tab-pane active">
                                                     <br /><p></p>
                                                 </div>
                                                 <div id="menu1" class="container tab-pane fade">
@@ -345,7 +370,7 @@
                                         <!-- Tab panes -->
 
                                         <div class="tab-content">
-                                            <div id="pp" class="container tab-pane active">
+                                            <div id="pp" class="tab-pane active">
                                                 <br /><p>
 
                                                     @if (ViewBag.S != null)
@@ -379,7 +404,7 @@
                                         @if (ViewBag.S != null)
                                         {
                                             <div class="tab-content">
-                                                <div id="pp" class="container tab-pane active">
+                                                <div id="pp" class="tab-pane active">
                                                     <br /><p>@Html.Raw(ViewBag.S.Perspective)</p>
                                                 </div>
                                                 <div id="ss" class="container tab-pane fade">
@@ -391,7 +416,7 @@
                                         else
                                         {
                                             <div class="tab-content">
-                                                <div id="pp" class="container tab-pane active">
+                                                <div id="pp" class="tab-pane active">
                                                     <br /><p></p>
                                                 </div>
                                                 <div id="ss" class="container tab-pane fade">

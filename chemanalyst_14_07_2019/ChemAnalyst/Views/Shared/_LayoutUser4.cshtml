@@ -110,7 +110,7 @@
                         <div class="foot-links">
                             <p><a href="#">About Us</a></p>
                             <p><a href="#">Privacy Policy</a></p>
-                            <p><a href="#">FAQs</a></p>
+                            <p><a href="@Url.Action("FreeTrail", "ChemAnalyst")">Product Finder</a></p>
                         </div>
                     </div>
 
@@ -151,7 +151,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script src="../js/popper.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
-    
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
 
     <script type="text/javascript">
         
@@ -163,6 +163,48 @@
          $(function () {
         $("#btnSave").click(function () {
             var freeTrail = {};
+            debugger
+            if ($("#txtName").val() == "") {
+                swal("Warning", "Please enter name :)", "error");
+                return false;
+            }
+            if ($("#txtCorpEmail").val() == "") {
+                swal("Warning", "Please enter email :)", "error");
+                return false;
+            }
+            if ($("#txtOrganisation").val() == "") {
+                swal("Warning", "Please enter organisation :)", "error");
+                return false;
+            }
+            if ($("#txtCountry").val() == "") {
+                swal("Warning", "Please enter country :)", "error");
+                return false;
+            }
+            if ($("#txtState").val() == "") {
+                swal("Warning", "Please enter state :)", "error");
+                return false;
+            }
+            if ($("#txtPhone").val() == "") {
+                swal("Warning", "Please enter phone number :)", "error");
+                return false;
+            }
+            if ($("#txtAreaInterest").val() == "") {
+                swal("Warning", "Please enter area of interest :)", "error");
+                return false;
+            }
+            if ($("#txtUserType").val() == "") {
+                swal("Warning", "Please enter user type :)", "error");
+                return false;
+            }
+            if ($("#txtSubject").val() == "") {
+                swal("Warning", "Please enter subject :)", "error");
+                return false;
+            }
+            if ($("#txtQuery").val() == "") {
+                swal("Warning", "Please enter query :)", "error");
+                return false;
+            }
+
             freeTrail.Name = $("#txtName").val();
             freeTrail.CorpEmail = $("#txtCorpEmail").val();
             freeTrail.Organisation = $("#txtOrganisation").val();
@@ -180,7 +222,8 @@
                 data:  freeTrail,
                 success: function (data) {
                     if (data && data.result) {
-                        alert("Data has been added successfully.");
+                        //alert("Data has been added successfully.");
+                        swal("Thank you!", "Data has been added successfully.", "success");
                         $("#txtName").val('');
                         $("#txtCorpEmail").val('');
                         $("#txtOrganisation").val('');

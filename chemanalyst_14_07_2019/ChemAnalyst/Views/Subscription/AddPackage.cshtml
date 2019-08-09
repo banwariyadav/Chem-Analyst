@@ -59,7 +59,7 @@
                     <div class="custom-select-option">
                         <div class="multiselect">
                             <div id="dropdown1" class="selectbox" onclick="showCheckBoxes()">
-                                <select>
+                                <select class="form-control">
                                     <option>Select option</option>
                                 </select>
                                 <div class="overSelect"></div>
@@ -230,7 +230,7 @@
                 success: function (data) {
                     if (data && data.result) {
                         alert(data.result);
-                        window.location.href = '../SubsManagement/ShowSubscriptionListForSales';
+                        window.location.href = '~/../SubsManagement/ShowSubscriptionListForSales';
                         $("#FromDatepicker").val('');
                         $("#ToDatepicker").val('');
                         $("#description").val('');

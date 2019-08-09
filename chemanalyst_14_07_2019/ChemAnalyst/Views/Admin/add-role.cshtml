@@ -20,14 +20,15 @@
 
             <div class="eq-form">
 
-                <div class="change">
-                    <img src="~/images/change-img.jpg" alt="" />
+                <div class="change" style="font-size: 95px;">
+                    <i class="fa fa fa-users" aria-hidden="true"></i>
                     <p>Add New Role</p>
                 </div>
 
                 <div class="eq-form-box">
                     @using (Html.BeginForm("SaveRole", "Admin", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
+                        @Html.HiddenFor(m=>m.CreatedTime)
 
                         @Html.AntiForgeryToken()
                         <div style="visibility:hidden">

@@ -214,11 +214,20 @@ namespace ChemAnalyst.Controllers
         {
             if (Country.id == 0)
             {
-                SA_Country Obj = new SA_Country();
-                Obj.CountryName = Country.CountryName;
-                Obj.Active = true;
-                _context.SA_Country.Add(Obj);
-                _context.SaveChanges();
+                var check = _context.SA_Country.Where(w => w.CountryName == Country.CountryName).FirstOrDefault();
+                if (check!=null)
+                {
+                    TempData["Message"] = "This country is already exist!";
+                    return RedirectToAction("AddCountry");
+                }
+                else
+                {
+                    SA_Country Obj = new SA_Country();
+                    Obj.CountryName = Country.CountryName;
+                    Obj.Active = true;
+                    _context.SA_Country.Add(Obj);
+                    _context.SaveChanges();
+                }
             }
             else
             {
@@ -349,7 +358,7 @@ namespace ChemAnalyst.Controllers
         }
         public ActionResult SaveRole(SA_RoleViewModel UserRole)
         {
-            UserRole.CreatedTime = DateTime.Now;
+            UserRole.CreatedTime =  DateTime.Now.ToString();
             RoleDataStore Obj = new RoleDataStore();
             if (UserRole.id == 0)
             {
@@ -400,6 +409,7 @@ namespace ChemAnalyst.Controllers
                 {
                     id = w.id,
                     Title = w.Title,
+                    Type = w.Type,
                     CreateTime = w.CreatedTime != null ? w.CreatedTime.ToString("dd/MM/yyyy") : "",
                     Product = w.Product != null ? ObjProduct.GetProductByid(w.Product).ProductName : "",
                 });
@@ -438,11 +448,80 @@ namespace ChemAnalyst.Controllers
 
         }
         [ValidateInput(false)]
+
+
+
+        public ActionResult AddCommentaryMarket(int id = 0)
+        {
+            CommentaryDataStore Obj = new CommentaryDataStore();
+            SA_Commentary obj = new SA_Commentary();
+            if (id > 0)
+            {
+                obj = Obj.GetCommentaryByid(id);
+            }
+
+            if (obj == null)
+            {
+                obj = new SA_Commentary();
+
+            }
+            return View(obj);
+
+        }
+
+        [ValidateInput(false)]
         public ActionResult SaveCommentary(SA_Commentary UserNews)
         {
             CommentaryDataStore Obj = new CommentaryDataStore();
+
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                var file = Request.Files[i];
+
+                if (file != null && file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+
+                    var path = Path.Combine(Server.MapPath("~/ProductImages"), fileName);
+                    file.SaveAs(path);
+                    UserNews.ImgPath = fileName;
+                }
+            }
+
             if (UserNews.id == 0)
             {
+                UserNews.Type = "Chemical Pricing";
+                Obj.AddCommentary(UserNews);
+            }
+            else
+            {
+                Obj.EditCommentary(UserNews);
+            }
+            return RedirectToAction("ShowCommentaryList", "Admin");
+        }
+
+        [ValidateInput(false)]
+        public ActionResult SaveCommentaryMarket(SA_Commentary UserNews)
+        {
+            CommentaryDataStore Obj = new CommentaryDataStore();
+
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                var file = Request.Files[i];
+
+                if (file != null && file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+
+                    var path = Path.Combine(Server.MapPath("~/ProductImages"), fileName);
+                    file.SaveAs(path);
+                    UserNews.ImgPath = fileName;
+                }
+            }
+
+            if (UserNews.id == 0)
+            {
+                UserNews.Type = "Market Analysis";
                 Obj.AddCommentary(UserNews);
             }
             else

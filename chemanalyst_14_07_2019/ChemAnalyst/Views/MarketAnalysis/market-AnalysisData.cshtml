@@ -46,7 +46,7 @@
         <div class="container">
             <div class="row">
 
-                <div class="col-md-4"><div class="logo"><a href="#"><img src="images/logo.png" alt=""></a></div></div>
+                <div class="col-md-4"><div class="logo"><a href="/"><img src="~/images/logo.png" alt=""></a></div></div>
                 <div class="col-md-8 ml-auto">
                     <div class="top-con-bar">
                         <div class="row justify-content-end">
@@ -89,9 +89,9 @@
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"><span class="fa fa-bars 2x"></span> Menu</button>
                     <div class="collapse navbar-collapse" id="navbarNavDropdown">
                         <ul class="navbar-nav">
-                            <li class="nav-item active"><a class="nav-link" href="@Url.Action("MarketbycompanyChart", "MarketAnalysis")">Analysis </a></li>
+                            <li class="nav-item active"><a class="nav-link" href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")">Analysis </a></li>
                             <li class="nav-item"><a class="nav-link" href="@Url.Action("ChecmPriceChart", "ChemicalPricing")">Chemical Pricing</a></li>
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("IndustryReport", "Industry")">Industry Reports</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Reportsection", "Industry")">Industry Reports</a></li>
                             <li class="nav-item"><a class="nav-link" href="@Url.Action("CompanyProfile", "Company")">Company Profile</a></li>
                             <li class="nav-item"><a class="nav-link" href="@Url.Action("NewsHome", "NewsAndDeals")">News</a></li>
                             <li class="nav-item"><a class="nav-link" href="@Url.Action("DealsHome", "NewsAndDeals")">Deals</a></li>
@@ -135,7 +135,7 @@
                         </div>
 
                         <div class="filter-chart-type">
-                            @using (Html.BeginForm("ShowChart", "ChemicalPricing", null, FormMethod.Post, new { @id = "ShowChart", enctype = "multipart/form-data" }))
+                            @using (Html.BeginForm("ShowChart", "MarketAnalysis", null, FormMethod.Post, new { @id = "ShowChart", enctype = "multipart/form-data" }))
                             {
                                 <div class="row">
                                     <div class="col-md-4">
@@ -150,23 +150,63 @@
                                     </div>
 
                                     <div class="col-md-4 pl-0">
-                                        <p><i class="fa fa-random"></i> Range</p>
-                                        <select id="ddlRange" name="ddlRange" class="btn btn-primary width100" required="required" oninvalid="this.setCustomValidity('Please select Range')" onchange="try{setCustomValidity('')}catch(e){}">
-                                            <option value="">Select Range</option>
-                                            <option value="Yearly">Yearly</option>
-                                            <option value="Monthly">Monthly</option>
-                                            <option value="Quarterly">Quarterly</option>
-                                            <option value="Daily basis">Daily basis</option>
-                                            <option value="Daily Bulk">Daily Bulk</option>
+                                        <p><i class="fa fa-random"></i> Analysis Parameters</p>
+                                        <select id="ddlRange" name="ddlRange" class="btn btn-primary width100" required="required" oninvalid="this.setCustomValidity('Please Select File Type')" onchange="try{setCustomValidity('')}catch(e){}">
+                                            <option value="">Select File Type</option>
+                                            <option value="Company" selected>Company</option>
+                                            <option value="Location">Location</option>
+                                            <option value="Technology">Technology</option>
+                                            <option value="Process">Process</option>
+                                            <option value="Production">Production</option>
+                                            <option value="Operating Efficiency">Operating Efficiency</option>
+                                            @*<option value="Demand By EndUse(%)">Demand By EndUse(%)</option>*@
+                                            <option value="Demand By EndUse(T)">Demand By EndUse(T)</option>
+                                            @*<option value="Demand By Grade(%)">Demand By Grade(%)</option>*@
+                                            <option value="Demand By Grade(T)">Demand By Grade(T)</option>
+                                            @*<option value="Demand By Type(%)">Demand By Type(%)</option>*@
+                                            @*<option value="Demand By Type(T)">Demand By Type(T)</option>*@
+                                            <option value="Demand By SalesChannel(T)">Demand By SalesChannel(T)</option>
+                                            @*<option value="Demand By SalesChannel(%)">Demand By SalesChannel(%)</option>*@
+                                            @*<option value="Demand By GradePricing">Demand By GradePricing</option>*@
+                                            <option value="Demand By Region(T)">Demand By Region(T)</option>
+                                            @*<option value="Demand By Region(%)">Demand By Region(%)</option>*@
+                                            <option value="Demand By TradeExport">Demand By TradeExport</option>
+                                            <option value="Demand By TradeImport">Demand By TradeImport</option>
+                                            <option value="Demand Supply Gap">Demand Supply Gap</option>
+                                            <option value="Demand By CompanyShares(T)">Demand By CompanyShares(T)</option>
+                                            @*<option value="Demand By CompanyShares(%)">Demand By CompanyShares(%)</option>*@
                                         </select>
 
                                     </div>
+
                                     <div class="col-md-4  mt10">
                                         <p><i class="fa fa-bar-chart"></i> Chart Types</p>
                                         <select class="btn btn-primary width100" id="ddlChart" name="ddlChart">
                                             <option value="line">Line Chart</option>
                                             <option value="bar">Bar Chart</option>
-                                            <option value="pie">Pie Chart</option>
+                                            @*<option value="pie">Pie Chart</option>*@
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4  mt10">
+                                        <p><i class="fa fa-bar-chart"></i> From Year</p>
+                                        <select class="btn btn-primary width100" id="ddlFyear" name="ddlFyear">
+                                            <option value="0">Select from</option>
+                                            <option value="2016">2016</option>
+                                            <option value="2017">2017</option>
+                                            <option value="2018">2018</option>
+                                            <option value="2019">2019</option>
+                                            <option value="2020">2020</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4  mt10">
+                                        <p><i class="fa fa-bar-chart"></i> To Year</p>
+                                        <select class="btn btn-primary width100" id="ddlToYear" name="ddlToYear">
+                                            <option value="0">Select to</option>
+                                            <option value="2016">2016</option>
+                                            <option value="2017">2017</option>
+                                            <option value="2018">2018</option>
+                                            <option value="2019">2019</option>
+                                            <option value="2020">2020</option>
                                         </select>
                                     </div>
                                     <div class="col-md-4 mt10" style="display:none">
@@ -182,7 +222,7 @@
                                     </div>
 
                                     <div class="col-md-4 pl-0 mt10">
-                                        <button type="button" onclick="SubmitForm()" class="btn btn-green mt27">
+                                        <button type="submit" onclick="SubmitForm()" class="btn btn-green mt27">
                                             <i class="fa fa-refresh"></i>
                                             Vew Chart
                                         </button>
@@ -324,7 +364,7 @@
                         <div class="foot-links">
                             <p><a href="#">About Us</a></p>
                             <p><a href="#">Privacy Policy</a></p>
-                            <p><a href="#">FAQs</a></p>
+                            <p><a href="@Url.Action("FreeTrail", "ChemAnalyst")">Product Finder</a></p>
                         </div>
                     </div>
 
@@ -381,7 +421,39 @@
     <script src="~/js/Chart.min.js"></script>
     <script src="~/js/utils.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
+
+            $("#ddlProduct").change(function () {
+                debugger;
+                var ProductId=$(ddlProduct).find("option:selected").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "../MarketAnalysis/CheckAccess",
+                    data: "{ ProductId:"+ ProductId +"}" ,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: false,
+                    success: function (response) {
+                        debugger;
+                        if (response=="Access") {
+
+                        }
+                        else
+                        {
+                            $('#myModal').modal({backdrop: 'static', keyboard: false});
+                            event.preventDefault();
+                        }
+                    },
+                    failure: function (response) {
+                        // alert(response.responseText);
+                    },
+                    error: function (response) {
+                        // alert(response.responseText);
+                    }
+                });
+            });
+
         });
 
     </script>

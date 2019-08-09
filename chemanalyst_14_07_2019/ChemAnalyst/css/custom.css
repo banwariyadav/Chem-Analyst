@@ -56,14 +56,14 @@ li.nav-item.active a {
 	text-transform: uppercase;
 }
 #myModal .modal-content {
-	background-color: transparent;
+    background-color: transparent;
 }
-#myModal .modal-dialog {
-	max-width: 790px;
-	height: 350px;
-	background-image: url(../images/subscribe-bg.png);
-	top: 15%;
-	background-size: cover;
+#myModal.modal-dialog {
+    max-width: 790px;
+    height: 350px;
+    background-image: url(../images/subscribe-bg.png);
+    top: 15%;
+    background-size: cover;
 }
 .padding-left {
 	padding-left: 0;

@@ -33,7 +33,7 @@ namespace ChemAnalyst.Controllers
             model.NewsList = NewsList;
             List<SA_Deals> DealList = d.GetDealsList();
             model.DealsList = DealList;
-            return View("products",model);
+            return View("products", model);
         }
         public ActionResult FreeTrail()
         {
@@ -53,9 +53,9 @@ namespace ChemAnalyst.Controllers
             bool result = false;
             try
             {
-               
 
-                lead.IPAddress =   GetIPAddress() ;
+
+                lead.IPAddress = GetIPAddress();
                 lead.CreatedDate = DateTime.Now;
                 lead.Status = "New";
                 FreeTrialDal Obj = new FreeTrialDal();
@@ -66,6 +66,35 @@ namespace ChemAnalyst.Controllers
             }
             catch (Exception ex)
             {
+            }
+
+            return Json(new { result = result, JsonRequestBehavior.AllowGet });
+        }
+
+
+        [HttpPost]
+        public JsonResult SendContactUs(ContactUs lead)
+        {
+            bool result = false;
+            try
+            {
+                string EmailBody = SubscriptionDAL.GetHtml("ContactUs.html");
+                EmailBody = EmailBody.Replace("#Name", lead.Name);
+                EmailBody = EmailBody.Replace("#OfficalEmail", lead.OfficalEmail);
+                EmailBody = EmailBody.Replace("#Mobile", lead.Mobile);
+                EmailBody = EmailBody.Replace("#Organization", lead.Organisation);
+                EmailBody = EmailBody.Replace("#Country", lead.Country);
+                EmailBody = EmailBody.Replace("#State", lead.State);
+                EmailBody = EmailBody.Replace("#City", lead.City);
+
+                SubscriptionDAL.SendMail("Chem Analyst", "info@chemanalyst", "mrnickolasjames@gmail.com", "CONTACT US", EmailBody, "mrnickolasjames@gmail.com");
+
+
+                return Json(new { data = "Success" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { data = "fail" }, JsonRequestBehavior.AllowGet);
             }
 
             return Json(new { result = result, JsonRequestBehavior.AllowGet });
@@ -107,9 +136,18 @@ namespace ChemAnalyst.Controllers
         {
             NewsDataStore Obj = new NewsDataStore();
             List<SA_News> NewsList = Obj.GetNewsList();
-            var model = NewsList.OrderByDescending(w => w.id).Take(3).ToList();
-          
-            return PartialView("~/Views/PartialView/NewPartialView.cshtml", model);
+
+            DealsDataStore ObjDeal = new DealsDataStore();
+            List<SA_Deals> DealList = ObjDeal.GetDealsList();
+
+            var news = NewsList.OrderByDescending(w => w.id).Take(3).ToList();
+            var deal = DealList.OrderByDescending(w => w.id).Take(3).ToList();
+
+            NewDealVM NewsDeal = new NewDealVM();
+            NewsDeal.lstNews = news;
+            NewsDeal.lstDeals = deal;
+
+            return PartialView("~/Views/PartialView/NewPartialView.cshtml", NewsDeal);
 
         }
         public ActionResult SliderList()
@@ -130,9 +168,9 @@ namespace ChemAnalyst.Controllers
         {
             ChemContentDataStore Obj = new ChemContentDataStore();
             SA_ChemContent NewsList = Obj.GetChemContentByid(1);
-            if(NewsList==null)
+            if (NewsList == null)
             {
-                NewsList=new SA_ChemContent();
+                NewsList = new SA_ChemContent();
             }
             return PartialView("~/Views/PartialView/ChemContentPartialView.cshtml", NewsList);
 
@@ -150,12 +188,12 @@ namespace ChemAnalyst.Controllers
             List<SA_Product> ProductList = p.GetProductList();
             model.ProductList = ProductList;
             CategoryDataStore c = new CategoryDataStore();
-            ViewBag.category=c.CategoryList();
+            ViewBag.category = c.CategoryList();
             return View("~/Views/ChemAnalyst/products.cshtml", model);
 
         }
         [HttpPost]
-        public ActionResult ProductList(string id,string search)
+        public ActionResult ProductList(string id, string search)
         {
             NewsDataStore Obj = new NewsDataStore();
             DealsDataStore d = new DealsDataStore();
@@ -165,7 +203,7 @@ namespace ChemAnalyst.Controllers
             List<SA_Deals> DealList = d.GetDealsList();
             model.DealsList = DealList;
             ProductDataStore p = new ProductDataStore();
-            IQueryable<SA_Product> ProductList = p.GetProductListBySearch(id,search);
+            IQueryable<SA_Product> ProductList = p.GetProductListBySearch(id, search);
             model.ProductList = ProductList;
             CategoryDataStore c = new CategoryDataStore();
             if (id != "")
@@ -177,7 +215,7 @@ namespace ChemAnalyst.Controllers
             {
                 ViewBag.CategoryName = "";
             }
-           
+
             ViewBag.category = c.CategoryList();
             return View("~/Views/ChemAnalyst/products.cshtml", model);
 
@@ -190,38 +228,55 @@ namespace ChemAnalyst.Controllers
             // Get the IP  
             return Dns.GetHostByName(hostName).AddressList[0].ToString();
         }
-        public ActionResult Chem1WeekChart()
+        public ActionResult Chem1WeekChart(string year = "2019")
         {
-            int PId = 0;
+            ChemAnalystContext _context = new ChemAnalystContext();
+            int custid = 0;
+            if (year == "")
+            {
+                year = DateTime.Now.Year.ToString();
+
+            }
+            ViewBag.CYear = year;
             ChemicalPricing Objdal = new DAL.ChemicalPricing();
+            //ViewBag.QYears = Objdal.GetYear("W");
+
+            List<SA_ChemPriceWeekly> obj = null;
 
 
-            List<SA_Chem1PriceWeekly> obj = null;
-            string compare = string.Empty;
 
-            string currentYear = DateTime.Now.Year.ToString();
-            string currentMonth = DateTime.Now.ToMonthName().ToUpper();
-            string currentWeek = ((Convert.ToInt32(DateTime.Now.Day) / 7) + 1).ToString();
+            //var id= _context.SA_Product.OrderBy(x => new { x.Category, x.id }).FirstOrDefault().id;
+            var catId = _context.SA_Category.OrderBy(x => x.id).FirstOrDefault().id;
 
-                //               Convert.ToInt32(DateTime.Now.Day / 7).ToString();
-           
 
-            obj = Objdal.GetChem1WeekWise(currentYear, currentMonth, currentWeek);
-            List<string> Year = obj.Select(p => p.day).Distinct().ToList();
+            var product = _context.SA_Product.Where(w => w.Category == catId).OrderBy(x => x.id).FirstOrDefault().id.ToString();
+
+            obj = Objdal.SA_Chem1PriceWeekly(product, year);
+
+
+
+
+            List<string> Day = obj.Select(p => p.Week).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
 
             var lstModel = new List<StackedViewModel>();
 
-            for (int i = 0; i < Year.Count; i++)
+
+            for (int i = 0; i < Day.Count; i++)
             {
 
-                List<SA_Chem1PriceWeekly> Chartdata = obj.Where(Chart => Chart.day == Year[i]).ToList();
-
-                PId = Chartdata.FirstOrDefault().Product.Value;
+                List<SA_ChemPriceWeekly> Chartdata = obj.Where(Chart => Chart.Week == Day[i]).ToList(); ;
+                //obj.Where(Chart => Chart.year == DateTime.Now.Year.ToString() && Chart.day == Day[i]).ToList();
                 //sales of product sales by quarter  
                 StackedViewModel Report = new StackedViewModel();
-                Report.StackedDimensionOne = Year[i];
-                
+                Report.StackedDimensionOne = Day[i];
+                Report.Discription = Discription;
+                Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
+                Report.Product = (obj[0].Product).ToString();
+                Report.Year = year;
+
+
                 List<SimpleReportViewModel> Data = new List<SimpleReportViewModel>();
                 List<SimpleReportViewModel> QuantityList = new List<ViewModel.SimpleReportViewModel>();
 
@@ -231,38 +286,34 @@ namespace ChemAnalyst.Controllers
                     SimpleReportViewModel Quantity = new SimpleReportViewModel()
                     {
                         DimensionOne = item,// item.Month,
-                        Quantity = Chartdata.Where(x => x.ProductVariant == item).Sum(x => x.count.Value),
-                       // MDimensionOne = Chartdata.FirstOrDefault(w=>w.ProductVariant== item).day
+                        Quantity = Chartdata.Where(x => x.ProductVariant == item).Sum(x => x.count)
                     };
                     QuantityList.Add(Quantity);
                 }
 
 
-                //foreach (var item in Chartdata)
-                //{
-                //    SimpleReportViewModel Quantity = new SimpleReportViewModel()
-                //    {
-                //        DimensionOne = item.ProductVariant,
-                //        Quantity = item.count.HasValue? item.count.Value:0,
-                //        MDimensionOne = item.day
-                //};
-                //    QuantityList.Add(Quantity);
-                //}
                 Report.LstData = QuantityList;
-
+                if (product == null)
+                {
+                    Report.ChartType = "line";
+                    Report.range = "Week";
+                }
+                else
+                {
+                    Report.Product = product;
+                    Report.ChartType = "bar";
+                    Report.range = "Weekly";
+                }
                 lstModel.Add(Report);
-
-
-
-                lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
             }
 
+            ViewBag.Category = Objdal.GetctegotyBYproduct(int.Parse(product));
 
+            lstModel[0].ProductName = ObjProduct.GetProductByid(Convert.ToInt32(product)).ProductName;
             if (lstModel.Count() > 0)
                 return PartialView("~/Views/PartialView/YearlyChartChemical1.cshtml", lstModel);
             else
                 return PartialView("~/Views/PartialView/YearlyChemical.cshtml", lstModel);
-
 
         }
         public ActionResult Chem2WeekChart()
@@ -327,7 +378,7 @@ namespace ChemAnalyst.Controllers
                 lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
             }
 
-           
+
 
             if (lstModel.Count() > 0)
                 return PartialView("~/Views/PartialView/YearlyChartChemical2.cshtml", lstModel);
@@ -400,7 +451,7 @@ namespace ChemAnalyst.Controllers
                 lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
             }
 
-           
+
 
             if (lstModel.Count() > 0)
                 return PartialView("~/Views/PartialView/YearlyChartChemical3.cshtml", lstModel);
@@ -473,7 +524,7 @@ namespace ChemAnalyst.Controllers
                 lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
             }
 
-            
+
 
             if (lstModel.Count() > 0)
                 return PartialView("~/Views/PartialView/YearlyChartChemical4.cshtml", lstModel);
@@ -546,7 +597,7 @@ namespace ChemAnalyst.Controllers
                 lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
             }
 
-           
+
 
             if (lstModel.Count() > 0)
                 return PartialView("~/Views/PartialView/YearlyChartChemical5.cshtml", lstModel);
@@ -619,7 +670,7 @@ namespace ChemAnalyst.Controllers
                 lstModel[0].ProductName = ObjProduct.GetProductByid(PId).ProductName;
             }
 
-          
+
 
             if (lstModel.Count() > 0)
                 return PartialView("~/Views/PartialView/YearlyChartChemical6.cshtml", lstModel);
@@ -627,6 +678,12 @@ namespace ChemAnalyst.Controllers
                 return PartialView("~/Views/PartialView/YearlyChemical.cshtml", lstModel);
 
 
+        }
+
+
+        public ActionResult SliderDemo()
+        {
+            return View();
         }
 
     }

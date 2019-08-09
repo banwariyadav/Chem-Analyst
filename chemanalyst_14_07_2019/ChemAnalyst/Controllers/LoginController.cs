@@ -15,14 +15,14 @@ namespace ChemAnalyst.Controllers
     public class LoginController : Controller
     {
         // GET: Login
-        
+
         public ActionResult Index()
         {
             return View();
         }
         public ActionResult Custlogin(FormCollection collection)
         {
-          
+
 
             CustWiseAccessDataStore Obj = new CustWiseAccessDataStore();
             SA_Customer login = new SA_Customer();
@@ -46,7 +46,7 @@ namespace ChemAnalyst.Controllers
                 }
                 else
                 {
-                   
+
                     Session["LoginUser"] = objectuser.id;
                     Session["User"] = objectuser.Fname + " " + objectuser.Lname;
                     Session["UserImg"] = "images/" + "user.jpg";
@@ -143,7 +143,7 @@ namespace ChemAnalyst.Controllers
             NewsDataStore n = new NewsDataStore();
             ViewBag.f = n.GetFirstProduct();
             return View("CustCompanies", Obj.GetCompanyList().OrderBy(x => x.CreatedTime));
-           // return View("CustCompanies");
+            // return View("CustCompanies");
         }
 
         [HttpPost]
@@ -159,7 +159,7 @@ namespace ChemAnalyst.Controllers
             ViewBag.EmpSiz = empsize;
             ViewBag.Product = Obj.GetCompanyProducts();
             ViewBag.Category = Obj.GetUniqueCategory();
-            return View("CustCompanies", Obj.GetCompanyList(category, products, revsize, empsize).OrderBy(x => x.CreatedTime));
+            return View("CustCompanies", Obj.GetCompanyList(category, products, revsize, empsize, DateTime.Now.Year.ToString()).OrderBy(x => x.CreatedTime));
 
         }
 
@@ -177,7 +177,7 @@ namespace ChemAnalyst.Controllers
         public ActionResult CompanyDetail(int id)
         {
             ChemAnalystContext db = new ChemAnalystContext();
-            
+
             CompanyDataStore obj = new CompanyDataStore();
             CustCompanyVM model = new CustCompanyVM();
             var data = obj.GetCompanyByid(id);
@@ -199,11 +199,17 @@ namespace ChemAnalyst.Controllers
             model.id = data.id;
             model.Meta = data.Meta;
             model.MetaDescription = data.MetaDescription;
-            model.lstFinacialData = db.CompanyProfRecords.Where(w => w.SA_CompanyId == data.id).Select(x => new CompanyFinacialData
+            model.lstFinacialData = db.CompanyProfRecordNew.Where(w => w.SA_CompanyId == data.id).Select(x => new CompanyFinacialData
             {
                 FinacialYear = db.FinancialYears.Where(f => f.Id == x.FinancialYearId).FirstOrDefault().FinYear,
-                Growth=x.Growth,
-                Revenue=x.Revenues
+                Growth = x.Growth,
+                Revenue = x.Revenue,
+                PBT = x.PBT,
+                Liablities = x.Liablities,
+                Margin = x.Margin,
+                Pat = x.Pat
+
+
             }).ToList();
 
             ViewBag.S = obj.GetSWOTByCompany(id);

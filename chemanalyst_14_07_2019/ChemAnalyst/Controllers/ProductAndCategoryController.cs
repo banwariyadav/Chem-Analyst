@@ -88,7 +88,8 @@ namespace ChemAnalyst.Controllers
             objSaCatV.CategoryDiscription = obj.CategoryDiscription;
             objSaCatV.Meta = obj.Meta;
             objSaCatV.MetaDiscription = obj.MetaDiscription;
-         //   objSaCatV.ProductList = productList;
+            objSaCatV.CategoryImg = obj.CategoryImg;
+            //   objSaCatV.ProductList = productList;
 
 
 

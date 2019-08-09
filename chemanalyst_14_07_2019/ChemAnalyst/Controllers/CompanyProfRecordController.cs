@@ -67,17 +67,49 @@ namespace ChemAnalyst.Controllers
                     OleDbDataAdapter DA = new OleDbDataAdapter("SELECT * FROM [" + GetExcelSheetName + "]", OleConn);
                     DataSet DS = new DataSet();
                     DA.Fill(DS);
-
+                    OleConn.Close();
                     foreach (DataRow DR in DS.Tables[0].Rows)
                     {
-                        CompanyProfRecord cpr = new CompanyProfRecord();
-                        cpr.Revenues = DR[0].ToString();
-                        cpr.Growth = DR[1].ToString();
-                        cpr.FinancialYearId = viewModel.FinancialYearId;
-                        cpr.SA_CompanyId = viewModel.SA_CompanyId;
-                        _context.CompanyProfRecords.Add(cpr);
+                        if (_context.CompanyProfRecordNew.FirstOrDefault(x => x.SA_CompanyId == viewModel.SA_CompanyId && x.FinancialYearId == viewModel.FinancialYearId) == null)
+                        {
+                            try { 
+                            CompanyProfRecordNew cpr = new CompanyProfRecordNew();
+                            cpr.Revenue = Convert.ToDecimal(DR[0]);
+                            cpr.Growth = Convert.ToInt16(DR[1]);
+                            cpr.PBT = Convert.ToInt16(DR[2]);
+                            cpr.Margin = Convert.ToDecimal(DR[3]);
+                            cpr.PBT = Convert.ToInt16(DR[4]);
+                            cpr.Pat = Convert.ToDecimal(DR[5]);
+                            cpr.Liablities = viewModel.FinancialYearId;
+                            cpr.SA_CompanyId = viewModel.SA_CompanyId;
+                                cpr.FinancialYearId = viewModel.FinancialYearId;
+                                cpr.CreateDate = DateTime.Now;
+                            _context.CompanyProfRecordNew.Add(cpr);
+                                _context.SaveChanges();
+                            }
+                            catch (Exception ex ) {
+                                ViewBag.ErrorMessage = "Import operation failed. Please upload a valid formate for import.";
+
+                                var viewModelIndex = new CompanyProfRecordViewModel()
+                                {
+                                    FinancialYear = _context.FinancialYears.ToList(),
+                                    SA_Company = _context.SA_Company.ToList()
+                                };
+                                return View("Index", viewModelIndex);
+                            }
+                        }
+                        else {
+                            ViewBag.ErrorMessage = "Financial data already exists with same company for same financial year";
+                            
+                            var viewModelIndex = new CompanyProfRecordViewModel()
+                            {
+                                FinancialYear = _context.FinancialYears.ToList(),
+                                SA_Company = _context.SA_Company.ToList()
+                            };
+                            return View("Index", viewModelIndex);
+                        }
                     }
-                    _context.SaveChanges();
+                   
                 }
                 else
                 {
@@ -97,7 +129,7 @@ namespace ChemAnalyst.Controllers
         public ActionResult AllCompanyProfileRecords()
         {
             ChemAnalystContext _context = new ChemAnalystContext();
-            var companyProfilerRcord = _context.CompanyProfRecords.Include(p => p.FinancialYear).Include(p => p.SA_Company);
+            var companyProfilerRcord = _context.CompanyProfRecordNew.Include(p => p.FinancialYear).Include(p => p.SA_Company);
             return View(companyProfilerRcord);
         }
 

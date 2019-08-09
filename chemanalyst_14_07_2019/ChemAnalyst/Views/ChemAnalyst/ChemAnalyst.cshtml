@@ -25,7 +25,7 @@
             <div class="col-md-7">
 
                 <ul class="nav nav-pills" id="pills-tab" role="tablist" style="font-size: 11px;">
-                    <li class="nav-item">
+                    <li class="nav-item" >
                         <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Feedstock</a>
                     </li>
                     <li class="nav-item">
@@ -73,7 +73,20 @@
 <div class="about-leading mt50">
     @Html.Action("WorldList", "ChemAnalyst")
 </div>
-<div class="testimonials-sec">
+<div class="testimonials-sec" style="display:none">
     @Html.Action("QuoteList", "ChemAnalyst")
 </div>
 
+<style>
+   .chpricing-txt ul li{
+        color:#444 !important;
+    }
+
+    .about-leading p{
+        color:#444 !important;
+    }
+
+     .news-text p{
+        color:#444 !important;
+    }
+</style>

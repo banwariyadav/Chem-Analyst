@@ -126,34 +126,62 @@
                 </div>
                 <div class="col-md-3">
                     <aside>
-                        <div class="side-news-feed">
+                        <div class="side-news-feed" style="height: 370px;">
                             <h3><i class="fa fa-bell-o"></i> News</h3>
-                            @foreach (var item in Model.NewsList)
-                            {
-                                <div class="news-feed-col">
-                                    <a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">
-                                        @if (item.NewsImg != string.Empty)
-                                        {
-                                            <div class="left-news-pic"><img src="~/ProductImages/@item.NewsImg" alt=""></div>
-                                            <div class="right-news-desc">
-                                                <p>@(item.NewsDiscription.Length > 50 ? (item.NewsDiscription.Substring(0, 50)) : item.NewsDiscription)...</p>
-                                                <p><i class="fa fa-clock-o"></i>@item.CreatedTime.ToShortDateString()</p>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="right-newsdesc">
-                                                <p>@(item.NewsDiscription.Length > 50 ? (item.NewsDiscription.Substring(0, 50)) : item.NewsDiscription)...</p>
-                                                <p><i class="fa fa-clock-o"></i>@item.CreatedTime.ToShortDateString()</p>
-                                            </div>
-                                        }
-                                    </a>
-                                </div>
-                            }
-                        </div>
-                        <div class="side-news-feed mt-4">
+                            <marquee behavior="scroll" direction="up" style="height: 317px;" scrollamount="3" onmouseover="stop()" onmouseout="start()">
+                                @foreach (var item in Model.NewsList)
+                                {
+                                    <div class="news-feed-col">
+                                        <a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">
+                                            @if (item.NewsImg != string.Empty)
+                                            {
+                                                <div class="left-news-pic"><img src="~/ProductImages/@item.NewsImg" alt=""></div>
+                                                <div class="right-news-desc">
+                                                    @*<p>@(item.NewsDiscription.Length > 50 ? (item.NewsDiscription.Substring(0, 50)) : item.NewsDiscription)...</p>*@
+                                                    
+                                                    @{
+                                                        if (item.NewsDiscription.Length > 50)
+                                                        {
+                                                            <p> @Html.Raw(WebUtility.HtmlDecode(item.NewsDiscription.Substring(0, 50)))) </p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p>item.DealsDiscription... </p>
+                                                        }
+                                                    }
+                                                    
+
+                                                    <p><i class="fa fa-clock-o"></i>@item.CreatedTime.ToShortDateString()</p>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="right-newsdesc">
+                                                    @*<p>@(item.NewsDiscription.Length > 50 ? (item.NewsDiscription.Substring(0, 50)) : item.NewsDiscription)...</p>*@
+                                                   @{
+                                                       if (item.NewsDiscription.Length > 50)
+                                                       {
+                                                        <p> @Html.Raw(WebUtility.HtmlDecode(item.NewsDiscription.Substring(0, 50)))) </p>
+                                                       }
+                                                       else
+                                                       {
+                                                        <p>item.DealsDiscription... </p>
+                                                       }
+                                                }
+
+
+                                                    <p><i class="fa fa-clock-o"></i>@item.CreatedTime.ToShortDateString()</p>
+                                                </div>
+                                            }
+                                        </a>
+                                    </div>
+                                }
+                            </marquee>
+</div>
+                        <div class="side-news-feed mt-4" style="height: 370px;">
                             <h3><i class="fa fa-thumbs-up"></i> Top Deals</h3>
-                            @foreach (var item in Model.DealsList)
+                            <marquee behavior="scroll" direction="up" style="height: 317px;" scrollamount="3" onmouseover="stop()" onmouseout="start()">
+                                @foreach (var item in Model.DealsList)
                                 {
                                     <div class="news-feed-col">
                                         <a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">
@@ -161,14 +189,35 @@
                                             {
                                                 <div class="left-news-pic"><img src="~/ProductImages/@item.DealsImg" alt=""></div>
                                                 <div class="right-news-desc">
-                                                    <p>@(item.DealsDiscription.Length > 50 ? (item.DealsDiscription.Substring(0, 50)) : item.DealsDiscription)...</p>
+                                                    @*<p>@(item.DealsDiscription.Length > 50 ? (item.DealsDiscription.Substring(0, 50)) : item.DealsDiscription)...</p>*@
+                                                    @{
+                                                        if (item.DealsDiscription.Length > 50)
+                                                        {
+                                                            <p> @Html.Raw(WebUtility.HtmlDecode(item.DealsDiscription.Substring(0, 50)))) </p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p>item.DealsDiscription... </p>
+                                                        }
+                                                    }
+
                                                     <p><i class="fa fa-clock-o"></i>@item.CreatedTime.Value.ToShortDateString()</p>
                                                 </div>
                                             }
                                             else
                                             {
                                                 <div class="right-newsdesc">
-                                                    <p>@(item.DealsDiscription.Length > 50 ? (item.DealsDiscription.Substring(0, 50)) : item.DealsDiscription)...</p>
+                                                    @*<p>@(item.DealsDiscription.Length > 50 ? (item.DealsDiscription.Substring(0, 50)) : item.DealsDiscription)...</p>*@
+                                                    @{
+                                                        if (item.DealsDiscription.Length > 50)
+                                                        {
+                                                            <p> @Html.Raw(WebUtility.HtmlDecode(item.DealsDiscription.Substring(0, 50)))) </p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p>item.DealsDiscription... </p>
+                                                        }
+                                                    }
                                                     <p><i class="fa fa-clock-o"></i>@item.CreatedTime.Value.ToShortDateString()</p>
                                                 </div>
                                             }
@@ -176,7 +225,8 @@
                                         </a>
                                     </div>
                                 }
-                        </div>
+                            </marquee>
+</div>
                     </aside>
                 </div>
             </div>

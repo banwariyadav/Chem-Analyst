@@ -12,6 +12,13 @@
             .addMargin {
                 margin-left: 10px;
             }
+             .addMarginRight {
+                margin-right: 30px;
+                    margin-top: -15px;
+            }
+             .reamore{
+                 margin-left: 15px;
+             }
         </style>
     }
     else
@@ -51,7 +58,7 @@
     }
 
     <div class="page-content">
-        <div class="static-page">
+        <div class="static-page" style="    background: #fff;">
            
             <div class="container addMargin" style="width:1380px">
 
@@ -84,6 +91,11 @@
                                                     <i class="fa fa-filter"></i>
                                                     Filter
                                                 </button>
+                                                <button type="submit" class="btn btn-green" onclick="ClearSearch()">
+                                                    <i class="fa fa-filter"></i>
+                                                    Clear
+                                                </button>
+
                                             </div>
                                         }
                                     </div>
@@ -136,50 +148,60 @@
 
                                     <div class="row">
 
-                                        <div class="col-md-4 col-sm-4 themestek-box-img-left">
+                                        @*<div class="col-md-4 col-sm-4 themestek-box-img-left">
                                             <div class="news-pic">
-                                                @*<img src="../ProductImages/@item.NewsImg" alt="">*@
                                                 <img src="~/images/news-report.png" alt="" height="70" width="70">
                                             </div>
-                                        </div>
+                                        </div>*@
                                         <script>
 
                                             function showmodel() {
                                                 $("#myModal").show();
                                             }
                                         </script>
-                                        <div class="themestek-box-content col-md-8 col-sm-8">
+                                        <div class="themestek-box-content col-md-12 col-sm-12" style="margin-left : 15px">
                                             <div class="news-text">
                                                 <h4>
                                                     <a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">@(item.NewsName.Length > 40 ? (item.NewsName.Substring(0, 40)) : item.NewsName)...</a>
                                                     @*@if (ChemAnalyst.DAL.ProductDataStore.GetProductNewReletion(item.id, ViewBag.f))
+            {
+                <a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">@(item.NewsName.Length > 40 ? (item.NewsName.Substring(0, 40)) : item.NewsName)...</a>
+            }
+            else
+            {
+                <a onclick="showmodel()">@(item.NewsName.Length > 40 ? (item.NewsName.Substring(0, 40)) : item.NewsName)...</a>
+            }*@
+                                                </h4>
+                                                @{
+                                                    if (item.NewsDiscription.Length > 150)
                                                     {
-                                                        <a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">@(item.NewsName.Length > 40 ? (item.NewsName.Substring(0, 40)) : item.NewsName)...</a>
+                                                        <p>@Html.Raw(WebUtility.HtmlDecode(item.NewsDiscription.Substring(0, 150)))) </p>
                                                     }
                                                     else
                                                     {
-                                                        <a onclick="showmodel()">@(item.NewsName.Length > 40 ? (item.NewsName.Substring(0, 40)) : item.NewsName)...</a>
-                                                    }*@
-                                                </h4>
-                                                <p>@(item.NewsDiscription.Length > 100 ? (item.NewsDiscription.Substring(0, 100)) : item.NewsDiscription)...</p>
+                                            <p>item.NewsDiscription... </p>
+                                                    }
+                                                }
 
                                                 <div class="row mt-3">
-                                                    <div class="col-6">
-                                                        <a style="font-size:11px" href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">Read More <i class="fa fa-arrow-right"></i></a>
+                                                    <div class="col-8">
+                                                        <a class="reamore" style="font-size:11px" href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">Read More <i class="fa fa-arrow-right"></i></a>
                                                         @*@if (ChemAnalyst.DAL.ProductDataStore.GetProductNewReletion(item.id, ViewBag.f))
-                                                        {
-                                                            <a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">Read More <i class="fa fa-arrow-right"></i></a>
+                {
+                    <a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">Read More <i class="fa fa-arrow-right"></i></a>
 
-                                                        }
-                                                        else
-                                                        {
+                }
+                else
+                {
 
-                                                            <a onclick="showmodel()">Read More <i class="fa fa-arrow-right"></i></a>
+                    <a onclick="showmodel()">Read More <i class="fa fa-arrow-right"></i></a>
 
 
-                                                        }*@
+                }*@
                                                     </div>
-                                                    <div class="col-6" style="font-size: 11px;"> <i class="fa fa-clock-o"></i> @item.CreatedTime.Date.ToString("MMM/yyyy") </div>
+                                                    <div class="col-4 text-right addMarginRight" style="font-size: 11px;"> 
+                                                  <span style="margin-right:15px"><i class="fa fa-clock-o"></i> @item.CreatedTime.Date.ToString("MMM/yyyy") </span>
+                                                    </div>
 
                                                     @*<div class="col-4" style="font-size: 11px;    font-weight: bold;"> <i class="fa fa-user" aria-hidden="true"></i> @item.CreatedBy </div>*@
 
@@ -240,6 +262,12 @@
     @*<script src="../js/honey-custom.js"></script>*@
     <script>
 
+        function ClearSearch() {
+            $("#search").val('');
+            $("#searchto").val('');
+            $("#keyword").val('');
+
+        }
         $(function () {
 
             jQuery('.fromdate').datepicker({

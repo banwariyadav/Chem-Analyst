@@ -553,92 +553,28 @@ namespace ChemAnalyst.Controllers
         {
             try
             {
-                System.Data.DataTable dt = new System.Data.DataTable();
 
-                dt.Columns.Add("Product", typeof(string));
-                dt.Columns.Add("ProductVariant", typeof(string));
-                dt.Columns.Add("year", typeof(string));
-                dt.Columns.Add("Month", typeof(string));
-                dt.Columns.Add("Day", typeof(string));
-                dt.Columns.Add("count", typeof(string));
-                dt.Columns.Add("Discription", typeof(string));
-                dt.Columns.Add("FileName", typeof(string));
-                dt.Columns.Add("CreatedDate", typeof(DateTime));
+                Exceldt.Columns.Add("ProductId", typeof(int));
+                Exceldt.Columns.Add("FileName", typeof(string));
+                Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                Exceldt.Columns.Add("CreatedBy", typeof(string));
                 for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
                 {
-                    if (Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["Month"] == DBNull.Value)
+                    if (Exceldt.Rows[i]["ProductVariant"] == DBNull.Value || Exceldt.Rows[i]["Type"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["Week"] == DBNull.Value || Exceldt.Rows[i]["Count"] == DBNull.Value)
                     {
                         Exceldt.Rows[i].Delete();
                     }
-
                     else
                     {
-                        if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JANUARY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MARCH" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "MAY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JULY" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "AUGUST" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "OCTORBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "DECEMBER")
-                            for (int j = 4; j < Exceldt.Columns.Count; j++)
-                            {
-                                DataRow daily = dt.NewRow();
-                                daily["Product"] = product;
-                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
-                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
-                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 3;
-                                daily["count"] = Exceldt.Rows[i][j].ToString();
-                                daily["Discription"] = UploadFileDiscription;
-                                daily["FileName"] = fileName;
-                                daily["CreatedDate"] = DateTime.Now;
-                                dt.Rows.Add(daily);
-                            }
-                        else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
-                            for (int j = 4; j < Exceldt.Columns.Count - 1; j++)
-                            {
-                                DataRow daily = dt.NewRow();
-                                daily["Product"] = product;
-                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
-                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
-                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 3;
-                                daily["count"] = Exceldt.Rows[i][j].ToString();
-                                daily["Discription"] = UploadFileDiscription;
-                                daily["FileName"] = fileName;
-                                daily["CreatedDate"] = DateTime.Now;
-                                dt.Rows.Add(daily);
-                            }
-                        else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
-                            for (int j = 4; j < Exceldt.Columns.Count - 2; j++)
-                            {
-                                DataRow daily = dt.NewRow();
-                                daily["Product"] = product;
-                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
-                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
-                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 3;
-                                daily["count"] = Exceldt.Rows[i][j].ToString();
-                                daily["Discription"] = UploadFileDiscription;
-                                daily["FileName"] = fileName;
-                                daily["CreatedDate"] = DateTime.Now;
-                                dt.Rows.Add(daily);
-                            }
-                        else
-                        {
-                            for (int j = 4; j < Exceldt.Columns.Count - 3; j++)
-                            {
-                                DataRow daily = dt.NewRow();
-                                daily["Product"] = product;
-                                daily["ProductVariant"] = Exceldt.Rows[i]["Product Name"].ToString();
-                                daily["year"] = Exceldt.Rows[i]["Year"].ToString();
-                                daily["Month"] = Exceldt.Rows[i]["Month"].ToString();
-                                daily["Day"] = j - 3;
-                                daily["count"] = Exceldt.Rows[i][j].ToString();
-                                daily["Discription"] = UploadFileDiscription;
-                                daily["FileName"] = fileName;
-                                daily["CreatedDate"] = DateTime.Now;
-                                dt.Rows.Add(daily);
-                            }
-                        }
-
+                        Exceldt.Rows[i]["ProductId"] = product;
+                        Exceldt.Rows[i]["FileName"] = fileName;
+                        Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                        Exceldt.Rows[i]["CreatedBy"] = Session["User"].ToString();
                     }
                 }
-                dt.AcceptChanges();
+                Exceldt.AcceptChanges();
+                //string productid = Exceldt.Rows[0]["Product Name"].ToString();
+                //string year = Exceldt.Rows[0]["Year"].ToString();
 
 
                 //inserting Datatable Records to DataBase   
@@ -650,18 +586,20 @@ namespace ChemAnalyst.Controllers
                 //assigning Destination table name      
                 objbulk.DestinationTableName = "SA_Chem1PriceWeekly";
                 //Mapping Table column    
-                objbulk.ColumnMappings.Add("Product", "Product");
-                objbulk.ColumnMappings.Add("ProductVariant", "ProductVariant");
-                objbulk.ColumnMappings.Add("year", "year");
-                objbulk.ColumnMappings.Add("Month", "Month");
-                objbulk.ColumnMappings.Add("Day", "Day");
-                objbulk.ColumnMappings.Add("count", "count");
-                objbulk.ColumnMappings.Add("Discription", "Discription");
+                objbulk.ColumnMappings.Add("[ProductId]", "Product");
+                objbulk.ColumnMappings.Add("[ProductVariant]", "ProductVariant");
+                objbulk.ColumnMappings.Add("[Type]", "Type");
+                objbulk.ColumnMappings.Add("[Year]", "year");
+                objbulk.ColumnMappings.Add("[Week]", "Week");
+                objbulk.ColumnMappings.Add("[Date]", "Date");
+                objbulk.ColumnMappings.Add("[count]", "count");
                 objbulk.ColumnMappings.Add("[FileName]", "FileName");
                 objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
 
+                objbulk.ColumnMappings.Add("[CreatedBy]", "CreatedBy");
+
                 sqlConnection.Open();
-                objbulk.WriteToServer(dt);
+                objbulk.WriteToServer(Exceldt);
                 sqlConnection.Close();
                 //  MessageBox.Show("Data has been Imported successfully.", "Imported", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -669,8 +607,11 @@ namespace ChemAnalyst.Controllers
             catch (Exception ex)
             {
                 //  MessageBox.Show(string.Format("Data has not been Imported due to :{0}", ex.Message), "Not Imported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+
+
             }
-            return true;
+            return false;
 
         }
         private bool InsertChemical2ExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
@@ -1308,6 +1249,7 @@ namespace ChemAnalyst.Controllers
                 Exceldt.Columns.Add("Discription", typeof(string));
                 Exceldt.Columns.Add("FileName", typeof(string));
                 Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                Exceldt.Columns.Add("CreatedBy", typeof(string));
                 for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
                 {
                     if (Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
@@ -1320,6 +1262,8 @@ namespace ChemAnalyst.Controllers
                         Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
                         Exceldt.Rows[i]["FileName"] = fileName;
                         Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                        Exceldt.Rows[i]["CreatedBy"] = Session["User"].ToString();
+
                     }
                 }
                 Exceldt.AcceptChanges();
@@ -1343,6 +1287,8 @@ namespace ChemAnalyst.Controllers
                 objbulk.ColumnMappings.Add("[Discription]", "Discription");
                 objbulk.ColumnMappings.Add("[FileName]", "FileName");
                 objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                objbulk.ColumnMappings.Add("[CreatedBy]", "CreatedBy");
 
                 sqlConnection.Open();
                 objbulk.WriteToServer(Exceldt);
@@ -1371,6 +1317,7 @@ namespace ChemAnalyst.Controllers
                 Exceldt.Columns.Add("Discription", typeof(string));
                 Exceldt.Columns.Add("FileName", typeof(string));
                 Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                Exceldt.Columns.Add("CreatedBy", typeof(string));
                 for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
                 {
                     if (Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
@@ -1383,6 +1330,7 @@ namespace ChemAnalyst.Controllers
                         Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
                         Exceldt.Rows[i]["FileName"] = fileName;
                         Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                        Exceldt.Rows[i]["CreatedBy"] = Session["User"].ToString();
                     }
                 }
                 Exceldt.AcceptChanges();
@@ -1405,6 +1353,8 @@ namespace ChemAnalyst.Controllers
                 objbulk.ColumnMappings.Add("[Discription]", "Discription");
                 objbulk.ColumnMappings.Add("[FileName]", "FileName");
                 objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                objbulk.ColumnMappings.Add("[CreatedBy]", "CreatedBy");
 
                 sqlConnection.Open();
                 objbulk.WriteToServer(Exceldt);
@@ -1432,6 +1382,8 @@ namespace ChemAnalyst.Controllers
                 Exceldt.Columns.Add("Discription", typeof(string));
                 Exceldt.Columns.Add("FileName", typeof(string));
                 Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                Exceldt.Columns.Add("CreatedBy", typeof(string));
+
                 for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
                 {
                     if (Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["count"] == DBNull.Value)
@@ -1444,6 +1396,7 @@ namespace ChemAnalyst.Controllers
                         Exceldt.Rows[i]["Discription"] = UploadFileDiscription;
                         Exceldt.Rows[i]["FileName"] = fileName;
                         Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                        Exceldt.Rows[i]["CreatedBy"] = Session["User"].ToString();
                     }
                 }
                 Exceldt.AcceptChanges();
@@ -1466,6 +1419,8 @@ namespace ChemAnalyst.Controllers
                 objbulk.ColumnMappings.Add("[Discription]", "Discription");
                 objbulk.ColumnMappings.Add("[FileName]", "FileName");
                 objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                objbulk.ColumnMappings.Add("[CreatedBy]", "CreatedBy");
 
                 sqlConnection.Open();
                 objbulk.WriteToServer(Exceldt);
@@ -1500,6 +1455,7 @@ namespace ChemAnalyst.Controllers
                 dt.Columns.Add("Discription", typeof(string));
                 dt.Columns.Add("FileName", typeof(string));
                 dt.Columns.Add("CreatedDate", typeof(DateTime));
+                dt.Columns.Add("CreatedBy", typeof(string));
                 for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
                 {
                     if (Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["Month"] == DBNull.Value)
@@ -1524,6 +1480,7 @@ namespace ChemAnalyst.Controllers
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
                                 daily["CreatedDate"] = DateTime.Now;
+                                daily["CreatedBy"] = Session["User"].ToString();
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
@@ -1540,6 +1497,7 @@ namespace ChemAnalyst.Controllers
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
                                 daily["CreatedDate"] = DateTime.Now;
+                                daily["CreatedBy"] = Session["User"].ToString();
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
@@ -1556,6 +1514,7 @@ namespace ChemAnalyst.Controllers
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
                                 daily["CreatedDate"] = DateTime.Now;
+                                daily["CreatedBy"] = Session["User"].ToString();
                                 dt.Rows.Add(daily);
                             }
                         else
@@ -1573,6 +1532,7 @@ namespace ChemAnalyst.Controllers
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
                                 daily["CreatedDate"] = DateTime.Now;
+                                daily["CreatedBy"] = Session["User"].ToString();
                                 dt.Rows.Add(daily);
                             }
                         }
@@ -1600,6 +1560,8 @@ namespace ChemAnalyst.Controllers
                 objbulk.ColumnMappings.Add("Discription", "Discription");
                 objbulk.ColumnMappings.Add("[FileName]", "FileName");
                 objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                objbulk.ColumnMappings.Add("[CreatedBy]", "CreatedBy");
 
                 sqlConnection.Open();
                 objbulk.WriteToServer(dt);
@@ -1634,6 +1596,7 @@ namespace ChemAnalyst.Controllers
                 //Exceldt.Columns.Add("ContractDetails", typeof(string));
                 Exceldt.Columns.Add("FileName", typeof(string));
                 Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                Exceldt.Columns.Add("CreatedBy", typeof(string));
                 for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
                 {
                     if (Exceldt.Rows[i]["Date"] == DBNull.Value || Exceldt.Rows[i]["Commodity"] == DBNull.Value || Exceldt.Rows[i]["Type"] == DBNull.Value || Exceldt.Rows[i]["Terms"] == DBNull.Value || Exceldt.Rows[i]["Location"] == DBNull.Value || Exceldt.Rows[i]["Price"] == DBNull.Value || Exceldt.Rows[i]["Mid Value"] == DBNull.Value || Exceldt.Rows[i]["Contract Details"] == DBNull.Value)
@@ -1645,6 +1608,7 @@ namespace ChemAnalyst.Controllers
                         Exceldt.Rows[i]["Product"] = product;
                         Exceldt.Rows[i]["FileName"] = fileName;
                         Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                        Exceldt.Rows[i]["CreatedBy"] = Session["User"].ToString();
                     }
                 }
                 Exceldt.AcceptChanges();
@@ -1674,6 +1638,8 @@ namespace ChemAnalyst.Controllers
 
                 objbulk.ColumnMappings.Add("[FileName]", "FileName");
                 objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                objbulk.ColumnMappings.Add("[CreatedBy]", "CreatedBy");
 
                 sqlConnection.Open();
                 objbulk.WriteToServer(Exceldt);
@@ -1710,6 +1676,7 @@ namespace ChemAnalyst.Controllers
                 dt.Columns.Add("Discription", typeof(string));
                 dt.Columns.Add("FileName", typeof(string));
                 dt.Columns.Add("CreatedDate", typeof(DateTime));
+                dt.Columns.Add("CreatedBy", typeof(string));
                 for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
                 {
                     if (Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["Month"] == DBNull.Value)
@@ -1737,6 +1704,7 @@ namespace ChemAnalyst.Controllers
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
                                 daily["CreatedDate"] = DateTime.Now;
+                                daily["CreatedBy"] = Session["User"].ToString();
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
@@ -1756,6 +1724,7 @@ namespace ChemAnalyst.Controllers
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
                                 daily["CreatedDate"] = DateTime.Now;
+                                daily["CreatedBy"] = Session["User"].ToString();
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
@@ -1775,6 +1744,7 @@ namespace ChemAnalyst.Controllers
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
                                 daily["CreatedDate"] = DateTime.Now;
+                                daily["CreatedBy"] = Session["User"].ToString();
                                 dt.Rows.Add(daily);
                             }
 
@@ -1796,6 +1766,7 @@ namespace ChemAnalyst.Controllers
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
                                 daily["CreatedDate"] = DateTime.Now;
+                                daily["CreatedBy"] = Session["User"].ToString();
                                 dt.Rows.Add(daily);
                             }
                         }
@@ -1827,6 +1798,8 @@ namespace ChemAnalyst.Controllers
                 objbulk.ColumnMappings.Add("Discription", "Discription");
                 objbulk.ColumnMappings.Add("[FileName]", "FileName");
                 objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
+
+                objbulk.ColumnMappings.Add("[CreatedBy]", "CreatedBy");
 
                 sqlConnection.Open();
                 objbulk.WriteToServer(dt);
@@ -1865,6 +1838,8 @@ namespace ChemAnalyst.Controllers
                 dt.Columns.Add("Discription", typeof(string));
                 dt.Columns.Add("FileName", typeof(string));
                 dt.Columns.Add("CreatedDate", typeof(DateTime));
+                dt.Columns.Add("CreatedBy", typeof(string));
+
                 for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
                 {
                     if (Exceldt.Rows[i]["Product Name"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["Month"] == DBNull.Value)
@@ -1892,6 +1867,7 @@ namespace ChemAnalyst.Controllers
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
                                 daily["CreatedDate"] = DateTime.Now;
+                                daily["CreatedBy"] = Session["User"].ToString();
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "APRIL" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "JUNE" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "SEPTEMBER" || Exceldt.Rows[i]["Month"].ToString().ToUpper() == "NOVEMBER")
@@ -1911,6 +1887,7 @@ namespace ChemAnalyst.Controllers
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
                                 daily["CreatedDate"] = DateTime.Now;
+                                daily["CreatedBy"] = Session["User"].ToString();
                                 dt.Rows.Add(daily);
                             }
                         else if (Exceldt.Rows[i]["Month"].ToString().ToUpper() == "FEBUARY" || (int.Parse(Exceldt.Rows[i]["Year"].ToString())) % 4 == 0)
@@ -1930,6 +1907,7 @@ namespace ChemAnalyst.Controllers
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
                                 daily["CreatedDate"] = DateTime.Now;
+                                daily["CreatedBy"] = Session["User"].ToString();
                                 dt.Rows.Add(daily);
                             }
 
@@ -1951,6 +1929,7 @@ namespace ChemAnalyst.Controllers
                                 daily["Discription"] = UploadFileDiscription;
                                 daily["FileName"] = fileName;
                                 daily["CreatedDate"] = DateTime.Now;
+                                daily["CreatedBy"] = Session["User"].ToString();
                                 dt.Rows.Add(daily);
                             }
                         }
@@ -1983,6 +1962,8 @@ namespace ChemAnalyst.Controllers
                 objbulk.ColumnMappings.Add("[FileName]", "FileName");
                 objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
 
+                objbulk.ColumnMappings.Add("[CreatedBy]", "CreatedBy");
+
                 sqlConnection.Open();
                 objbulk.WriteToServer(dt);
                 sqlConnection.Close();
@@ -2008,6 +1989,7 @@ namespace ChemAnalyst.Controllers
                 Exceldt.Columns.Add("ProductId", typeof(int));
                 Exceldt.Columns.Add("FileName", typeof(string));
                 Exceldt.Columns.Add("CreatedDate", typeof(DateTime));
+                Exceldt.Columns.Add("CreatedBy", typeof(string));
                 for (int i = Exceldt.Rows.Count - 1; i >= 0; i--)
                 {
                     if (Exceldt.Rows[i]["ProductVariant"] == DBNull.Value || Exceldt.Rows[i]["Type"] == DBNull.Value || Exceldt.Rows[i]["Year"] == DBNull.Value || Exceldt.Rows[i]["Week"] == DBNull.Value || Exceldt.Rows[i]["Count"] == DBNull.Value)
@@ -2019,6 +2001,7 @@ namespace ChemAnalyst.Controllers
                         Exceldt.Rows[i]["ProductId"] = product;
                         Exceldt.Rows[i]["FileName"] = fileName;
                         Exceldt.Rows[i]["CreatedDate"] = DateTime.Now;
+                        Exceldt.Rows[i]["CreatedBy"] = Session["User"].ToString();
                     }
                 }
                 Exceldt.AcceptChanges();
@@ -2045,6 +2028,8 @@ namespace ChemAnalyst.Controllers
                 objbulk.ColumnMappings.Add("[FileName]", "FileName");
                 objbulk.ColumnMappings.Add("[CreatedDate]", "CreatedDate");
 
+                objbulk.ColumnMappings.Add("[CreatedBy]", "CreatedBy");
+
                 sqlConnection.Open();
                 objbulk.WriteToServer(Exceldt);
                 sqlConnection.Close();
@@ -2064,6 +2049,7 @@ namespace ChemAnalyst.Controllers
 
         public ActionResult ChecmPriceYearlyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string MaxValue, string fromdate = "", string todate = "", string selectedLegends = "")
         {
+            ViewBag.FisrtTime = "FisrtTime";
             if (fromdate == "")
             {
                 fromdate = "";//"01/01/" + (DateTime.Now.Year - 5);
@@ -2170,14 +2156,14 @@ namespace ChemAnalyst.Controllers
             {
                 int ProductId = int.Parse(product);
                 PId = ProductId;
-                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
-                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
             }
             else
             {
                 PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
-                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
-                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
 
             }
 
@@ -2228,7 +2214,7 @@ namespace ChemAnalyst.Controllers
                     Report.range = Range;
                 }
                 lstModel.Add(Report);
-
+                ViewBag.FisrtTime = "";
             }
 
 
@@ -2396,14 +2382,14 @@ namespace ChemAnalyst.Controllers
             {
                 int ProductId = int.Parse(product);
                 PId = ProductId;
-                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
-                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
             }
             else
             {
                 PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
-                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
-                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
 
             }
 
@@ -2633,14 +2619,14 @@ namespace ChemAnalyst.Controllers
             {
                 int ProductId = int.Parse(product);
                 PId = ProductId;
-                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
-                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
             }
             else
             {
                 PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
-                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
-                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
 
             }
 
@@ -2841,8 +2827,8 @@ namespace ChemAnalyst.Controllers
             {
                 int ProductId = int.Parse(product);
                 PId = ProductId;
-                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
-                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
 
                 string selfilter = selectedLegends + ",";
                 //lstDataTable = dbcontext.SA_ChemPriceDailyNew.Where(w => w.Product == ProductId).ToList().Where(w => selfilter.Contains(w.Commodity + ",")).ToList();
@@ -2866,8 +2852,8 @@ namespace ChemAnalyst.Controllers
             else
             {
                 PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
-                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
-                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
                 string selfilter = selectedLegends + ",";
                 //lstDataTable = dbcontext.SA_ChemPriceDailyNew.Where(w => w.Product == PId).ToList().Where(w => selfilter.Contains(w.Commodity + ",")).ToList();
                 lstDataTable = dbcontext.SA_ChemPriceDailyNew.Where(w => w.Product == PId).ToList().Select(x => new SA_ChemPriceDailyNew
@@ -3106,14 +3092,14 @@ namespace ChemAnalyst.Controllers
             {
                 int ProductId = int.Parse(product);
                 PId = ProductId;
-                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
-                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
             }
             else
             {
                 PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
-                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
-                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
 
             }
 
@@ -3126,7 +3112,7 @@ namespace ChemAnalyst.Controllers
                 List<SA_ChemPriceDailyAverage> Chartdata = obj.Where(Chart => Chart.year == DateTime.Now.Year.ToString() && Chart.day == Day[i]).ToList();
                 //sales of product sales by quarter  
                 StackedViewModel Report = new StackedViewModel();
-                Report.StackedDimensionOne = Day[i] + " " +Chartdata.FirstOrDefault().Month;
+                Report.StackedDimensionOne = Day[i] + " " + Chartdata.FirstOrDefault().Month;
                 Report.Discription = Discription;
                 Report.category = Objdal.GetctegotyBYproduct(obj[0].Product);
                 Report.Product = (obj[0].Product).ToString();
@@ -3320,14 +3306,14 @@ namespace ChemAnalyst.Controllers
             {
                 int ProductId = int.Parse(product);
                 PId = ProductId;
-                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
-                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
             }
             else
             {
                 PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
-                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title;
-                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId).OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description;
+                CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
+                CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Chemical Pricing").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
 
             }
 
@@ -3471,21 +3457,36 @@ namespace ChemAnalyst.Controllers
         }
 
 
-        public ActionResult CommentaryHome(string ProductId)
+        public ActionResult CommentaryHome(string ProductId, string Type)
         {
-
             int pageSize = 6;
-            if (!string.IsNullOrEmpty(ProductId))
+            if (Type == "Chemical Pricing")
             {
-                int catId = int.Parse(ProductId);
-                var Commentaries = ObjCommentary.GetCommentaryList().Where(w => w.Product == catId).Select(w => new SA_Commentary { id = w.id, Title = w.Title, Description = w.Description, CreatedTime = w.CreatedTime }).OrderByDescending(d => d.CreatedTime).ToList();
-                return View(Commentaries);
+                if (!string.IsNullOrEmpty(ProductId))
+                {
+                    int catId = int.Parse(ProductId);
+                    var Commentaries = ObjCommentary.GetCommentaryList().Where(w => w.Product == catId && w.Type== "Chemical Pricing").Select(w => new SA_Commentary { id = w.id, Title = w.Title, Description = w.Description, CreatedTime = w.CreatedTime, Type=w.Type, ImgPath=w.ImgPath }).OrderByDescending(d => d.CreatedTime).ToList();
+                    return View(Commentaries);
+                }
+                else
+                {
+                    var Commentaries = ObjCommentary.GetCommentaryList().Where(w=> w.Type == "Chemical Pricing").Select(w => new SA_Commentary { id = w.id, Title = w.Title, Description = w.Description, CreatedTime = w.CreatedTime, Type = w.Type, ImgPath = w.ImgPath }).OrderByDescending(d => d.CreatedTime).ToList();
+                    return View(Commentaries);
+                }
             }
-
             else
             {
-                var Commentaries = ObjCommentary.GetCommentaryList().Select(w => new SA_Commentary { id = w.id, Title = w.Title, Description = w.Description, CreatedTime = w.CreatedTime }).OrderByDescending(d => d.CreatedTime).ToList();
-                return View(Commentaries);
+                if (!string.IsNullOrEmpty(ProductId))
+                {
+                    int catId = int.Parse(ProductId);
+                    var Commentaries = ObjCommentary.GetCommentaryList().Where(w => w.Product == catId && w.Type == "Market Analysis").Select(w => new SA_Commentary { id = w.id, Title = w.Title, Description = w.Description, CreatedTime = w.CreatedTime, Type = w.Type, ImgPath = w.ImgPath }).OrderByDescending(d => d.CreatedTime).ToList();
+                    return View(Commentaries);
+                }
+                else
+                {
+                    var Commentaries = ObjCommentary.GetCommentaryList().Where(w=> w.Type == "Market Analysis").Select(w => new SA_Commentary { id = w.id, Title = w.Title, Description = w.Description, CreatedTime = w.CreatedTime, Type = w.Type, ImgPath = w.ImgPath }).OrderByDescending(d => d.CreatedTime).ToList();
+                    return View(Commentaries);
+                }
             }
         }
 

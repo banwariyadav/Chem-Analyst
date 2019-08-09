@@ -36,4 +36,6 @@ namespace ChemAnalyst.Models
         public List<SelectListItem> ProductList { get; set; }
 
     }
+
+
 }

@@ -13,38 +13,50 @@ namespace ChemAnalyst.DAL
     {
 
         private ChemAnalystContext _context = new ChemAnalystContext();
-        public List<SA_Chem1PriceWeekly> GetChem1WeekWise(string currentYear, string currentMonth, string currentWeek)
+        public List<SA_Chem1PriceWeekly> GetChem1WeekWise(string product, string year)
         {
 
-            try
-            {
-                if (currentWeek == "1")
-                {
-                    return _context.SA_Chem1PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) <= 7).ToList();
-                }
-                else if (currentWeek == "2")
-                {
-                    return _context.SA_Chem1PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 7 && Convert.ToInt32(w.day) <= 14)).ToList();
-                }
-                else if (currentWeek == "3")
-                {
-                    return _context.SA_Chem1PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 14 && Convert.ToInt32(w.day) <= 21)).ToList();
-                }
-                else if (currentWeek == "4")
-                {
-                    return _context.SA_Chem1PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && (Convert.ToInt32(w.day) > 21 && Convert.ToInt32(w.day) <= 28)).ToList();
-                }
-                else
-                {
-                    return _context.SA_Chem1PriceWeekly.ToList().Where(w => w.year == currentYear && w.Month.ToLower() == currentMonth.ToLower() && Convert.ToInt32(w.day) > 28).ToList();
-                }
+            int id = int.Parse(product);
 
-            }
-            catch (Exception ex)
-            {
 
-                throw;
-            }
+            var data = (_context.SA_Chem1PriceWeekly.Where(Year => Year.Product == id && Year.year
+            == year)).ToList()
+                .Select(x => new
+                {
+                    ProductVariant = x.ProductVariant,
+                    //Week = x.Week + " ("+ Convert.ToDateTime( x.Date).ToString("dd MMM yy")+")",
+                    Week = "(" + Convert.ToDateTime(x.Date).ToString("dd MMM yy") + ")",
+                    count = x.count,
+                    Discription = x.Type,
+                    Product = x.Product
+
+                });
+
+            var query = from d in data
+                            //where d.Product == id && d.year == DateTime.Now.Year.ToString() && d.Month.ToUpper() == monthname
+
+                        group d by new { d.Week, d.ProductVariant } into g
+                        from SalesHeaderAndDetail in g.DefaultIfEmpty()
+                        group SalesHeaderAndDetail by new
+                        {
+                            // SalesOrderId=SalesHeaderAndDetail.SalesOrderId,
+                            Week = SalesHeaderAndDetail.Week,
+                            ProductVariant = SalesHeaderAndDetail.ProductVariant,
+                            Product = SalesHeaderAndDetail.Product
+                        }
+                        into grouped
+                        select new SA_Chem1PriceWeekly
+                        {
+                            Week = grouped.Key.Week.ToString(),
+                            count = grouped.Sum(x => x.count),
+
+                            Product = grouped.Key.Product,
+                            ProductVariant = grouped.Key.ProductVariant.ToString(),
+                        };
+
+
+            var sp = query.ToList();
+            return query.ToList();
 
 
 
@@ -864,6 +876,56 @@ namespace ChemAnalyst.DAL
             return query.ToList();
 
         }
+
+
+
+        internal List<SA_ChemPriceWeekly> SA_Chem1PriceWeekly(string product, string year)
+        {
+            int id = int.Parse(product);
+
+
+            var data = (_context.SA_Chem1PriceWeekly.Where(Year => Year.Product == id && Year.year
+            == year)).ToList()
+                .Select(x => new
+                {
+                    ProductVariant = x.ProductVariant,
+                    //Week = x.Week + " ("+ Convert.ToDateTime( x.Date).ToString("dd MMM yy")+")",
+                    Week = "(" + Convert.ToDateTime(x.Date).ToString("dd MMM yy") + ")",
+                    count = x.count,
+                    Discription = x.Type,
+                    Product = x.Product
+
+                });
+
+            var query = from d in data
+                            //where d.Product == id && d.year == DateTime.Now.Year.ToString() && d.Month.ToUpper() == monthname
+
+                        group d by new { d.Week, d.ProductVariant } into g
+                        from SalesHeaderAndDetail in g.DefaultIfEmpty()
+                        group SalesHeaderAndDetail by new
+                        {
+                            // SalesOrderId=SalesHeaderAndDetail.SalesOrderId,
+                            Week = SalesHeaderAndDetail.Week,
+                            ProductVariant = SalesHeaderAndDetail.ProductVariant,
+                            Product = SalesHeaderAndDetail.Product
+                        }
+                        into grouped
+                        select new SA_ChemPriceWeekly
+                        {
+                            Week = grouped.Key.Week.ToString(),
+                            count = grouped.Sum(x => x.count),
+                            Discription = grouped.FirstOrDefault().Discription.ToString(),
+                            Product = grouped.Key.Product,
+                            ProductVariant = grouped.Key.ProductVariant.ToString(),
+                        };
+
+
+            var ss = query.ToList();
+            return query.ToList();
+
+        }
+
+
         internal List<SA_ChemPriceWeekly> GetWeeklyWiseProductList_bak(string product, string fromdate, string todate)
         {
             int id = int.Parse(product);
@@ -970,24 +1032,29 @@ namespace ChemAnalyst.DAL
         internal List<SA_ChemPriceFileList> GetallUploadFile()
         {
             List<SA_ChemPriceFileList> xyz = ((from cust in _context.SA_ChemPriceYearly
-                                               select new SA_ChemPriceFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
+                                               select new SA_ChemPriceFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), CreatedBy = cust.CreatedBy, Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
         .Union
           (from cust in _context.SA_ChemPriceMonthly
-           select new SA_ChemPriceFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
+           select new SA_ChemPriceFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), CreatedBy = cust.CreatedBy, Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
            .Union
           (from cust in _context.SA_ChemPriceQuarterly
-           select new SA_ChemPriceFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
+           select new SA_ChemPriceFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), CreatedBy = cust.CreatedBy, Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
            .Union
            (from cust in _context.SA_ChemPriceDaily
-            select new SA_ChemPriceFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
+            select new SA_ChemPriceFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), CreatedBy = cust.CreatedBy, Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
+            .Union
+           (from cust in _context.SA_ChemPriceWeeklyNew
+            select new SA_ChemPriceFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), CreatedBy = cust.CreatedBy, Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
+            .Union
+           (from cust in _context.SA_ChemPriceDailyNew
+            select new SA_ChemPriceFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), CreatedBy = cust.CreatedBy, Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
             .Union
            (from cust in _context.SA_ChemPriceDailyAverage
-            select new SA_ChemPriceFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })).ToList();
+            select new SA_ChemPriceFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), CreatedBy = cust.CreatedBy, Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })).ToList();
             return xyz;
 
 
         }
-
         public dynamic GetYear(string T)
         {
             if (T == "Q")

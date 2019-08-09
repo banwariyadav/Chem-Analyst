@@ -41,34 +41,43 @@
     <link rel="stylesheet" href="~/css/bootstrap-multiselect.css">
 
     <style>
-        
         #myModal .modal-content {
-	background-color: transparent;
-}
-#myModal .modal-dialog {
-	max-width: 790px;
-	height: 350px;
-	background-image: url(../images/subscribe-bg.png);
-	top: 15%;
-	background-size: cover;
-}
+            background-color: transparent;
+        }
 
-.freeSub {
-	color: #fff;
-	padding: 50px 50px 0px 30px;
-}
-.freeSub h2 {
-	text-transform: uppercase;
-}
-.freeSub a.btn.btn-yellow {
-    color: #000000;
-    background: yellow;
-    text-transform: uppercase;
-}
-.freeSub a.text-center {
-    color: #fff;
-    margin-top: 10px;
-}
+        #myModal .modal-dialog {
+            max-width: 790px;
+            height: 350px;
+            background-image: url(../images/subscribe-bg.png);
+            top: 15%;
+            background-size: cover;
+        }
+
+        .freeSub {
+            color: #fff;
+            padding: 50px 50px 0px 30px;
+        }
+
+            .freeSub h2 {
+                text-transform: uppercase;
+            }
+
+            .freeSub a.btn.btn-yellow {
+                color: #000000;
+                background: yellow;
+                text-transform: uppercase;
+            }
+
+            .freeSub a.text-center {
+                color: #fff;
+                margin-top: 10px;
+            }
+
+        #ddlRange, #category, #ddlProduct, #ddlChart, #fromdate, #todate {
+            color: #fff !important;
+            background-color: #337ab7 !important;
+            border-color: #337ab7 !important;
+        }
     </style>
 
 </head>
@@ -115,7 +124,7 @@
 
                             </div>
 
-                            <div class="col-md-4 mt10"  style="display:none">
+                            <div class="col-md-4 mt10" style="display:none">
                                 <p>
                                     <i class="fa fa-compress"></i> Comparision
                                 </p>
@@ -128,8 +137,8 @@
 
                             </div>
                             <div class="col-md-4 pl-0 mt10">
-                                <p><i class="fa fa-bar-chart"></i> Chart Types</p>
-                                <select class="btn btn-primary width100" id="ddlChart" name="ddlChart">
+                                <p style="margin-left: 15px;"><i class="fa fa-bar-chart"></i> Chart Types</p>
+                                <select class="btn btn-primary width100" id="ddlChart" name="ddlChart" style="width: 97%; margin-left: 15px;">
                                     <option value="line">Line Chart</option>
                                     <option value="bar">Bar Chart</option>
                                     <option value="pie">Pie Chart</option>
@@ -137,12 +146,12 @@
                             </div>
 
                             <div style="display:@(ViewBag.QYears == null ? "" : "none")" class="col-md-4 dtcol mt10">
-                                <p><i class="fa fa-bar-chart"></i> From Date</p>
-                                <input type="text" class="btn btn-primary width100" id="fromdate" name="fromdate" autocomplete="off" />
+                                <p style="margin-left: -15px;"><i class="fa fa-bar-chart"></i> From Date</p>
+                                <input type="text" class="btn btn-primary width100" id="fromdate" name="fromdate" autocomplete="off" style="margin-left: -13px; width: 104%;" />
                             </div>
                             <div style="display:@(ViewBag.QYears == null ? "" : "none")" class="col-md-4 dtcol mt10">
-                                <p><i class="fa fa-bar-chart"></i> To Date</p>
-                                <input type="text" class="btn btn-primary width100" id="todate" name="todate" autocomplete="off" />
+                                <p style="margin-left: -15px;"><i class="fa fa-bar-chart"></i> To Date</p>
+                                <input type="text" class="btn btn-primary width100" id="todate" name="todate" autocomplete="off" style="margin-left: -12px; width: 103%;" />
                             </div>
                             <div style="display:@(ViewBag.QYears != null ? "" : "none")" class="col-md-4 yrcol  mt10">
                                 <p><i class="fa fa-bar-chart"></i> Year</p>
@@ -168,8 +177,18 @@
 
                 <div class="filter-checkbox-btn">
 
+                    @if (ViewBag.FisrtTime != null)
+                    {
+                        <span> <b> Please select  options to view data.</b></span>
 
-                    <span> <b>There is no data available with selected range.</b></span>
+                    }
+                    else
+                    {
+                        <span> <b>There is no data available with selected range.</b></span>
+
+                    }
+
+
 
 
 
@@ -409,7 +428,7 @@
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
             }
         });
-      
+
         function ShowCommentaries()
         {
 
@@ -443,7 +462,7 @@
 
         function ShowCommentariesByDeafult()
         {
-                       //debugger;
+            //debugger;
             var  ProductId = 'None';
             $.ajax({
                 type: "POST",

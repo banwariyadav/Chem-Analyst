@@ -117,7 +117,7 @@
                                 {
                                     <input type="hidden" id="categoryname" name="categoryname" value="@ViewBag.Cat" />
                                     <input type="hidden" id="countryname" name="countryname" value="@ViewBag.Cou" />
-                                    <h2 class="box-title">
+                                    <h2 class="box-title" style="color: #3368c6;font-weight: 300;">
                                         Categories
                                     </h2>
                                     <script>
@@ -166,7 +166,7 @@
                                         </div>
                                     </div>
 
-                                    <h2 class="box-title">
+                                    <h2 class="box-title" style="color: #3368c6;font-weight: 300;">
                                         Countries
                                     </h2>
                                     <div>
@@ -208,22 +208,22 @@
                                             {
                                                 <tr>
                                                     <td>
-                                                        <h5 class="sm_heading_rs" style="">
-                                                            <a href="@Url.Action("IndustryReports", "Industry", new { id= item .id})">@item.Title</a>
-                                                        </h5>
+                                                        <h4 class="sm_heading_rs" style="">
+                                                            <a style=" font-size:16px" href="@Url.Action("IndustryReports", "Industry", new { id= item .id})">@item.Title</a>
+                                                        </h4>
                                                         <p class="text-justify">
                                                             @Html.Raw(WebUtility.HtmlDecode(@item.Description))
-                                                            <span style="white-space:nowrap"><a style="margin-left:8px;" href="@Url.Action("IndustryReports", "Industry", new { id= item .id})" class="read-more-l">Read More</a></span>
+                                                            <span style="white-space:nowrap"><a style="text-transform: uppercase;color: #2257b5;    font-size: 14px;" href="@Url.Action("IndustryReports", "Industry", new { id= item .id})" class="read-more-l">Read More</a></span>
                                                         </p>
                                                         <ul class="r_ul">
-                                                            <li>
-                                                                <span style="font-weight:bold">Industry :</span>
+                                                            <li style="font: 100% Work Sans, sans-serif;    font-size: 14px;">
+                                                                <span style="font-weight:bold;   font: 100% Work Sans, sans-serif; ">Industry :</span>
                                                                 <a target="_blank" style="color:#107693!important;" href="#">@item.Industry</a>
                                                             </li>
-                                                            <li><span style="font-weight:bold">Format :</span> @item.format</li>
-                                                            <li><span style="font-weight:bold">Pages :</span> @item.Pages</li>
-                                                            <li><span style="font-weight:bold">Published Date :</span> July 2019</li>
-                                                            <li><span style="font-weight:bold"><a href="@Url.Action("FreeTrail", "ChemAnalyst")"><i class="fa fa-download"></i> Download Sample </a></span> </li>
+                                                            <li style="font: 100% Work Sans, sans-serif;    font-size: 14px;"><span style="font-weight:bold ;font: 100% Work Sans, sans-serif;">Format :</span> @item.format</li>
+                                                            <li style="font: 100% Work Sans, sans-serif;    font-size: 14px;"><span style="font-weight:bold ;font: 100% Work Sans, sans-serif;">Pages :</span> @item.Pages</li>
+                                                            <li style="font: 100% Work Sans, sans-serif;    font-size: 14px;"><span style="font-weight:bold ;font: 100% Work Sans, sans-serif;">Published Date :</span>@item.CreatedTime.Value.ToString("MMMM yyyy")</li>
+                                                            <li><span style="font: 100% Work Sans, sans-serif;    font-size: 14px;"><span style="font-weight:bold ;font: 100% Work Sans, sans-serif;"><a href="@Url.Action("FreeTrail", "ChemAnalyst")"><i class="fa fa-download"></i> Download Sample </a></span> </li>
                                                         </ul>
                                                     </td>
                                                 </tr>
@@ -273,7 +273,7 @@
             border-top: 2px solid #107693;
             text-align: center;
             font-size: 16px;
-            line-height: 25px;
+            line-height: 40px;
             text-align: center;
             margin-bottom: 0;
             padding: 5px 15px 5px 15px;
@@ -281,6 +281,8 @@
             box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1);
             margin-top: 0px !important;
         }
+
+        
 
        
 
@@ -299,12 +301,12 @@
             }
 
             .checkbox11 label {
-                min-height: 25px;
+                min-height: 40px;
                 padding-left: 20px;
                 margin-bottom: 0;
                 font-weight: bold;
                 cursor: pointer;
-                font-size: 11px;
+                font-size: 14px;
             }
 
         .sm_chk_be {
@@ -332,15 +334,16 @@
             margin-top: 0;
         }
 
-        p {
-            line-height: 24px;
-        }
+
 
         p {
-            font-size: 12px;
+            font: 100% "Work Sans", sans-serif;
+            font-size: 14px;
             line-height: 20px;
             margin: 0 0 8px;
             letter-spacing: 0.2px;
+            color: #2a2a2a;
+            font-weight: 300;
         }
 
         .r_ul {

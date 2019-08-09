@@ -1,26 +1,78 @@
-﻿@model IEnumerable<ChemAnalyst.Models.SA_News>
+﻿@*@model IEnumerable<ChemAnalyst.Models.SA_News>*@
+@model ChemAnalyst.ViewModel.NewDealVM
 
 <div class="container">
 
     <div class="text-center"><h2>Latest News & Deals</h2></div>
 
-    <div class="row">
-        @foreach (var item in Model)
+    <div id="slider" class="owl-carousel" style="display:block !important">
+        @foreach (var item in Model.lstNews)
         {
-        <div class="col-md-4">
-            <div class="news-col">
-                <div class="news-text">
-                    <h4><a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">@item.NewsName</a></h4>
-                    <p>@(item.NewsDiscription.Length > 150 ? (item.NewsDiscription.Substring(0, 150)) : item.NewsDiscription)...</p>
-                    <div class="row">
-                        <div class="col-8"><a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">Read More <i class="fa fa-arrow-right"></i></a></div>
-                        @*./NewsAndDeals/NewsDetails/@Model.First().id*@
+            <div class="">
+                <div class="news-col">
+                    <div class="news-text">
+                        <h4><a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">@item.NewsName</a></h4>
+                        @{
+                            if (item.NewsDiscription.Length > 150)
+                            {
+                                <p>@Html.Raw(WebUtility.HtmlDecode(item.NewsDiscription.Substring(0, 150)))) </p>
+                            }
+                            else
+                            {
+                                <p>item.DealsDiscription... </p>
+                            }
+                        }
+
+                        <div class="row">
+                            <div class="col-8"><a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">Read More <i class="fa fa-arrow-right"></i></a></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+                            }
+
+        @foreach (var item in Model.lstDeals)
+        {
+            <div class="">
+                <div class="news-col">
+                    <div class="news-text">
+                        <h4><a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">@item.DealsName</a></h4>
+                        @*<p>@(item.DealsDiscription.Length > 150 ? (item.DealsDiscription.Substring(0, 150)) : item.DealsDiscription)...</p>*@
+                        @{
+                            if (item.DealsDiscription.Length > 150)
+                            {
+                                <p>@Html.Raw(WebUtility.HtmlDecode(item.DealsDiscription.Substring(0, 150)))) </p>
+                            }
+                            else
+                            {
+                                <p>item.DealsDiscription... </p>
+                            }
+                        }
+                        <div class="row">
+                            <div class="col-8"><a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">Read More <i class="fa fa-arrow-right"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
+
+
+
+    </div>
+    <div class="common-btn-col" style="margin-top:20px">
+        <a href="@Url.Action("NewsHome","NewsAndDeals")" class="common-btn" style="margin-left: 400px;">View All News</a>  <span id="hr"></span>
+
+        <a href="@Url.Action("DealsHome","NewsAndDeals")" class="common-btn">View All Deals</a>
     </div>
 
-
 </div>
+<style>
+    #hr {
+width: 4%;
+height: 1px;
+background-color: #ffffff;
+    margin-bottom: 4px;
+  transform: rotate(90deg);
+}
+
+</style>

@@ -16,6 +16,8 @@ namespace ChemAnalyst.ViewModel
         public IEnumerable<SelectListItem> lstCategory { get; set; }
 
         public string Title { get; set; }
+        public string Meta { get; set; }
+        public string MetaDescription { get; set; }
         public IEnumerable<SA_News> NewsList { get; set; }
 
         public List<SelectListItem> lstCountry { get; set; }
@@ -27,7 +29,10 @@ namespace ChemAnalyst.ViewModel
         public int id { get; set; }
         public string Title { get; set; }
         public string Product { get; set; }
+        public string Meta { get; set; }
+        public string MetaDescription { get; set; }
 
+        public string Type { get; set; }
         public string CreateTime { get; set; }
     }
 

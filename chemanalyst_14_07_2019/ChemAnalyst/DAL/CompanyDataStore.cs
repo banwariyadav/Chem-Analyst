@@ -18,20 +18,104 @@ namespace ChemAnalyst.DAL
             return _context.SA_Company.ToList();
 
         }
+
+        public List<SA_Company> GetCompaniesList(string category, string products, string revsize, string empsize, string fyear, string companyname)
+        {
+
+            //   var ss = _context.SA_CompanyAndProductRelation.Where(x=>x.SA_ProductId == )
+            int fid = _context.FinancialYears.FirstOrDefault(x => x.FinYear == fyear).Id;
+            //var q = _context.SA_Company.ToList().AsEnumerable();
+            var q = from c in _context.SA_Company
+                    join p in _context.CompanyAndProductRelations on c.id equals p.SA_CompanyId into gj
+                    join r in _context.CompanyProfRecordNew on c.id equals r.SA_CompanyId
+                    select new
+                    {
+                        id = c.id,
+                        Name = c.Name,
+                        Description = c.Description,
+                        Category = c.Category,
+                        NOE = c.NOE,
+                        Logo = c.Logo,
+                        RegDate = c.RegDate,
+                        CreatedTime = c.CreatedTime,
+                        Product = gj.FirstOrDefault().SA_ProductId,
+                        Revenu = r.Revenue,
+                        FId = r.FinancialYearId
+                    };
+            // from subpet in gj.DefaultIfEmpty()
+            // select new { person.FirstName, PetName = subpet?.Name ?? String.Empty };
+            var sq = q.ToList().AsEnumerable();
+            // sq = sq.Where(x => x.FId == fid);
+
+            if (category != "")
+            {
+                // sq = sq.Where(x => x.Category == category);
+            }
+            if (companyname != "")
+            {
+                sq = sq.Where(x => x.Name.ToLower().Contains(companyname.ToLower()));
+            }
+            if (empsize != "")
+            {
+                int min = Convert.ToInt16(empsize.Split('-')[0]);
+                int max = empsize.Split('-').Length <= 1 ? 50000 : Convert.ToInt16(empsize.Split('-')[1]);
+                sq = sq.Where(x => Convert.ToInt16(x.NOE) > min && Convert.ToInt16(x.NOE) <= max);
+            }
+            if (revsize != "")
+            {
+                int min = Convert.ToInt16(revsize.Split('-')[0]);
+                int max = revsize.Split('-').Length <= 1 ? 5000000 : Convert.ToInt16(revsize.Split('-')[1]);
+
+                if (revsize.Split('-').Length > 1)
+                {
+                    sq = sq.Where(x => x.Revenu >= min && x.Revenu <= max);
+                }
+                else
+                {
+                    sq = sq.Where(x => x.Revenu >= min);
+                }
+            }
+            if (products != "")
+            {
+                sq = sq.Where(x => x.Product == Convert.ToInt16(products));
+            }
+            var sds = sq.ToList().Select(c => new SA_Company
+            {
+                id = c.id,
+                Name = c.Name,
+                Description = c.Description,
+                Category = c.Category,
+                NOE = c.NOE,
+                RegDate = c.RegDate,
+                CreatedTime = c.CreatedTime,
+                Logo = c.Logo
+            }).Distinct().ToList();
+            return sq.ToList().GroupBy(x => new { x.id, x.Name }).Select(c => new SA_Company
+            {
+                id = c.FirstOrDefault().id,
+                Name = c.FirstOrDefault().Name
+
+
+
+            }).ToList().ToList();
+
+        }
+
+
         public SA_Company_SWOT GetSWOTByCompany(int id)
         {
             return _context.SA_Company_SWOT.FirstOrDefault(x=>x.CompanyId == id);
 
         }
-        public List<SA_Company> GetCompanyList(string category, string products, string revsize, string empsize)
+        public List<SA_Company> GetCompanyList(string category, string products, string revsize, string empsize,string fyear)
         {
 
-         //   var ss = _context.SA_CompanyAndProductRelation.Where(x=>x.SA_ProductId == )
-
+            //   var ss = _context.SA_CompanyAndProductRelation.Where(x=>x.SA_ProductId == )
+            int fid = _context.FinancialYears.FirstOrDefault(x => x.FinYear == fyear).Id;
             //var q = _context.SA_Company.ToList().AsEnumerable();
             var q = from c in _context.SA_Company
                         join p in _context.CompanyAndProductRelations on c.id equals p.SA_CompanyId into gj
-                        join r in  _context.CompanyProfRecords on c.id equals r.SA_CompanyId
+                        join r in  _context.CompanyProfRecordNew on c.id equals r.SA_CompanyId
                         select new  {
                             id = c.id,
                             Name = c.Name,
@@ -42,11 +126,14 @@ namespace ChemAnalyst.DAL
                             RegDate = c.RegDate,
                             CreatedTime = c.CreatedTime,
                             Product = gj.FirstOrDefault().SA_ProductId,
-                            Revenu = r.Revenues
+                            Revenu = r.Revenue,
+                            FId= r.FinancialYearId
                         };
             // from subpet in gj.DefaultIfEmpty()
             // select new { person.FirstName, PetName = subpet?.Name ?? String.Empty };
             var sq = q.ToList().AsEnumerable();
+            sq = sq.Where(x => x.FId == fid);
+            
             if (category != "")
             {
                 sq = sq.Where(x => x.Category == category);
@@ -64,17 +151,27 @@ namespace ChemAnalyst.DAL
 
                 if (revsize.Split('-').Length > 1)
                 {
-                    sq = sq.Where(x => Convert.ToDouble(x.Revenu.Replace("US$", "").Replace("billion", "").Trim()) > min && Convert.ToDouble(x.Revenu.Replace("US$", "").Replace("billion", "").Trim()) <= max);
+                    sq = sq.Where(x => x.Revenu >= min && x.Revenu <= max);
                 }
                 else {
-                    sq = sq.Where(x => Convert.ToDouble(x.Revenu.Replace("US$", "").Replace("billion", "").Trim()) > min );
+                    sq = sq.Where(x => x.Revenu >= min );
                 }
             }
             if (products != "")
             {
                 sq = sq.Where(x => x.Product == Convert.ToInt16( products));
             }
-         
+            var sds = sq.ToList().Select(c => new SA_Company
+            {
+                id = c.id,
+                Name = c.Name,
+                Description = c.Description,
+                Category = c.Category,
+                NOE = c.NOE,
+                RegDate = c.RegDate,
+                CreatedTime = c.CreatedTime,
+                Logo = c.Logo
+            }).Distinct().ToList();
             return sq.ToList().Select(c=> new SA_Company
             {
                 id = c.id,
@@ -85,7 +182,7 @@ namespace ChemAnalyst.DAL
                 RegDate = c.RegDate,
                 CreatedTime = c.CreatedTime,
                 Logo= c.Logo
-            }).ToList();
+            }).Distinct().ToList();
 
         }
         public bool EditCompany(SA_Company News)
@@ -110,6 +207,11 @@ namespace ChemAnalyst.DAL
             _context.Entry(EditNews).State = EntityState.Modified;
             int x = _context.SaveChanges();
             return x == 0 ? false : true;
+        }
+
+        internal dynamic GetUniqueFyear()
+        {
+            return _context.FinancialYears.Select(x => x.FinYear).Distinct().ToList();
         }
 
         public bool EditCompanySWOT(SA_Company_SWOT News)

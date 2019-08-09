@@ -16,12 +16,12 @@ namespace ChemAnalyst.DAL
         public List<SA_RoleViewModel> GetRoleList()
         {
             //return  _context.SA_Role.ToList();
-            return _context.SA_Role.Select(item => new SA_RoleViewModel
+            return _context.SA_Role.ToList().Select(item => new SA_RoleViewModel
             {
                 id = item.id,
                 Role = item.Role,
                 RoleDiscription = item.RoleDiscription,
-                CreatedTime = item.CreatedTime
+                CreatedTime = item.CreatedTime != null ? item.CreatedTime.Value.ToString("dd/MM/yyy") : DateTime.Now.ToString("dd/MM/yyyy")
             }
         ).ToList();
 
@@ -144,6 +144,7 @@ namespace ChemAnalyst.DAL
                 int x = 0;
                 SA_Role Role = new Models.SA_Role();
                 Role.Role = RoleViewModel.Role;
+                Role.CreatedTime = DateTime.Now;
                 Role.RoleDiscription = RoleViewModel.RoleDiscription;
                 _context.SA_Role.Add(Role);
                 _context.SaveChanges();
@@ -259,6 +260,7 @@ namespace ChemAnalyst.DAL
             SA_RoleViewModel model = new Models.SA_RoleViewModel();
             SA_Role editrole = _context.SA_Role.Where(x => x.id == id).SingleOrDefault();
             model.id = editrole.id;
+            model.CreatedTime = editrole.CreatedTime!=null? editrole.CreatedTime.Value.ToString("dd/MM/yyyy"):DateTime.Now.ToString("dd/MM/yyyy");
             model.Role = editrole.Role;
             model.RoleDiscription = editrole.RoleDiscription;
             var editaccess = _context.SA_RoleWiseAccess.Where(x => x.RoleId == id).ToList();

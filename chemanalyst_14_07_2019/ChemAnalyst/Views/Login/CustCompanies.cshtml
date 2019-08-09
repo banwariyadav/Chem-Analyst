@@ -13,6 +13,11 @@
             .addMargin {
                 margin-left: 10px;
             }
+
+             .addMarginRight {
+                margin-right: 15px;
+                    margin-top: -15px;
+            }
         </style>
     }
     else
@@ -199,17 +204,17 @@
                                                     </h4>
                                                     <p>@(item.Description.Length > 100 ? (item.Description.Substring(0, 100)) : item.Description)...</p>
                                                     <div class="row mt-3">
-                                                        <div class="col-6">
+                                                        <div class="col-8">
                                                             @if (ChemAnalyst.DAL.ProductDataStore.GetProductCompanyReletion(item.id, ViewBag.f))
                                                             {
-                                                            <a href="@Url.Action("CompanyDetail", "Login", new { id = item.id })">Read More <i class="fa fa-arrow-right"></i></a>
+                                                            <a  style="margin-left: 15px;" href="@Url.Action("CompanyDetail", "Login", new { id = item.id })">View Profile <i class="fa fa-arrow-right"></i></a>
                                                             }
                                                             else
                                                             {
-                                                            <a onclick="showmodel()">Read More <i class="fa fa-arrow-right"></i></a>
+                                                            <a onclick="showmodel()" style="margin-left: 15px;">View Profile <i class="fa fa-arrow-right"></i></a>
                                                             }
                                                         </div>
-                                                        <div class="col-6"> <i class="fa fa-clock-o"></i>@item.CreatedTime.ToString("MMM/yyyy") </div>
+                                                        <div class="col-4 text-right addMarginRight"> <i class="fa fa-clock-o"></i>@item.CreatedTime.ToString("MMM/yyyy") </div>
                                                     </div>
                                                 </div>
                                             </div>

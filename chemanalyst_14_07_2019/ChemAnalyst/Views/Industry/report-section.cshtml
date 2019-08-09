@@ -9,7 +9,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
 
-    <title>Chem Analyst</title>
+    <title>Chem Analyst - Industry Report</title>
 
 
     <link href="https://fonts.googleapis.com/css?family=Oswald|Roboto+Condensed:400,700|Work+Sans&display=swap" rel="stylesheet">
@@ -230,22 +230,22 @@
                                         {
                                             <tr>
                                                 <td>
-                                                    <h5 class="sm_heading_rs" style="">
+                                                    <h4 class="sm_heading_rs" style=" font-size:16px">
                                                         <a href="@Url.Action("IndustryReport", "Industry", new { id= item .id})">@item.Title</a>
-                                                    </h5>
+                                                    </h4>
                                                     <p class="text-justify">
                                                         @Html.Raw(WebUtility.HtmlDecode(@item.Description))
-                                                        <span style="white-space:nowrap"><a style="text-transform: uppercase;color: #2257b5;    font-size: 11px;" href="@Url.Action("IndustryReport", "Industry", new { id= item .id})" class="read-more-l">Read More</a></span>
+                                                        <span style="white-space:nowrap"><a style="text-transform: uppercase;color: #2257b5;    font-size: 14px;" href="@Url.Action("IndustryReport", "Industry", new { id= item .id})" class="read-more-l">Read More</a></span>
                                                     </p>
                                                     <ul class="r_ul">
-                                                        <li>
+                                                        <li style="font: 100% Work Sans, sans-serif;    font-size: 14px;">
                                                             <span style="font-weight:bold;   font: 100% Work Sans, sans-serif; ">Industry :</span>
                                                             <a target="_blank" style="color:#107693!important;" href="#">@item.Industry</a>
                                                         </li>
-                                                        <li><span style="font-weight:bold ;font: 100% Work Sans, sans-serif;">Format :</span> @item.format</li>
-                                                        <li><span style="font-weight:bold ;font: 100% Work Sans, sans-serif;">Pages :</span> @item.Pages</li>
-                                                        <li><span style="font-weight:bold ;font: 100% Work Sans, sans-serif;">Published Date :</span> July 2019</li>
-                                                        <li><span style="font-weight:bold ;font: 100% Work Sans, sans-serif;"><a href="@Url.Action("FreeTrail", "ChemAnalyst")"><i class="fa fa-download"></i> Download Sample </a></span> </li>
+                                                        <li style="font: 100% Work Sans, sans-serif;    font-size: 14px;"><span style="font-weight:bold ;font: 100% Work Sans, sans-serif;">Format :</span> @item.format</li>
+                                                        <li style="font: 100% Work Sans, sans-serif;    font-size: 14px;"><span style="font-weight:bold ;font: 100% Work Sans, sans-serif;">Pages :</span> @item.Pages</li>
+                                                        <li style="font: 100% Work Sans, sans-serif;    font-size: 14px;"><span style="font-weight:bold ;font: 100% Work Sans, sans-serif;">Published Date :</span> July 2019</li>
+                                                        <li style="font: 100% Work Sans, sans-serif;    font-size: 14px;"><span style="font-weight:bold ;font: 100% Work Sans, sans-serif;"><a href="@Url.Action("FreeTrail", "ChemAnalyst")"><i class="fa fa-download"></i> Download Sample </a></span> </li>
                                                         @*<li class="hidden-lg hidden-md hidden-sm"><span style="font-weight:bold">Price :  USD 4450</span> </li>*@
                                                     </ul>
                                                 </td>
@@ -295,7 +295,7 @@
                         <div class="foot-links">
                             <p><a href="#">About Us</a></p>
                             <p><a href="#">Privacy Policy</a></p>
-                            <p><a href="#">FAQs</a></p>
+                            <p><a href="@Url.Action("FreeTrail", "ChemAnalyst")">Product Finder</a></p>
                         </div>
                     </div>
 
@@ -417,7 +417,7 @@
                 margin-bottom: 0;
                 font-weight: bold;
                 cursor: pointer;
-                /*font-size: 11px;*/
+                font-size: 14px;
             }
 
         .sm_chk_be {

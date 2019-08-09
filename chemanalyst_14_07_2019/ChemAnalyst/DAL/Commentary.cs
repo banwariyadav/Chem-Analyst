@@ -44,6 +44,7 @@ namespace ChemAnalyst.DAL
             EditNews.IsActive = News.IsActive;
             EditNews.IsDelete = News.IsDelete;
             EditNews.Product = News.Product;
+            EditNews.ImgPath = News.ImgPath;
 
             _context.Entry(EditNews).State = EntityState.Modified;
             int x = _context.SaveChanges();

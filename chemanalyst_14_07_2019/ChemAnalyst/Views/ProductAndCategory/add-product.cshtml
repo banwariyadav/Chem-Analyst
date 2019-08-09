@@ -22,73 +22,73 @@
 
 <div class="change">
 <img src="~/images/change-img.jpg" alt=""/>
-<p>Add New Category</p>	
+<p>Add New Product</p>	
 </div>
 
 <div class="eq-form-box">
-@using (Html.BeginForm("SaveProduct", "ProductAndCategory", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
+    @using (Html.BeginForm("SaveProduct", "ProductAndCategory", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
 
-    @Html.AntiForgeryToken()
-    <div style="visibility:hidden">
-        @Html.TextBoxFor(model => model.id, new { @class = "form-control", @placeholder = "Title * ", required = "required" })
-    </div>
-<div class="col-md-4 col-lg-12 form-group">
-    @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control", @placeholder = "Title * ", required = "required" })
-
-
-    @*<input type="text" value="" size="40" class="form-control" placeholder="Title">*@
-</div>
-   
-<div class="col-md-4 col-lg-12 form-group">
-    @*<textarea rows="10" class="form-control" placeholder="Description"></textarea>*@    
-    @Html.TextAreaFor(model => model.ProductDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Description * ", required = "required" })
+        @Html.AntiForgeryToken()
+        <div style="visibility:hidden">
+            @Html.TextBoxFor(model => model.id, new { @class = "form-control", @placeholder = "Title * ", required = "required" })
+        </div>
+        <div class="col-md-4 col-lg-12 form-group">
+            @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control", @placeholder = "Title * ", required = "required" })
 
 
-</div>
-    <div class="col-sm-4 col-lg-12 form-group">
+            @*<input type="text" value="" size="40" class="form-control" placeholder="Title">*@
+        </div>
+        <div class="col-sm-4 col-lg-12 form-group">
 
-        @Html.DropDownListFor(m => m.Category, Model.CategoryList, "Select Category", new { @class = "form-control", required = "required" })
-
-
-    </div>
-
-
-
-
-<div class="col-md-4 col-lg-12 form-group"> 
-@*<textarea rows="4" class="form-control" placeholder="Meta Title"></textarea>*@   
-    @Html.TextBoxFor(model => model.Meta, new { @class = "form-control", @placeholder = "Meta Title * ", required = "required" })
-
-
-</div>
-
-<div class="col-md-4 col-lg-12 form-group"> 
-@*<textarea rows="4" class="form-control" placeholder="Meta Description"></textarea>*@   
-    @Html.TextAreaFor(model => model.MetaDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Meta Description * ", required = "required" })
-
-
-</div>
-
-
-
-
-
-    <div class="col-sm-6 col-lg-12">
-        <div class="form-group">
-            <input type="file" name="file" class="form-control" />
+            @Html.DropDownListFor(m => m.Category, Model.CategoryList, "Select Category", new { @class = "form-control", required = "required" })
 
 
         </div>
-    </div>
+        <div class="col-md-4 col-lg-12 form-group">
+            @*<textarea rows="10" class="form-control" placeholder="Description"></textarea>*@
+            @Html.TextBoxFor(model => model.ProductDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Meta Keyword" })
 
-    <div class="btn-wrapper">
 
-        <a class="gray-btn" href="@Url.Action("ProductAndCategory","Product")">Cancle</a>
-        <input type="submit" class="blue-btn" value="Save">
+        </div>
 
-    </div>
-}
+
+
+
+
+        <div class="col-md-4 col-lg-12 form-group">
+            @*<textarea rows="4" class="form-control" placeholder="Meta Title"></textarea>*@
+            @Html.TextBoxFor(model => model.Meta, new { @class = "form-control", @placeholder = "Meta Title"})
+
+
+        </div>
+
+        <div class="col-md-4 col-lg-12 form-group">
+            @*<textarea rows="4" class="form-control" placeholder="Meta Description"></textarea>*@
+            @Html.TextAreaFor(model => model.MetaDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Meta Description"})
+
+
+        </div>
+
+
+
+
+
+        <div class="col-sm-6 col-lg-12" style="display:none">
+            <div class="form-group">
+                <input type="file" name="file" class="form-control" />
+
+
+            </div>
+        </div>
+
+        <div class="btn-wrapper">
+
+            <a class="gray-btn" href="@Url.Action("Product","ProductAndCategory")">Cancel</a>
+            <input type="submit" class="blue-btn" value="Save">
+
+        </div>
+    }
 
 </div>
 

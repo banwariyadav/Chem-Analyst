@@ -11,7 +11,7 @@ namespace ChemAnalyst.Models
     {
         public int id { get; set; }
 
-        [StringLength(255)]
+        [StringLength(1000)]
         public string Title { get; set; }
 
         [StringLength(50000)]
@@ -31,9 +31,9 @@ namespace ChemAnalyst.Models
         public string Pages { get; set; }
        
         public string Industry { get; set; }
-        [StringLength(255)]
+        [StringLength(1000)]
         public string Meta { get; set; }
-        [StringLength(255)]
+        [StringLength(2000)]
         public string MetaDescription { get; set; }
 
         public DateTime? CreatedTime { get; set; }

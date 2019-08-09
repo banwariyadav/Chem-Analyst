@@ -198,6 +198,13 @@ namespace ChemAnalyst.DAL
             return cat;
         }
 
+        public static IEnumerable<SelectListItem> GetUniqueYears()
+        {
+            ChemAnalystContext _context1 = new ChemAnalystContext();
+            var cat = (from coun in _context1.SA_MarketbyComp select new SelectListItem { Text = coun.year, Value = coun.year.ToString() }).OrderBy(w=>w.Value).Distinct().AsEnumerable();
+            return cat;
+        }
+
         public static bool GetProductNewReletion(int newid, int product)
         {
             ChemAnalystContext _context1 = new ChemAnalystContext();
@@ -263,7 +270,7 @@ namespace ChemAnalyst.DAL
         public static string GetCategory(int cat)
         {
             ChemAnalystContext _context = new ChemAnalystContext();
-            var category = _context.SA_Category.Where(w => w.id == cat).FirstOrDefault().CategoryName;
+            var category = _context.SA_Category.Where(w => w.id == cat).FirstOrDefault()!=null?_context.SA_Category.Where(w => w.id == cat).FirstOrDefault().CategoryName: "";
             return category;
 
         }
@@ -272,6 +279,20 @@ namespace ChemAnalyst.DAL
         {
             ChemAnalystContext _context1 = new ChemAnalystContext();
             var cat = (from coun in _context1.SA_Company select new SelectListItem { Text = coun.Name, Value = coun.id.ToString() }).AsEnumerable();
+            return cat;
+        }
+
+        public static IEnumerable<SelectListItem> GetAdvisory()
+        {
+            ChemAnalystContext _context1 = new ChemAnalystContext();
+            var cat = (from coun in _context1.SA_Advisory select new SelectListItem { Text = coun.AdvisoryName, Value = coun.id.ToString() }).AsEnumerable();
+            return cat;
+        }
+
+        public static SA_HomeHeader GetHeaderData()
+        {
+            ChemAnalystContext _context1 = new ChemAnalystContext();
+            var cat = _context1.SA_HomeHeader.OrderByDescending(w => w.Id).FirstOrDefault();
             return cat;
         }
 

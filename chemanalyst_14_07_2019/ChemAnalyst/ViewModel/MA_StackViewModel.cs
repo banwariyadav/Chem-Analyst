@@ -23,7 +23,14 @@ namespace ChemAnalyst.ViewModel
         public int category { get; set; }
         public string Compare { get; set; }
 
+        public string CommentaryTitle { get; set; }
+
+        public string CommentaryDescription { get; set; }
+
         public DealsDetailsViewModel NewsDetailsViewModel { get; set; }
+
+        public string FromYear { get; set; }
+        public string ToYear { get; set; }
     }
         public enum MRange
         {

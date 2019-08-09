@@ -4,6 +4,17 @@
     if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
     {
         Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+        <style>
+            .addMargin {
+                margin-left: 10px;
+            }
+
+            .addMarginRight {
+                margin-right: 15px;
+                margin-top: -15px;
+            }
+        </style>
+
     }
     else
     {
@@ -31,19 +42,19 @@
 
         }
             <div class="page-content">
-                <div class="static-page">
-                    <div class="container">
+                <div class="static-page" style="    background: #fff;">
+                    <div class="container addMargin" style="width:1380px">
 
                         <div class="row">
 
                             <div class="col-md-9">
 
-                                <div class="blog-detail">
+                                <div class="blog-detail" style="margin-top: 20px;">
                                     @{
 
                                         if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
                                         {
-                                            if (Model.News.NewsImg != string.Empty)
+                                            if (!string.IsNullOrEmpty(Model.News.NewsImg))
                                             {
                                                 <div class="blog-big-pic"><img src="~/ProductImages/@Model.News.NewsImg" alt=""></div>
                                             }
@@ -62,7 +73,7 @@
                                         }
                                         else
                                         {
-                                            if (Model.News.NewsImg != string.Empty)
+                                            if (!string.IsNullOrEmpty(Model.News.NewsImg))
                                             {
                                                 <div class="blog-big-pic"><img src="~/ProductImages/@Model.News.NewsImg" alt=""></div>
                                             }
@@ -73,7 +84,16 @@
 
 
 
-                                    <p>@(Model.News.NewsDiscription.Length > 300 ? (Model.News.NewsDiscription.Substring(0, 300)) : Model.News.NewsDiscription)</p>
+                                    @{
+                                        if (Model.News.NewsDiscription.Length > 300)
+                                        {
+                                            <p>@Html.Raw(WebUtility.HtmlDecode(Model.News.NewsDiscription.Substring(0, 300)))) </p>
+                                        }
+                                        else
+                                        {
+                                            <p>item.NewsDiscription... </p>
+                                        }
+                                    }
 
                                     <div class="btn subscription-btn"><a href="~/ChemAnalyst/FreeTrail">Click Here to Subscribe</a></div>
 

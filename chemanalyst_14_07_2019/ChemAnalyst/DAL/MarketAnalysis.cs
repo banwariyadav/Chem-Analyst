@@ -132,6 +132,7 @@ namespace ChemAnalyst.DAL
                 else
                     return 0;
             }
+
             //else if (ImportType == "Quarterly")
             //{
             //    List<SA_ChemPriceQuarterly> obj = _context.SA_ChemPriceQuarterly.Where(Year => Year.FileName == Filename).ToList();
@@ -178,7 +179,34 @@ namespace ChemAnalyst.DAL
            .Union
            (from cust in _context.SA_MarketbyProducer
             select new SA_MarketFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
-            .Union
+           .Union
+           (from cust in _context.SA_MarketbyEfficiency
+            select new SA_MarketFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
+             .Union
+           (from cust in _context.SA_MarketbyEndUsetonnes
+            select new SA_MarketFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
+              .Union
+           (from cust in _context.SA_MarketbyGradetonnes
+            select new SA_MarketFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
+              .Union
+           (from cust in _context.SA_MarketbySalestonnes
+            select new SA_MarketFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
+              .Union
+           (from cust in _context.SA_MarketbyRegiontonnes
+            select new SA_MarketFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
+              .Union
+           (from cust in _context.SA_MarketbyDemandsupply
+            select new SA_MarketFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
+              .Union
+           (from cust in _context.SA_MarketbyCompanySharetonnes
+            select new SA_MarketFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
+              .Union
+           (from cust in _context.SA_MarketbyTradeExport
+            select new SA_MarketFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
+               .Union
+           (from cust in _context.SA_MarketbyTradeImport
+            select new SA_MarketFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })
+              .Union
            (from cust in _context.SA_MarketbyTech
             select new SA_MarketFileList { FileName = cust.FileName, CreatedDate = cust.CreatedDate.ToString(), Product = _context.SA_Product.Where(x => x.id == cust.Product).Select(y => y.ProductName).FirstOrDefault() })).ToList();
             return xyz;
@@ -236,26 +264,102 @@ namespace ChemAnalyst.DAL
             return returnpro;
         }
 
-        public List<SA_MarketbyLoc> GetLocationWiseProductList(string ProductId)
+        public List<SA_MarketbyLoc> GetLocationWiseProductList(string ProductId, string FromYear, string ToYear)
         {
+            int id = 0;
+            int fyear = Convert.ToInt16(FromYear);
+            int tyear = Convert.ToInt16(ToYear);
             if (ProductId != null)
             {
-                int id = int.Parse(ProductId);
+                id = int.Parse(ProductId);
 
-                return _context.SA_MarketbyLoc.Where(Year => Year.Product == id).ToList();
+
             }
             else
             {
 
+                id = (from m in _context.SA_MarketbyLoc
+                      join n in _context.SA_Product on
+                      m.Product equals n.id
+                      select (n.id)).FirstOrDefault();
+
+
+            }
+            var results = (from ssi in _context.SA_MarketbyLoc.AsEnumerable()
+                           where ssi.Product == id
+                             &&(fyear == 0 ||(int.Parse(ssi.year)) >= fyear)
+                            &&(tyear == 0 ||(int.Parse(ssi.year)) <= tyear)
+                           group ssi by new { ssi.States, ssi.year } into g
+                           select new SA_MarketbyLoc
+                           {
+                               Location = g.Key.States,
+                               year = g.Key.year,
+                               Discription = g.FirstOrDefault().Discription,
+                               Product = g.FirstOrDefault().Product,
+                               count = g.Sum(c => c.count)
+
+
+                           }
+).ToList();
+            return results;
+            //return _context.SA_MarketbyLoc.Where(Year => Year.Product == id).ToList().GroupBy(x=> new { x.States,x.year,x.Company }).Select(x=> new SA_MarketbyLoc {
+            //    Location = x.FirstOrDefault().States,
+            //    year = x.FirstOrDefault().year,
+            //    Discription = x.FirstOrDefault().Discription,
+            //    Product = x.FirstOrDefault().Product,
+            //    count = x.Sum(c=>c.count) 
+
+
+
+            //}).ToList();
+
+
+        }
+
+        public List<SA_MarketbyLoc> GetLocationWiseProductListReport(string ProductId, string FromYear, string ToYear)
+        {
+            if (ProductId != null)
+            {
+                int id = int.Parse(ProductId);
+                return _context.SA_MarketbyLoc.ToList().Where(Year => Year.Product == id
+                 && (Convert.ToInt16(FromYear) == 0 || Convert.ToInt16(Year.year) >= Convert.ToInt16(FromYear))
+                && (Convert.ToInt16(ToYear) == 0 || Convert.ToInt16(Year.year) <= Convert.ToInt16(ToYear))
+                ).ToList();
+            }
+            else
+            {
                 int uniqueCategories = (from m in _context.SA_MarketbyLoc
                                         join n in _context.SA_Product on
                                         m.Product equals n.id
                                         select (n.id)).FirstOrDefault();
-
-                return _context.SA_MarketbyLoc.Where(Year => Year.Product == uniqueCategories).ToList();
+                return _context.SA_MarketbyLoc.ToList().Where(Year => Year.Product == uniqueCategories
+                 && (Convert.ToInt16(FromYear) ==0 ||Convert.ToInt16(Year.year) >= Convert.ToInt16(FromYear))
+                && (Convert.ToInt16(ToYear) == 0 || Convert.ToInt16(Year.year) <= Convert.ToInt16(ToYear))
+                ).ToList();
             }
+        }
 
-
+        public List<SA_MarketbyTech> GetTechnologyWiseProductListReport(string ProductId, string FromYear, string ToYear)
+        {
+            if (ProductId != null)
+            {
+                int id = int.Parse(ProductId);
+                return _context.SA_MarketbyTech.ToList().Where(Year => Year.Product == id
+                 && (Convert.ToInt16(FromYear) == 0 || Convert.ToInt16(Year.year) >= Convert.ToInt16(FromYear))
+                && (Convert.ToInt16(ToYear) == 0 || Convert.ToInt16(Year.year) <= Convert.ToInt16(ToYear))
+                ).ToList();
+            }
+            else
+            {
+                int uniqueCategories = (from m in _context.SA_MarketbyLoc
+                                        join n in _context.SA_Product on
+                                        m.Product equals n.id
+                                        select (n.id)).FirstOrDefault();
+                return _context.SA_MarketbyTech.ToList().Where(Year => Year.Product == uniqueCategories
+                 && (Convert.ToInt16(FromYear) == 0 || Convert.ToInt16(Year.year) >= Convert.ToInt16(FromYear))
+                && (Convert.ToInt16(ToYear) == 0 || Convert.ToInt16(Year.year) <= Convert.ToInt16(ToYear))
+                ).ToList();
+            }
         }
 
         internal List<SA_MarketbyTech> GetTechnologyWiseProductListwithCompare(string[] values)
@@ -272,22 +376,30 @@ namespace ChemAnalyst.DAL
             return returnpro;
         }
 
-        public List<SA_MarketbyTech> GetTechnologyWiseProductList(string ProductId)
+        public List<SA_MarketbyTech> GetTechnologyWiseProductList(string ProductId, string FromYear, string ToYear)
         {
+
+           
+            List<SA_MarketbyTech> results = new List<SA_MarketbyTech>();
+            //int id = 0;
             if (ProductId != null)
             {
                 int id = int.Parse(ProductId);
-
-                return _context.SA_MarketbyTech.Where(Year => Year.Product == id).ToList();
+                return _context.SA_MarketbyTech.ToList().Where(Year => Year.Product == id
+                 && (Convert.ToInt16(FromYear) == 0 || Convert.ToInt16(Year.year) >= Convert.ToInt16(FromYear))
+                && (Convert.ToInt16(ToYear) == 0 || Convert.ToInt16(Year.year) <= Convert.ToInt16(ToYear))
+                ).ToList();
             }
             else
             {
-                int uniqueCategories = (from m in _context.SA_MarketbyTech
+                int uniqueCategories = (from m in _context.SA_MarketbyLoc
                                         join n in _context.SA_Product on
                                         m.Product equals n.id
                                         select (n.id)).FirstOrDefault();
-
-                return _context.SA_MarketbyTech.Where(Year => Year.Product == uniqueCategories).ToList();
+                return _context.SA_MarketbyTech.ToList().Where(Year => Year.Product == uniqueCategories
+                 && (Convert.ToInt16(FromYear) == 0 || Convert.ToInt16(Year.year) >= Convert.ToInt16(FromYear))
+                && (Convert.ToInt16(ToYear) == 0 || Convert.ToInt16(Year.year) <= Convert.ToInt16(ToYear))
+                ).ToList();
             }
 
 
@@ -307,25 +419,55 @@ namespace ChemAnalyst.DAL
             return returnpro;
         }
 
-        public List<SA_MarketbyProcess> GetProcessWiseProductList(string ProductId)
+        public List<SA_MarketbyProcess> GetProcessWiseProductList(string ProductId, string FromYear, string ToYear)
+        {
+            List<SA_MarketbyTech> results = new List<SA_MarketbyTech>();
+            //int id = 0;
+            if (ProductId != null)
+            {
+                int id = int.Parse(ProductId);
+                return _context.SA_MarketbyProcess.ToList().Where(Year => Year.Product == id
+                 && (Convert.ToInt16(FromYear) == 0 || Convert.ToInt16(Year.year) >= Convert.ToInt16(FromYear))
+                && (Convert.ToInt16(ToYear) == 0 || Convert.ToInt16(Year.year) <= Convert.ToInt16(ToYear))
+                ).ToList();
+            }
+            else
+            {
+                int uniqueCategories = (from m in _context.SA_MarketbyLoc
+                                        join n in _context.SA_Product on
+                                        m.Product equals n.id
+                                        select (n.id)).FirstOrDefault();
+                return _context.SA_MarketbyProcess.ToList().Where(Year => Year.Product == uniqueCategories
+                 && (Convert.ToInt16(FromYear) == 0 || Convert.ToInt16(Year.year) >= Convert.ToInt16(FromYear))
+                && (Convert.ToInt16(ToYear) == 0 || Convert.ToInt16(Year.year) <= Convert.ToInt16(ToYear))
+                ).ToList();
+            }
+
+
+
+        }
+
+        public List<SA_MarketbyProcess> GetProcessWiseProductListReport(string ProductId, string FromYear, string ToYear)
         {
             if (ProductId != null)
             {
                 int id = int.Parse(ProductId);
-
-                return _context.SA_MarketbyProcess.Where(Year => Year.Product == id).ToList();
+                return _context.SA_MarketbyProcess.ToList().Where(Year => Year.Product == id
+                 && (Convert.ToInt16(FromYear) == 0 || Convert.ToInt16(Year.year) >= Convert.ToInt16(FromYear))
+                && (Convert.ToInt16(ToYear) == 0 || Convert.ToInt16(Year.year) <= Convert.ToInt16(ToYear))
+                ).ToList();
             }
             else
             {
-                int uniqueCategories = (from m in _context.SA_MarketbyProcess
+                int uniqueCategories = (from m in _context.SA_MarketbyLoc
                                         join n in _context.SA_Product on
                                         m.Product equals n.id
                                         select (n.id)).FirstOrDefault();
-
-                return _context.SA_MarketbyProcess.Where(Year => Year.Product == uniqueCategories).ToList();
+                return _context.SA_MarketbyProcess.ToList().Where(Year => Year.Product == uniqueCategories
+                 && (Convert.ToInt16(FromYear) == 0 || Convert.ToInt16(Year.year) >= Convert.ToInt16(FromYear))
+                && (Convert.ToInt16(ToYear) == 0 || Convert.ToInt16(Year.year) <= Convert.ToInt16(ToYear))
+                ).ToList();
             }
-
-
         }
 
         internal List<SA_MarketbyProducer> GetProducerWiseProductListwithCompare(string[] values)
@@ -854,16 +996,16 @@ namespace ChemAnalyst.DAL
 
         }
 
-        internal List<SA_MarketbyDemandsupply> GetDemandsupplyWiseProductListwithCompare(string[] values)
+        internal List<SA_MarketbyDemandsupplyGraph> GetDemandsupplyWiseProductListwithCompare(string[] values)
         {
-            var query = (from SA_MarketbyDemandsupply in _context.SA_MarketbyDemandsupply
-                         where values.Contains(SA_MarketbyDemandsupply.Product.ToString())
-                         select new { SA_MarketbyDemandsupply });
+            var query = (from SA_MarketbyDemandsupplyGraph in _context.SA_MarketbyDemandsupplyGraph
+                         where values.Contains(SA_MarketbyDemandsupplyGraph.Product.ToString())
+                         select new { SA_MarketbyDemandsupplyGraph });
 
-            List<SA_MarketbyDemandsupply> returnpro = new List<SA_MarketbyDemandsupply>();
+            List<SA_MarketbyDemandsupplyGraph> returnpro = new List<SA_MarketbyDemandsupplyGraph>();
             foreach (var item in query)
             {
-                returnpro.Add(item.SA_MarketbyDemandsupply);
+                returnpro.Add(item.SA_MarketbyDemandsupplyGraph);
             }
             return returnpro;
         }
@@ -884,6 +1026,27 @@ namespace ChemAnalyst.DAL
                                         select (n.id)).FirstOrDefault();
 
                 return _context.SA_MarketbyDemandsupply.Where(Year => Year.Product == uniqueCategories).ToList();
+            }
+
+
+        }
+
+        public List<SA_MarketbyDemandsupplyGraph> GetDemandsupplyGraphWiseProductList(string ProductId)
+        {
+            if (ProductId != null)
+            {
+                int id = int.Parse(ProductId);
+
+                return _context.SA_MarketbyDemandsupplyGraph.Where(Year => Year.Product == id).ToList();
+            }
+            else
+            {
+                int uniqueCategories = (from m in _context.SA_MarketbyDemandsupplyGraph
+                                        join n in _context.SA_Product on
+                                        m.Product equals n.id
+                                        select (n.id)).FirstOrDefault();
+
+                return _context.SA_MarketbyDemandsupplyGraph.Where(Year => Year.Product == uniqueCategories).ToList();
             }
 
 

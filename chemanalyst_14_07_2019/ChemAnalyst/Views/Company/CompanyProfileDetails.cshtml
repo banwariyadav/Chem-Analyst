@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ChemAnalyst.Models.SA_Company>
+﻿@model ChemAnalyst.ViewModel.CustCompanyVM
+    
 @{
     ViewBag.Title = "CompanyProfile";
     Layout = "~/Views/Shared/_LayoutUser7.cshtml";
@@ -17,18 +18,17 @@
             <div class="company-profile">
                 <div class="com-top-3col">
                     <div class="row">
-                        @foreach (var item in Model)
-                        {
+                       
                             <div class="col-md-2 col-lg-2">
                                 <div class="ind-map-col">
-                                    <img src="~/ProductImages/@item.Logo" class="img-responsive">
+                                    <img src="~/ProductImages/@Model.Logo" class="img-responsive">
                                 </div>
                             </div>
 
                             <div class="col-md-10 col-lg-10">
                                 <div class="info-text-col">
-                                    <h4>@item.Name</h4>
-                                    <p>@item.Description</p>
+                                    <h4>@Model.Name</h4>
+                                    <p>@Model.Description</p>
 
                                 </div>
                             </div>
@@ -40,40 +40,40 @@
                                         <tbody>
                                             <tr>
                                                 <td>Name of the Company</td>
-                                                <td>@item.Name</td>
+                                                <td>@Model.Name</td>
                                             </tr>
                                             <tr>
                                                 <td>Registration Date</td>
-                                                <td>@item.RegDate.ToShortDateString()</td>
+                                                <td>@Model.RegDate.ToString()</td>
                                             </tr>
                                             <tr>
                                                 <td>CIN</td>
-                                                <td>@item.CIN</td>
+                                                <td>@Model.CIN</td>
                                             </tr>
                                             <tr>
                                                 <td>Category/Sub-Category of Company</td>
-                                                <td>@item.Category</td>
+                                                <td>@Model.Category</td>
                                             </tr>
                                             <tr>
                                                 <td>Addtess</td>
-                                                <td>@item.Address</td>
+                                                <td>@Model.Address</td>
                                             </tr>
                                             <tr>
                                                 <td>Contact Details</td>
                                                 <td>
-                                                    Website:<Span>@item.website</Span>
-                                                    Email:<Span>@item.EmailId</Span>
-                                                    fax:<Span>@item.fax</Span>
-                                                    Phone No:<Span>@item.phoneNo</Span>
+                                                    Website:<Span>@Model.website</Span>
+                                                    Email:<Span>@Model.EmailId</Span>
+                                                    fax:<Span>@Model.fax</Span>
+                                                    Phone No:<Span>@Model.phoneNo</Span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Number of Employee</td>
-                                                <td>@item.NOE</td>
+                                                <td>@Model.NOE</td>
                                             </tr>
                                             <tr>
                                                 <td>Managing Director/CEO</td>
-                                                <td>@item.CEO</td>
+                                                <td>@Model.CEO</td>
                                             </tr>
 
                                         </tbody>
@@ -86,41 +86,40 @@
                                     <h3>Financial</h3>
                                     <table class="table table-bordered">
                                         <tbody>
-                                            <tr>
-                                                <td>Revenue</td>
-                                                <td>2000 INR</td>
-                                            </tr>
-                                            <tr>
-                                                <td>% Growth</td>
-                                                <td>4%</td>
-                                            </tr>
-                                            <tr>
-                                                <td>PBT</td>
-                                                <td>50 INR</td>
-                                            </tr>
-                                            <tr>
-                                                <td>%Margin</td>
-                                                <td>2%</td>
-                                            </tr>
-                                            <tr>
-                                                <td>PAT</td>
-                                                <td>10</td>
-                                            </tr>
-                                            <tr>
-                                                <td>% Margin</td>
-                                                <td>10%</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Liabilities</td>
-                                                <td>10%</td>
-                                            </tr>
+                                            @foreach (var item in Model.lstFinacialData)
+                                            {
+                                                <tr>
+                                                    <td>Revenue - @item.FinacialYear</td>
+                                                    <td>@item.Revenue INR</td>
+                                                </tr>
+                                                    <tr>
+                                                        <td>% Growth - @item.FinacialYear</td>
+                                                        <td>@item.Growth %</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>PBT - @item.FinacialYear</td>
+                                                        <td>@item.PBT</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Pat - @item.FinacialYear</td>
+                                                        <td>@item.Pat</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Margin - @item.FinacialYear</td>
+                                                        <td>@item.Margin</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Liablities - @item.FinacialYear</td>
+                                                        <td>@item.Liablities</td>
+                                                    </tr>
+                                            }
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
 
 
-                            <div class="col-md-12">
+                            <div class="col-md-12" style="    margin-bottom: 20px;">
                                 <div class="mains-indus-tabs">
                                     <ul class="nav nav-tabs" role="tablist">
                                         <li class="nav-item">

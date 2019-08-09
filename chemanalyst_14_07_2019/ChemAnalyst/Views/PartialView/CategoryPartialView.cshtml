@@ -8,7 +8,7 @@
                 <h2>Market <strong>Analysis</strong></h2>
             </div>
 
-            <div class="col-md-4 text-right"><a href="@Url.Action("ProductList", "ChemAnalyst")" class="common-btn">Browse 400+ Chemicals</a></div>
+            <div class="col-md-4 text-right"><a href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")" class="common-btn">Browse 400+ Chemicals</a></div>
         </div>
     </div>
 
@@ -16,18 +16,77 @@
     <div class="row">
        
             <div class="col-md-3">
-                <div class="mrket-list">
-                    <ul>
-                        @foreach (var item in Model)
-                        {
-                            <li><a href="#"><strong>@item.CategoryName</strong></a>
-                                <p>@(item.CategoryDiscription.Length > 65 ? (item.CategoryDiscription.Substring(0, 65)) : item.CategoryDiscription)</p>
-                        </li>
-                        }
-                    </ul>
-                        
-                </div>
-            </div>
+                
+                    <div class="mrket-list" >
+                        <ul>
+                            @*@foreach (var item in Model)
+                    {
+                        <li><a href="#"><strong>@item.CategoryName</strong></a>
+                            <p>@(item.CategoryDiscription.Length > 65 ? (item.CategoryDiscription.Substring(0, 65)) : item.CategoryDiscription)</p>
+                    </li>
+                    }*@
+                            <h3  style="background: #3368c6;color: #fff;font-size: 20px;padding: 10px 15px;margin-top: -10px;margin-left: -40px;"><i class="fa fa-bell-o"></i> Analysis Parameters</h3>
+                            <marquee  behavior="scrolling" direction="up" onmouseover="stop()" onmouseout="start()" style="height: 444px;">
+                                <li>
+                                    <a href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")"><strong>Company</strong></a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")"><strong>Location</strong></a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")"><strong>Technology</strong></a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")"><strong>Process</strong></a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")"><strong>Production</strong></a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")"><strong>Operating Efficiency</strong></a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")"><strong>Demand By EndUse(T)</strong></a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")"><strong>Demand By Grade(T)</strong></a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")"><strong>Demand By Type(T)</strong></a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")"><strong>Demand By SalesChannel(T)</strong></a>
+                                </li>
+
+                                <li>
+                                    <a href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")"><strong> Demand By GradePricing</strong></a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")"><strong>Demand By Region(T)</strong></a>
+                                </li>
+
+                                <li>
+                                    <a href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")"><strong>Demand By TradeExport</strong></a>
+                                </li>
+
+                                <li>
+                                    <a href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")"><strong>Demand By TradeImport</strong></a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")"><strong>Demand Supply Gap</strong></a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("MarketAnalysisChart", "MarketAnalysis")"><strong>Demand By CompanyShares(T)</strong></a>
+                                </li>
+
+                            </marquee>
+
+
+</ul>
+
+                    </div>
+               
+</div>
 
             <div class="col-md-9 market-pic">
                 <div class="row">
@@ -48,3 +107,4 @@
         
     </div>
 </div>
+
