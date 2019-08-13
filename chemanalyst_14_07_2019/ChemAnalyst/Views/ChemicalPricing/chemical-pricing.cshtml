@@ -217,7 +217,7 @@
                                     </div>
                                     <div class="col-md-4 pl-0">
                                         <p><i class="fa fa-list"></i> Product</p>
-                                        <select class="btn btn-primary width100" id="ddlProduct" name="ddlProduct" required="required" oninvalid="this.setCustomValidity('Please select product')" onchange="try{setCustomValidity('')}catch(e){}"></select>
+                                        <select class="btn  btn-primary  width100 bt" id="ddlProduct" name="ddlProduct" required="required" oninvalid="this.setCustomValidity('Please select product')" onchange="try{setCustomValidity('')}catch(e){}"></select>
                                     </div>
                                     <div class="col-md-4 pl-0">
                                         <p><i class="fa fa-random"></i> Range</p>
@@ -227,7 +227,7 @@
                                             <option value="Monthly">Monthly</option>
                                             <option value="Quarterly">Quarterly</option>
                                             <option value="Weekly">Weekly</option>
-                                            <option value="Daily basis">Daily Retail</option>
+                                            <option value="Daily Retail">Daily Retail</option>
                                             <option value="Daily Bulk">Daily Bulk</option>
                                         </select>
                                     </div>
@@ -236,7 +236,7 @@
                                         <select class="btn btn-primary width100" id="ddlChart" name="ddlChart">
                                             <option value="line">Line Chart</option>
                                             <option value="bar">Bar Chart</option>
-                                            <option value="pie">Pie Chart</option>
+                                            @*<option value="pie">Pie Chart</option>*@
                                         </select>
                                     </div>
                                     <div style="display:@(ViewBag.QYears == null ? "" : "none")" class="col-md-4 dtcol mt10">
@@ -278,7 +278,7 @@
                                     <input type="hidden" id="MinValue" name="MinValue" value="" />
                                     <input type="hidden" id="ClearValue" name="ClearValue" value="" />
                                     <input type="hidden" id="hiddenLegends" name="hiddenLegends" value="@selectedLegends" />
-                                    <div class="col-md-12 pl-0 mt12" style="margin-left: 15px;">
+                                    <div class="col-md-2 pl-0 mt12" style="margin-left: 15px;">
                                         <button type="submit" onclick="SubmitForm()" class="btn btn-green mt27" id="ViewChart" value="ViewChart" name="submit">
                                             <i class="fa fa-refresh"></i>
                                             View Chart
@@ -287,11 +287,16 @@
                                             <i class="fa fa-refresh"></i>
                                             Reset
                                         </button>
-
-                                        <span id="exportpdf2" style="cursor:pointer; " class="btn btn-green mt30 " onclick="generatePDF()">Export as PDF</span>
-                                        <a href="javascript:void(0)" id="exportxls2" onclick="exportToExcel('tblRegisteredUsers', 'Chemical-Pricing.')" class="btn btn-green mt30 ">Export as Excel</a>
-
+                                      
                                     </div>
+                                    <div class="col-md-4 pl-0 mt12" style="margin-left: 15px;">
+                                        <a href="javascript:void(0)" id="exportpdf2" onclick="generatePDF()" class="text-primary" style="margin-top:35px">Export as PDF</a>
+                                        <a href="javascript:void(0)" id="exportxls2" onclick="exportToExcel('tblRegisteredUsers', 'Chemical-Pricing.')" class="text-primary" style="margin-left: 25px;">Export as Excel</a>
+                                    </div>
+                                   
+                                   
+                                 
+
                                 </div>
                                                 }
                         </div>
@@ -346,8 +351,8 @@
                                     @if (Model.FirstOrDefault().range.ToLower() == "weekly" || Model.FirstOrDefault().range.ToLower() == "quarterly")
                                     {
                                         <div style="overflow-x:scroll">
-                                            <table class="table table-hover table-bordered" id="tblRegisteredUsers">
-                                                <thead>
+                                            <table class="table table-hover table-bordered table-responsive-lg" id="tblRegisteredUsers">
+                                                <thead class="thead-light">
                                                     <tr class="table-primary">
                                                         <th>Product</th>
                                                         @if (Model.FirstOrDefault().range.ToLower() == "weekly")
@@ -357,7 +362,7 @@
                                                         @foreach (string column in Model.Select(x => x.StackedDimensionOne).ToList())
                                                         {
 
-                                                            <th>@column</th>
+                                                            <th style="width:125px" nowrap>@column</th>
                                                         }
                                                     </tr>
                                                 </thead>
@@ -365,7 +370,7 @@
                                                     @foreach (string column in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
                                                     {
                                                         <tr>
-                                                            <td>@column</td>
+                                                            <td style="width:125px" nowrap>@column</td>
                                                             @if (Model.FirstOrDefault().range.ToLower() == "weekly")
                                                             {
                                                                 //<th>@Model.FirstOrDefault().Discription.ToString()</th>
@@ -387,211 +392,222 @@
                                     {
                                         string[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
                                         string[] mths = { "Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec" };
-                                        <table class="table table-hover table-bordered" id="tblRegisteredUsers">
-                                            <thead>
-                                                <tr class="table-primary">
-                                                    <th>Product</th>
-                                                    <th>Year</th>
-                                                    @foreach (string column in mths)
+                                <div style="overflow-x:scroll">
+                                    <table class="table table-hover table-bordered table-responsive-lg" id="tblRegisteredUsers">
+                                        <thead class="thead-light">
+                                            <tr class="table-primary">
+                                                <th>Product</th>
+                                                <th>Year</th>
+                                                @foreach (string column in mths)
+                                                {
+                                                    <th>@column</th>
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (string x in Model.Select(x => x.Year).Distinct().ToList())
+                                            //foreach (string column in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
+                                            {
+                                                foreach (string column in (Model.FirstOrDefault().LstData.Select(z => z.DimensionOne).ToList()))
+                                                // foreach (string x in Model.Select(x => x.Year).Distinct().ToList())
+                                                {
+                                                    //comment this condifition to view all year data including 0 total
+                                                    if (Model.Where(c => c.StackedDimensionOne.Contains(x)).ToList().Sum(tt => tt.LstData.FirstOrDefault(e => e.DimensionOne == column).Quantity) > 0)
                                                     {
-                                                        <th>@column</th>
-                                                    }
+
+                                                        <tr>
+                                                            <td>@column</td>
+                                                            <td>@x</td>
+                                                            @foreach (string s in months)
+                                                            {
+
+                                                                <td>
+                                                                    @if (Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x) != null &&
+Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrDefault(e => e.DimensionOne == column) != null
+)
+                                                                    {
+                                                                        var count = Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrDefault(e => e.DimensionOne == column).Quantity;
+                                                                        <span>@(count == 0 ? "NA" : count.ToString("0")) </span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span>NA</span>
+                                                                    }
+                                                                </td>
+                                                            }
+                                                        </tr>}
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                    }
+                                    else if (Model.FirstOrDefault().range == "Daily Retail")
+                                    {
+                                    @*<div style="overflow-y:scroll; height:500px;width: 1200px;z-index: 9999;    position: relative;">*@
+                                    @*<div>*@
+                                <div id="divScorll" style="height:500px ;z-index: 9999; position: relative;">
+                                    <div style="overflow-x:scroll">
+                                        <table class="table table-hover table-bordered  daily retail table-responsive-md" id="tblRegisteredUsers">
+                                            <thead class="thead-light">
+                                                <tr class="table-primary">
+                                                    <th scope="col" style=" width:91px">Product</th>
+                                                    <th scope="col" style=" width:91px">Date</th>
+                                                    <th scope="col" style=" width:120px">Commodity</th>
+                                                    <th scope="col" style=" width:91px">Type</th>
+                                                    <th scope="col" style=" width:82px">Terms</th>
+                                                    <th scope="col" style=" width:90px">Location</th>
+                                                    <th scope="col" style=" width:110px">Price</th>
+                                                    <th scope="col" style=" width:110px">Mid Value</th>
+                                                    <th scope="col" colspan="2" style=" width:150px">Differnce 4 Weeks Ago</th>
+                                                    <th scope="col" style=" width:150px">Contract Details</th>
+                                                    @*@foreach (var column in (Model.FirstOrDefault().lstDataTable.ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
+                        {
+
+                            <th>@column</th>
+                        }*@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach (string x in Model.Select(x => x.Year).Distinct().ToList())
-                                                //foreach (string column in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
+                                                @foreach (var column in (Model.FirstOrDefault().lstDataTable.ToList()))
                                                 {
-                                                    foreach (string column in (Model.FirstOrDefault().LstData.Select(z => z.DimensionOne).ToList()))
-                                                    // foreach (string x in Model.Select(x => x.Year).Distinct().ToList())
-                                                    {
-                                                        //comment this condifition to view all year data including 0 total
-                                                        if (Model.Where(c => c.StackedDimensionOne.Contains(x)).ToList().Sum(tt => tt.LstData.FirstOrDefault(e => e.DimensionOne == column).Quantity) > 0)
-                                                        {
-
-                                                            <tr>
-                                                                <td>@column</td>
-                                                                <td>@x</td>
-                                                                @foreach (string s in months)
+                                                    <tr>
+                                                        <td style=" width:92px">@column.FileName</td>
+                                                        <td style=" width:92px">@column.Date</td>
+                                                        <td style=" width:125px">@column.Commodity</td>
+                                                        <td style=" width:92px">@column.Type</td>
+                                                        <td style=" width:83px">@column.Term</td>
+                                                        <td style=" width:95px">@column.Location</td>
+                                                        <td style=" width:113px">@column.Price</td>
+                                                        <td style=" width:112px">@column.MidValue</td>
+                                                        <td style="width:150px">
+                                                            @*<td style=" width:40px">*@
+                                                            @{
+                                                                if (column.Difference4WeekAgo.FirstOrDefault().ToString() == "(")
                                                                 {
-
-                                                                    <td>
-                                                                        @if (Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x) != null &&
-Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrDefault(e => e.DimensionOne == column) != null
-)
-                                                                        {
-                                                                            var count = Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrDefault(e => e.DimensionOne == column).Quantity;
-                                                                        <span>@(count == 0 ? "NA" : count.ToString("0")) </span>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <span>NA</span>
-                                                                        }
-                                                                    </td>
+                                                                    <img src="~/images/down_stock_2.png" style="width: 20px;height: 15px;" />
+                                                                    @*<span><i class="fa fa-arrow-circle-down" style="color:red"></i></span>*@
                                                                 }
-                                                            </tr>}
-                                                    }
+                                                                else
+                                                                {
+                                                                    <img src="~/images/up_stock_1.png" style="width: 20px;height: 15px;" />
+                                                                    @*<span><i class="fa fa-arrow-circle-up" style="color:green"></i></span>*@
+                                                                }
+                                                            }
+                                                            @column.Difference4WeekAgo
+                                                        </td>
+                                                        @*<td style="width:110px">@column.Difference4WeekAgo</td>*@
+                                                        @*<td>
+                                @{
+                                    if (column.Difference4WeekAgo.FirstOrDefault().ToString() == "(")
+                                    {
+
+                                        @column.Difference4WeekAgo <span><i class="fa fa-arrow-circle-down" style="color:red"></i></span>
+                                    }
+                                    else
+                                    {
+                                        @column.Difference4WeekAgo <span><i class="fa fa-arrow-circle-up" style="color:green"></i></span>
+                                    }
+                                }
+                            </td>*@
+                                                        <td style=" width:130px">@column.ContractDetails</td>
+                                                    </tr>
                                                 }
                                             </tbody>
                                         </table>
+                                    </div>
+                                </div>
                                     }
-                                    else if (Model.FirstOrDefault().range.ToLower() == "daily basis")
+                                    else if (Model.FirstOrDefault().range.ToLower() == "daily bulk")
                                     {
-                                        @*<div style="overflow-y:scroll; height:500px;width: 1200px;z-index: 9999;    position: relative;">*@
-                                        @*<div>*@
-                                        <div id="divScorll" style="height:500px ;z-index: 9999; position: relative;">
-                                            <table class="table table-hover table-bordered dailybasis" id="tblRegisteredUsers">
-                                                <thead>
-                                                    <tr class="table-primary">
-                                                        <th scope="col" style=" width:90px">Product</th>
-                                                        <th scope="col" style=" width:90px">Date</th>
-                                                        <th scope="col" style=" width:116px">Commodity</th>
-                                                        <th scope="col" style=" width:91px">Type</th>
-                                                        <th scope="col" style=" width:82px">Terms</th>
-                                                        <th scope="col" style=" width:90px">Location</th>
-                                                        <th scope="col" style=" width:110px">Price</th>
-                                                        <th scope="col" style=" width:110px">Mid Value</th>
-                                                        <th scope="col" colspan="2" style=" width:150px">Differnce 4 Weeks Ago</th>
-                                                        <th scope="col" style=" width:155px">Contract Details</th>
-                                                        @*@foreach (var column in (Model.FirstOrDefault().lstDataTable.ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
-                                                            {
+                                    <table class="table table-hover table-bordered table-responsive-lg" id="tblRegisteredUsers">
+                                        <thead class="thead-light">
+                                            <tr class="table-primary">
+                                                <th>Days</th>
+                                                @foreach (string column in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
+                                                {
 
-                                                                <th>@column</th>
-                                                            }*@
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach (var column in (Model.FirstOrDefault().lstDataTable.ToList()))
+                                                    <th>@column</th>
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (string count in Model.Select(x => x.StackedDimensionOne).ToList())
+                                            {
+                                                <tr>
+                                                    @foreach (var data in Model.Where(x => x.StackedDimensionOne == count).ToList())
+
                                                     {
-                                                        <tr>
-                                                            <td style=" width:90px">@column.FileName</td>
-                                                            <td style=" width:90px">@column.Date</td>
-                                                            <td style=" width:116px">@column.Commodity</td>
-                                                            <td style=" width:91px">@column.Type</td>
-                                                            <td style=" width:82px">@column.Term</td>
-                                                            <td style=" width:93px">@column.Location</td>
-                                                            <td style=" width:110px">@column.Price</td>
-                                                            <td style=" width:110px">@column.MidValue</td>
-                                                            <td style="width:150px">
-                                                                @*<td style=" width:40px">*@
-                                                                @{
-                                                                    if (column.Difference4WeekAgo.FirstOrDefault().ToString() == "(")
-                                                                    {
-                                                                        <img src="~/images/down_stock_2.png" style="width: 20px;height: 15px;" />
-                                                                        @*<span><i class="fa fa-arrow-circle-down" style="color:red"></i></span>*@
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <img src="~/images/up_stock_1.png" style="width: 20px;height: 15px;" />
-                                                                        @*<span><i class="fa fa-arrow-circle-up" style="color:green"></i></span>*@
-                                                                    }
-                                                                }
-                                                                @column.Difference4WeekAgo
-                                                            </td>
-                                                            @*<td style="width:110px">@column.Difference4WeekAgo</td>*@
-                                                            @*<td>
-                                                                    @{
-                                                                        if (column.Difference4WeekAgo.FirstOrDefault().ToString() == "(")
-                                                                        {
+                                                        <th>@count</th>
 
-                                                                            @column.Difference4WeekAgo <span><i class="fa fa-arrow-circle-down" style="color:red"></i></span>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            @column.Difference4WeekAgo <span><i class="fa fa-arrow-circle-up" style="color:green"></i></span>
-                                                                        }
-                                                                    }
-                                                                </td>*@
-                                                            <td style=" width:155px">@column.ContractDetails</td>
-                                                        </tr>
-                                                                    }
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                                                    }
-                                                                    else if (Model.FirstOrDefault().range.ToLower() == "daily bulk")
-                                                                    {
-                                                                        <table class="table table-hover table-bordered" id="tblRegisteredUsers">
-                                                                            <thead>
-                                                                                <tr class="table-primary">
-                                                                                    <th>Days</th>
-                                                                                    @foreach (string column in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
-                                                                                    {
+                                                        foreach (var value in data.LstData.Select(x => x.Quantity).ToList())
+                                                        {
+                                                            <th>@value</th>
+                                                        }
 
-                                                                                        <th>@column</th>
-                                                                                    }
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                                @foreach (string count in Model.Select(x => x.StackedDimensionOne).ToList())
-                                                                                {
-                                                                                    <tr>
-                                                                                        @foreach (var data in Model.Where(x => x.StackedDimensionOne == count).ToList())
+                                                    }
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                    }
 
-                                                                                        {
-                                                                                            <th>@count</th>
+                                    else
+                                    {
+                                    <table class="table table-hover table-bordered table-responsive-lg" id="tblRegisteredUsers">
+                                        <thead class="thead-light">
+                                            <tr class="table-primary">
+                                                <th>Year</th>
+                                                @foreach (string column in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
+                                                {
 
-                                                                                            foreach (var value in data.LstData.Select(x => x.Quantity).ToList())
-                                                                                            {
-                                                                                                <th>@value</th>
-                                                                                            }
+                                                    <th>@column</th>
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (string count in Model.Select(x => x.StackedDimensionOne).ToList())
+                                            {
+                                                <tr>
+                                                    @foreach (var data in Model.Where(x => x.StackedDimensionOne == count).ToList())
 
-                                                                                        }
-                                                                                    </tr>
-                                                                                }
-                                                                            </tbody>
-                                                                        </table>
-                                                                    }
+                                                    {
+                                                        <th>@count</th>
 
-                                                                    else
-                                                                    {
-                                                                        <table class="table table-hover table-bordered" id="tblRegisteredUsers">
-                                                                            <thead>
-                                                                                <tr class="table-primary">
-                                                                                    <th>Year</th>
-                                                                                    @foreach (string column in (Model.FirstOrDefault().LstData.Select(x => x.DimensionOne).ToList()))// Model.Select(x => x.StackedDimensionOne).ToList())
-                                                                                    {
+                                                        foreach (var value in data.LstData.Select(x => x.Quantity).ToList())
+                                                        {
+                                                            <th>@value.ToString("0")</th>
+                                                        }
 
-                                                                                        <th>@column</th>
-                                                                                    }
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                                @foreach (string count in Model.Select(x => x.StackedDimensionOne).ToList())
-                                                                                {
-                                                                                    <tr>
-                                                                                        @foreach (var data in Model.Where(x => x.StackedDimensionOne == count).ToList())
-
-                                                                                        {
-                                                                                            <th>@count</th>
-
-                                                                                            foreach (var value in data.LstData.Select(x => x.Quantity).ToList())
-                                                                                            {
-                                                                                                <th>@value.ToString("0")</th>
-                                                                                            }
-
-                                                                                        }
-                                                                                    </tr>
-                                                                                }
-                                                                            </tbody>
-                                                                        </table>
-                                                                    }
+                                                    }
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <aside>
-                            <div class="side-news-feed" style="height: 540px">
+                            <div class="side-news-feed" style="height: 500px">
                                 <h3><i class="fa fa-bell-o"></i> News</h3>
-                                <marquee behavior="scroll" direction="up" style="height: 450px;" scrollamount="3" onmouseover="stop()" onmouseout="start()">
+                                <marquee behavior="scroll" direction="up" style="height: 400px;" onmouseover="stop()" onmouseout="start()">
                                     @foreach (var news in Model.Select(x => x.NewsDetailsViewModel.NewsList).FirstOrDefault())
                                     {
                                         <div class="news-feed-col">
                                             <a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = news.GenerateItemNameAsParam() })">
                                                 <div class="right-news-desc2">
-                                                    <p>@(news.NewsDiscription.Length > 60 ? (news.NewsDiscription.Substring(0, 60)) : news.NewsDiscription)</p>
-                                                    <p><i class="fa fa-clock-o"></i>@news.CreatedTime.ToShortDateString()</p>
+                                                    @{
+
+                                                        if (news.NewsDiscription.Length > 60) {
+
+                                                           <p>@Html.Raw(WebUtility.HtmlDecode(news.NewsDiscription.Substring(0, 60)))</p>
+                                                    }
+
+                                                    }
+                                                    <p><i class="fa fa-clock-o"></i>@news.CreatedTime.ToString("MMM/yyyy")</p>
                                                 </div>
                                             </a>
                                         </div>
@@ -599,21 +615,28 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                                     }
                                 </marquee>
 </div>
-                            <div class="side-news-feed mt-4" style="height: 540px;">
+                            <div class="side-news-feed mt-4" style="height: 500px;">
                                 <h3><i class="fa fa-thumbs-up"></i> Top Deals</h3>
                                 <marquee behavior="scroll" direction="up" style="height: 450px;" scrollamount="3" onmouseover="stop()" onmouseout="start()">
                                     @foreach (var item in Model.Select(x => x.NewsDetailsViewModel.DealList).FirstOrDefault())
                                     {
                                         <div class="news-feed-col">
                                             <a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">
-                                                @if (item.DealsImg != string.Empty)
-                                                {
-                                                    <div class="left-news-pic"><img src="/images/@item.DealsImg" alt=""></div>
-                                                }
-                                                <div class="right-news-desc">
-                                                    <p>@item.DealsDiscription</p>
-                                                    <p><i class="fa fa-clock-o"></i>@item.CreatedTime.Value.ToShortDateString()</p>
-                                                </div>
+                                               
+                                                <div class="right-news-desc2">
+                                                    
+                                                        @{
+
+                                                            if (item.DealsDiscription.Length > 60)
+                                                            {
+                                                            <p>@Html.Raw(WebUtility.HtmlDecode(item.DealsDiscription.Substring(0, 60)))</p>
+
+                                                            }
+
+                                                            }
+                                                    
+                                                    <p><i class="fa fa-clock-o"></i>@item.CreatedTime.Value.ToString("MMM/yyyy")</p>
+                                                        </div>
                                             </a>
                                         </div>
                                     }
@@ -636,6 +659,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                                 <div class="freeSub">
                                     <h2>Get Chemical Pricing in few-clicks.</h2>
                                     <a href="@Url.Action("FreeTrail", "ChemAnalyst")" class="btn btn-yellow">Start your Free Trail today.</a>
+                                    <a href="@Url.Action("Index", "ChemAnalyst")" class="btn btn-green">Go to Home.</a>
                                     <a href="@Url.Action("FreeTrail", "ChemAnalyst")" class="text-center">Click here to subscribe free trial to enjoy our benefits!</a>
                                 </div>
                             </div>
@@ -647,26 +671,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
             </div>
         </div>
     </div>
-    <!-- The Modal -->
-    @*<div class="modal" id="Comentery">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h1 class="modal-title">Commentaries </h1>
-                    <button type="button" class="close" data-dismiss="modal">×</button>
-                </div>
-                <!-- Modal body -->
-                <div class="modal-body" id="Commentaries">
-                </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>*@
+   
 
 
     <footer>
@@ -674,45 +679,30 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
             <div class="footer-bottom">
                 <div class="row">
                     <div class="col-lg-4">
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
-                        <div class="footer-social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                        <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="foot-links">
+                            <p><a href="#">About Us</a></p>
+                            
                         </div>
                     </div>
                     <div class="col-lg-2">
-                        <h3>Useful links</h3>
                         <div class="foot-links">
-                            <p><a href="#">About Us</a></p>
-                            <p><a href="#">Privacy Policy</a></p>
                             <p><a href="#">FAQs</a></p>
                         </div>
                     </div>
                     <div class="col-lg-2">
-                        <h3>Our Services</h3>
                         <div class="foot-links">
-                            <p><a href="#">About Us</a></p>
                             <p><a href="#">Privacy Policy</a></p>
-                            <p><a href="#">FAQs</a></p>
+                            
                         </div>
                     </div>
-                    <div class="col-lg-3">
-                        <h3>Recent News & Deals</h3>
+                    <div class="col-lg-2">
                         <div class="foot-links">
-                            <p>
-                                <a href="#">
-                                    Test with Nursing Implications
-                                    <br>August 8, 2018
-                                </a>
-                            </p>
-                            <p>
-                                <a href="#">
-                                    Test with Nursing Implications
-                                    <br>August 8, 2018
-                                </a>
-                            </p>
+                           
+                            <p><a href="#">Terms &Aacute; Conditions</a></p>
                         </div>
                     </div>
                 </div>
@@ -808,7 +798,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                     if($("#ddlRange").val() == "Quarterly" ){
                         diff = (365);
                     }
-                    if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily basis" || $("#ddlRange").val() == "Daily Bulk"){
+                    if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily Retail" || $("#ddlRange").val() == "Daily Bulk"){
                         diff = (29);
                     }
                     var dt = new Date(selected);
@@ -835,7 +825,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                     if($("#ddlRange").val() == "Quarterly"){
                         diff = (365);
                     }
-                    if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily basis" || $("#ddlRange").val() == "Daily Bulk"){
+                    if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily Retail" || $("#ddlRange").val() == "Daily Bulk"){
                         diff = (29);
                     }
 
@@ -866,7 +856,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
             if($("#ddlRange").val() == "Quarterly"){
                 diff = (365);
             }
-            if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily basis" || $("#ddlRange").val() == "Daily Bulk"){
+            if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily Retail" || $("#ddlRange").val() == "Daily Bulk"){
                 diff = (29);
             }
 
@@ -936,7 +926,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
             var range = $(ddlRange).find("option:selected").val();
             var ddlCustomers = $("#ddlChart");
 
-            if (range == "Daily basis" || range == "Daily Bulk") {
+            if (range == "Daily Retail" || range == "Daily Bulk") {
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
             }
             else if(range == "Quarterly")
@@ -952,7 +942,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
             }
             else {
-                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
             }
 
             ShowCommentariesByDeafult()
@@ -963,9 +953,9 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
             var ddlCustomers = $("#ddlChart");
 
 
-            if (range == "Daily basis" || range == "Daily Bulk") {
-                swal("Please select only 30 days to see daily basis data!")
-                //alert("Please select only 30 days to see daily basis data.");
+            if (range == "Daily Retail" || range == "Daily Bulk") {
+                swal("Please select only 30 days to see daily Retail data!")
+                //alert("Please select only 30 days to see daily Retail data.");
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
             }
             else if(range == "Quarterly")
@@ -974,6 +964,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
             }
             else if(range == "Monthly")
             {
+                swal("Please select 36 Months date range!")
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
             }
             else if(range == "Weekly")
@@ -981,7 +972,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
             }
             else {
-                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
             }
         });
 
@@ -1439,7 +1430,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
     </script>
     <script>
         //$(document).ready( function () {
-        //    $('.dailybasis').DataTable();
+        //    $('.dailyRetail').DataTable();
         //} );
 
         //function generatePDF() {

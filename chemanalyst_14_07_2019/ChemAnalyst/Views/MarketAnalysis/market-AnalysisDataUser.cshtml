@@ -1,16 +1,25 @@
-﻿@{
+﻿@using ChemAnalyst.ViewModel
+@model List<ChemAnalyst.ViewModel.MA_StackViewModel>
+@{
 
     var Product = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.product);
     var ChartType = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ChartType);
     var range = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.range);
     var Category = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Category);
 
+    //var selectedLegends = Model.FirstOrDefault().selectedLegends;
 
+    //if (selectedLegends == null)
+    //{
+    //    selectedLegends = "";
+    //}
+
+    var chart22 = Newtonsoft.Json.JsonConvert.SerializeObject(Convert.ToString(ViewBag.Chart2));
 }
 @{
     if (Session["UserRole"] != null && Session["UserRole"].ToString().ToUpper() == "CUSTOMER")
     {
-        Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+        Layout = "~/Views/Shared/_LayoutCustomer-market-analysis.cshtml";
     }
 
    
@@ -40,6 +49,108 @@
     <link href="~/css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/bootstrap-multiselect.css">
 
+    <style>
+        #tblRegisteredUsers thead tr th {
+            background-color: #337ab7;
+        }
+
+        #myModal .modal-content {
+            background-color: transparent;
+        }
+
+        #myModal .modal-dialog {
+            max-width: 790px;
+            height: 350px;
+            background-image: url(../images/subscribe-bg.png);
+            top: 15%;
+            background-size: cover;
+        }
+
+        .freeSub {
+            color: #fff;
+            padding: 50px 50px 0px 30px;
+        }
+
+            .freeSub h2 {
+                text-transform: uppercase;
+            }
+
+            .freeSub a.btn.btn-yellow {
+                color: #000000;
+                background: yellow;
+                text-transform: uppercase;
+            }
+
+            .freeSub a.text-center {
+                color: #fff;
+                margin-top: 10px;
+            }
+
+        .rangeSlider .slidecontainer {
+            width: 100%;
+        }
+
+        .rangeSlider {
+            margin-left: 30px;
+        }
+
+            .rangeSlider .slider {
+                -webkit-appearance: none;
+                width: 96%;
+                height: 10px;
+                border-radius: 7px;
+                background: #1478e4;
+                outline: none;
+                opacity: 0.7;
+                -webkit-transition: .2s;
+                transition: opacity .2s;
+            }
+
+                .rangeSlider .slider:hover {
+                    opacity: 1;
+                }
+
+                .rangeSlider .slider::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    width: 25px;
+                    height: 25px;
+                    border-radius: 50%;
+                    background: #7db11a;
+                    cursor: pointer;
+                }
+
+                .rangeSlider .slider::-moz-range-thumb {
+                    width: 25px;
+                    height: 25px;
+                    border-radius: 50%;
+                    background: #7db11a;
+                    cursor: pointer;
+                }
+
+        ::placeholder { /* Firefox, Chrome, Opera */
+            color: #fff;
+        }
+
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: #fff;
+        }
+
+        ::-ms-input-placeholder { /* Microsoft Edge */
+            color: #fff;
+        }
+
+        .side-left {
+            padding: 0px !important;
+        }
+
+        #ddlRange, #category, #ddlProduct, #ddlChart, #ddlFyear, #ddlToYear {
+            color: #fff !important;
+            background-color: #337ab7 !important;
+            border-color: #337ab7 !important;
+        }
+    </style>
+
 
 
 </head>
@@ -65,16 +176,14 @@
                                 <p><i class="fa fa-bars"></i> Category</p>
                                 @Html.DropDownList("category", new SelectList(ViewBag.ProductList, "Value", "Text"), "Please select category", new { @id = "category", @class = "btn btn-primary width100", required = "required", oninvalid = "this.setCustomValidity('Please select Category')", onchange = "try{setCustomValidity('')}catch(e){}" })
 
-
                             </div>
                             <div class="col-md-4 pl-0">
                                 <p><i class="fa fa-list"></i> Product</p>
                                 <select class="btn btn-primary width100" id="ddlProduct" name="ddlProduct" required="required" oninvalid="this.setCustomValidity('Please select product')" onchange="try{setCustomValidity('')}catch(e){}"></select>
                             </div>
-
                             <div class="col-md-4 pl-0">
-                                <p><i class="fa fa-random"></i> Range</p>
-                                <select id="ddlRange" name="ddlRange" class="btn btn-primary width100" required="required" oninvalid="this.setCustomValidity('Please select Range')" onchange="try{setCustomValidity('')}catch(e){}">
+                                <p><i class="fa fa-random"></i> Analysis Parameters</p>
+                                <select id="ddlRange" name="ddlRange" class="btn btn-primary width100" required="required" oninvalid="this.setCustomValidity('Please Select File Type')" onchange="try{setCustomValidity('')}catch(e){}">
                                     <option value="">Select File Type</option>
                                     <option value="Company" selected>Company</option>
                                     <option value="Location">Location</option>
@@ -87,7 +196,7 @@
                                     @*<option value="Demand By Grade(%)">Demand By Grade(%)</option>*@
                                     <option value="Demand By Grade(T)">Demand By Grade(T)</option>
                                     @*<option value="Demand By Type(%)">Demand By Type(%)</option>*@
-                                    @*<option value="Demand By Type(T)">Demand By Type(T)</option>*@
+                                    <option value="Demand By Type(T)">Demand By Type(T)</option>
                                     <option value="Demand By SalesChannel(T)">Demand By SalesChannel(T)</option>
                                     @*<option value="Demand By SalesChannel(%)">Demand By SalesChannel(%)</option>*@
                                     @*<option value="Demand By GradePricing">Demand By GradePricing</option>*@
@@ -99,34 +208,45 @@
                                     <option value="Demand By CompanyShares(T)">Demand By CompanyShares(T)</option>
                                     @*<option value="Demand By CompanyShares(%)">Demand By CompanyShares(%)</option>*@
                                 </select>
-
                             </div>
-
-                            <div class="col-md-4 mt10">
-                                <p>
-                                    <i class="fa fa-compress"></i> Comparision
-                                </p>
-                                <select name="example-getting-started" id="example-getting-started" class="btn btn-primary width100" multiple="multiple"> </select>
-                                @*<option value="Sulfer">Sulfer</option>multiple="multiple"
-                                <option selected="selected" value="xyz">Xyz</option>
-                                <option selected="selected" value="pqr">Pqr</option>
-                                <option value="lmn">Lmn</option>*@
-
-
-                            </div>
-                            <div class="col-md-4 pl-0 mt10">
+                            <div class="col-md-4  mt10">
                                 <p><i class="fa fa-bar-chart"></i> Chart Types</p>
                                 <select class="btn btn-primary width100" id="ddlChart" name="ddlChart">
                                     <option value="line">Line Chart</option>
                                     <option value="bar">Bar Chart</option>
-                                    <option value="pie">Pie Chart</option>
+                                    @*<option value="pie">Pie Chart</option>*@
                                 </select>
                             </div>
-                            <div class="col-md-4 pl-0 mt10">
-                                <button type="submit" class="btn btn-green mt27">
+                            <div class="col-md-4  mt10">
+                                <p><i class="fa fa-bar-chart"></i> From Year</p>
+                                @Html.DropDownListFor(m => m.FirstOrDefault().FromYear, ChemAnalyst.DAL.ProductDataStore.GetUniqueYears(), "Select from", new { @class = "btn btn-primary width100", @id = "ddlFyear", @name = "ddlFyear" })
+                            </div>
+                            <div class="col-md-4  mt10">
+                                <p><i class="fa fa-bar-chart"></i> To Year</p>
+                              
+                                @Html.DropDownListFor(m => m.FirstOrDefault().FromYear, ChemAnalyst.DAL.ProductDataStore.GetUniqueYears(), "Select to", new { @class = "btn btn-primary width100", @id = "ddlToYear", @name = "ddlToYear" })
+                            </div>
+                            <div class="col-md-4 mt12" style="display:none">
+                                <p>
+                                    <i class="fa fa-compress"></i> Comparision
+                                </p>
+                                <select name="example-getting-started" id="example-getting-started" class="btn btn-primary width100" multiple="multiple"> </select>
+                                <option selected="selected" value="xyz">Xyz</option>
+                                <option selected="selected" value="pqr">Pqr</option>
+                                <option value="lmn">Lmn</option>
+
+                            </div>
+                            <div class="col-md-3">
+                                @*<input type="hidden" id="hiddenLegends" name="hiddenLegends" value="@selectedLegends" />*@
+                                <button id="submit" type="submit" onclick="SubmitForm()" class="btn btn-green mt27">
                                     <i class="fa fa-refresh"></i>
                                     Vew Chart
                                 </button>
+
+                            </div>
+                            <div class="col-md-4 pl-0 mt12" style="margin-left: -50px;">
+                                <a href="javascript:void(0)" id="exportpdf2" onclick="generatePDF()" class="text-primary" style="margin-top:35px">Export as PDF</a>
+                                <a href="javascript:void(0)" id="exportxls2" onclick="exportToExcel('tblRegisteredUsers', 'Market-Analysis.')" class="text-primary" style="margin-left: 25px;">Export as Excel</a>
                             </div>
                         </div>
                     }
@@ -146,19 +266,41 @@
     </div>
 
 
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="login-pic">
+                                <div class="freeSub">
+                                    <h2>Get Chemical Pricing in few-clicks.</h2>
+                                    <a href="@Url.Action("FreeTrail", "ChemAnalyst")" class="btn btn-yellow">Start your Free Trail today.</a>
+                                    <a href="@Url.Action("FreeTrail", "ChemAnalyst")" class="text-center">Click here to subscribe free trial to enjoy our benefits!</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
 
 
-
-    <script src="~/js/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    @*<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>*@
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="~/js/popper.min.js"></script>
     <script src="~/js/bootstrap.min.js"></script>
     <script src="~/js/bootstrap-multiselect.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+    @*
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>*@
     <script src="~/js/Chart.min.js"></script>
 
     <script src="~/js/owl.carousel.js"></script>
@@ -166,74 +308,555 @@
     <script src="~/js/honey-custom.js"></script>
 
     <script src="~/js/utils.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.min.js"></script>
 
+    <link rel="stylesheet" type="text/css" href="~/css/jquery.datetimepicker.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    @*<script src="jquery.js"></script>*@
+    <script src="~/js/jquery.datetimepicker.full.min.js"></script>
+
+    <script src="~/js/html2pdf.bundle.min.js"></script>
+
+
+
+    <script type="text/javascript" src="https://oss.sheetjs.com/js-xlsx/xlsx.core.min.js"></script>
+    <script type="text/javascript" src="https://sheetjs.com/demos/Export2Excel.js"></script>
+
+
+    <script src="https://igniteui.com/js/external/FileSaver.js"></script>
+    <script src="https://igniteui.com/js/external/Blob.js"></script>
+
+
+    <script src="https://www.github.developerdan.com/table-to-json/javascripts/jquery.tabletojson.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
     <script>
 
+        function myfunction(id) {
+            var $checkedagreeChecker = $('.chcktbl:checked');
+            var joinedValues = $checkedagreeChecker.map(function(){return this.value}).get().join(",");
 
+            $('input[name="hiddenLegends"]').val($checkedagreeChecker.length > 0 ? joinedValues : "" )
 
-                    $("body").on("change", "#category", function () {
-                        var CatId=$(category).find("option:selected").val();
-                          var ddlCustomers = $("#ddlProduct");
-                          var ddlCompare = $("#example-getting-started");
-                          $("#example-getting-started").multiselect('destroy');
-                            // example-getting-started
-                            ddlCustomers.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
-                            ddlCompare.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
-
-                            $.ajax({
-                                type: "POST",
-                                url: "./GetProductNameUser",
-                                data: "{ CatId:"+ CatId +"}" ,
-                                contentType: "application/json; charset=utf-8",
-                                dataType: "json",
-                                async: false,
-                                success: function (response) {
-                                    ddlCustomers.empty().append('<option selected="selected" value=""> select Product</option>');
-                                    ddlCompare.empty().append('<option selected="selected" value=""> select compare Product</option>');
-
-                                    $.each(response, function () {
-                                        ddlCustomers.append($("<option></option>").val(this['Value']).html(this['Text']));
-                                        ddlCompare.append($("<option  ></option>").val(this['Value']).html(this['Text']));
-
-                                    });
-                                    $("#example-getting-started").multiselect();
-                                },
-                                failure: function (response) {
-                                  //  alert(response.responseText);
-                                },
-                                error: function (response) {
-                                  //  alert(response.responseText);
-                                }
-                            });
-
-                    });
+            $("#submit").trigger("click");
+        }
 
 
 
 
+        function closemodel() {
+            $("#myModal").hide();
+        }
+        $(document).ready(function () {
 
+            $("#ddlProduct").change(function () {
+                debugger;
+                var ProductId=$(ddlProduct).find("option:selected").val();
 
-                    window.onload = function () {
+                $.ajax({
+                    type: "POST",
+                    url: "../MarketAnalysis/CheckAccess",
+                    data: "{ ProductId:"+ ProductId +"}" ,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: false,
+                    success: function (response) {
+                        debugger;
+                        if (response=="Access") {
+                        }
+                        else
+                        {
+                            $('#myModal').modal({backdrop: 'static', keyboard: false});
+                            event.preventDefault();
+                        }
+                    },
+                    failure: function (response) {
+                        // alert(response.responseText);
+                    },
+                    error: function (response) {
+                        // alert(response.responseText);
+                    }
+                });
+            });
 
-                        var Product = @Html.Raw(Product);
-                        var ChartType = @Html.Raw(ChartType);
-                        var range = @Html.Raw(range);
-                        var Category = @Html.Raw(Category);
+            var range = $(ddlRange).find("option:selected").val();
+            var ddlCustomers = $("#ddlChart");
 
-                        $('#category').val(Category).trigger('change');
-                        $('#ddlProduct').val(Product);
-                        $('#ddlChart').val(ChartType);
-                        $('#ddlRange').val(range);
-                          $("#example-getting-started").multiselect();
+            if (range == "Demand By TradeExport" || range == "Demand By TradeImport") {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
+            }
+            else if(range=="Demand By CompanyShares(T)") {
+                ddlCustomers.empty().append('<option selected="selected" value="pie" >Pie Chart</option>');
+            }
+            else if(range=="Demand Supply Gap") {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
+            }
+            else {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
+            }
 
-
-
-
-                       Drowchart('canvas', ChartType);
-                        //Drowchart('canvas2','bar');
-                    };
+        });
 
     </script>
+    <script>
+        function SubmitForm() {
+            var Product = @Html.Raw(Product);
+            var ChartType = @Html.Raw(ChartType);
+            var range = @Html.Raw(range);
+            var Category = @Html.Raw(Category);
+            //  $('#ddlProduct').val();
+            //if ( $('#ddlProduct').val()!=Product && $('#ddlProduct').val()!='')// Calling validation function
+            //{
+            //    $('#myModal').modal({backdrop: 'static', keyboard: false});
+            //    event.preventDefault();
+            //}
+
+        }
+
+
+        $(document).ready(function(event) {
+            $('#countrylist').change(function(e){
+                // put code here
+            }).change();
+
+
+            $('#category').change(function(e){
+
+               // alert("hiiii");
+                debugger
+                var CatId=$(category).find("option:selected").val();
+
+                var ddlCustomers = $("#ddlProduct");
+                //  var ddlCompare = $("#example-getting-started");
+                // example-getting-started
+                ddlCustomers.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
+                $.ajax({
+                    type: "POST",
+                    url: "../MarketAnalysis/GetProductName",
+                    data: "{ CatId:"+ CatId +"}" ,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: false,
+                    success: function (response) {
+                        ddlCustomers.empty().append('<option selected="selected" value=""> select Product</option>');
+                        //ddlCompare.empty().append('<option selected="selected" value="0"> select Product</option>');
+
+                        $.each(response, function () {
+                            ddlCustomers.append($("<option></option>").val(this['Value']).html(this['Text']));
+                            // ddlCompare.append($("<option  ></option>").val(this['Value']).html(this['Text']));
+
+                        });
+                        var Product = @Html.Raw(Product);
+                        $('#ddlProduct').val(Product);
+                        UpdateYear();
+
+                        // alert("category call");
+                    },
+                    failure: function (response) {
+                        // alert(response.responseText);
+                    },
+                    error: function (response) {
+                        // alert(response.responseText);
+                    }
+                });
+            }).change();
+
+        });
+
+
+
+        $("body").on("change", "#ddlRange", function () {
+            debugger
+            var rangeId=$(ddlRange).find("option:selected").val();
+
+            var ddlFyear = $("#ddlFyear");
+            var ddlToYear = $("#ddlToYear");
+            //  var ddlCompare = $("#example-getting-started");
+            // example-getting-started
+            ddlFyear.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
+            ddlToYear.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
+            $.ajax({
+                type: "POST",
+                url: "../MarketAnalysis/GetUniqueYears",
+                //data: "{ rangeId:"+ rangeId +"}" ,
+                data: JSON.stringify({'rangeId':rangeId}),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (response) {
+                    debugger
+                    ddlFyear.empty().append('<option selected="selected" value=""> Select from</option>');
+                    ddlToYear.empty().append('<option selected="selected" value=""> Select to</option>');
+                    $.each(response, function () {
+                        ddlFyear.append($("<option></option>").val(this['Value']).html(this['Text']));
+                        ddlToYear.append($("<option></option>").val(this['Value']).html(this['Text']));
+
+                    });
+                    //$("#example-getting-started").multiselect();
+                    // alert("category call");
+                },
+                failure: function (response) {
+                    // alert(response.responseText);
+                },
+                error: function (response) {
+                    // alert(response.responseText);
+                }
+            });
+
+            debugger
+            var range = $(ddlRange).find("option:selected").val();
+            var ddlCustomers = $("#ddlChart");
+
+            if (range == "Demand By TradeExport" || range == "Demand By TradeImport") {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
+            }
+            else if(range=="Demand By CompanyShares(T)") {
+                ddlCustomers.empty().append('<option selected="selected" value="pie" >Pie Chart</option>');
+            }
+            else if(range=="Demand Supply Gap") {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
+            }
+            else {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
+            }
+        });
+
+
+        function UpdateYear()
+        {
+            //alert("UpdateYear");
+            debugger
+            var rangeId= @Html.Raw(range);
+
+            var ddlFyear = $("#ddlFyear");
+            var ddlToYear = $("#ddlToYear");
+            //  var ddlCompare = $("#example-getting-started");
+            // example-getting-started
+            ddlFyear.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
+            ddlToYear.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
+            $.ajax({
+                type: "POST",
+                url: "../MarketAnalysis/GetUniqueYears",
+                //data: "{ rangeId:"+ rangeId +"}" ,
+                data: JSON.stringify({'rangeId':rangeId}),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (response) {
+                    debugger
+                    ddlFyear.empty().append('<option selected="selected" value=""> Select from</option>');
+                    ddlToYear.empty().append('<option selected="selected" value=""> Select to</option>');
+                    $.each(response, function () {
+                        ddlFyear.append($("<option></option>").val(this['Value']).html(this['Text']));
+                        ddlToYear.append($("<option></option>").val(this['Value']).html(this['Text']));
+
+                    });
+                    //$("#example-getting-started").multiselect();
+                    // alert("category call");
+                },
+                failure: function (response) {
+                    // alert(response.responseText);
+                },
+                error: function (response) {
+                    // alert(response.responseText);
+                }
+            });
+        }
+
+       
+
+        function colorize(opaque, hover, ctx) {
+            //var v = ctx.dataset.data[ctx.dataIndex];
+            //var c = v < -50 ? '#D60000'
+            //	: v < 0 ? '#F46300'
+            //	: v < 50 ? '#0358B6'
+            //	: '#44DE28';
+
+            //var opacity = hover ? 1 - Math.abs(v / 150) - 0.2 : 1 - Math.abs(v / 150);
+
+            //return opaque ? c : utils.transparentize(c, opacity);
+            return random_rgba();
+        }
+
+        function hoverColorize(ctx) {
+            return colorize(false, true, ctx);
+        }
+
+
+       
+        
+        function random_rgba() {
+
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            Bcolor=color;
+            return color;
+            //var o = Math.round,
+            //    r = Math.random,
+            //    s = 100;
+            //return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
+        }
+
+        window.onload = function () {
+            var Product = @Html.Raw(Product);
+            var ChartType = @Html.Raw(ChartType);
+            var range = @Html.Raw(range);
+
+
+
+            var Category = @Html.Raw(Category);
+            debugger
+            $('#category').val(Category).trigger('change');
+
+            $('#ddlFyear').val('@(ViewBag.Fy== null?"": ViewBag.Fy)');
+            $('#ddlToYear').val('@(ViewBag.Ty==null?"": ViewBag.Ty)');
+
+            $('#ddlProduct').val(Product);
+            $('#ddlChart').val(ChartType);
+            $('#ddlRange').val(range);
+
+            Drowchart('canvas', ChartType);
+            Drowchart2('canvas2',ChartType);
+        };
+
+
+        document.getElementById('drowchart').addEventListener('change', function () {
+            var d = document.getElementById('drowchart').value;
+            //alert(d);
+            Drowchart('canvas', d);
+            Drowchart2('canvas2',d);
+        });
+
+
+
+        document.getElementById('randomizeData').addEventListener('click', function () {
+            config.data.datasets.forEach(function (dataset) {
+                dataset.data = dataset.data.map(function () {
+                    return randomScalingFactor();
+                });
+
+            });
+
+            window.myLine.update();
+        });
+
+        var colorNames = Object.keys(window.chartColors);
+
+        document.getElementById('addDataset').addEventListener('click', function () {
+            var colorName = colorNames[config.data.datasets.length % colorNames.length];
+            var newColor = window.chartColors[colorName];
+            var newDataset = {
+                label: 'Dataset ' + config.data.datasets.length,
+                backgroundColor: newColor,
+                borderColor: newColor,
+                data: [],
+                fill: false
+            };
+
+            for (var index = 0; index < config.data.labels.length; ++index) {
+                newDataset.data.push(randomScalingFactor());
+            }
+
+            config.data.datasets.push(newDataset);
+            window.myLine.update();
+        });
+
+        document.getElementById('addData').addEventListener('click', function () {
+            if (config.data.datasets.length > 0) {
+                var month = MONTHS[config.data.labels.length % MONTHS.length];
+                config.data.labels.push(month);
+
+                config.data.datasets.forEach(function (dataset) {
+                    dataset.data.push(randomScalingFactor());
+                });
+
+                window.myLine.update();
+            }
+        });
+
+        document.getElementById('removeDataset').addEventListener('click', function () {
+            config.data.datasets.splice(0, 1);
+            window.myLine.update();
+        });
+
+        document.getElementById('removeData').addEventListener('click', function () {
+            config.data.labels.splice(-1, 1); // remove the label first
+
+            config.data.datasets.forEach(function (dataset) {
+                dataset.data.pop();
+            });
+
+            window.myLine.update();
+        });
+
+
+
+
+        $(document).ready(function () {
+            $("#ShowChart").validate({
+                debug: true,
+                rules: {
+                    ddlProduct: {
+                        required: function () {
+                            if ($("#ddlProduct option[value='0']")) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    },
+                    ddlChart: {
+                        required: function () {
+                            if ($("#ddlChart option[value='0']")) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }, ddlRange: {
+                        required: function () {
+                            if ($("#ddlRange option[value='0']")) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                },
+                messages: {
+                    ddlRange: "range Required",
+                },
+            });
+
+            $(document).ready(function(){
+                $('#messagewindow').animate({
+                    scrollTop: $('#messagewindow')[0].scrollHeight}, 2000);
+            });
+        })
+
+    </script>
+
+    <script>
+        //$(document).ready( function () {
+        //    $('.dailybasis').DataTable();
+        //} );
+
+        //function generatePDF() {
+        //  // Choose the element that our invoice is rendered in.
+        //  const element = document.getElementById("invoice");
+        //  // Choose the element and save the PDF for our user.
+        //  html2pdf().from(element).save();
+        //}
+
+
+        function exportToExcel(tableId, tableName) {
+            //showloader();
+
+            setTimeout(function () { export_table_to_excel(tableId, 'xlsx' || 'xlsx', tableName); }, 100);
+
+
+        }
+
+        function export_table_to_excel(id, type, fn) {
+
+
+            var table ;
+            if (id == 'tbllince') {
+                $("#exportResult").show();
+                // tbllince
+                table = $('#tbllince').tableToJSON();
+                $("#exportResult").hide();
+            }
+            else {
+                table = $('#tblRegisteredUsers').tableToJSON();
+            }
+            //var data = JSON.stringify(table);
+            var data = JSON.parse(JSON.stringify(table));
+
+            //console.log(data)
+            // setTimeout(function () {  }, 5000);
+            var ws = XLSX.utils.json_to_sheet(data);
+
+            /* add to workbook */
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "tbl");
+
+            /* generate an XLSX file */
+            XLSX.writeFile(wb, fn+type);
+            //setTimeout(function () { hideloader(); }, 100);
+        }
+
+        function generatePDF() {
+            debugger;
+            $("#loaderCustom").show();
+            var element = document.getElementById('invoice');
+            // Choose pagebreak options based on mode.
+            var mode = "avoid-all";
+            var pagebreak = (mode === 'specify') ?
+            { mode: '', before: '.before', after: '.after', avoid: '.avoid' } :
+            { mode: mode };
+
+            $("#exportxls2").hide();
+            $("#hrefComentery").hide();
+            $("#slidecontainer1").hide();
+            $("#submitReset").hide();
+            $("#exportpdf2").hide();
+            $("#viewAll").hide();
+
+            $(".pdfheader").show();
+            $("#ptitle").html("Market Analysis "+$("#ddlRange").val().toLowerCase()+" report ");
+            // Generate the PDF.
+            html2pdf().from(element).set({
+                filename: "Market-Analysis-Export" + '.pdf',
+                pagebreak: pagebreak,
+                jsPDF: {orientation: 'landscape', unit: 'in', format: 'letter', compressPDF: true}
+            }).save().then(function(pdf) {
+                //This logs the right base64
+                $("#hrefComentery").show();
+                $("#exportxls2").show();
+                $("#slidecontainer1").show();
+                $("#submitReset").show();
+                $("#exportpdf2").show();
+                $("#viewAll").show();
+                $(".pdfheader").hide();
+                $("#loaderCustom").hide();
+                // window.location.reload();
+            });;
+
+
+
+        }
+    </script>
+
+    <style>
+        #chatwindow {
+            position: relative;
+            height: 130px;
+        }
+
+        #messagewindow, #inputcontainer {
+            position: absolute;
+            left: 0;
+            right: 0;
+            /*border:1px solid #000;*/
+        }
+
+        #messagewindow {
+            overflow: auto;
+            top: 0;
+            bottom: 3em;
+        }
+
+        #inputcontainer {
+            display: block;
+            bottom: 0;
+            height: 1em;
+            padding: .5em;
+            margin-top: 1em;
+        }
+    </style>
 </body>
 
 </html>

@@ -483,7 +483,7 @@ namespace ChemAnalyst.DAL
 
                 }
             }
-            else if (ImportType == "Daily basis")
+            else if (ImportType == "Daily Retail")
             {
                 List<SA_ChemPriceDaily> obj = _context.SA_ChemPriceDaily.Where(Year => Year.FileName == Filename).ToList();
                 foreach (SA_ChemPriceDaily PriceYearly in obj)
@@ -604,7 +604,7 @@ namespace ChemAnalyst.DAL
                 else
                     return 0;
             }
-            else if (ImportType == "Daily basis")
+            else if (ImportType == "Daily Retail")
             {
                 List<SA_ChemPriceDaily> obj = _context.SA_ChemPriceDaily.Where(Year => Year.FileName == Filename).ToList();
                 if (obj.Count() > 0)

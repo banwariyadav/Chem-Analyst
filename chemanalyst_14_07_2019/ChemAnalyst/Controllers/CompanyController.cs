@@ -153,6 +153,20 @@ namespace ChemAnalyst.Controllers
                 return View("ErrorEventArgs");
             }
         }
+
+        public ActionResult DeleteCompanySWOT(int id)
+        {
+            if (Obj.DeleteCompanySWOT(id) == true)
+            {
+                return RedirectToAction("CompanySWOT");
+            }
+            else
+            {
+                return View("ErrorEventArgs");
+            }
+        }
+
+        
         public ActionResult CompanyProfile()
         {
             ViewBag.Product = Obj.GetCompanyProducts();
@@ -166,7 +180,7 @@ namespace ChemAnalyst.Controllers
             ViewBag.Fy = DateTime.Now.Year;
             NewsDataStore n = new NewsDataStore();
             ViewBag.f = n.GetFirstProduct();
-            return View(Obj.GetCompanyList().OrderBy(x => x.CreatedTime));
+            return View(Obj.GetCompanyList().OrderBy(x => x.Name));
 
         }
 
@@ -197,12 +211,14 @@ namespace ChemAnalyst.Controllers
             model.MetaDescription = data.MetaDescription;
             model.lstFinacialData = db.CompanyProfRecordNew.Where(w => w.SA_CompanyId == data.id).Select(x => new CompanyFinacialData
             {
-                FinacialYear = db.FinancialYears.Where(f => f.Id == x.FinancialYearId).FirstOrDefault().FinYear,
+                //FinacialYear = db.FinancialYears.Where(f => f.Id == x.FinancialYearId).FirstOrDefault().FinYear,
+                FinacialYear = x.year,
                 Growth = x.Growth,
                 Revenue = x.Revenue,
                 PBT = x.PBT,
                 Liablities = x.Liablities,
                 Margin = x.Margin,
+                Margin1 = x.Margin1,
                 Pat = x.Pat
 
 

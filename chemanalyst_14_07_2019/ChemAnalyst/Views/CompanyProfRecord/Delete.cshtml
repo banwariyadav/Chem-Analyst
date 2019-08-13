@@ -1,4 +1,4 @@
-﻿@model ChemAnalyst.Models.CompanyProfRecord
+﻿@model ChemAnalyst.Models.CompanyProfRecordNew
 @{
     ViewBag.Title = "Delete";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -21,10 +21,10 @@
                         @Html.DisplayNameFor(c => c.SA_Company.Name) :
                         @Html.DisplayFor(c => c.SA_Company.Name)
                     </div>
-                    <div class="form-group">
+                    @*<div class="form-group">
                         @Html.DisplayNameFor(c => c.Revenues) :
                         @Html.DisplayFor(c => c.Revenues)
-                    </div>
+                    </div>*@
                     <div class="form-group">
                         @Html.DisplayNameFor(c => c.Growth) :
                         @Html.DisplayFor(c => c.Growth)

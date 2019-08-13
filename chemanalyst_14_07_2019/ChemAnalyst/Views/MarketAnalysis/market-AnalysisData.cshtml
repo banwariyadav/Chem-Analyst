@@ -453,7 +453,21 @@
                     }
                 });
             });
+            var range = $(ddlRange).find("option:selected").val();
+            var ddlCustomers = $("#ddlChart");
 
+            if (range == "Demand By TradeExport" || range == "Demand By TradeImport") {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
+            }
+            else if(range=="Demand By CompanyShares(T)") {
+                ddlCustomers.empty().append('<option selected="selected" value="pie" >Pie Chart</option>');
+            }
+            else if(range=="Demand Supply Gap") {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
+            }
+            else {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
+            }
         });
 
     </script>
@@ -510,7 +524,61 @@
             });
         });
 
+        $("body").on("change", "#ddlRange", function () {
+            debugger
+            var rangeId=$(ddlRange).find("option:selected").val();
 
+            var ddlFyear = $("#ddlFyear");
+            var ddlToYear = $("#ddlToYear");
+            //  var ddlCompare = $("#example-getting-started");
+            // example-getting-started
+            ddlFyear.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
+            ddlToYear.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
+            $.ajax({
+                type: "POST",
+                url: "../MarketAnalysis/GetUniqueYears",
+                //data: "{ rangeId:"+ rangeId +"}" ,
+                data: JSON.stringify({'rangeId':rangeId}),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (response) {
+                    debugger
+                    ddlFyear.empty().append('<option selected="selected" value=""> Select from</option>');
+                    ddlToYear.empty().append('<option selected="selected" value=""> Select to</option>');
+                    $.each(response, function () {
+                        ddlFyear.append($("<option></option>").val(this['Value']).html(this['Text']));
+                        ddlToYear.append($("<option></option>").val(this['Value']).html(this['Text']));
+
+                    });
+                    //$("#example-getting-started").multiselect();
+                    // alert("category call");
+                },
+                failure: function (response) {
+                    // alert(response.responseText);
+                },
+                error: function (response) {
+                    // alert(response.responseText);
+                }
+            });
+
+            debugger
+            var range = $(ddlRange).find("option:selected").val();
+            var ddlCustomers = $("#ddlChart");
+
+            if (range == "Demand By TradeExport" || range == "Demand By TradeImport") {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
+            }
+            else if(range=="Demand By CompanyShares(T)") {
+                ddlCustomers.empty().append('<option selected="selected" value="pie" >Pie Chart</option>');
+            }
+            else if(range=="Demand Supply Gap") {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
+            }
+            else {
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
+            }
+        });
 
           window.onload = function () {
 

@@ -234,7 +234,17 @@
                                                         <a href="@Url.Action("IndustryReport", "Industry", new { id= item .id})">@item.Title</a>
                                                     </h4>
                                                     <p class="text-justify">
-                                                        @Html.Raw(WebUtility.HtmlDecode(@item.Description))
+                                                        @{
+                                                            if (item.Description.Length > 200)
+                                                            {
+                                                            <p>@Html.Raw(WebUtility.HtmlDecode(item.Description.Substring(0, 200))) <span> ...</span></p>
+                                                            }
+                                                            else
+                                                            {
+                                                                @item.Description  
+                                                            }
+                                                        }
+
                                                         <span style="white-space:nowrap"><a style="text-transform: uppercase;color: #2257b5;    font-size: 14px;" href="@Url.Action("IndustryReport", "Industry", new { id= item .id})" class="read-more-l">Read More</a></span>
                                                     </p>
                                                     <ul class="r_ul">

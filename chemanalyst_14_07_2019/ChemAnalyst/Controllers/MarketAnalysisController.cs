@@ -27,14 +27,16 @@ namespace ChemAnalyst.Controllers
         // GET: MarketAnalysis
         public ActionResult MarketAnalysisList()
         {
-            return View("Market-FileList");
+            List<SA_MarketFileList> fileList = Marketanalysisobj.GetallUploadFile();
+            return View("Market-FileList", fileList);
         }
 
         public ActionResult MarketAnalysisChart()
         {
             string product = null;
             string ChartType = null;
-            string Range = null;
+            //string Range = null;
+            string Range = "Company";
             string CompareProject = null;
             bool Customer = false;
             return RedirectToAction("MarketbycompanyChart", "MarketAnalysis", new
@@ -88,7 +90,7 @@ namespace ChemAnalyst.Controllers
             string Range = FilterObject["ddlRange"];
             string FromYear = FilterObject["ddlFyear"];
             string ToYear = FilterObject["ddlToYear"];
-
+            string selectedLegends = FilterObject["hiddenLegends"];
             string CompareProject = FilterObject["example-getting-started"];
             bool Customer = false;
             if (Range == "Company")
@@ -101,7 +103,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
                 // ChecmPriceYearlyChartUser(product, ChartType, Range);
             }
@@ -115,7 +118,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Technology")
@@ -128,7 +132,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Process")
@@ -141,7 +146,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Production")
@@ -154,7 +160,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Operating Efficiency")
@@ -167,7 +174,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By EndUse(%)")
@@ -180,7 +188,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By EndUse(%)")
@@ -193,7 +202,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By EndUse(T)")
@@ -206,7 +216,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By Grade(%)")
@@ -219,7 +230,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By Grade(T)")
@@ -232,7 +244,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By Type(%)")
@@ -245,7 +258,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By Type(T)")
@@ -258,7 +272,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By SalesChannel(T)")
@@ -271,7 +286,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By SalesChannel(%)")
@@ -284,7 +300,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By GradePricing")
@@ -297,7 +314,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By Region(%)")
@@ -310,7 +328,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By Region(T)")
@@ -323,7 +342,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By TradeExport")
@@ -336,7 +356,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By TradeImport")
@@ -349,7 +370,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand Supply Gap")
@@ -362,7 +384,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By CompanyShares(%)")
@@ -375,7 +398,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By CompanyShares(T)")
@@ -388,7 +412,8 @@ namespace ChemAnalyst.Controllers
                     CompareProject,
                     Customer,
                     FromYear,
-                    ToYear
+                    ToYear,
+                    selectedLegends
                 });
             }
 
@@ -400,9 +425,11 @@ namespace ChemAnalyst.Controllers
             string product = FilterObject["ddlProduct"];
             string ChartType = FilterObject["ddlChart"];
             string Range = FilterObject["ddlRange"];
+            string FromYear = FilterObject["ddlFyear"];
+            string ToYear = FilterObject["ddlToYear"];
+            string selectedLegends = FilterObject["hiddenLegends"];
             string CompareProject = FilterObject["example-getting-started"];
             bool Customer = true;
-
             if (Range == "Company")
             {
                 return RedirectToAction("MarketbycompanyChart", "MarketAnalysis", new
@@ -411,7 +438,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
                 // ChecmPriceYearlyChartUser(product, ChartType, Range);
             }
@@ -423,7 +453,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Technology")
@@ -434,7 +467,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Process")
@@ -445,7 +481,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Production")
@@ -456,7 +495,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Operating Efficiency")
@@ -467,7 +509,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By EndUse(%)")
@@ -478,7 +523,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By EndUse(%)")
@@ -489,7 +537,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By EndUse(T)")
@@ -500,7 +551,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By Grade(%)")
@@ -511,7 +565,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By Grade(T)")
@@ -522,7 +579,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By Type(%)")
@@ -533,7 +593,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By Type(T)")
@@ -544,7 +607,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By SalesChannel(T)")
@@ -555,7 +621,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By SalesChannel(%)")
@@ -566,7 +635,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By GradePricing")
@@ -577,7 +649,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By Region(%)")
@@ -588,7 +663,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By Region(T)")
@@ -599,7 +677,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By TradeExport")
@@ -610,7 +691,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By TradeImport")
@@ -621,7 +705,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand Supply Gap")
@@ -632,7 +719,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By CompanyShares(%)")
@@ -643,7 +733,10 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
             else if (Range == "Demand By CompanyShares(T)")
@@ -654,19 +747,15 @@ namespace ChemAnalyst.Controllers
                     ChartType,
                     Range,
                     CompareProject,
-                    Customer
+                    Customer,
+                    FromYear,
+                    ToYear,
+                    selectedLegends
                 });
             }
 
 
-            return RedirectToAction("MarketbycompanyChart", "MarketAnalysis", new
-            {
-                product,
-                ChartType,
-                Range,
-                CompareProject,
-                Customer
-            });
+            return RedirectToAction("index");
         }
 
 
@@ -2368,17 +2457,18 @@ namespace ChemAnalyst.Controllers
 
         #region Front end functions
 
-        public ActionResult MarketbycompanyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbycompanyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
+
+            ViewBag.product = product;
+            ViewBag.ChartType = chartType;
+            ViewBag.range = Range;
+            ViewBag.ChartType = "line";
+
             if (product == null && Customer == true)
             {
-                ViewBag.product = product;
-                ViewBag.ChartType = chartType;
-                ViewBag.range = Range;
-                ViewBag.ChartType = "line";
-
                 custid = int.Parse(Session["LoginUser"].ToString());
 
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
@@ -2409,15 +2499,36 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetCompanyWiseProductList(product);
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+
+                    obj = Objdal.GetCompanyWiseProductList(product);
+
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetCompanyWiseProductList(product).Where(w => selfilter.Contains(w.Company + ",")).ToList();
+                }
+
+            }
+            //else
+            //    obj = Objdal.GetCompanyWiseProductList(product);
+
+
+
             List<string> Year = obj.OrderBy(w => w.year).Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            
 
             string CommentaryTitle = "";
             string CommentaryDescription = "";
             int PId = 0;
             if (product != null)
             {
+                ViewBag.AllLegends = Objdal.GetAllProductVariantCompany(Convert.ToInt16(product));
                 int ProductId = int.Parse(product);
                 PId = ProductId;
                 CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == ProductId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
@@ -2425,6 +2536,11 @@ namespace ChemAnalyst.Controllers
             }
             else
             {
+                ViewBag.AllLegends = obj.GroupBy(car => car.Company).Select(Name => Name.First()).ToList().Select(d=>new ProductVariantModel { Name=d.Company}).ToList();
+
+
+
+
                 PId = ObjProduct.GetProductList().OrderBy(w => w.id).FirstOrDefault().id;
                 CommentaryTitle = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Title : "";
                 CommentaryDescription = ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault() != null ? ObjCommentary.GetCommentaryList().Where(x => x.Product == PId && x.Type == "Market Analysis").OrderByDescending(w => w.CreatedTime).FirstOrDefault().Description : "";
@@ -2467,7 +2583,7 @@ namespace ChemAnalyst.Controllers
                 if (product == null)
                 {
                     Report.MChartType = "line";
-                    Report.MRange = "Yearly";
+                    Report.MRange = "Company";
                 }
                 else
                 {
@@ -2514,7 +2630,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].FromYear = string.IsNullOrEmpty(FromYear) ? Year.First() : "";
                 lstModel[0].ToYear = string.IsNullOrEmpty(ToYear) ? Year.Last() : "";
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -2532,7 +2648,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].FromYear = string.IsNullOrEmpty(FromYear) ? Year.First() : "";
                 lstModel[0].ToYear = string.IsNullOrEmpty(ToYear) ? Year.Last() : "";
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysis", lstModel);
 
             }
@@ -2541,8 +2657,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-
-        public ActionResult MarketbylocationChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbylocationChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -2585,11 +2700,29 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetLocationWiseProductList(product, FromYear, ToYear);
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+
+                    obj = Objdal.GetLocationWiseProductList(product, FromYear, ToYear);
+
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetLocationWiseProductList(product, FromYear, ToYear).Where(w => selfilter.Contains(w.Location + ",")).ToList();
+                }
+
+            }
+            //else
+            //    obj = Objdal.GetLocationWiseProductList(product, FromYear, ToYear);
 
             ViewBag.R = Objdal.GetLocationWiseProductListReport(product, FromYear, ToYear);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            ViewBag.AllLegends = Objdal.GetAllProductVariantLocation(Convert.ToInt16(product));
+
 
             string CommentaryTitle = "";
             string CommentaryDescription = "";
@@ -2685,7 +2818,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].FromYear = string.IsNullOrEmpty(FromYear) ? Year.First() : "";
                 lstModel[0].ToYear = string.IsNullOrEmpty(ToYear) ? Year.Last() : "";
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -2702,7 +2835,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].FromYear = string.IsNullOrEmpty(FromYear) ? Year.First() : "";
                 lstModel[0].ToYear = string.IsNullOrEmpty(ToYear) ? Year.Last() : "";
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysis", lstModel);
             }
 
@@ -2710,7 +2843,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyTechnologyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbyTechnologyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -2753,12 +2886,30 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetTechnologyWiseProductList(product, FromYear, ToYear);
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+
+                    obj = Objdal.GetTechnologyWiseProductList(product, FromYear, ToYear);
+
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetTechnologyWiseProductList(product, FromYear, ToYear).Where(w => selfilter.Contains(w.Technology + ",")).ToList();
+                }
+
+            }
+            //else
+            //    obj = Objdal.GetTechnologyWiseProductList(product, FromYear, ToYear);
 
             ViewBag.R = Objdal.GetTechnologyWiseProductListReport(product, FromYear, ToYear);
 
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            ViewBag.AllLegends = Objdal.GetAllProductVariantTechnology(Convert.ToInt16(product));
+
 
             string CommentaryTitle = "";
             string CommentaryDescription = "";
@@ -2852,6 +3003,7 @@ namespace ChemAnalyst.Controllers
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -2866,7 +3018,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysis", lstModel);
             }
 
@@ -2874,7 +3026,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyProcessChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbyProcessChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -2917,12 +3069,29 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetProcessWiseProductList(product, FromYear, ToYear);
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+
+                    obj = Objdal.GetProcessWiseProductList(product, FromYear, ToYear);
+
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetProcessWiseProductList(product, FromYear, ToYear).Where(w => selfilter.Contains(w.Process + ",")).ToList();
+                }
+
+            }
+            //else
+            //    obj = Objdal.GetProcessWiseProductList(product, FromYear, ToYear);
 
             ViewBag.R = Objdal.GetProcessWiseProductListReport(product, FromYear, ToYear);
 
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            ViewBag.AllLegends = Objdal.GetAllProductVariantProcess(Convert.ToInt16(product));
 
             string CommentaryTitle = "";
             string CommentaryDescription = "";
@@ -3017,7 +3186,7 @@ namespace ChemAnalyst.Controllers
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
 
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -3031,7 +3200,7 @@ namespace ChemAnalyst.Controllers
                 lstModel[0].NewsDetailsViewModel = d;
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysis", lstModel);
             }
 
@@ -3039,7 +3208,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyProductionChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbyProductionChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -3080,9 +3249,26 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetProducerWiseProductList(product);
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+
+                    obj = Objdal.GetProducerWiseProductList(product);
+
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetProducerWiseProductList(product).Where(w => selfilter.Contains(w.Producer + ",")).ToList();
+                }
+
+            }
+            //else
+            //    obj = Objdal.GetProducerWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            ViewBag.AllLegends = Objdal.GetAllProductVariantProduction(Convert.ToInt16(product));
 
             string CommentaryTitle = "";
             string CommentaryDescription = "";
@@ -3182,7 +3368,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -3197,7 +3383,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysis", lstModel);
             }
 
@@ -3205,7 +3391,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyEfficiencyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbyEfficiencyChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -3246,9 +3432,26 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetEfficiencyWiseProductList(product);
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+
+                    obj = Objdal.GetEfficiencyWiseProductList(product);
+
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetEfficiencyWiseProductList(product).Where(w => selfilter.Contains(w.Producer + ",")).ToList();
+                }
+
+            }
+            //else
+            //    obj = Objdal.GetEfficiencyWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            ViewBag.AllLegends = Objdal.GetAllProductVariantEfficiency(Convert.ToInt16(product));
 
             string CommentaryTitle = "";
             string CommentaryDescription = "";
@@ -3350,7 +3553,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -3365,7 +3568,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysis", lstModel);
             }
 
@@ -3373,7 +3576,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyEndUsePercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbyEndUsePercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -3534,7 +3737,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyEndUseTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbyEndUseTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -3575,9 +3778,27 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetEndUsetonnesWiseProductList(product);
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+
+                    obj = Objdal.GetEndUsetonnesWiseProductList(product);
+
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetEndUsetonnesWiseProductList(product).Where(w => selfilter.Contains(w.Enduse + ",")).ToList();
+                }
+
+            }
+
+            //else
+            //    obj = Objdal.GetEndUsetonnesWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            ViewBag.AllLegends = Objdal.GetAllProductVariantEndUse(Convert.ToInt16(product));
 
             string CommentaryTitle = "";
             string CommentaryDescription = "";
@@ -3672,7 +3893,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -3687,7 +3908,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysis", lstModel);
             }
 
@@ -3695,7 +3916,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyGradePercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbyGradePercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -3856,7 +4077,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyGradeTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbyGradeTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -3897,9 +4118,26 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetGradetonnesWiseProductList(product);
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+
+                    obj = Objdal.GetGradetonnesWiseProductList(product);
+
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetGradetonnesWiseProductList(product).Where(w => selfilter.Contains(w.Grade + ",")).ToList();
+                }
+
+            }
+            //else
+            //    obj = Objdal.GetGradetonnesWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            ViewBag.AllLegends = Objdal.GetAllProductVariantGrade(Convert.ToInt16(product));
 
             string CommentaryTitle = "";
             string CommentaryDescription = "";
@@ -3993,7 +4231,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -4008,7 +4246,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysis", lstModel);
             }
 
@@ -4016,7 +4254,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyTypePercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbyTypePercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -4179,7 +4417,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyTypeTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbyTypeTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -4220,9 +4458,26 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetTypetonnesWiseProductList(product);
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+
+                    obj = Objdal.GetTypetonnesWiseProductList(product);
+
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetTypetonnesWiseProductList(product).Where(w => selfilter.Contains(w.type + ",")).ToList();
+                }
+
+            }
+            //else
+            //    obj = Objdal.GetTypetonnesWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            ViewBag.AllLegends = Objdal.GetAllProductVariantType(Convert.ToInt16(product));
 
             string CommentaryTitle = "";
             string CommentaryDescription = "";
@@ -4317,7 +4572,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -4332,7 +4587,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysis", lstModel);
             }
 
@@ -4340,7 +4595,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbySalesChannelPercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbySalesChannelPercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -4501,7 +4756,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbySalesChannelTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbySalesChannelTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -4542,9 +4797,26 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetSalestonnesWiseProductList(product);
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+
+                    obj = Objdal.GetSalestonnesWiseProductList(product);
+
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetSalestonnesWiseProductList(product).Where(w => selfilter.Contains(w.Channel + ",")).ToList();
+                }
+
+            }
+            //else
+            //    obj = Objdal.GetSalestonnesWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            ViewBag.AllLegends = Objdal.GetAllProductVariantSalesChannel(Convert.ToInt16(product));
 
             string CommentaryTitle = "";
             string CommentaryDescription = "";
@@ -4637,7 +4909,7 @@ namespace ChemAnalyst.Controllers
                 ViewBag.ProductList = ObjProduct.CategoryByUser(custid);
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -4651,7 +4923,7 @@ namespace ChemAnalyst.Controllers
                 lstModel[0].NewsDetailsViewModel = d;
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysis", lstModel);
             }
 
@@ -4659,7 +4931,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyGradePricingChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbyGradePricingChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -4822,7 +5094,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyRegionPercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbyRegionPercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -4863,9 +5135,26 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetRegionpercentWiseProductList(product);
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+
+                    obj = Objdal.GetRegionpercentWiseProductList(product);
+
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetRegionpercentWiseProductList(product).Where(w => selfilter.Contains(w.Region + ",")).ToList();
+                }
+
+            }
+            //else
+            //    obj = Objdal.GetRegionpercentWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            ViewBag.AllLegends = Objdal.GetAllProductVariantRegion(Convert.ToInt16(product));
 
             string CommentaryTitle = "";
             string CommentaryDescription = "";
@@ -4962,7 +5251,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -4978,7 +5267,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysis", lstModel);
             }
 
@@ -4986,7 +5275,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyRegionTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbyRegionTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -5027,9 +5316,26 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetRegiontonnesWiseProductList(product);
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+
+                    obj = Objdal.GetRegiontonnesWiseProductList(product);
+
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetRegiontonnesWiseProductList(product).Where(w => selfilter.Contains(w.Region + ",")).ToList();
+                }
+
+            }
+            //else
+            //    obj = Objdal.GetRegiontonnesWiseProductList(product);
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            ViewBag.AllLegends = Objdal.GetAllProductVariantRegion(Convert.ToInt16(product));
 
             string CommentaryTitle = "";
             string CommentaryDescription = "";
@@ -5125,7 +5431,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -5138,7 +5444,7 @@ namespace ChemAnalyst.Controllers
                 d.DealList = Obj.GetDealsList();
                 lstModel[0].NewsDetailsViewModel = d;
 
-
+                lstModel[0].selectedLegends = selectedLegends;
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
 
@@ -5149,9 +5455,10 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyTradeExportChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbyTradeExportChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
+            ViewBag.Chart2 = true;
             int custid = 0;
             if (product == null && Customer == true)
             {
@@ -5190,9 +5497,31 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetTradeExportWiseProductList(product);
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+
+                    obj = Objdal.GetTradeExportWiseProductList(product);
+
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetTradeExportWiseProductList(product).Where(w => selfilter.Contains(w.Country + ",")).ToList();
+                }
+
+            }
+            //else
+            //    obj = Objdal.GetTradeExportWiseProductList(product);
+
+
+
+
+
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            ViewBag.AllLegends = Objdal.GetAllProductVariantTradeExport(Convert.ToInt16(product));
 
             string CommentaryTitle = "";
             string CommentaryDescription = "";
@@ -5235,7 +5564,8 @@ namespace ChemAnalyst.Controllers
                     SimpleReportViewModel Quantity = new SimpleReportViewModel()
                     {
                         MDimensionOne = item.Country,
-                        Quantity = item.value
+                        Quantity = item.value,
+                        Quantity1 = item.volume
                     };
                     QuantityList.Add(Quantity);
                 }
@@ -5287,7 +5617,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -5302,7 +5632,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysis", lstModel);
             }
 
@@ -5310,8 +5640,9 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyTradeImportChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbyTradeImportChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
+            ViewBag.Chart2 = true;
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
             if (product == null && Customer == true)
@@ -5351,9 +5682,25 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetTradeImportWiseProductList(product);
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+
+                    obj = Objdal.GetTradeImportWiseProductList(product);
+
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetTradeImportWiseProductList(product).Where(w => selfilter.Contains(w.Country + ",")).ToList();
+                }
+                 
+            }
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+
+            ViewBag.AllLegends = Objdal.GetAllProductVariantTradeImport(Convert.ToInt16(product));
 
             string CommentaryTitle = "";
             string CommentaryDescription = "";
@@ -5396,7 +5743,8 @@ namespace ChemAnalyst.Controllers
                     SimpleReportViewModel Quantity = new SimpleReportViewModel()
                     {
                         MDimensionOne = item.Country,
-                        Quantity = item.value
+                        Quantity = item.value,
+                        Quantity1 = item.volume
                     };
                     QuantityList.Add(Quantity);
                 }
@@ -5448,7 +5796,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -5463,7 +5811,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysis", lstModel);
             }
 
@@ -5471,7 +5819,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbySupplyGapChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbySupplyGapChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -5512,13 +5860,31 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetDemandsupplyGraphWiseProductList(product);
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+
+                    obj = Objdal.GetDemandsupplyGraphWiseProductList(product);
+
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetDemandsupplyGraphWiseProductList(product).Where(w => selfilter.Contains(w.DemandSupply + ",")).ToList();
+                }
+
+            }
+
+            //else
+            //    obj = Objdal.GetDemandsupplyGraphWiseProductList(product);
 
 
             ViewBag.R = Objdal.GetDemandsupplyWiseProductList(product);
 
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            ViewBag.AllLegends = Objdal.GetAllProductVariantSupplyGap(Convert.ToInt16(product));
 
             string CommentaryTitle = "";
             string CommentaryDescription = "";
@@ -5613,7 +5979,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -5628,7 +5994,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysis", lstModel);
             }
 
@@ -5636,7 +6002,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyCompanySharesPercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbyCompanySharesPercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -5797,7 +6163,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyCompanySharesTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear)
+        public ActionResult MarketbyCompanySharesTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -5838,9 +6204,27 @@ namespace ChemAnalyst.Controllers
 
             }
             else
-                obj = Objdal.GetCompanySharetonnesWiseProductList(product);
-            List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            {
+                if (string.IsNullOrEmpty(selectedLegends))
+                {
+
+                    obj = Objdal.GetCompanySharetonnesWiseProductList(product);
+
+                }
+                else
+                {
+                    string selfilter = selectedLegends + ",";
+                    obj = Objdal.GetCompanySharetonnesWiseProductList(product).Where(w => selfilter.Contains(w.Company + ",")).ToList();
+                }
+
+            }
+            //else
+            //    obj = Objdal.GetCompanySharetonnesWiseProductList(product);
+            //List<string> Year = obj.Select(p => p.year).Distinct().ToList();
+            List<string> Year = obj.Select(p => p.Company).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
+
+            ViewBag.AllLegends = Objdal.GetAllProductVariantCompanyShare(Convert.ToInt16(product));
 
             string CommentaryTitle = "";
             string CommentaryDescription = "";
@@ -5867,7 +6251,8 @@ namespace ChemAnalyst.Controllers
             for (int i = 0; i < Year.Count; i++)
             {
 
-                List<SA_MarketbyCompanySharetonnes> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                //List<SA_MarketbyCompanySharetonnes> Chartdata = obj.Where(Chart => Chart.year == Year[i]).ToList();
+                List<SA_MarketbyCompanySharetonnes> Chartdata = obj.Where(Chart => Chart.Company == Year[i]).ToList();
                 //sales of product sales by quarter  
                 MA_StackViewModel Report = new MA_StackViewModel();
                 Report.MStackedDimensionOne = Year[i];
@@ -5935,7 +6320,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -5950,7 +6335,7 @@ namespace ChemAnalyst.Controllers
 
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
-
+                lstModel[0].selectedLegends = selectedLegends;
                 return View("marketanalysis", lstModel);
             }
 
@@ -6081,6 +6466,29 @@ namespace ChemAnalyst.Controllers
 
                 return Json(cat);
             }
+
+        }
+
+
+        [HttpPost]
+        public JsonResult GetProductNameUser(string CatId)
+        {
+            int catId = int.Parse(CatId);
+            int custid = int.Parse(Session["LoginUser"].ToString());
+            List<SelectListItem> customers = ObjProduct.ProductListByCategoryUser(catId, custid);
+            // return Json(new { data = ObjProduct.ProductListByCategory(catId) }, JsonRequestBehavior.AllowGet);
+            return Json(customers);
+
+
+        }
+        [HttpPost]
+        public JsonResult GetProductName(string CatId)
+        {
+            int catId = int.Parse(CatId);
+            List<SelectListItem> customers = ObjProduct.ProductListByCategory(catId);
+            // return Json(new { data = ObjProduct.ProductListByCategory(catId) }, JsonRequestBehavior.AllowGet);
+            return Json(customers);
+
 
         }
     }

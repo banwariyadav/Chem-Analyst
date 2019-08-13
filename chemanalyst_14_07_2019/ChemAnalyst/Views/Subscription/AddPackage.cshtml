@@ -3,13 +3,16 @@
     ViewBag.Title = "AddPackage";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .form-group{    margin-bottom: 40px;}
 
+</style>
 <div class="update-profile-wrapper">
     <h3><a href="lead.html" class="btn btn-info"><i class="fa fa-list"></i> Lead Details</a></h3>
     <div class="white-wrapper" style="padding-top:10px">
         <div class="col-md-6 col-lg-7 col-md-offset-2">
             <input type="hidden" value="@ViewBag.LeadId" id="Leadid" />
-            <div class="eq-form">
+            <div class="eq-form" style="margin-top:0px">
                 <div class="col-sm-6 col-lg-12 form-group" id="FreePackage">
                     <legend>Subscription Type</legend>
                     <div class="radio-success radio-inline">
@@ -54,13 +57,14 @@
                         <label for="inlineCheckbox2">Deals </label>
                     </div>
                 </div>
+                <div class="loaderCustom" style="display:none;position: absolute; margin-left: 300px; margin-top: 150px;" id="loaderCustom"></div>
                 <div class="col-sm-6 col-lg-12 form-group">
                     <legend>Select Products</legend>
                     <div class="custom-select-option">
                         <div class="multiselect">
                             <div id="dropdown1" class="selectbox" onclick="showCheckBoxes()">
                                 <select class="form-control">
-                                    <option>Select option</option>
+                                    <option>Select product</option>
                                 </select>
                                 <div class="overSelect"></div>
                             </div>
@@ -88,7 +92,7 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
 
     <script src="jquery.js"></script>
     <script src="~/js/jquery.datetimepicker.full.min.js"></script>
@@ -149,7 +153,7 @@
             $.ajax({
                 type: "GET",
                 //url: '../ProductAndCategory/ProductList',
-                 url: '@(Url.Action("ProductList", "ProductAndCategory"))',
+                 url: '@(Url.Action("ProductList4AddPkg", "ProductAndCategory"))',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 cache: false,
@@ -200,37 +204,45 @@
                 subs.MenuId = MenuId;
 
                 if (!subs.SubscriptionType) {
-                    alert("Please Select Subscription Type");
+                    //alert("Please Select Subscription Type");
+                    swal("Warning", "Please Select Subscription Type :)", "error");
                     return false;
                 }
                 if (!subs.FromDate) {
-                    alert("Please Enter From Date");
+                    //alert("Please Enter From Date");
+                    swal("Warning", "Please Enter From Date :)", "error");
                     return false;
                 }
                 if (!subs.ToDate) {
-                    alert("Please Enter From ToDate");
+                    //alert("Please Enter From ToDate");
+                    swal("Warning", "Please Enter To Date :)", "error");
                     return false;
                 }
 
                 if (!subs.MenuId) {
-                    alert("Please Select Module");
+                    //alert("Please Select Module");
+                    swal("Warning", "Please Select Module :)", "error");
                     return false;
                 }
 
                 if (!subs.ProductId) {
-                    alert("Please Select Product");
+                    //alert("Please Select Product");
+                    swal("Warning", "Please Select Product :)", "error");
                     return false;
                 }
-
-
+                debugger
+                $("#loaderCustom").show();
            $.ajax({
                 type: "POST",
                 url: '@Url.Action("SaveSalesPackageSubscriptionAsync")',
                 data:  subs,
                 success: function (data) {
                     if (data && data.result) {
-                        alert(data.result);
-                        window.location.href = '~/../SubsManagement/ShowSubscriptionListForSales';
+                        debugger
+                        $("#loaderCustom").hide();
+                        swal("Thank you!", "Subscription Created Sucessfully.", "success");
+                        //alert(data.result);
+                        window.location.href = '../../SubsManagement/LeadManagement';
                         $("#FromDatepicker").val('');
                         $("#ToDatepicker").val('');
                         $("#description").val('');
@@ -245,11 +257,13 @@
                         document.getElementById("checkboxes").style.display = "none";
                     }
                     else {
-                        alert("Error while inserting data");
+                        //alert("Error while inserting data");
+                        swal("Warning", "Error while inserting data :)", "error");
                     }
                 },
                 error: function () {
-                    alert("Error while inserting data");
+                    //alert("Error while inserting data");
+                    swal("Warning", "Error while inserting data :)", "error");
                 }
             });
             return false;

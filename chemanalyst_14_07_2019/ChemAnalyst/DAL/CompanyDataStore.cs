@@ -246,6 +246,14 @@ namespace ChemAnalyst.DAL
             int x = _context.SaveChanges();
             return x == 0 ? false : true;
         }
+        public bool DeleteCompanySWOT(int NewsId)
+        {
+            //  News.CreatedDate = DateTime.Now;
+            SA_Company_SWOT EditNews = _context.SA_Company_SWOT.Where(News => News.Id == NewsId).FirstOrDefault();
+            _context.Entry(EditNews).State = EntityState.Deleted;
+            int x = _context.SaveChanges();
+            return x == 0 ? false : true;
+        }
         public async Task<bool> AddCompany(SA_Company News)
         {
             //  News.CreatedDate = DateTime.Now;

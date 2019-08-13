@@ -231,7 +231,7 @@
                                     <option value="Monthly">Monthly</option>
                                     <option value="Quarterly">Quarterly</option>
                                     <option value="Weekly">Weekly</option>
-                                    <option value="Daily basis">Daily Retail</option>
+                                    <option value="Daily Retail">Daily Retail</option>
                                     <option value="Daily Bulk">Daily Bulk</option>
                                 </select>
 
@@ -452,14 +452,14 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                                     </tbody>
                                 </table>
                             }
-                            else if (Model.FirstOrDefault().range.ToLower() == "daily basis")
+                            else if (Model.FirstOrDefault().range == "Daily Retail")
                             {
                                 @*<div style="overflow-y:scroll; height:500px;width: 1200px;z-index: 9999;    position: relative;">
                                 *@
                                 @*<div>
                                 *@
                                 <div id="divScorll" style="height:500px ;z-index: 9999; position: relative;">
-                                    <table class="table table-hover table-bordered dailybasis" id="tblRegisteredUsers">
+                                    <table class="table table-hover table-bordered  daily retail table-responsive-lg" id="tblRegisteredUsers">
                                         <thead>
                                             <tr class="table-primary">
                                                 <th scope="col" style=" width:90px">Product</th>
@@ -741,6 +741,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
     <script src="https://www.github.developerdan.com/table-to-json/javascripts/jquery.tabletojson.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
     <script type="text/javascript">
+
         $(function () {
             $("#todate").attr("disabled","disabled");
             jQuery('#fromdate').datepicker({
@@ -757,7 +758,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                     if($("#ddlRange").val() == "Quarterly" ){
                         diff = (365);
                     }
-                    if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily basis" || $("#ddlRange").val() == "Daily Bulk"){
+                    if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily Retail" || $("#ddlRange").val() == "Daily Bulk"){
                         diff = (29);
                     }
                     var dt = new Date(selected);
@@ -784,7 +785,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                     if($("#ddlRange").val() == "Quarterly"){
                         diff = (365);
                     }
-                    if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily basis" || $("#ddlRange").val() == "Daily Bulk"){
+                    if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily Retail" || $("#ddlRange").val() == "Daily Bulk"){
                         diff = (29);
                     }
 
@@ -815,7 +816,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
             if($("#ddlRange").val() == "Quarterly"){
                 diff = (365);
             }
-            if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily basis" || $("#ddlRange").val() == "Daily Bulk"){
+            if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily Retail" || $("#ddlRange").val() == "Daily Bulk"){
                 diff = (29);
             }
 
@@ -827,7 +828,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                 if( $("#ddlRange").val() == "Monthly"){
                     var d = new Date();
 
-                    $('#fromdate').datepicker('setDate', new Date(d.getFullYear(),d.getMonth(),01));
+                    $('#fromdate').datepicker('setDate', new Date(dt));
                     $('#todate').datepicker('setDate', 'today');
                 }else{
                     $('#fromdate').datepicker('setDate', dt);
@@ -885,7 +886,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
             var range = $(ddlRange).find("option:selected").val();
             var ddlCustomers = $("#ddlChart");
 
-            if (range == "Daily basis" || range == "Daily Bulk") {
+            if (range == "Daily Retail" || range == "Daily Bulk") {
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
             }
             else if(range == "Quarterly")
@@ -901,46 +902,10 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
             }
             else {
-                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
             }
 
             ShowCommentariesByDeafult()
-
-            $("#ddlProduct").change(function () {
-                debugger;
-                var ProductId=$(ddlProduct).find("option:selected").val();
-
-                $.ajax({
-                    type: "POST",
-                    url: "../ChemicalPricing/CheckAccess",
-                    data: "{ ProductId:"+ ProductId +"}" ,
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    async: false,
-                    success: function (response) {
-                        debugger;
-                        if (response=="Access") {
-
-                        }
-                        else
-                        {
-                            $('#myModal').modal({backdrop: 'static', keyboard: false});
-                            event.preventDefault();
-                        }
-                    },
-                    failure: function (response) {
-                        // alert(response.responseText);
-                    },
-                    error: function (response) {
-                        // alert(response.responseText);
-                    }
-                });
-            });
-
-
-
-
-
         });
 
         $("body").on("change", "#ddlRange", function () {
@@ -948,8 +913,9 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
             var ddlCustomers = $("#ddlChart");
 
 
-            if (range == "Daily basis" || range == "Daily Bulk") {
-                swal("Please select only 30 days to see daily basis data!")
+            if (range == "Daily Retail" || range == "Daily Bulk") {
+                swal("Please select only 30 days to see daily Retail data!")
+                //alert("Please select only 30 days to see daily Retail data.");
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
             }
             else if(range == "Quarterly")
@@ -958,6 +924,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
             }
             else if(range == "Monthly")
             {
+                swal("Please select 36 Months date range!")
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
             }
             else if(range == "Weekly")
@@ -965,7 +932,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
             }
             else {
-                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
             }
         });
 
@@ -1093,7 +1060,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                         // ddlCompare.append($("<option  ></option>").val(this['Value']).html(this['Text']));
 
                     });
-                    //$("#example-getting-started").multiselect();
+                    $("#example-getting-started").multiselect();
                     // alert("category call");
                 },
                 failure: function (response) {
@@ -1104,10 +1071,6 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                 }
             });
         });
-
-
-        //$("body").on("change", "#ddlProduct", function () {
-
 
 
 
@@ -1225,6 +1188,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
 
 
         window.onload = function () {
+            debugger
             var Product = @Html.Raw(Product);
             var ChartType = @Html.Raw(ChartType);
             var range = @Html.Raw(range);
@@ -1427,7 +1391,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
     </script>
     <script>
         //$(document).ready( function () {
-        //    $('.dailybasis').DataTable();
+        //    $('.dailyRetail').DataTable();
         //} );
 
         //function generatePDF() {
@@ -1461,8 +1425,8 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
             $("#submitReset").hide();
             $("#exportpdf2").hide();
             $("#viewAll").hide();
-
-
+            $(".pdfheader").show();
+            $("#ptitle").html("Chemical pricing "+$("#ddlRange").val().toLowerCase()+" report ");
             // Generate the PDF.
             html2pdf().from(element).set({
                 filename: "Chemical-Pricing-Export" + '.pdf',
@@ -1476,7 +1440,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                 $("#submitReset").show();
                 $("#exportpdf2").show();
                 $("#viewAll").show();
-
+                $(".pdfheader").hide();
 
                 // window.location.reload();
             });;

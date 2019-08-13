@@ -9,7 +9,7 @@
 @model ChemAnalyst.Models.SA_Industry
 <div class="update-profile-wrapper">
 
-    <h3><a href="@Url.Action( "Industry","Industry" )"><i class="fa fa-list"></i>Industry Report</a></h3>
+    <h3><a href="@Url.Action("ShowIndustryList","Admin" )"><i class="fa fa-list"></i>Industry Report</a></h3>
 
     <div class="white-wrapper">
 
@@ -24,7 +24,7 @@
                 <div class="eq-form-box">
                     @using (Html.BeginForm("SaveIndustry", "Industry", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
-                        @Html.HiddenFor(m=>m.CountryID)
+                       
                         @Html.AntiForgeryToken()
                         <div style="visibility:hidden">
                             @Html.TextBoxFor(model => model.id, new { @class = "form-control", @placeholder = "Title * ", required = "required" })

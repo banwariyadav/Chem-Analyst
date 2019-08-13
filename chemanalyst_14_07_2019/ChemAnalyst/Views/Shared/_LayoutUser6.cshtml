@@ -69,8 +69,8 @@
                             <li class="nav-item"><a class="nav-link" href="@Url.Action("ChecmPriceChart", "ChemicalPricing")">Chemical Pricing</a></li>
                             <li class="nav-item"><a class="nav-link" href="@Url.Action("Reportsection", "Industry")">Industry Reports</a></li>
                             <li class="nav-item"><a class="nav-link" href="@Url.Action("CompanyProfile", "Company")">Company Profile</a></li>
-                            <li class="nav-item active"><a class="nav-link" href="@Url.Action("NewsHome", "NewsAndDeals")">News</a></li>
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("DealsHome", "NewsAndDeals")">Deals</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("NewsHome", "NewsAndDeals")">News</a></li>
+                            <li class="nav-item active"><a class="nav-link" href="@Url.Action("DealsHome", "NewsAndDeals")">Deals</a></li>
                             <li class="nav-item"><a class="nav-link" href="@Url.Action("Contact", "ChemAnalyst")">Contact Us</a></li>
                         </ul>
                     </div>
@@ -111,8 +111,8 @@
                     <div class="col-lg-2">
                         <h3>Useful links</h3>
                         <div class="foot-links">
-                            <p><a href="#">About Us</a></p>
-                            <p><a href="#">Privacy Policy</a></p>
+                            <p><a href="@Url.Action("AboutUS", "ChemAnalyst")">About Us</a></p>
+                            <p><a href="@Url.Action("Privacypolicy", "ChemAnalyst")">Privacy Policy</a></p>
                             <p><a href="@Url.Action("FreeTrail", "ChemAnalyst")">Product Finder</a></p>
                         </div>
                     </div>
@@ -120,13 +120,13 @@
                     <div class="col-lg-2">
                         <h3>Our Services</h3>
                         <div class="foot-links">
-                            <p><a href="#">About Us</a></p>
-                            <p><a href="#">Privacy Policy</a></p>
-                            <p><a href="#">FAQs</a></p>
+                            <p><a href="@Url.Action("AboutUS", "ChemAnalyst")">About Us</a></p>
+                            <p><a href="@Url.Action("Privacypolicy", "ChemAnalyst")">Privacy Policy</a></p>
+                            <p><a href="@Url.Action("Faq", "ChemAnalyst")">FAQs</a></p>
                         </div>
                     </div>
 
-                    <div class="col-lg-3">
+                    <div class="col-lg-3" style="display:none">
                         <h3>Recent News & Deals</h3>
                         <div class="foot-links">
                             <p>

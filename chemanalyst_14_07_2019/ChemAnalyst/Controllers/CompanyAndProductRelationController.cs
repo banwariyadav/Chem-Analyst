@@ -38,10 +38,18 @@ namespace ChemAnalyst.Controllers
             {
                 if (item.IsSelected)
                 {
-                    CompanyAndProductRelation companyAndProductRelation = new CompanyAndProductRelation();
-                    companyAndProductRelation.SA_CompanyId = viewModel.CompanyProfId;
-                    companyAndProductRelation.SA_ProductId = item.id;
-                    _context.CompanyAndProductRelations.Add(companyAndProductRelation);
+                    var checkForSameCompany = _context.CompanyAndProductRelations.Where(w => w.SA_CompanyId == viewModel.CompanyProfId && w.SA_ProductId == item.id).FirstOrDefault();
+                    if (checkForSameCompany != null)
+                    {
+                        TempData["Message"] = "This compnay already exist with same product.";
+                    }
+                    else
+                    {
+                        CompanyAndProductRelation companyAndProductRelation = new CompanyAndProductRelation();
+                        companyAndProductRelation.SA_CompanyId = viewModel.CompanyProfId;
+                        companyAndProductRelation.SA_ProductId = item.id;
+                        _context.CompanyAndProductRelations.Add(companyAndProductRelation);
+                    }
                 }
             }
             _context.SaveChanges();

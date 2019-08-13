@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<ChemAnalyst.Models.SA_ChemPriceFileList>
+@{
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -12,29 +13,31 @@
     <script>
 
         $(document).ready(function () {
-            $('#FileList').DataTable({
-                "ajax": {
-                    "url": "../ChemicalPricing/GetFileList",
-                    "type": "GET",
-                    "datatype": "json"
-                },
-                fields: [{
-                    label: 'CreatedDate:',
+            //$('#FileList').DataTable({
+            //    "ajax": {
+            //        "url": "../ChemicalPricing/GetFileList",
+            //        "type": "GET",
+            //        "datatype": "json"
+            //    },
+            //    fields: [{
+            //        label: 'CreatedDate:',
 
-                }],
+            //    }],
 
-                "columns": [
-                    { "data": "FileName" },
-                    { "data": "Product" },
-                     { "data": "CreatedBy" },
-                    {
-                        "data": "CreatedDate", type: "datetime"
+            //    "columns": [
+            //        { "data": "FileName" },
+            //        { "data": "Product" },
+            //         { "data": "CreatedBy" },
+            //        {
+            //            "data": "CreatedDate", type: "datetime"
 
-                    },
+            //        },
 
                   
-                ]
-            });
+            //    ]
+            //});
+
+            $('#FileList').DataTable();
         });
 
 
@@ -57,10 +60,22 @@
                         <th>Product Name</th>
                         <th>Created By</th>
                         <th width="130">Created</th>
+                        @*<th>Action</th>*@
                      
                     </tr>
                 </thead>
-
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td><a href="~/ChemPricingImportfile/@item.FileName">@item.FileName</a>  </td>
+                        <td>@item.Product</td>
+                        <td>@item.CreatedBy </td>
+                        <td>@item.CreatedDate</td>
+                        @*<td> <a href=""><i class="fa fa-trash-o fa-lg"></i></a></td>*@
+                    </tr>
+                    }
+                </tbody>
             </table>
 
 

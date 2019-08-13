@@ -83,8 +83,10 @@
                             @*<td>@comp.fax</td>*@
                             <td>@comp.EmailId</td>
                             <td>@comp.CreatedTime</td>
-                            <td>
+                            <td >
                                 @Html.ActionLink("Edit", "Edit", "CompanyProf", new { id = comp.id }, new { @class = "btn btn-primary btn-xs" })
+                                <br /><br />
+                                @Html.ActionLink("Delete", "Delete", "CompanyProf", new { id = comp.id }, new { @class = "btn btn-danger btn-xs" })
                             </td>
                         </tr>
                     }

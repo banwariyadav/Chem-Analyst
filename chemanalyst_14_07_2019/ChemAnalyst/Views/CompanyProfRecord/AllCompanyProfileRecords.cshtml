@@ -39,7 +39,7 @@
                 <table class="table table-bordered" id="example">
                     <thead>
                         <tr>
-                            <th>@Html.DisplayNameFor(c => c.FinancialYear.FinYear)</th>
+                            <th>@Html.DisplayNameFor(c => c.year)</th>
                             <th>@Html.DisplayNameFor(c => c.SA_Company.Name)</th>
                             <th>Revenue</th>
                             <th>@Html.DisplayNameFor(c => c.Growth)</th>
@@ -50,7 +50,7 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>@item.FinancialYear.FinYear</td>
+                                <td>@item.year</td>
                                 <td>@item.SA_Company.Name</td>
                                 <td>@item.Revenue</td>
                                 <td>@item.Growth</td>

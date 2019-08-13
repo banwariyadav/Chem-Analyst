@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<ChemAnalyst.Models.SA_MarketFileList>
+@{
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -12,29 +13,31 @@
     <script>
 
         $(document).ready(function () {
-            $('#FileList').DataTable({
-                "ajax": {
-                    "url": "../MarketAnalysis/GetFileList",
-                    "type": "GET",
-                    "datatype": "json"
-                },
-                fields: [{
-                    label: 'CreatedDate:',
+            //$('#FileList').DataTable({
+            //    "ajax": {
+            //        "url": "../ChemicalPricing/GetFileList",
+            //        "type": "GET",
+            //        "datatype": "json"
+            //    },
+            //    fields: [{
+            //        label: 'CreatedDate:',
 
-                }],
+            //    }],
 
-                "columns": [
-                    { "data": "FileName" },
-                    { "data": "Product" },
-                     //{ "data": "CreatedBy" },
-                    {
-                        "data": "CreatedDate", type: "datetime"
+            //    "columns": [
+            //        { "data": "FileName" },
+            //        { "data": "Product" },
+            //         { "data": "CreatedBy" },
+            //        {
+            //            "data": "CreatedDate", type: "datetime"
 
-                    },
+            //        },
 
-                  
-                ]
-            });
+
+            //    ]
+            //});
+
+            $('#FileList').DataTable();
         });
 
 
@@ -45,7 +48,7 @@
 
     <h3><a href="@Url.Action("Index", "MarketAnalysis")" class="btn btn-success"><i class="fa fa-plus"></i> Market Analysis Import</a></h3>
 
-    
+
     <div class="white-wrapper">
         </br>
         <div class="data-detail-wrapper table-responsive">
@@ -57,10 +60,20 @@
                         <th>Product Name</th>
                         @*<th>Created By</th>*@
                         <th width="130">Created</th>
-                     
+
                     </tr>
                 </thead>
-
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><a href="~/MarketAnalysisImportfile/@item.FileName">@item.FileName</a>  </td>
+                            <td>@item.Product</td>
+                            <td>@item.CreatedDate</td>
+                           
+                        </tr>
+                    }
+                </tbody>
             </table>
 
 

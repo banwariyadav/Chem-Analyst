@@ -1,8 +1,10 @@
 ﻿@model ChemAnalyst.ViewModel.CustCompanyVM
-    
+
 @{
     ViewBag.Title = "CompanyProfile";
     Layout = "~/Views/Shared/_LayoutUser7.cshtml";
+
+    int i = 0;
 }
 <div class="inner-banner">
     <img src="/images/about-banner.jpg">
@@ -18,73 +20,182 @@
             <div class="company-profile">
                 <div class="com-top-3col">
                     <div class="row">
-                       
-                            <div class="col-md-2 col-lg-2">
-                                <div class="ind-map-col">
-                                    <img src="~/ProductImages/@Model.Logo" class="img-responsive">
-                                </div>
+
+                        <div class="col-md-2 col-lg-2">
+                            <div class="ind-map-col">
+                                <img src="~/ProductImages/@Model.Logo" class="img-responsive">
                             </div>
+                        </div>
 
-                            <div class="col-md-10 col-lg-10">
-                                <div class="info-text-col">
-                                    <h4>@Model.Name</h4>
-                                    <p>@Model.Description</p>
+                        <div class="col-md-10 col-lg-10">
+                            <div class="info-text-col">
+                                <h4>@Model.Name</h4>
+                                <p>@Model.Description</p>
 
-                                </div>
                             </div>
+                        </div>
 
-                            <div class="col-md-6 col-lg-6">
-                                <div class="cm-detail-table">
-                                    <h3>Basic Detail</h3>
-                                    <table class="table table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td>Name of the Company</td>
-                                                <td>@Model.Name</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Registration Date</td>
-                                                <td>@Model.RegDate.ToString()</td>
-                                            </tr>
-                                            <tr>
-                                                <td>CIN</td>
-                                                <td>@Model.CIN</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Category/Sub-Category of Company</td>
-                                                <td>@Model.Category</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Addtess</td>
-                                                <td>@Model.Address</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Contact Details</td>
-                                                <td>
-                                                    Website:<Span>@Model.website</Span>
-                                                    Email:<Span>@Model.EmailId</Span>
-                                                    fax:<Span>@Model.fax</Span>
-                                                    Phone No:<Span>@Model.phoneNo</Span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Number of Employee</td>
-                                                <td>@Model.NOE</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Managing Director/CEO</td>
-                                                <td>@Model.CEO</td>
-                                            </tr>
+                        <div class="col-md-6 col-lg-6">
+                            <div class="cm-detail-table">
+                                <h3>Basic Detail</h3>
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td>Name of the Company</td>
+                                            <td>@Model.Name</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Registration Date</td>
+                                            <td>@Model.RegDate.ToString()</td>
+                                        </tr>
+                                        <tr>
+                                            <td>CIN</td>
+                                            <td>@Model.CIN</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Category/Sub-Category of Company</td>
+                                            <td>@Model.Category</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Addtess</td>
+                                            <td>@Model.Address</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Contact Details</td>
+                                            <td>
+                                                Website:<Span>@Model.website</Span>
+                                                Email:<Span>@Model.EmailId</Span>
+                                                fax:<Span>@Model.fax</Span>
+                                                Phone No:<Span>@Model.phoneNo</Span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Number of Employee</td>
+                                            <td>@Model.NOE</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Managing Director/CEO</td>
+                                            <td>@Model.CEO</td>
+                                        </tr>
 
-                                        </tbody>
-                                    </table>
-                                </div>
+                                    </tbody>
+                                </table>
                             </div>
+                        </div>
 
-                            <div class="col-md-6 col-lg-6">
-                                <div class="cm-detail-table cm-detail-table2">
-                                    <h3>Financial</h3>
-                                    <table class="table table-bordered">
+                        <div class="col-md-6 col-lg-6">
+                            <div class="cm-detail-table cm-detail-table2">
+                                @*<h3>Financial</h3>*@
+                                <div class="panel-group" id="accordion">
+                                    @foreach (var item1 in Model.lstFinacialData)
+                                    {
+
+                                        <div class="panel panel-default" style="margin-bottom: 5px;">
+                                            <div class="panel-heading">
+                                                <h3 data-toggle="collapse" data-parent="#accordion" href="#collapse1_@item1.FinacialYear" style="cursor:pointer">
+                                                    Financial @item1.FinacialYear
+                                                </h3>
+                                            </div>
+
+                                            @{if (i == 0)
+                                                {
+                                                    <div id="collapse1_@item1.FinacialYear" class="panel-collapse">
+                                                        <div class="panel-body">
+                                                            <table class="table table-bordered">
+                                                                <tbody>
+                                                                    @foreach (var item in Model.lstFinacialData.Where(w => w.FinacialYear == item1.FinacialYear))
+                                                            {
+                                                            <tr>
+                                                                <td>Revenue - @item.FinacialYear</td>
+                                                                <td>@item.Revenue INR</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>% Growth - @item.FinacialYear</td>
+                                                                <td>@item.Growth %</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>PBT - @item.FinacialYear</td>
+                                                                <td>@item.PBT</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Pat - @item.FinacialYear</td>
+                                                                <td>@item.Pat</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Margin - @item.FinacialYear</td>
+                                                                <td>@item.Margin</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Margin1 - @item.FinacialYear</td>
+                                                                <td>@item.Margin1</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Liablities - @item.FinacialYear</td>
+                                                                <td>@item.Liablities</td>
+                                                            </tr>
+                                                            }
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                                else
+                                                {
+                                                    <div id="collapse1_@item1.FinacialYear" class="panel-collapse collapse in">
+                                                        <div class="panel-body">
+                                                            <table class="table table-bordered">
+                                                                <tbody>
+                                                                    @foreach (var item in Model.lstFinacialData.Where(w => w.FinacialYear == item1.FinacialYear))
+                                                                {
+                                                                <tr>
+                                                                    <td>Revenue - @item.FinacialYear</td>
+                                                                    <td>@item.Revenue INR</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>% Growth - @item.FinacialYear</td>
+                                                                    <td>@item.Growth %</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>PBT - @item.FinacialYear</td>
+                                                                    <td>@item.PBT</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Pat - @item.FinacialYear</td>
+                                                                    <td>@item.Pat</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Margin - @item.FinacialYear</td>
+                                                                    <td>@item.Margin</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Margin1 - @item.FinacialYear</td>
+                                                                    <td>@item.Margin1</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Liablities - @item.FinacialYear</td>
+                                                                    <td>@item.Liablities</td>
+                                                                </tr>
+                                                                }
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+
+
+                                        </div>
+                                                    i++;
+                                                }
+                                </div>
+
+
+                                @*<table class="table table-bordered">
                                         <tbody>
                                             @foreach (var item in Model.lstFinacialData)
                                             {
@@ -108,149 +219,155 @@
                                                         <td>Margin - @item.FinacialYear</td>
                                                         <td>@item.Margin</td>
                                                     </tr>
+
+                                                    <tr>
+                                                        <td>Margin1 - @item.FinacialYear</td>
+                                                        <td>@item.Margin1</td>
+                                                    </tr>
+
                                                     <tr>
                                                         <td>Liablities - @item.FinacialYear</td>
                                                         <td>@item.Liablities</td>
                                                     </tr>
                                             }
                                         </tbody>
-                                    </table>
-                                </div>
+                                    </table>*@
                             </div>
+                        </div>
 
 
-                            <div class="col-md-12" style="    margin-bottom: 20px;">
-                                <div class="mains-indus-tabs">
-                                    <ul class="nav nav-tabs" role="tablist">
-                                        <li class="nav-item">
+                        <div class="col-md-12" style="    margin-bottom: 20px;">
+                            <div class="mains-indus-tabs">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
 
 
 
 
-                                            <a class="nav-link active" data-toggle="tab" href="#home">Strength</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#menu1">Weakness</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#menu2">Opportunity</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#menu3">Threat</a>
-                                        </li>
-                                    </ul>
-                                    <!-- Tab panes -->
-                                    @if (ViewBag.S != null)
-                                    {
-                                        <div class="tab-content">
-                                            <div id="home" class="container tab-pane active">
-                                                <br /><p>@Html.Raw(ViewBag.S.Strength)</p>
-                                            </div>
-                                            <div id="menu1" class="container tab-pane fade">
-                                                <br /><p>@Html.Raw(ViewBag.S.Weakness)</p>
-                                            </div>
-                                            <div id="menu2" class="container tab-pane fade">
-                                                <br /><p>@Html.Raw(ViewBag.S.Opportunity)</p>
-                                            </div>
-                                            <div id="menu3" class="container tab-pane fade">
-                                                <br /><p>@Html.Raw(ViewBag.S.Threat)</p>
-                                            </div>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="tab-content">
-                                            <div id="home" class="container tab-pane active">
-                                                <br /><p></p>
-                                            </div>
-                                            <div id="menu1" class="container tab-pane fade">
-                                                <br /><p></p>
-                                            </div>
-                                            <div id="menu2" class="container tab-pane fade">
-                                                <br /><p></p>
-                                            </div>
-                                            <div id="menu3" class="container tab-pane fade">
-                                                <br /><p></p>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-6">
-
-                                <div class="mains-indus-tabs">
-                                    <ul class="nav nav-tabs" role="tablist">
-                                        <li class="nav-item">
-
-                                            <a class="nav-link active" data-toggle="tab" href="#pp">Company Expansion Plan</a>
-                                        </li>
-
-
-                                    </ul>
-                                    <!-- Tab panes -->
-
+                                        <a class="nav-link active" data-toggle="tab" href="#home">Strength</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#menu1">Weakness</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#menu2">Opportunity</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#menu3">Threat</a>
+                                    </li>
+                                </ul>
+                                <!-- Tab panes -->
+                                @if (ViewBag.S != null)
+                                {
                                     <div class="tab-content">
-                                        <div id="pp" class="container tab-pane active">
-                                            <br /><p>
-
-                                                @if (ViewBag.S != null)
-                                                {
-                                                    @Html.Raw(ViewBag.S.CompanyExpansionBlock)
-                                                }
-
-                                            </p>
+                                        <div id="home" class="container tab-pane active">
+                                            <br /><p>@Html.Raw(ViewBag.S.Strength)</p>
                                         </div>
+                                        <div id="menu1" class="container tab-pane fade">
+                                            <br /><p>@Html.Raw(ViewBag.S.Weakness)</p>
+                                        </div>
+                                        <div id="menu2" class="container tab-pane fade">
+                                            <br /><p>@Html.Raw(ViewBag.S.Opportunity)</p>
+                                        </div>
+                                        <div id="menu3" class="container tab-pane fade">
+                                            <br /><p>@Html.Raw(ViewBag.S.Threat)</p>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="tab-content">
+                                        <div id="home" class="container tab-pane active">
+                                            <br /><p></p>
+                                        </div>
+                                        <div id="menu1" class="container tab-pane fade">
+                                            <br /><p></p>
+                                        </div>
+                                        <div id="menu2" class="container tab-pane fade">
+                                            <br /><p></p>
+                                        </div>
+                                        <div id="menu3" class="container tab-pane fade">
+                                            <br /><p></p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="mains-indus-tabs">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+
+                                        <a class="nav-link active" data-toggle="tab" href="#pp">Company Expansion Plan</a>
+                                    </li>
 
 
+                                </ul>
+                                <!-- Tab panes -->
+
+                                <div class="tab-content">
+                                    <div id="pp" class="container tab-pane active">
+                                        <br /><p>
+
+                                            @if (ViewBag.S != null)
+                                            {
+                                                @Html.Raw(ViewBag.S.CompanyExpansionBlock)
+                                            }
+
+                                        </p>
                                     </div>
 
+
                                 </div>
 
                             </div>
-                            <div class="col-md-6">
 
-                                <div class="mains-indus-tabs">
-                                    <ul class="nav nav-tabs" role="tablist">
-                                        <li class="nav-item">
+                        </div>
+                        <div class="col-md-6">
 
-                                            <a class="nav-link active" data-toggle="tab" href="#pp">Perspective</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#ss">Strategy</a>
-                                        </li>
+                            <div class="mains-indus-tabs">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
 
-                                    </ul>
-                                    <!-- Tab panes -->
-                                    @if (ViewBag.S != null)
-                                    {
-                                        <div class="tab-content">
-                                            <div id="pp" class="container tab-pane active">
-                                                <br /><p>@Html.Raw(ViewBag.S.Perspective)</p>
-                                            </div>
-                                            <div id="ss" class="container tab-pane fade">
-                                                <br /><p>@Html.Raw(ViewBag.S.Strategy)</p>
-                                            </div>
+                                        <a class="nav-link active" data-toggle="tab" href="#pp">Perspective</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#ss">Strategy</a>
+                                    </li>
 
+                                </ul>
+                                <!-- Tab panes -->
+                                @if (ViewBag.S != null)
+                                {
+                                    <div class="tab-content">
+                                        <div id="pp" class="container tab-pane active">
+                                            <br /><p>@Html.Raw(ViewBag.S.Perspective)</p>
                                         </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="tab-content">
-                                            <div id="pp" class="container tab-pane active">
-                                                <br /><p></p>
-                                            </div>
-                                            <div id="ss" class="container tab-pane fade">
-                                                <br /><p></p>
-                                            </div>
-
+                                        <div id="ss" class="container tab-pane fade">
+                                            <br /><p>@Html.Raw(ViewBag.S.Strategy)</p>
                                         </div>
-                                    }
-                                </div>
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="tab-content">
+                                        <div id="pp" class="container tab-pane active">
+                                            <br /><p></p>
+                                        </div>
+                                        <div id="ss" class="container tab-pane fade">
+                                            <br /><p></p>
+                                        </div>
+
+                                    </div>
+                                }
                             </div>
+                        </div>
 
-                        }
+
                     </div>
                 </div>
 

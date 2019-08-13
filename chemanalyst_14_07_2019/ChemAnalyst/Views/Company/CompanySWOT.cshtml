@@ -38,11 +38,11 @@
                              "render": function (data, type, row, meta)
                              { return '<a href="../Company/AddCompanySWOT/' + row.Id + '"><i class="fa fa-pencil-square-o"></i></a>'; }
                          },
-                       //{
-                       //    data: null, render: function (data, type, row) {
-                       //        return '<a href="../Job/DeleteJob/' + row.id + '"><i class="fa fa-trash-o fa-lg"></i></a>';
-                       //    }
-                       //},
+                       {
+                           data: null, render: function (data, type, row) {
+                               return '<a href="../Company/DeleteCompanySWOT/' + row.Id + '"><i class="fa fa-trash-o fa-lg"></i></a>';
+                           }
+                       },
                 ]
             });
         });
@@ -66,8 +66,11 @@
 
 
     <div class="status">
-        <div class="filter">
-            <a href="" data-toggle="modal" data-target="#myModal"><i class="fa fa-filter"></i></a>
+        <div class="">
+            <a href="@Url.Action("AllCompanyProf", "CompanyProf")" class="previous" style="text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;  background-color: #d6d6d6;
+  color: black;">« Back</a>
 
             <!-- Modal -->
 
@@ -162,7 +165,7 @@
                         <th>ID</th>
                         <th>Company</th>
                         <th>Edit</th>
-                        @*<th>Delete</th>*@
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>

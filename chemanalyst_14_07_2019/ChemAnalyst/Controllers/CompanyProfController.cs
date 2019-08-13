@@ -3,6 +3,7 @@ using ChemAnalyst.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Data.OleDb;
 using System.IO;
 using System.Linq;
@@ -111,7 +112,7 @@ namespace ChemAnalyst.Controllers
         {
             //which layout ?
             ChemAnalystContext _context = new ChemAnalystContext();
-            var companyProf = _context.SA_Company.OrderByDescending(c => c.id);
+            var companyProf = _context.SA_Company.OrderBy(c => c.Name);
             return View(companyProf);
         }
 
@@ -127,6 +128,20 @@ namespace ChemAnalyst.Controllers
 
 
             return View(companyProf);
+        }
+
+
+        public ActionResult Delete(int? id)
+        {
+            ChemAnalystContext _context = new ChemAnalystContext();
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            SA_Company state = _context.SA_Company.Where(c => c.id == id).FirstOrDefault();
+            _context.Entry(state).State = EntityState.Deleted;
+            int x = _context.SaveChanges();
+
+
+            return RedirectToAction("AllCompanyProf");
         }
 
         [HttpPost]

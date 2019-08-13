@@ -13,7 +13,7 @@ namespace ChemAnalyst.ViewModel
         public decimal Quantity { get; set; }
 
         public string MDimensionOne { get; set; }
+        public decimal Quantity1 { get; set; }
 
-       
     }
 }

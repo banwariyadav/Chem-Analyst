@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="eq-form-box">
-                    @using (Html.BeginForm("SaveNews", "NewsAndDeals", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm("SaveNews", "NewsAndDeals", null, FormMethod.Post, new { enctype = "multipart/form-data", id = "myForm" }))
                     {
 
                         @Html.AntiForgeryToken()
@@ -32,7 +32,7 @@
                             @Html.TextBoxFor(model => model.id, new { @class = "form-control", @placeholder = "Title" })
                         </div>
                         <div class="col-md-4 col-lg-12 form-group">
-                            @Html.TextBoxFor(model => model.NewsName, new { @class = "form-control", @placeholder = "Title" })
+                            @Html.TextBoxFor(model => model.NewsName, new { @class = "form-control", @placeholder = "Title" , @required= "required" })
 
 
                             @*<input type="text" value="" size="40" class="form-control" placeholder="Title">*@
@@ -43,7 +43,7 @@
                         <div class="col-md-4 col-lg-12 form-group">
                             @*<textarea rows="10" class="form-control" placeholder="Description"></textarea>*@
                             <label>News Description</label>
-                            @Html.TextAreaFor(model => model.NewsDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Description * ", id = "Desc" })
+                            @Html.TextAreaFor(model => model.NewsDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Description * ", id = "Desc", @required = "required" })
 
 
                         </div>
@@ -65,7 +65,7 @@
                                     <div id="dropdown1" class="selectbox" onclick="showCheckBoxes()">
                                       
                                         <select class="form-control">
-                                            <option>Select option</option>
+                                            <option>Select product</option>
                                         </select>
                                         <div class="overSelect"></div>
                                     </div>
@@ -77,7 +77,7 @@
                                             {
                                             <label style="width:100%;" id="@item.Value">
                                                 <input @(((List<ChemAnalyst.Models.SA_NewsAndProductRelation>)ViewBag.NewsProducts).Where(x => x.SA_ProductId == Convert.ToInt16(item.Value)).Count() > 0 ? "checked='checked'" : "") name="productList" onchange="selectProduct(this);"
-                                                       type="checkbox" id="@item.Value" required/>@item.Text
+                                                       type="checkbox" id="@item.Value"/>@item.Text
                                                 </label>
 
 
@@ -159,7 +159,7 @@
 </div>
 
 
-
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
 
 
 <script type="text/javascript">
@@ -191,6 +191,23 @@
             }
         }
     }
+
+    $("#myForm").submit(function (e) {
+        debugger
+        var selected = [];
+        $('#checkboxes input:checked').each(function () {
+            debugger;
+            selected.push($(this).attr('name'));
+        });
+        debugger
+        if (selected.length == 0) {
+            swal("Warning", "Please select at least one product.", "error");
+            e.preventDefault();
+        }
+        else {
+            return true;
+        }
+    });
 </script>
 
 <script>
@@ -205,4 +222,7 @@ $(document).on('change', '.file', function(){
 
 
 </script>
+
+
+
 

@@ -158,7 +158,7 @@
                                             <option value="Monthly">Monthly</option>
                                             <option value="Quarterly">Quarterly</option>
                                             <option value="Weekly">Weekly</option>
-                                            <option value="Daily basis">Daily Retail</option>
+                                            <option value="Daily Retail">Daily Retail</option>
                                             <option value="Daily Bulk">Daily Bulk</option>
                                         </select>
 
@@ -248,46 +248,60 @@
 
 
 
-                            <div class="side-news-feed">
-
+                            <div class="side-news-feed" style="height: 500px">
                                 <h3><i class="fa fa-bell-o"></i> News</h3>
-                                @foreach (var news in Model.NewsList)
-                                {
-                                    <div class="news-feed-col">
-                                        <a href="#">
+                                <marquee behavior="scroll" direction="up" style="height: 400px;" scrollamount="3" onmouseover="stop()" onmouseout="start()">
+                                    @foreach (var news in Model.NewsList)
+                                    {
+                                        <div class="news-feed-col">
+                                            <a href="@Url.Action("NewsDetails", "NewsAndDeals", new { id = news.GenerateItemNameAsParam() })">
 
-                                            <div class="right-news-desc2">
-                                                <p>@(news.NewsDiscription.Length > 60 ? (news.NewsDiscription.Substring(0, 60)) : news.NewsDiscription)</p>
-                                                <p><i class="fa fa-clock-o"></i>@news.CreatedTime.ToShortDateString()</p>
-                                            </div>
-                                        </a>
-                                    </div>
+                                                <div class="right-news-desc2">
+                                                    @{
 
-                                }
+                                                        if (news.NewsDiscription.Length > 60)
+                                                        {
 
+                                                            <p>@Html.Raw(WebUtility.HtmlDecode(news.NewsDiscription.Substring(0, 60)))</p>
+                                                        }
+
+                                                    }
+                                                    <p><i class="fa fa-clock-o"></i>@news.CreatedTime.ToShortDateString()</p>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                    }
+                                </marquee>
                             </div>
 
 
-                            <div class="side-news-feed mt-4">
-
+                            <div class="side-news-feed mt-4" style="height: 500px;">
                                 <h3><i class="fa fa-thumbs-up"></i> Top Deals</h3>
-
-                                @foreach (var item in Model.DealList)
-                                {
+                                <marquee behavior="scroll" direction="up" style="height: 450px;" scrollamount="3" onmouseover="stop()" onmouseout="start()">
+                                    @foreach (var item in Model.DealList)
+                                    {
                                     <div class="news-feed-col">
-                                        <a href="#">
-                                            @if (item.DealsImg != string.Empty)
-                                            {
-                                                <div class="left-news-pic"><img src="/images/@item.DealsImg" alt=""></div>
-                                            }
-                                            <div class="right-news-desc">
-                                                <p>@item.DealsDiscription</p>
+                                        <a href="@Url.Action("DealsDetails", "NewsAndDeals", new { id = item.GenerateItemNameAsParam() })">
+
+                                            <div class="right-news-desc2">
+
+                                                @{
+
+                                                    if (item.DealsDiscription.Length > 60)
+                                                    {
+                                                        <p>@Html.Raw(WebUtility.HtmlDecode(item.DealsDiscription.Substring(0, 60)))</p>
+
+                                                    }
+
+                                                }
+
                                                 <p><i class="fa fa-clock-o"></i>@item.CreatedTime.Value.ToShortDateString()</p>
                                             </div>
                                         </a>
                                     </div>
-                                }
-
+                                    }
+                                </marquee>
                             </div>
 
 
@@ -461,7 +475,7 @@
                     if($("#ddlRange").val() == "Quarterly" ){
                         diff = (365);
                     }
-                    if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily basis" || $("#ddlRange").val() == "Daily Bulk"){
+                    if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily Retail" || $("#ddlRange").val() == "Daily Bulk"){
                         diff = (30);
                     }
                     var dt = new Date(selected);
@@ -483,7 +497,7 @@
                     if($("#ddlRange").val() == "Quarterly"){
                         diff = (365);
                     }
-                    if($($("#ddlRange").val() == "Weekly" || "#ddlRange").val() == "Daily basis" || $("#ddlRange").val() == "Daily Bulk"){
+                    if($($("#ddlRange").val() == "Weekly" || "#ddlRange").val() == "Daily Retail" || $("#ddlRange").val() == "Daily Bulk"){
                         diff = (30);
                     }
 
@@ -542,8 +556,8 @@
 
             var range = $(ddlRange).find("option:selected").val();
             var ddlCustomers = $("#ddlChart");
-            
-            if (range == "Daily basis" || range == "Daily Bulk") {
+
+            if (range == "Daily Retail" || range == "Daily Bulk") {
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
             }
             else if(range == "Quarterly")
@@ -559,8 +573,9 @@
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
             }
             else {
-                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
             }
+
 
             ShowCommentariesByDeafult()
         });
@@ -569,9 +584,10 @@
             var range=$(ddlRange).find("option:selected").val();
             var ddlCustomers = $("#ddlChart");
 
-            
-            if (range == "Daily basis" || range == "Daily Bulk") {
-                swal("Please select only 30 days to see daily basis data!")
+
+            if (range == "Daily Retail" || range == "Daily Bulk") {
+                swal("Please select only 30 days to see daily Retail data!")
+                //alert("Please select only 30 days to see daily Retail data.");
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
             }
             else if(range == "Quarterly")
@@ -580,6 +596,7 @@
             }
             else if(range == "Monthly")
             {
+                swal("Please select 36 Months date range!")
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
             }
             else if(range == "Weekly")
@@ -587,9 +604,10 @@
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
             }
             else {
-                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option> <option  value="pie" >Pie Chart</option>');
+                ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option><option value="bar" >Bar Chart</option>');
             }
         });
+
         function ShowCommentaries()
         {
            

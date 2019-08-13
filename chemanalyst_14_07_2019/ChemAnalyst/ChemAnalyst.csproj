@@ -61,14 +61,6 @@
     <Reference Include="EPPlus, Version=4.5.3.1, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.4.5.3.1\lib\net40\EPPlus.dll</HintPath>
     </Reference>
-    <Reference Include="itextsharp, Version=5.5.13.1, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\iTextSharp.5.5.13.1\lib\itextsharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="itextsharp.xmlworker, Version=5.5.13.1, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\itextsharp.xmlworker.5.5.13.1\lib\itextsharp.xmlworker.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -111,10 +103,6 @@
       <HintPath>..\..\..\..\..\Chem_14062019_gaurva\chemanalyst\chemanalyst\chemanalyst\ChemAnalyst\bin\PagedList.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
-    <Reference Include="Select.HtmlToPdf, Version=18.4.0.0, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
-      <HintPath>..\packages\Select.HtmlToPdf.18.4.0\lib\net40\Select.HtmlToPdf.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
@@ -180,10 +168,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\packages\wkhtmltopdf.msvc.exe.1.0.2\tools\wkhtmltopdf.exe">
-      <Link>wkhtmltopdf.exe</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="ckeditor\build-config.js" />
     <Content Include="ckeditor\ckeditor.js" />
     <Content Include="ckeditor\config.js" />
@@ -206,12 +190,20 @@
     <Content Include="css\oswald-font.css" />
     <Content Include="css\owl.carousel.min.css" />
     <Content Include="css\owl.theme.default.min.css" />
+    <Content Include="css\slider\owl.carousel.css" />
+    <Content Include="css\slider\owl.carousel.js" />
+    <Content Include="css\slider\owl.theme.css" />
     <Content Include="css\style-customer.css" />
     <Content Include="css\style.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="free-trail.html" />
     <Content Include="Global.asax" />
+    <Content Include="images\dealsnew.png" />
+    <Content Include="images\dealss.png" />
+    <Content Include="images\news-report.png" />
+    <Content Include="images\news.jpg" />
+    <Content Include="images\news2.png" />
     <Content Include="images\about-banner.jpg" />
     <Content Include="images\about-map.jpg" />
     <Content Include="images\aboutus-1.jpg" />
@@ -299,12 +291,81 @@
     <Content Include="ckeditor\CHANGES.md" />
     <Content Include="ckeditor\LICENSE.md" />
     <Content Include="ckeditor\README.md" />
+    <Content Include="MarketAnalysisImportfile\By Company.xlsx" />
+    <Content Include="MarketAnalysisImportfile\By Location.xlsx" />
+    <Content Include="MarketAnalysisImportfile\By Process.xlsx" />
+    <Content Include="MarketAnalysisImportfile\By Technology.xlsx" />
+    <Content Include="MarketAnalysisImportfile\CompanyShare%28Tonnes%29.xlsx" />
+    <Content Include="MarketAnalysisImportfile\Demand by EndUse%28%25%29.xlsx" />
+    <Content Include="MarketAnalysisImportfile\Demand by EndUse%28Tonnes%29.xlsx" />
+    <Content Include="MarketAnalysisImportfile\Demand by Grade%28%25%29.xlsx" />
+    <Content Include="MarketAnalysisImportfile\Demand by Grade%28Tonnes%29.xlsx" />
+    <Content Include="MarketAnalysisImportfile\Demand by Type%28%25%29.xlsx" />
+    <Content Include="MarketAnalysisImportfile\demand by type%28tonnes%29.xlsx" />
+    <Content Include="MarketAnalysisImportfile\Demand Supply Gap-Graph.xlsx" />
+    <Content Include="MarketAnalysisImportfile\Demand Supply Gap-Grpah.xlsx" />
+    <Content Include="MarketAnalysisImportfile\Demand Supply Gap.xlsx" />
+    <Content Include="MarketAnalysisImportfile\FT%28export%29.xlsx" />
+    <Content Include="MarketAnalysisImportfile\FT%28import%29.xlsx" />
+    <Content Include="MarketAnalysisImportfile\Grade Pricing.xlsx" />
+    <Content Include="MarketAnalysisImportfile\location.xlsx" />
+    <Content Include="MarketAnalysisImportfile\Operating Efficiency.xlsx" />
+    <Content Include="MarketAnalysisImportfile\Production By Company.xlsx" />
+    <Content Include="MarketAnalysisImportfile\Region%28%25%29.xlsx" />
+    <Content Include="MarketAnalysisImportfile\Region%28T%29.xlsx" />
+    <Content Include="MarketAnalysisImportfile\Sales Channel%28%25%29.xlsx" />
+    <Content Include="MarketAnalysisImportfile\Sales Channel%28Tonnes%29.xlsx" />
+    <Content Include="MarketAnalysisImportfile\suplhur.xlsx" />
+    <Content Include="MarketAnalysisImportfile\test1 - Copy.xlsx" />
+    <Content Include="MarketAnalysisImportfile\test1.xlsx" />
+    <Content Include="ChemPricingImportfile\ammonia.xlsx" />
+    <Content Include="ChemPricingImportfile\arcl.xlsx" />
+    <Content Include="ChemPricingImportfile\benzene.xlsx" />
+    <Content Include="ChemPricingImportfile\benzenedaily.xlsx" />
+    <Content Include="ChemPricingImportfile\benzenquarterlydata.xlsx" />
+    <Content Include="ChemPricingImportfile\CBDdaily.xlsx" />
+    <Content Include="ChemPricingImportfile\chemicalpricing_Yearly.xlsx" />
+    <Content Include="ChemPricingImportfile\Daily Data Table_Sulphuric acid Price.xlsx" />
+    <Content Include="ChemPricingImportfile\daily.xlsx" />
+    <Content Include="ChemPricingImportfile\Daily_Retail pricesulphuric acid.xlsx" />
+    <Content Include="ChemPricingImportfile\LLDPE chemicalpricing_Monthly - Copy.xlsx" />
+    <Content Include="ChemPricingImportfile\LLDPE chemicalpricing_Yearly.xlsx" />
+    <Content Include="ChemPricingImportfile\Monthly_Sulphuric Acid chemicalpricing.xlsx" />
+    <Content Include="ChemPricingImportfile\PBR chemicalpricing_Monthly.xlsx" />
+    <Content Include="ChemPricingImportfile\PBR Daily New Price.xlsx" />
+    <Content Include="ChemPricingImportfile\Quarter.xlsx" />
+    <Content Include="ChemPricingImportfile\Quarterlydata.xlsx" />
+    <Content Include="ChemPricingImportfile\samplelist.xlsx" />
+    <Content Include="ChemPricingImportfile\Sulphuric Acid chemicalpricing_Monthly.xlsx" />
+    <Content Include="ChemPricingImportfile\sulphuric acid.xlsx" />
+    <Content Include="ChemPricingImportfile\sulphuric acid_daily.xlsx" />
+    <Content Include="ChemPricingImportfile\sulphuric acid_update.xlsx" />
+    <Content Include="ChemPricingImportfile\sulphuric acid_week.xlsx" />
+    <Content Include="ChemPricingImportfile\suplhur.xlsx" />
+    <Content Include="ChemPricingImportfile\test.xlsx" />
+    <Content Include="ChemPricingImportfile\test1.xlsx" />
+    <Content Include="ChemPricingImportfile\updated_week.xlsx" />
+    <Content Include="ChemPricingImportfile\Weekly_Format_updated.xlsx" />
+    <Content Include="ChemPricingImportfile\Weekly_Form_ sulphuric acid - Copy.xlsx" />
+    <Content Include="ChemPricingImportfile\Weekly_Form_ sulphuric acid.xlsx" />
+    <Content Include="ChemPricingImportfile\Weekly_Price_ sulphuric acid.xlsx" />
+    <Content Include="ChemPricingImportfile\Yearly_Sulphuric Acid Price.xlsx" />
     <None Include="Properties\PublishProfiles\Analyst.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile10.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile11.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile12.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile13.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile14.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile3.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile4.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile5.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile6.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile7.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile8.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile9.pubxml" />
     <None Include="scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="scripts\jquery-1.10.2.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
@@ -321,19 +382,30 @@
     <Content Include="Views\Admin\UserView.cshtml" />
     <Content Include="Views\ChemAnalyst\products.cshtml" />
     <Content Include="Views\ChemicalPricing\Chemical-analysis-import.cshtml" />
-    <Content Include="Views\ChemicalPricing\chemical-pricing1.cshtml" />
     <Content Include="Views\ChemicalPricing\chemical-pricing.cshtml" />
     <Content Include="Views\ChemicalPricing\Chem-PriceData.cshtml" />
     <Content Include="Views\ChemicalPricing\Chem-PriceDataUser.cshtml" />
     <Content Include="Views\ChemicalPricing\Chemical-FileList.cshtml" />
     <Content Include="Views\ChemContent\AddChemContent.cshtml" />
     <Content Include="Views\Admin\industry-list.cshtml" />
-    <Content Include="Views\ChemicalPricing\chemical-pricing-pdf.cshtml" />
-    <Content Include="Views\Admin\commentary-list.cshtml" />
     <Content Include="Views\Admin\AddCommentary.cshtml" />
-    <Content Include="Views\Admin\country-list.cshtml" />
+    <Content Include="Views\Admin\commentary-list.cshtml" />
+    <Content Include="Views\AdvisorySolutions\AddAdvisoryContent.cshtml" />
+    <Content Include="Views\AdvisorySolutions\AdvisoryDetails.cshtml" />
+    <Content Include="Views\AdvisorySolutions\AdvsoryContent.cshtml" />
+    <Content Include="Views\Admin\AddCommentaryMarket.cshtml" />
     <Content Include="Views\Admin\add-country.cshtml" />
-    <None Include="Views\ChemicalPricing\chemical-pricing11.cshtml" />
+    <Content Include="Views\Admin\country-list.cshtml" />
+    <Content Include="Views\Admin\state-list.cshtml" />
+    <Content Include="Views\Admin\add-state.cshtml" />
+    <Content Include="Views\ChemAnalyst\AboutUs.cshtml" />
+    <Content Include="Views\ChemAnalyst\Faq.cshtml" />
+    <Content Include="Views\ChemAnalyst\Privacypolicy.cshtml" />
+    <Content Include="Views\ChemAnalyst\Terms.cshtml" />
+    <Content Include="temp\d9269135-156e-4cba-9013-cddf932dc4a2.pdf" />
+    <Content Include="temp\df0d196f-d367-4f2a-b93b-b3feb563fc40.pdf" />
+    <Content Include="Views\ChemAnalyst\SliderDemo.cshtml" />
+    <Content Include="Views\ChemicalPricing\chemical-pricing-pdf.cshtml" />
     <Content Include="Views\ProductAndCategory\add-product.cshtml" />
     <Content Include="Views\Admin\add-role.cshtml" />
     <Content Include="Views\Admin\add-user.cshtml" />
@@ -405,18 +477,17 @@
     <Content Include="Views\CustomerAndProduct\CustomerAndProduct.cshtml" />
     <Content Include="Views\Login\CustCompanies.cshtml" />
     <Content Include="Views\Login\CompanyDetail.cshtml" />
-    <Content Include="Views\PartialView\YearlyChartChemical6.cshtml" />
-    <Content Include="Views\ChemicalPricing\CommentaryHome.cshtml" />
     <Content Include="Views\ChemicalPricing\CommentaryDetails.cshtml" />
     <Content Include="Views\Industry\report-section.cshtml" />
-    <Content Include="Views\Company\CompanyProfileDetails.cshtml" />
-    <Content Include="Views\Login\custChangePassword.cshtml" />
-    <Content Include="Views\Login\cust-update-profile.cshtml" />
     <Content Include="Views\Company\AddCompanySWOT.cshtml" />
+    <Content Include="Views\Company\CompanyProfileDetails.cshtml" />
     <Content Include="Views\Company\CompanySWOT.cshtml" />
-    <None Include="Views\ProductAndCategory\category1.cshtml" />
+    <Content Include="Views\MarketAnalysis\market-FileList.cshtml" />
+    <Content Include="Views\ChemicalPricing\CommentaryHome.cshtml" />
+    <Content Include="Views\Login\cust-update-profile.cshtml" />
+    <Content Include="Views\Login\custChangePassword.cshtml" />
+    <Content Include="Views\PartialView\YearlyChartChemical6.cshtml" />
     <Content Include="Views\Admin\grid.cshtml" />
-    <Content Include="Views\Admin\role1 - Copy.cshtml" />
     <Content Include="Views\ProductAndCategory\category.cshtml" />
     <Content Include="Views\Admin\role.cshtml" />
     <Content Include="Views\Admin\user-list.cshtml" />
@@ -437,9 +508,7 @@
     <Content Include="Views\Subscription\subscriptionpackage.cshtml" />
     <Content Include="Views\Subscription\update-profile.html" />
     <Content Include="Views\Subscription\viewlead.cshtml" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Web.config" />
     <Content Include="Views\ChemAnalyst\ChemAnalyst.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -475,20 +544,20 @@
     <Compile Include="DAL\ChemContent.cs" />
     <Compile Include="DAL\ChemicalPricing.cs" />
     <Compile Include="DAL\CMS.cs" />
+    <Compile Include="DAL\Commentary.cs" />
     <Compile Include="DAL\CompanyDataStore.cs" />
     <Compile Include="DAL\Contact.cs" />
     <Compile Include="DAL\Customer.cs" />
     <Compile Include="DAL\CustWiseAccess.cs" />
     <Compile Include="DAL\Deals.cs" />
-    <Compile Include="DAL\Commentary.cs" />
     <Compile Include="DAL\MarketAnalysis.cs" />
-    <Compile Include="DAL\Product.cs" />
     <Compile Include="DAL\SubscriptionDAL.cs" />
     <Compile Include="DAL\FreeTrialDal.cs" />
     <Compile Include="DAL\Industry.cs" />
     <Compile Include="DAL\JOb.cs" />
     <Compile Include="DAL\LeadDAL.cs" />
     <Compile Include="DAL\News.cs" />
+    <Compile Include="DAL\Product.cs" />
     <Compile Include="DAL\Login.cs" />
     <Compile Include="DAL\Category.cs" />
     <Compile Include="DAL\Quote.cs" />
@@ -504,6 +573,7 @@
     <Compile Include="Models\CompanyProduct.cs" />
     <Compile Include="Models\CompanyProf.cs" />
     <Compile Include="Models\CompanyProfRecord.cs" />
+    <Compile Include="Models\CompanyProfRecordNew.cs" />
     <Compile Include="Models\CustomerAndProducRelation.cs" />
     <Compile Include="Models\CustProduct.cs" />
     <Compile Include="Models\CustWiseAccess.cs" />
@@ -513,29 +583,38 @@
     <Compile Include="Models\SalesPackageSubsription.cs" />
     <Compile Include="Models\SalesSubscription.cs" />
     <Compile Include="Models\SA_Advisory.cs" />
-    <Compile Include="Models\SA_Chem6PriceWeekly.cs" />
-    <Compile Include="Models\SA_ChemContent.cs" />
-    <Compile Include="Models\SA_ChemPriceDailyNew.cs" />
-    <Compile Include="Models\SA_ChemPriceDaily.cs" />
-    <Compile Include="Models\SA_ChemPriceDailyAverage.cs" />
-    <Compile Include="Models\SA_ChemPriceQuarterly.cs" />
-    <Compile Include="Models\SA_ChemPriceMonthly.cs" />
+    <Compile Include="Models\SA_AdvisoryContent.cs" />
     <Compile Include="Models\SA_Chem1PriceWeekly.cs" />
     <Compile Include="Models\SA_Chem2PriceWeekly.cs" />
     <Compile Include="Models\SA_Chem3PriceWeekly.cs" />
     <Compile Include="Models\SA_Chem4PriceWeekly.cs" />
     <Compile Include="Models\SA_Chem5PriceWeekly.cs" />
-    <Compile Include="Models\SA_ChemPriceWeeklyNew.cs" />
+    <Compile Include="Models\SA_Chem6PriceWeekly.cs" />
+    <Compile Include="Models\SA_ChemContent.cs" />
+    <Compile Include="Models\SA_ChemPriceDailyNew.cs" />
     <Compile Include="Models\SA_ChemPriceWeekly.cs" />
+    <Compile Include="Models\SA_ChemPriceDaily.cs" />
+    <Compile Include="Models\SA_ChemPriceDailyAverage.cs" />
+    <Compile Include="Models\SA_ChemPriceQuarterly.cs" />
+    <Compile Include="Models\SA_ChemPriceMonthly.cs" />
+    <Compile Include="Models\SA_Chem1PriceYearly.cs" />
+    <Compile Include="Models\SA_Chem2PriceYearly.cs" />
+    <Compile Include="Models\SA_Chem3PriceYearly.cs" />
+    <Compile Include="Models\SA_Chem4PriceYearly.cs" />
+    <Compile Include="Models\SA_Chem5PriceYearly.cs" />
+    <Compile Include="Models\SA_ChemPriceWeeklyNew.cs" />
     <Compile Include="Models\SA_ChemPriceYearly.cs" />
     <Compile Include="Models\SA_CMS.cs" />
     <Compile Include="Models\SA_Commentary.cs" />
     <Compile Include="Models\SA_CompanyAndProductRelation.cs" />
     <Compile Include="Models\SA_Company_SWOT.cs" />
+    <Compile Include="Models\SA_States.cs" />
     <Compile Include="Models\SA_Country.cs" />
     <Compile Include="Models\SA_DealsAndProductRelation.cs" />
+    <Compile Include="Models\SA_HomeHeader.cs" />
     <Compile Include="Models\SA_MarketbyCompanySharetonnes.cs" />
     <Compile Include="Models\SA_MarketbyCompanySharepercent.cs" />
+    <Compile Include="Models\SA_MarketbyDemandsupplyGraph.cs" />
     <Compile Include="Models\SA_MarketbyDemandsupply.cs" />
     <Compile Include="Models\SA_MarketbyGradepricing.cs" />
     <Compile Include="Models\SA_MarketbyTradeImport.cs" />
@@ -579,6 +658,7 @@
     <Compile Include="ViewModel\CompanyProfAndCompanyProductRelationFormViewModel.cs" />
     <Compile Include="ViewModel\CompanyProfFormViewModel.cs" />
     <Compile Include="ViewModel\CompanyProfRecordViewModel.cs" />
+    <Compile Include="ViewModel\ContactUs.cs" />
     <Compile Include="ViewModel\CustCompanyVM.cs" />
     <Compile Include="ViewModel\CustomerProductFormViewModel.cs" />
     <Compile Include="ViewModel\DealsDetails.cs" />
@@ -587,10 +667,12 @@
     <Compile Include="ViewModel\IndustryViewModel.cs" />
     <Compile Include="ViewModel\LeadViewModel.cs" />
     <Compile Include="ViewModel\MA_StackViewModel.cs" />
+    <Compile Include="ViewModel\NewDealVM.cs" />
     <Compile Include="ViewModel\NewsDetails.cs" />
     <Compile Include="ViewModel\DealsHomeViewModel.cs" />
     <Compile Include="ViewModel\NewsHomeViewModel.cs" />
     <Compile Include="ViewModel\ProductListViewModel.cs" />
+    <Compile Include="ViewModel\SA_CustomerViewModel.cs" />
     <Compile Include="ViewModel\SA_MarketFileList.cs" />
     <Compile Include="ViewModel\SA_ChemPriceFileList.cs" />
     <Compile Include="ViewModel\SA_CMSViewModel.cs" />
@@ -598,7 +680,6 @@
     <Compile Include="ViewModel\SA_ProductViewModel.cs" />
     <Compile Include="ViewModel\SA_NewsViewModel.cs" />
     <Compile Include="ViewModel\SA_RoleViewModel.cs" />
-    <Compile Include="ViewModel\SA_CustomerViewModel.cs" />
     <Compile Include="ViewModel\SA_UserViewModel.cs" />
     <Compile Include="ViewModel\SeoFriendlyRoute.cs" />
     <Compile Include="ViewModel\SimpleReportViewModel.cs" />
@@ -629,9 +710,15 @@
     <Content Include="Views\User\UserView.cshtml" />
     <Content Include="Views\World\AddWorld.cshtml" />
     <Content Include="Views\Shared\_LayoutUser7.cshtml" />
+    <Content Include="Views\Shared\_LayoutUser1 - Copy.cshtml" />
+    <Content Include="Views\Shared\_LayoutUser8.cshtml" />
+    <Content Include="Views\Shared\_LayoutUser9.cshtml" />
+    <Content Include="Views\Slider\AddHeaderContent.cshtml" />
+    <Content Include="Views\Slider\HeaderContent.cshtml" />
     <Content Include="Views\SubsManagement\ViewAllSubscriptions.cshtml" />
     <Content Include="Views\Shared\_LayoutCustomer_chemical.cshtml" />
     <Content Include="Views\Shared\_LayoutCustomer_company.cshtml" />
+    <Content Include="Views\Shared\_LayoutCustomer-market-analysis.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -642,12 +729,9 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="bin\" />
-    <Folder Include="ChemPricingImportfile\" />
     <Folder Include="ExcelFiles\" />
-    <Folder Include="MarketAnalysisImportfile\" />
     <Folder Include="ProductImages\" />
     <Folder Include="Templates\" />
-    <Folder Include="temp\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -11,6 +11,8 @@ namespace ChemAnalyst.Models
     public class CompanyProfRecord
     {
         public int Id { get; set; }
+
+      
         public string Revenues { get; set; }
         public string Growth { get; set; }
 

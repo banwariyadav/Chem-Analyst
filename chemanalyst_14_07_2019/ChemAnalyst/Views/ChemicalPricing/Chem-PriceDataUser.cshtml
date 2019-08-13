@@ -118,7 +118,7 @@
                                     <option value="Monthly">Monthly</option>
                                     <option value="Quarterly">Quarterly</option>
                                     <option value="Weekly">Weekly</option>
-                                    <option value="Daily basis">Daily Retail</option>
+                                    <option value="Daily Retail">Daily Retail</option>
                                     <option value="Daily Bulk">Daily Bulk</option>
                                 </select>
 
@@ -267,7 +267,7 @@
                     if($("#ddlRange").val() == "Quarterly" ){
                         diff = (365);
                     }
-                    if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily basis" || $("#ddlRange").val() == "Daily Bulk"){
+                    if($("#ddlRange").val() == "Weekly" || $("#ddlRange").val() == "Daily Retail" || $("#ddlRange").val() == "Daily Bulk"){
                         diff = (30);
                     }
                     var dt = new Date(selected);
@@ -289,7 +289,7 @@
                     if($("#ddlRange").val() == "Quarterly"){
                         diff = (365);
                     }
-                    if($($("#ddlRange").val() == "Weekly" || "#ddlRange").val() == "Daily basis" || $("#ddlRange").val() == "Daily Bulk"){
+                    if($($("#ddlRange").val() == "Weekly" || "#ddlRange").val() == "Daily Retail" || $("#ddlRange").val() == "Daily Bulk"){
                         diff = (30);
                     }
 
@@ -349,7 +349,7 @@
             var range = $(ddlRange).find("option:selected").val();
             var ddlCustomers = $("#ddlChart");
 
-            if (range == "Daily basis" || range == "Daily Bulk") {
+            if (range == "Daily Retail" || range == "Daily Bulk") {
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
             }
             else if(range == "Quarterly")
@@ -407,9 +407,9 @@
             var ddlCustomers = $("#ddlChart");
 
 
-            if (range == "Daily basis" || range == "Daily Bulk") {
-                swal("Please select only 30 days to see daily basis data!")
-                //alert("Please select only 30 days to see daily basis data.");
+            if (range == "Daily Retail" || range == "Daily Bulk") {
+                swal("Please select only 30 days to see daily Retail data!")
+                //alert("Please select only 30 days to see daily Retail data.");
                 ddlCustomers.empty().append('<option selected="selected" value="line" >Line Chart</option>');
             }
             else if(range == "Quarterly")

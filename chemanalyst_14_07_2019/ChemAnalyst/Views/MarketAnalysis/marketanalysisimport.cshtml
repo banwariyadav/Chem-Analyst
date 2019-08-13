@@ -77,9 +77,9 @@
 
                             <div class="col-sm-4 col-lg-12 form-group">
 
-                                @Html.DropDownList("ddlProduct", new SelectList(ViewBag.ProductList, "Value", "Text"), "Please select Product", new { @id = "ddlProduct", @class = "form-control" })
+                                @Html.DropDownList("ddlProduct", new SelectList(ViewBag.ProductList, "Value", "Text"), "Please select Product", new { @id = "ddlProduct", @class = "form-control", @required= "required" })
                                 @Html.Hidden("hdproductid", null, new { @id = "hdproductid" })
-                                <select class="form-control" id="type">
+                                <select class="form-control" id="type" required>
                                     <option value="">Select Import File type Type</option>
                                     <option value="1">Company</option>
                                     <option value="2">Location</option>
@@ -113,7 +113,7 @@
                             </div>
                                 <div class="col-sm-6 col-lg-12">
                                     <div class="form-group">
-                                        <input type="file" name="file" class="custom-file-input" />
+                                        <input type="file" name="file" class="custom-file-input"required />
 
 
                                     </div>

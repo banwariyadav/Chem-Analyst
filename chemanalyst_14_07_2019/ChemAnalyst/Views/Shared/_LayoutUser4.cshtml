@@ -108,8 +108,8 @@
                     <div class="col-lg-2">
                         <h3>Useful links</h3>
                         <div class="foot-links">
-                            <p><a href="#">About Us</a></p>
-                            <p><a href="#">Privacy Policy</a></p>
+                            <p><a href="@Url.Action("AboutUS", "ChemAnalyst")">About Us</a></p>
+                            <p><a href="@Url.Action("Privacypolicy", "ChemAnalyst")">Privacy Policy</a></p>
                             <p><a href="@Url.Action("FreeTrail", "ChemAnalyst")">Product Finder</a></p>
                         </div>
                     </div>
@@ -117,13 +117,13 @@
                     <div class="col-lg-2">
                         <h3>Our Services</h3>
                         <div class="foot-links">
-                            <p><a href="#">About Us</a></p>
-                            <p><a href="#">Privacy Policy</a></p>
-                            <p><a href="#">FAQs</a></p>
+                            <p><a href="@Url.Action("AboutUS", "ChemAnalyst")">About Us</a></p>
+                            <p><a href="@Url.Action("Privacypolicy", "ChemAnalyst")">Privacy Policy</a></p>
+                            <p><a href="@Url.Action("Faq", "ChemAnalyst")">FAQs</a></p>
                         </div>
                     </div>
 
-                    <div class="col-lg-3">
+                    <div class="col-lg-3" style="display:none">
                         <h3>Recent News & Deals</h3>
                         <div class="foot-links">
                             <p>
@@ -154,7 +154,36 @@
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
 
     <script type="text/javascript">
-        
+        $("body").on("change", "#txtCountry", function () {
+            debugger
+            var country = $(txtCountry).find("option:selected").val();
+
+            var state = $("#txtState");
+            state.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
+            $.ajax({
+                type: "POST",
+                url: "../ChemAnalyst/GetState",
+                data: JSON.stringify({ 'country': country }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (response) {
+                    debugger
+                    state.empty().append('<option selected="selected" value=""> Select State</option>');
+                    $.each(response, function () {
+                        state.append($("<option></option>").val(this['Value']).html(this['Text']));
+                    });
+                },
+                failure: function (response) {
+                    // alert(response.responseText);
+                },
+                error: function (response) {
+                    // alert(response.responseText);
+                }
+            });
+
+
+        });
         
         $(document).on('click', '#btnSave', function (e) {
             
@@ -176,14 +205,14 @@
                 swal("Warning", "Please enter organisation :)", "error");
                 return false;
             }
-            if ($("#txtCountry").val() == "") {
-                swal("Warning", "Please enter country :)", "error");
-                return false;
-            }
-            if ($("#txtState").val() == "") {
-                swal("Warning", "Please enter state :)", "error");
-                return false;
-            }
+            //if ($("#txtCountry").val() == "") {
+            //    swal("Warning", "Please enter country :)", "error");
+            //    return false;
+            //}
+            //if ($("#txtState").val() == "") {
+            //    swal("Warning", "Please enter state :)", "error");
+            //    return false;
+            //}
             if ($("#txtPhone").val() == "") {
                 swal("Warning", "Please enter phone number :)", "error");
                 return false;
@@ -223,7 +252,7 @@
                 success: function (data) {
                     if (data && data.result) {
                         //alert("Data has been added successfully.");
-                        swal("Thank you!", "Data has been added successfully.", "success");
+                        swal("Thank you!", "Your Query has been submitted successfully", "success");
                         $("#txtName").val('');
                         $("#txtCorpEmail").val('');
                         $("#txtOrganisation").val('');

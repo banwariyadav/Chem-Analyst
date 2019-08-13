@@ -22,11 +22,11 @@
                 </div>
 
                 <div class="eq-form-box">
-                    @using (Html.BeginForm("SaveCompanyAndProductRelation", "CompanyAndProductRelation", FormMethod.Post))
+                    @using (Html.BeginForm("SaveCompanyAndProductRelation", "CompanyAndProductRelation", FormMethod.Post, new { id= "myForm" }))
                     {
 
                         <div class="col-md-4 col-lg-12 form-group">
-                            @Html.DropDownListFor(p => p.CompanyProfId, new SelectList(Model.CompanyProf, "Id", "Name"), "--Select Company--", new { @class = "form-control" })
+                            @Html.DropDownListFor(p => p.CompanyProfId, new SelectList(Model.CompanyProf, "Id", "Name"), "--Select Company--", new { @class = "form-control", @required= "required" })
                         </div>
                         <div class="col-md-4 col-lg-12 form-group multiselect">
                             <div id="dropdown1" class="selectbox" onclick="showCheckBoxes()">
@@ -39,7 +39,7 @@
                             <div id="checkboxes" style="display:none;">
                                 @for (int i = 0; i < Model.CompanyProduct.Count(); i++)
                                 {
-                                    @Html.CheckBoxFor(p => Model.CompanyProduct[i].IsSelected) <span style="padding-right: 2px;"></span> @Html.DisplayFor(p => Model.CompanyProduct[i].ProductName) <span style="padding-right: 15px;"></span>
+                                    @Html.CheckBoxFor(p => Model.CompanyProduct[i].IsSelected,new { @class = "checkboxes[]" }) <span style="padding-right: 2px;"></span> @Html.DisplayFor(p => Model.CompanyProduct[i].ProductName) <span style="padding-right: 15px;"></span>
                                     @Html.HiddenFor(p => Model.CompanyProduct[i].id)
                                 }
 
@@ -49,7 +49,7 @@
 
                                 @*<a class="gray-btn" href="@Url.Action("Role","Admin")">Cancle</a>*@
 
-                                <button type="submit" class="btn btn-success">Save</button>
+                                <input type="submit" class="btn btn-success" value="Save" >
                             </div>
 
                     }
@@ -64,9 +64,33 @@
 
 </div>
 
-
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
 <script>
     function showCheckBoxes() {
         $("#checkboxes").toggle();
     }
+
+
+    $("#myForm").submit(function (e) {
+        debugger
+        var selected = [];
+        $('#checkboxes input:checked').each(function () {
+            debugger;
+            selected.push($(this).attr('name'));
+        });
+        debugger
+        if (selected.length == 0) {
+            swal("Warning", "Please select at least one product.", "error");
+            e.preventDefault();
+        }
+        else {
+            return true;
+        }
+    });
+
+
+   
+
+
+
 </script>

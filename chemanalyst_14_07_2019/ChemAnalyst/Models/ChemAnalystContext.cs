@@ -19,6 +19,8 @@ namespace ChemAnalyst.Models
         public virtual DbSet<SA_Chem5PriceWeekly> SA_Chem5PriceWeekly { get; set; }
 
         public virtual DbSet<SA_Chem6PriceWeekly> SA_Chem6PriceWeekly { get; set; }
+
+        public virtual DbSet<SA_States> SA_States { get; set; }
         public DbSet<CompanyProfRecordNew> CompanyProfRecordNew { get; set; }
         public virtual DbSet<SA_Company_SWOT> SA_Company_SWOT { get; set; }
 

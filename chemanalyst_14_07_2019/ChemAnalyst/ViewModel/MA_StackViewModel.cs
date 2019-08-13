@@ -31,6 +31,8 @@ namespace ChemAnalyst.ViewModel
 
         public string FromYear { get; set; }
         public string ToYear { get; set; }
+
+        public string selectedLegends { get; set; }
     }
         public enum MRange
         {

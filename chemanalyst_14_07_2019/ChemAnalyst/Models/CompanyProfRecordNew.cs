@@ -13,10 +13,14 @@ namespace ChemAnalyst.Models
         public int Id { get; set; }
         public int SA_CompanyId { get; set; }
         public int FinancialYearId { get; set; }
+        public string year { get; set; }
+
         public decimal Revenue { get; set; }
         public int Growth { get; set; }
         public int PBT { get; set; }
         public decimal Margin { get; set; }
+
+        public decimal Margin1 { get; set; }
         public decimal Pat { get; set; }
         public decimal Liablities { get; set; }
         public DateTime CreateDate { get; set; }

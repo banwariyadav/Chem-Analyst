@@ -127,6 +127,29 @@ namespace ChemAnalyst.Controllers
 
         }
 
+        public ActionResult LoadStateData()
+        {
+            try
+            {
+
+                var StateList = _context.SA_States.ToList().Select(w=>new {
+                    Country =_context.SA_Country.Where(r=>r.id==w.CountryId).FirstOrDefault()!=null? _context.SA_Country.Where(r => r.id == w.CountryId).FirstOrDefault().CountryName:"",
+                    Id=w.Id,
+                    State=w.State,
+                }
+                
+                
+                ).ToList();
+                return Json(new { data = StateList }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
         public ActionResult LoadIndustryData()
         {
             try
@@ -178,6 +201,13 @@ namespace ChemAnalyst.Controllers
         {
            
             return View("add-country");
+
+        }
+
+        public ActionResult AddState()
+        {
+
+            return View("add-state");
 
         }
         public ActionResult SaveUser(SA_User User)
@@ -239,6 +269,38 @@ namespace ChemAnalyst.Controllers
             }
             return RedirectToAction("ShowCountryList");
         }
+
+        public ActionResult SaveState(SA_States model)
+        {
+            if (model.Id == 0)
+            {
+                var check = _context.SA_States.Where(w => w.State == model.State).FirstOrDefault();
+                if (check != null)
+                {
+                    TempData["Message"] = "This state is already exist!";
+                    return RedirectToAction("AddState");
+                }
+                else
+                {
+                    SA_States Obj = new SA_States();
+                    Obj.CountryId = model.CountryId;
+                    Obj.State = model.State;
+                    Obj.CreatedTime = DateTime.Now;
+                    _context.SA_States.Add(Obj);
+                    _context.SaveChanges();
+                }
+            }
+            else
+            {
+                var Obj = _context.SA_States.Where(w => w.Id == model.Id).FirstOrDefault();
+                Obj.CountryId = model.CountryId;
+                Obj.State = model.State;
+                _context.SaveChanges();
+                return RedirectToAction("ShowStateList");
+
+            }
+            return RedirectToAction("ShowStateList");
+        }
         public ActionResult ShowUserList()
         {
             UserDataStore Obj = new UserDataStore();
@@ -252,6 +314,12 @@ namespace ChemAnalyst.Controllers
             UserDataStore Obj = new UserDataStore();
             List<SA_Country> CountryList = _context.SA_Country.ToList();
             return View("country-list", CountryList);
+        }
+
+        public ActionResult ShowStateList()
+        {
+            List<SA_States> StateList = _context.SA_States.ToList();
+            return View("state-list", StateList);
         }
 
         public ActionResult ShowIndustryList()
@@ -301,6 +369,15 @@ namespace ChemAnalyst.Controllers
            
             return View("add-country", obj);
         }
+
+        public ActionResult EditState(int id)
+        {
+            ChemAnalystContext _context = new ChemAnalystContext();
+
+            SA_States obj = _context.SA_States.Where(w => w.Id == id).FirstOrDefault();
+
+            return View("add-state", obj);
+        }
         public ActionResult Deleteuser(int id)
         {
 
@@ -326,6 +403,23 @@ namespace ChemAnalyst.Controllers
                 int x = _context.SaveChanges();
 
                 return RedirectToAction("ShowCountryList");
+            }
+            catch (Exception ex)
+            {
+
+                return View("ErrorEventArgs");
+            }
+        }
+
+        public ActionResult Deletestate(int id)
+        {
+            try
+            {
+                SA_States state = _context.SA_States.Where(c => c.Id == id).FirstOrDefault();
+                _context.Entry(state).State = EntityState.Deleted;
+                int x = _context.SaveChanges();
+
+                return RedirectToAction("ShowStateList");
             }
             catch (Exception ex)
             {

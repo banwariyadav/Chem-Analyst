@@ -54,6 +54,7 @@ namespace ChemAnalyst.Controllers
 
                 string FileExtension = Path.GetExtension(viewModel.excelFile.FileName);
                 string FileName = Path.GetFileName(viewModel.excelFile.FileName);
+                FileName = FileName + "_" + Guid.NewGuid().ToString();
                 if (FileExtension.ToLower() == ".xls")
                 {
                     viewModel.excelFile.SaveAs(Server.MapPath("~/ExcelFiles/") + FileName);
@@ -70,24 +71,29 @@ namespace ChemAnalyst.Controllers
                     OleConn.Close();
                     foreach (DataRow DR in DS.Tables[0].Rows)
                     {
-                        if (_context.CompanyProfRecordNew.FirstOrDefault(x => x.SA_CompanyId == viewModel.SA_CompanyId && x.FinancialYearId == viewModel.FinancialYearId) == null)
+                        var yr = DR[0].ToString();
+                        //if (_context.CompanyProfRecordNew.FirstOrDefault(x => x.SA_CompanyId == viewModel.SA_CompanyId && x.FinancialYearId == viewModel.FinancialYearId) == null)
+                        if (_context.CompanyProfRecordNew.FirstOrDefault(x => x.SA_CompanyId == viewModel.SA_CompanyId && x.year == yr) == null)
                         {
-                            try { 
-                            CompanyProfRecordNew cpr = new CompanyProfRecordNew();
-                            cpr.Revenue = Convert.ToDecimal(DR[0]);
-                            cpr.Growth = Convert.ToInt16(DR[1]);
-                            cpr.PBT = Convert.ToInt16(DR[2]);
-                            cpr.Margin = Convert.ToDecimal(DR[3]);
-                            cpr.PBT = Convert.ToInt16(DR[4]);
-                            cpr.Pat = Convert.ToDecimal(DR[5]);
-                            cpr.Liablities = viewModel.FinancialYearId;
-                            cpr.SA_CompanyId = viewModel.SA_CompanyId;
-                                cpr.FinancialYearId = viewModel.FinancialYearId;
+                            try
+                            {
+                                CompanyProfRecordNew cpr = new CompanyProfRecordNew();
+                                cpr.year = DR[0].ToString();
+                                cpr.Revenue = Convert.ToDecimal(DR[1]);
+                                cpr.Growth = Convert.ToInt16(DR[2]);
+                                cpr.PBT = Convert.ToInt16(DR[3]);
+                                cpr.Margin = Convert.ToDecimal(DR[4]);
+                                cpr.Pat = Convert.ToDecimal(DR[5]);
+                                cpr.Margin1 = Convert.ToDecimal(DR[6]);
+                                cpr.Liablities = Convert.ToDecimal(DR[7]);
+                                cpr.SA_CompanyId = viewModel.SA_CompanyId;
+                                cpr.FinancialYearId = 0;
                                 cpr.CreateDate = DateTime.Now;
-                            _context.CompanyProfRecordNew.Add(cpr);
+                                _context.CompanyProfRecordNew.Add(cpr);
                                 _context.SaveChanges();
                             }
-                            catch (Exception ex ) {
+                            catch (Exception ex)
+                            {
                                 ViewBag.ErrorMessage = "Import operation failed. Please upload a valid formate for import.";
 
                                 var viewModelIndex = new CompanyProfRecordViewModel()
@@ -98,9 +104,10 @@ namespace ChemAnalyst.Controllers
                                 return View("Index", viewModelIndex);
                             }
                         }
-                        else {
+                        else
+                        {
                             ViewBag.ErrorMessage = "Financial data already exists with same company for same financial year";
-                            
+
                             var viewModelIndex = new CompanyProfRecordViewModel()
                             {
                                 FinancialYear = _context.FinancialYears.ToList(),
@@ -109,7 +116,7 @@ namespace ChemAnalyst.Controllers
                             return View("Index", viewModelIndex);
                         }
                     }
-                   
+
                 }
                 else
                 {
@@ -129,7 +136,8 @@ namespace ChemAnalyst.Controllers
         public ActionResult AllCompanyProfileRecords()
         {
             ChemAnalystContext _context = new ChemAnalystContext();
-            var companyProfilerRcord = _context.CompanyProfRecordNew.Include(p => p.FinancialYear).Include(p => p.SA_Company);
+            //var companyProfilerRcord = _context.CompanyProfRecordNew.Include(p => p.FinancialYear).Include(p => p.SA_Company);
+            var companyProfilerRcord = _context.CompanyProfRecordNew.Include(p => p.SA_Company);
             return View(companyProfilerRcord);
         }
 
@@ -187,7 +195,8 @@ namespace ChemAnalyst.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             ChemAnalystContext _context = new ChemAnalystContext();
-            var companyProfileRecord = _context.CompanyProfRecords.Include(c => c.FinancialYear).Include(c => c.SA_Company).SingleOrDefault(c => c.Id == id);
+            //var companyProfileRecord = _context.CompanyProfRecordNew.Include(c => c.FinancialYear).Include(c => c.SA_Company).SingleOrDefault(c => c.Id == id);
+            var companyProfileRecord = _context.CompanyProfRecordNew.FirstOrDefault(c => c.Id == id);
 
             if (companyProfileRecord == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -204,12 +213,12 @@ namespace ChemAnalyst.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             ChemAnalystContext _context = new ChemAnalystContext();
-            var companyProfileRecord = _context.CompanyProfRecords.SingleOrDefault(c => c.Id == id);
+            var companyProfileRecord = _context.CompanyProfRecordNew.SingleOrDefault(c => c.Id == id);
 
             if (companyProfileRecord == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
-            _context.CompanyProfRecords.Remove(companyProfileRecord);
+            _context.CompanyProfRecordNew.Remove(companyProfileRecord);
             _context.SaveChanges();
 
             return RedirectToAction("AllCompanyProfileRecords");

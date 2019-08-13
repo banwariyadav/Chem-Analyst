@@ -198,6 +198,14 @@ namespace ChemAnalyst.DAL
             return cat;
         }
 
+        public static IEnumerable<SelectListItem> GetState()
+        {
+            ChemAnalystContext _context1 = new ChemAnalystContext();
+            var cat = (from coun in _context1.SA_States select new SelectListItem { Text = coun.State, Value = coun.Id.ToString() }).AsEnumerable();
+            return cat;
+        }
+
+
         public static IEnumerable<SelectListItem> GetUniqueYears()
         {
             ChemAnalystContext _context1 = new ChemAnalystContext();

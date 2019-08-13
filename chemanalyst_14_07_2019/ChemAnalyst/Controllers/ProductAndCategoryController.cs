@@ -148,6 +148,26 @@ namespace ChemAnalyst.Controllers
             return Json(new { data = list }, JsonRequestBehavior.AllowGet);
 
         }
+
+        public JsonResult ProductList4AddPkg()
+        {
+            ProductDataStore Obj = new ProductDataStore();
+            ChemAnalystContext _context = new ChemAnalystContext();
+            var list = (from product in _context.SA_Product
+                        //join category in _context.SA_Category on product.Category equals category.id
+                        select new
+                        {
+                            //ProductDiscription = category.CategoryName,
+                            ProductName = product.ProductName,
+                            CreatedTime = product.CreatedTime,
+                            id = product.id,
+                            status = product.status,
+
+                        }).ToList();
+
+            return Json(new { data = list }, JsonRequestBehavior.AllowGet);
+
+        }
         public ActionResult AddProduct()
         {
             CategoryDataStore ObjDal = new CategoryDataStore();

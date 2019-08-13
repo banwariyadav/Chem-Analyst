@@ -124,54 +124,45 @@ namespace ChemAnalyst.DAL
 
             string[] pages = PageId.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            int index = 0;
-            foreach (var i in items)
+            for (int j = 0; j <= items.Length-1; j++)
             {
-                int proid = Convert.ToInt32(i);
-                int pagid = 0;
-                if (pages.Length == 1)
-                    pagid = Convert.ToInt32(pages[0]);
-                else
-                    pagid = Convert.ToInt32(pages[index]);
-
-                var data = _context.CustProduct.Where(w => w.CustId == CustId && w.ProdId == proid && w.PageId == pagid).OrderByDescending(w => w.id).FirstOrDefault();
-                if (data == null)
+                int PrId = Convert.ToInt32(items[j]);
+                foreach (var pg in pages)
                 {
-                    access.CustId = CustId;
-                    access.ProdId = Convert.ToInt32(i);
-                    access.PageId = pagid;
+                    int pgId = Convert.ToInt32(pg);
+                    var data = _context.CustProduct.Where(w => w.CustId == CustId && w.ProdId == PrId && w.PageId == pgId).OrderByDescending(w => w.id).FirstOrDefault();
+                    if (data == null)
+                    {
+                        access.CustId = CustId;
+                        access.ProdId = PrId;
+                        access.PageId = pgId;
 
-                    _context.CustProduct.Add(access);
-                    x = _context.SaveChanges();
+                        _context.CustProduct.Add(access);
+                        x = _context.SaveChanges();
+                    }
                 }
-                index++;
-
             }
 
 
-            int index1 = 0;
-            foreach (var i in pages)
-            {
-                int pgId = Convert.ToInt32(i);
-                int ProId = 0;
+            //for (int i=0; i<= pages.Length;i++)
+            //{
+            //    int pgId = Convert.ToInt32(pages[i]);
+            //    foreach (var p in items)
+            //    {
+            //       int ProId = Convert.ToInt32(p);
 
-                if (items.Length == 1)
-                    ProId = Convert.ToInt32(items[0]);
-                else
-                    ProId = Convert.ToInt32(items[index1]);
+            //        var data = _context.CustProduct.Where(w => w.CustId == CustId && w.PageId == pgId && w.ProdId == ProId).OrderByDescending(w => w.id).FirstOrDefault();
+            //        if (data == null)
+            //        {
+            //            access.CustId = CustId;
+            //            access.PageId = pgId;
+            //            access.ProdId = ProId;
 
-                var data = _context.CustProduct.Where(w => w.CustId == CustId && w.PageId == pgId && w.ProdId == ProId).OrderByDescending(w => w.id).FirstOrDefault();
-                if (data == null)
-                {
-                    access.CustId = CustId;
-                    access.PageId = Convert.ToInt32(i);
-                    access.ProdId = ProId;
-
-                    _context.CustProduct.Add(access);
-                    x = _context.SaveChanges();
-                }
-                index1++;
-            }
+            //            _context.CustProduct.Add(access);
+            //            x = _context.SaveChanges();
+            //        }
+            //    }
+            //}
 
 
             //int index = 0;

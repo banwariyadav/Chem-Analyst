@@ -22,8 +22,7 @@
                                 <ul>
                                     <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
                                     <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
                                     <li><a href="#"><i class="fa fa-youtube"></i></a></li>
                                 </ul>
                             </div>
@@ -39,23 +38,25 @@
                                                 <input type="text" value="" id="Name" name="Name" size="40" class="form-control" placeholder="Name">
                                             </div>
                                             <div class="col-sm-12 form-group">
-                                                <input type="email" id="OfficialEmail" name="OfficialEmail" value="" size="40" class="form-control" placeholder="Official Email">
+                                                <input type="email" id="OfficialEmail" name="OfficialEmail" value="" size="40" class="form-control" placeholder="Official Email" required>
                                             </div>
                                             <div class="col-sm-12 form-group">
-                                                <input type="text" value="" id="Mobile" name="Mobile" size="40" class="form-control" placeholder="Mobile No.">
+                                                <input type="text" value="" id="Mobile" name="Mobile" size="40" class="form-control" placeholder="Mobile No." required>
                                             </div>
                                             <div class="col-sm-12 form-group">
-                                                <input type="text" value="" size="40" id="Organization" name="Organization" class="form-control" placeholder="Organization">
+                                                <input type="text" value="" size="40" id="Organization" name="Organization" class="form-control" placeholder="Organization" required>
                                             </div>
                                             <div class="col-sm-12 form-group">
-                                                <input type="text" value="" size="40" id="Country" name="Country" class="form-control" placeholder="Country">
+                                                @*<input type="text" value="" size="40" id="Country" name="Country" class="form-control" placeholder="Country">*@
+                                                @Html.DropDownList("Country", ChemAnalyst.DAL.ProductDataStore.GetCountry(), "Select Country", new { @class = "form-control", @name = "Country", @style= "color: #fff; background:#4b80e0" })
                                             </div>
                                             <div class="col-sm-12 form-group">
-                                                <input type="text" value="" size="40" id="State" name="State" class="form-control" placeholder="State">
+                                                @*<input type="text" value="" size="40" id="State" name="State" class="form-control" placeholder="State">*@
+                                                @Html.DropDownList("State", ChemAnalyst.DAL.ProductDataStore.GetState(), "Select State", new { @class = "form-control", @name = "State", @style = "color: #fff; background:#4b80e0" })
                                             </div>
-                                            <div class="col-sm-12 form-group">
-                                                <input type="text" value="" size="40" class="form-control" placeholder="City" id="City" name="City">
-                                            </div>
+                                            @*<div class="col-sm-12 form-group">
+                                                <input type="text" value="" size="40" class="form-control" placeholder="City" id="City" name="City" required>
+                                            </div>*@
                                             @*<div class="col-sm-12 form-group">
                                                 <textarea class="form-control" rows="3" id="comment" placeholder="Description"></textarea>
                                             </div>*@
@@ -163,6 +164,20 @@
     $(function () {
         $("#btnSaveContact").click(function () {
             debugger
+
+            if ($("#Name").val() == "") {
+                swal("Warning", "Please enter name :)", "error");
+                return false;
+            }
+            if ($("#OfficialEmail").val() == "") {
+                swal("Warning", "Please enter email :)", "error");
+                return false;
+            }
+            if ($("#Mobile").val() == "") {
+                swal("Warning", "Please enter mobile number", "error");
+                return false;
+            }
+
             var freeTrail = {};
             freeTrail.Name = $("#Name").val();
             freeTrail.OfficalEmail = $("#OfficialEmail").val();
@@ -170,7 +185,7 @@
             freeTrail.Organisation = $("#Organization").val();
             freeTrail.State = $("#State").val();
             freeTrail.Country = $("#Country").val();
-            freeTrail.City = $("#City").val();
+            //freeTrail.City = $("#City").val();
 
 
             $.ajax({
@@ -188,11 +203,11 @@
                         $("#Organization").val('');
                         $("#State").val('');
                         $("#Country").val();
-                        $("#City").val('');
+                        //$("#City").val('');
 
                     }
                     else {
-                        alert("Error while inserting data");
+                        swal("Thank you!", "We will get back to you shortly.", "success");
                     }
                 },
                 error: function () {
@@ -201,5 +216,39 @@
             });
             return false;
         });
+    });
+
+
+
+
+    $("body").on("change", "#Country", function () {
+        debugger
+        var country = $(Country).find("option:selected").val();
+
+        var state = $("#State");
+        state.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
+        $.ajax({
+            type: "POST",
+            url: "../ChemAnalyst/GetState",
+            data: JSON.stringify({ 'country': country }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: false,
+            success: function (response) {
+                debugger
+                state.empty().append('<option selected="selected" value=""> Select State</option>');
+                $.each(response, function () {
+                    state.append($("<option></option>").val(this['Value']).html(this['Text']));
+                });
+            },
+            failure: function (response) {
+                // alert(response.responseText);
+            },
+            error: function (response) {
+                // alert(response.responseText);
+            }
+        });
+
+      
     });
 </script>

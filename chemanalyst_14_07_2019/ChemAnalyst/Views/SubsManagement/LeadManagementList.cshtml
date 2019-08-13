@@ -90,7 +90,14 @@
                                     return '';
                                 }
                                 else {
-                                    return '<a style="cursor: pointer;" href="../Subscription/AddPackage/' + row.Id + '" class="label label-primary"><i style="cursor: pointer;" class="fa fa-plus"></i> ADD  </a>';
+                                    if (row.Status == "New") {
+                                        return '<a style="cursor: pointer;background: #ccc;" href="#" class="label label-secondary"><i style="cursor: pointer;" class="fa fa-plus"></i> ADD  </a>';
+                                    }
+                                    else
+                                    {
+                                        return '<a style="cursor: pointer;" href="../Subscription/AddPackage/' + row.Id + '" class="label label-primary"><i style="cursor: pointer;" class="fa fa-plus"></i> ADD  </a>';
+                                    }
+                                   
                                 }
 
                             }

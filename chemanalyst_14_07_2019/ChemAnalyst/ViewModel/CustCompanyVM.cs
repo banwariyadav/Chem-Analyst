@@ -39,6 +39,7 @@ namespace ChemAnalyst.ViewModel
 
         public int PBT { get; set; }
         public decimal Margin { get; set; }
+        public decimal Margin1 { get; set; }
         public decimal Pat { get; set; }
         public decimal Liablities { get; set; }
     }

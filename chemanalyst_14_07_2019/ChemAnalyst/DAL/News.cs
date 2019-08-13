@@ -75,8 +75,34 @@ namespace ChemAnalyst.DAL
             var result = (from m in _context.SA_News
                           join n in _context.CustProduct on
                           m.Product equals n.ProdId
-                          where n.CustId == id && m.status == 1 
-                          select (m)).ToList();
+                          join r in _context.SA_NewsAndProductRelation
+                          on m.id equals r.SA_NewsId 
+                          where n.CustId == id && m.status == 1
+                         
+                          select (m)).Distinct().ToList();
+
+            //var result = from Np in _context.SA_NewsAndProductRelation
+            //             group Np by Np.SA_ProductId into pg
+            //             // join *after* group
+            //             join m in _context.SA_News on pg.FirstOrDefault().SA_NewsId equals m.id 
+            //             join bp in _context.CustProduct on pg.FirstOrDefault().SA_ProductId equals bp.ProdId
+
+            //             select new SA_News
+            //             {
+            //                 //SomeId = pg.FirstOrDefault().SomeId,
+            //                 //CountryCode = pg.FirstOrDefault().CountryCode,
+            //                 //MinPrice = pg.Min(m => m.Price),
+            //                 //MaxPrice = pg.Max(m => m.Price),
+            //                 //BaseProductName = bp.Name  // now there is a 'bp' in scope
+            //                 id=m.id,
+            //                 CreatedBy=m.CreatedBy,
+            //                 CreatedTime=m.CreatedTime,
+
+
+
+
+            //             };
+
             return result;
 
         }

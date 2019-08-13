@@ -686,5 +686,16 @@ namespace ChemAnalyst.Controllers
             return View();
         }
 
+
+        [HttpPost]
+        public JsonResult GetState(int Country)
+        {
+            ChemAnalystContext _context1 = new ChemAnalystContext();
+            var cat = (from coun in _context1.SA_States where coun.CountryId== Country select new SelectListItem { Text = coun.State, Value = coun.Id.ToString() }).OrderBy(w => w.Value).Distinct().AsEnumerable();
+
+            return Json(cat);
+
+        }
+
     }
 }

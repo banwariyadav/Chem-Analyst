@@ -29,7 +29,8 @@ namespace ChemAnalyst.Controllers
         }
         public ActionResult ChemicalPricingList()
         {
-            return View("Chemical-FileList");
+            List<SA_ChemPriceFileList> fileList = Chempriceobj.GetallUploadFile();
+            return View("Chemical-FileList",fileList);
         }
         public JsonResult GetFileList()
         {
@@ -188,7 +189,7 @@ namespace ChemAnalyst.Controllers
                     selectedLegends
                 });
             }
-            else if (Range == "Daily basis")
+            else if (Range == "Daily Retail")
             {
                 return RedirectToAction("ChecmPriceDailyChart", "ChemicalPricing", new
                 {
@@ -230,6 +231,7 @@ namespace ChemAnalyst.Controllers
             string fromdate = FilterObject["fromdate"];
             string todate = FilterObject["todate"];
             string year = FilterObject["ddlyear"];
+
             string selectedLegends = FilterObject["hiddenLegends"];
 
             if (submit == "Reset")
@@ -243,9 +245,6 @@ namespace ChemAnalyst.Controllers
 
             string CompareProject = FilterObject["example-getting-started"];
             bool Customer = true;
-
-
-
 
             if (Range == "Yearly")
             {
@@ -279,6 +278,8 @@ namespace ChemAnalyst.Controllers
             }
             else if (Range == "Quarterly")
             {
+
+
                 return RedirectToAction("ChecmPriceQuarterlyChart", "ChemicalPricing", new
                 {
                     product,
@@ -286,7 +287,9 @@ namespace ChemAnalyst.Controllers
                     Range,
                     CompareProject,
                     Customer,
-                    year
+                    year,
+                    selectedLegends
+
                 });
             }
             else if (Range == "Weekly")
@@ -298,12 +301,12 @@ namespace ChemAnalyst.Controllers
                     Range,
                     CompareProject,
                     Customer,
-                    fromdate,
-                    todate,
+                    year,
+
                     selectedLegends
                 });
             }
-            else if (Range == "Daily basis")
+            else if (Range == "Daily Retail")
             {
                 return RedirectToAction("ChecmPriceDailyChart", "ChemicalPricing", new
                 {
@@ -329,10 +332,10 @@ namespace ChemAnalyst.Controllers
                     fromdate,
                     todate,
                     selectedLegends
-
                 });
             }
-            return RedirectToAction("ChecmPriceYearlyChart");
+
+            return RedirectToAction("index");
         }
         public ActionResult MonthlyUpload(FormCollection formcollection)
         {
@@ -426,7 +429,7 @@ namespace ChemAnalyst.Controllers
                         ViewBag.SuccesMessge = "File uploaded under " + productName + " & mapped with " + ImportType + " Successfully.";
                         return View("Chemical-analysis-import");
                     }
-                    else if (ImportType == "Daily basis")
+                    else if (ImportType == "Daily Retail")
                     {
                         var excel = new ExcelPackage(file.InputStream);
                         dt = excel.ToDailyDataTable();

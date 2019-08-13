@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model ChemAnalyst.Models.SA_States
+
+
+
+
+
+
+
+<div class="update-profile-wrapper">
+
+    <h3><a href="@Url.Action("ShowStateList","Admin")" class="btn btn-info"><i class="fa fa-list"></i> State List</a></h3>
+
+    <div class="white-wrapper">
+
+        <div class="col-md-6 col-lg-7 col-md-offset-2">
+
+            <div class="eq-form">
+             
+               <div class="change">
+                        <img src="~/images/change-img.jpg" alt="" />
+                        <p>Add New State</p>
+                    </div>
+              
+
+            <div class="eq-form-box">
+                @using (Html.BeginForm("SaveState", "Admin", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    
+                    @Html.AntiForgeryToken()
+                    <div style="visibility:hidden">
+                        @Html.TextBoxFor(model => model.Id, new { @class = "form-control", @placeholder = "Id * " })
+                    </div>
+
+                    <div class="col-sm-4 col-lg-6 form-group">
+                        @Html.DropDownListFor(m => m.CountryId, ChemAnalyst.DAL.ProductDataStore.GetCountry(), "Select Country", new { @class = "form-control", required = "required" })
+                    </div>
+
+                    <div class="col-md-4 col-lg-6 form-group">
+                        @Html.TextBoxFor(model => model.State, new { @class = "form-control", @placeholder = "State * ", required = "required" })
+                        @{ 
+                            if(TempData["Message"]!=null)
+                            {
+                                <span style="color:red; font-size:12px">@TempData["Message"]</span>
+                            }
+                        }
+                    </div>
+
+                    <div class="btn-wrapper">
+
+                        <a class="gray-btn" href="@Url.Action("ShowStateList","Admin")">Cancle</a>
+
+                        <input type="submit" class="blue-btn" value="Save">
+                    </div>
+
+                }
+            </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
