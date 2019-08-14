@@ -72,14 +72,25 @@ namespace ChemAnalyst.DAL
         public List<SA_News> GetCustNewsList(int id)
         {
 
-            var result = (from m in _context.SA_News
-                          join n in _context.CustProduct on
-                          m.Product equals n.ProdId
-                          join r in _context.SA_NewsAndProductRelation
-                          on m.id equals r.SA_NewsId 
-                          where n.CustId == id && m.status == 1
-                         
-                          select (m)).Distinct().ToList();
+            var result = (from n in _context.SA_News
+                           join r in _context.SA_NewsAndProductRelation on
+                          n.id equals r.SA_NewsId into np
+                           from npresult in np.DefaultIfEmpty()
+
+                           join p in _context.CustProduct
+                           on npresult.SA_ProductId equals p.ProdId
+                           where p.CustId == id && n.status == 1
+
+                           select (n)).Distinct().ToList();
+
+            //var result = (from m in _context.SA_News
+            //              join n in _context.CustProduct on
+            //              m.Product equals n.ProdId
+            //              join r in _context.SA_NewsAndProductRelation
+            //              on m.id equals r.SA_NewsId 
+            //              where n.CustId == id && m.status == 1
+
+            //              select (m)).Distinct().ToList();
 
             //var result = from Np in _context.SA_NewsAndProductRelation
             //             group Np by Np.SA_ProductId into pg

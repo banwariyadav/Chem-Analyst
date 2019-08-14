@@ -88,8 +88,8 @@ namespace ChemAnalyst.Controllers
             string product = FilterObject["ddlProduct"];
             string ChartType = FilterObject["ddlChart"];
             string Range = FilterObject["ddlRange"];
-            string FromYear = FilterObject["ddlFyear"];
-            string ToYear = FilterObject["ddlToYear"];
+            string FromYear = FilterObject["FromYear"];
+            string ToYear = FilterObject["ToYear"];
             string selectedLegends = FilterObject["hiddenLegends"];
             string CompareProject = FilterObject["example-getting-started"];
             bool Customer = false;
@@ -413,7 +413,7 @@ namespace ChemAnalyst.Controllers
                     Customer,
                     FromYear,
                     ToYear,
-                    selectedLegends
+                    selectedLegends,
                 });
             }
 
@@ -425,8 +425,8 @@ namespace ChemAnalyst.Controllers
             string product = FilterObject["ddlProduct"];
             string ChartType = FilterObject["ddlChart"];
             string Range = FilterObject["ddlRange"];
-            string FromYear = FilterObject["ddlFyear"];
-            string ToYear = FilterObject["ddlToYear"];
+            string FromYear = FilterObject["FromYear"];
+            string ToYear = FilterObject["ToYear"];
             string selectedLegends = FilterObject["hiddenLegends"];
             string CompareProject = FilterObject["example-getting-started"];
             bool Customer = true;
@@ -2053,7 +2053,7 @@ namespace ChemAnalyst.Controllers
         }
 
 
-        
+
         private bool InsertLocExcelRecords(string product, string type, string UploadFileDiscription, string path, System.Data.DataTable Exceldt, string fileName)
         {
 
@@ -2521,7 +2521,7 @@ namespace ChemAnalyst.Controllers
             List<string> Year = obj.OrderBy(w => w.year).Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
 
-            
+
 
             string CommentaryTitle = "";
             string CommentaryDescription = "";
@@ -2536,7 +2536,7 @@ namespace ChemAnalyst.Controllers
             }
             else
             {
-                ViewBag.AllLegends = obj.GroupBy(car => car.Company).Select(Name => Name.First()).ToList().Select(d=>new ProductVariantModel { Name=d.Company}).ToList();
+                ViewBag.AllLegends = obj.GroupBy(car => car.Company).Select(Name => Name.First()).ToList().Select(d => new ProductVariantModel { Name = d.Company }).ToList();
 
 
 
@@ -3315,7 +3315,7 @@ namespace ChemAnalyst.Controllers
                 }
                 SimpleReportViewModel TotalQuantity = new SimpleReportViewModel()
                 {
-                    MDimensionOne = "Total Capacity",
+                    MDimensionOne = "Total Production",
                     Quantity = QuantityList.Sum(x => x.Quantity)
 
                 };
@@ -5694,7 +5694,7 @@ namespace ChemAnalyst.Controllers
                     string selfilter = selectedLegends + ",";
                     obj = Objdal.GetTradeImportWiseProductList(product).Where(w => selfilter.Contains(w.Country + ",")).ToList();
                 }
-                 
+
             }
             List<string> Year = obj.Select(p => p.year).Distinct().ToList();
             List<string> Discription = obj.Select(p => p.Discription).Distinct().ToList();
@@ -6002,7 +6002,7 @@ namespace ChemAnalyst.Controllers
 
         }
 
-        public ActionResult MarketbyCompanySharesPercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
+        public ActionResult MarketbyCompanySharesPercentChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear = "2019", string ToYear = "2019", string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
             int custid = 0;
@@ -6166,6 +6166,15 @@ namespace ChemAnalyst.Controllers
         public ActionResult MarketbyCompanySharesTonneChart(string product, string chartType, string Range, string CompareProject, bool Customer, string FromYear, string ToYear, string selectedLegends = "")
         {
             MarketAnalysis Objdal = new DAL.MarketAnalysis();
+
+            if (string.IsNullOrEmpty(FromYear) && string.IsNullOrEmpty(ToYear))
+            {
+                FromYear = DateTime.Now.Year.ToString();
+                ToYear = DateTime.Now.Year.ToString();
+            }
+            ViewBag.Fy = FromYear;
+            ViewBag.Ty = ToYear;
+
             int custid = 0;
             if (product == null && Customer == true)
             {
@@ -6208,13 +6217,13 @@ namespace ChemAnalyst.Controllers
                 if (string.IsNullOrEmpty(selectedLegends))
                 {
 
-                    obj = Objdal.GetCompanySharetonnesWiseProductList(product);
+                    obj = Objdal.GetCompanySharetonnesWiseProductList(product, FromYear, ToYear);
 
                 }
                 else
                 {
                     string selfilter = selectedLegends + ",";
-                    obj = Objdal.GetCompanySharetonnesWiseProductList(product).Where(w => selfilter.Contains(w.Company + ",")).ToList();
+                    obj = Objdal.GetCompanySharetonnesWiseProductList(product, FromYear, ToYear).Where(w => selfilter.Contains(w.Company + ",")).ToList();
                 }
 
             }
@@ -6321,6 +6330,8 @@ namespace ChemAnalyst.Controllers
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
                 lstModel[0].selectedLegends = selectedLegends;
+                lstModel[0].FromYear = string.IsNullOrEmpty(FromYear) ? Year.First() : "";
+                lstModel[0].ToYear = string.IsNullOrEmpty(ToYear) ? Year.Last() : "";
                 return View("marketanalysisUser", lstModel);
             }
             else
@@ -6336,6 +6347,10 @@ namespace ChemAnalyst.Controllers
                 lstModel[0].CommentaryTitle = CommentaryTitle;
                 lstModel[0].CommentaryDescription = CommentaryDescription;
                 lstModel[0].selectedLegends = selectedLegends;
+
+                lstModel[0].FromYear = string.IsNullOrEmpty(FromYear) ? Year.First() : "";
+                lstModel[0].ToYear = string.IsNullOrEmpty(ToYear) ? Year.Last() : "";
+
                 return View("marketanalysis", lstModel);
             }
 
@@ -6388,7 +6403,7 @@ namespace ChemAnalyst.Controllers
         public JsonResult GetUniqueYears(string rangeId)
         {
             ChemAnalystContext _context1 = new ChemAnalystContext();
-            if (rangeId== "Company")
+            if (rangeId == "Company")
             {
                 var cat = (from coun in _context1.SA_MarketbyComp select new SelectListItem { Text = coun.year, Value = coun.year.ToString() }).OrderBy(w => w.Value).Distinct().AsEnumerable();
 
@@ -6460,7 +6475,7 @@ namespace ChemAnalyst.Controllers
 
                 return Json(cat);
             }
-            else 
+            else
             {
                 var cat = (from coun in _context1.SA_MarketbyCompanySharetonnes select new SelectListItem { Text = coun.year, Value = coun.year.ToString() }).OrderBy(w => w.Value).Distinct().AsEnumerable();
 

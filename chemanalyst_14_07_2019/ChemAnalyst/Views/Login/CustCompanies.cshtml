@@ -30,33 +30,38 @@
 <body>
     <style>
 
-          #myModal .modal-content {
-	background-color: transparent;
-}
-#myModal .modal-dialog {
-	max-width: 790px;
-	height: 350px;
-	background-image: url(../images/subscribe-bg.png);
-	top: 15%;
-	background-size: cover;
-}
+        #myModal .modal-content {
+            background-color: transparent;
+        }
 
-.freeSub {
-	color: #fff;
-	padding: 50px 50px 0px 30px;
-}
-.freeSub h2 {
-	text-transform: uppercase;
-}
-.freeSub a.btn.btn-yellow {
-    color: #000000;
-    background: yellow;
-    text-transform: uppercase;
-}
-.freeSub a.text-center {
-    color: #fff;
-    margin-top: 10px;
-}
+        #myModal .modal-dialog {
+            max-width: 790px;
+            height: 350px;
+            background-image: url(../images/subscribe-bg.png);
+            top: 15%;
+            background-size: cover;
+        }
+
+        .freeSub {
+            color: #fff;
+            padding: 50px 50px 0px 30px;
+        }
+
+            .freeSub h2 {
+                text-transform: uppercase;
+            }
+
+            .freeSub a.btn.btn-yellow {
+                color: #000000;
+                background: yellow;
+                text-transform: uppercase;
+            }
+
+            .freeSub a.text-center {
+                color: #fff;
+                margin-top: 10px;
+            }
+
         ::placeholder { /* Firefox, Chrome, Opera */
             color: #fff;
         }
@@ -109,7 +114,7 @@
     <div class="page-content">
         <div class="static-page">
 
-            <div class="container addMargin" style="width:1380px; margin-top: 15px;" >
+            <div class="container addMargin" style="width:1380px; margin-top: 15px;">
 
                 <div class="company-profile">
 
@@ -117,7 +122,7 @@
                         <div class="row">
 
 
-                            <div class="col-lg-12" >
+                            <div class="col-lg-12">
                                 <div class="searchbox">
                                     @using (Html.BeginForm("CompanyProfile", "Login", null, FormMethod.Post, new { @class = "row", enctype = "multipart/form-data" }))
                                     {
@@ -133,48 +138,48 @@
                                             </select>
 
                                         </div>
-                                            <div class="col-md-3">
-                                                <select id="products" name="products" class="plbxt btn btn-primary  width100">
-                                                    <option value="">Select Products</option>
+                                        <div class="col-md-3">
+                                            <select id="products" name="products" class="plbxt btn btn-primary  width100">
+                                                <option value="">Select Products</option>
 
-                                                    @foreach (var item in ViewBag.Product)
-                                                    {
-                                                        <option value="@item.id">@item.ProductName</option>
-                                                    }
-                                                </select>
+                                                @foreach (var item in ViewBag.Product)
+                                                {
+                                                    <option value="@item.id">@item.ProductName</option>
+                                                }
+                                            </select>
 
-                                            </div>
+                                        </div>
 
-                                                <div class="col-md-2">
-                                                    <select id="revsize" name="revsize" class="plbxt btn btn-primary  width100">
-                                                        <option value="">Revenue Size</option>
-                                                        <option value="10-100">10-100cr</option>
-                                                        <option value="100-500">100-500cr</option>
-                                                        <option value="500-1000">500-1000cr</option>
-                                                        <option value="1000-5000">1000-5000cr</option>
-                                                        <option value="5000">5000 +</option>
+                                        <div class="col-md-2">
+                                            <select id="revsize" name="revsize" class="plbxt btn btn-primary  width100">
+                                                <option value="">Revenue Size</option>
+                                                <option value="10-100">10-100cr</option>
+                                                <option value="100-500">100-500cr</option>
+                                                <option value="500-1000">500-1000cr</option>
+                                                <option value="1000-5000">1000-5000cr</option>
+                                                <option value="5000">5000 +</option>
 
-                                                    </select>
+                                            </select>
 
-                                                </div>
+                                        </div>
 
-                                                <div class="col-md-2">
-                                                    <select id="empsize" name="empsize" class="plbxt btn btn-primary  width100">
-                                                        <option value="">Employee Size</option>
-                                                        <option value="10-100">10-100</option>
-                                                        <option value="100-500">100-500</option>
-                                                        <option value="500-1000">500-1000</option>
-                                                        <option value="1000-5000">1000-5000</option>
-                                                        <option value="5000">5000 +</option>
-                                                    </select>
+                                        <div class="col-md-2">
+                                            <select id="empsize" name="empsize" class="plbxt btn btn-primary  width100">
+                                                <option value="">Employee Size</option>
+                                                <option value="10-100">10-100</option>
+                                                <option value="100-500">100-500</option>
+                                                <option value="500-1000">500-1000</option>
+                                                <option value="1000-5000">1000-5000</option>
+                                                <option value="5000">5000 +</option>
+                                            </select>
 
-                                                </div>
-                                                <div class="col-md-2 pl-0">
-                                                    <button type="submit" class="btn btn-green">
-                                                        <i class="fa fa-filter"></i>
-                                                        Filter
-                                                    </button>
-                                                </div>
+                                        </div>
+                                        <div class="col-md-2 pl-0">
+                                            <button type="submit" class="btn btn-green">
+                                                <i class="fa fa-filter"></i>
+                                                Filter
+                                            </button>
+                                        </div>
                                     }
                                 </div>
                             </div>
@@ -196,22 +201,22 @@
                                                     <h4>
                                                         @if (ChemAnalyst.DAL.ProductDataStore.GetProductCompanyReletion(item.id, ViewBag.f))
                                                         {
-                                                        <a href="@Url.Action("CompanyDetail", "Login", new { id = item.id })">@(item.Name.Length > 40 ? (item.Name.Substring(0, 40)) : item.Name)...</a>
+                                                            <a href="@Url.Action("CompanyDetail", "Login", new { id = item.id })">@(item.Name.Length > 40 ? (item.Name.Substring(0, 40)) : item.Name)...</a>
                                                         }
                                                         else
                                                         {<a onclick="showmodel()">@(item.Name.Length > 40 ? (item.Name.Substring(0, 40)) : item.Name)...</a>
-                                                        }
+                                                    }
                                                     </h4>
                                                     <p>@(item.Description.Length > 100 ? (item.Description.Substring(0, 100)) : item.Description)...</p>
                                                     <div class="row mt-3">
                                                         <div class="col-8">
                                                             @if (ChemAnalyst.DAL.ProductDataStore.GetProductCompanyReletion(item.id, ViewBag.f))
                                                             {
-                                                            <a  style="margin-left: 15px;" href="@Url.Action("CompanyDetail", "Login", new { id = item.id })">View Profile <i class="fa fa-arrow-right"></i></a>
+                                                                <a style="margin-left: 15px;" href="@Url.Action("CompanyDetail", "Login", new { id = item.id })">View Profile <i class="fa fa-arrow-right"></i></a>
                                                             }
                                                             else
                                                             {
-                                                            <a onclick="showmodel()" style="margin-left: 15px;">View Profile <i class="fa fa-arrow-right"></i></a>
+                                                                <a onclick="showmodel()" style="margin-left: 15px;">View Profile <i class="fa fa-arrow-right"></i></a>
                                                             }
                                                         </div>
                                                         <div class="col-4 text-right addMarginRight"> <i class="fa fa-clock-o"></i>@item.CreatedTime.ToString("MMM/yyyy") </div>
@@ -264,7 +269,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
 
@@ -285,7 +290,7 @@
                 $("#empsize").val('@ViewBag.EmpSiz');
 
 
-               
+
             });
 
 
@@ -320,4 +325,5 @@
         });
 
     </script>
+    <script src="~/js/responsive.js"></script>
 </body>

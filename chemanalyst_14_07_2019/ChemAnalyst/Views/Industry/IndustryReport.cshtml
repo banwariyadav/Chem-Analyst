@@ -210,9 +210,9 @@
 
                             <div class="subscription-btn"><a style="background:#7db11a" href="@Url.Action("FreeTrail", "ChemAnalyst")">View Sample Report</a></div>
 
-                            <div class="side-news-feed" style="height: 540px;">
+                            <div class="side-news-feed">
                                 <h3><i class="fa fa-bell-o"></i> News</h3>
-                                <marquee behavior="scroll" direction="up" style="height: 400px;" onmouseover="stop()" onmouseout="start()">
+                               
                                     @foreach (var item in Model.NewsList)
                                     {
                                         <div class="news-feed-col">
@@ -233,12 +233,12 @@
                                         </div>
 
                                     }
-                                </marquee>
+                                
                             </div>
 
-                            <div class="side-news-feed mt-4" style="height: 540px;">
+                            <div class="side-news-feed mt-4">
                                 <h3><i class="fa fa-thumbs-up"></i> Top Deals</h3>
-                                <marquee behavior="scroll" direction="up" style="height: 450px;" scrollamount="3" onmouseover="stop()" onmouseout="start()">
+                              
                                     @foreach (var item in Model.DealsList)
                                     {
                                         <div class="news-feed-col">
@@ -261,7 +261,7 @@
                                             </a>
                                         </div>
                                     }
-                                </marquee>
+                               
                             </div>
 
                         </aside>

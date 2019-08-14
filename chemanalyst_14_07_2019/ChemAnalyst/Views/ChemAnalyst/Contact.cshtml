@@ -38,10 +38,10 @@
                                                 <input type="text" value="" id="Name" name="Name" size="40" class="form-control" placeholder="Name">
                                             </div>
                                             <div class="col-sm-12 form-group">
-                                                <input type="email" id="OfficialEmail" name="OfficialEmail" value="" size="40" class="form-control" placeholder="Official Email" required>
+                                                <input type="email" placeholder="me@example.com" id="OfficialEmail" name="OfficialEmail" value="" size="40" class="form-control" required>
                                             </div>
                                             <div class="col-sm-12 form-group">
-                                                <input type="text" value="" id="Mobile" name="Mobile" size="40" class="form-control" placeholder="Mobile No." required>
+                                                <input type="text" onkeypress="return isNumberKey(event)" value="" id="Mobile" name="Mobile" size="40" class="form-control" placeholder="Mobile No." required>
                                             </div>
                                             <div class="col-sm-12 form-group">
                                                 <input type="text" value="" size="40" id="Organization" name="Organization" class="form-control" placeholder="Organization" required>
@@ -62,7 +62,7 @@
                                             </div>*@
                                             @*<div class="col-sm-12 form-group btn-submit"> <a class="send-btn" href="#">Send Message</a> </div>*@
 
-                                            <div class="col-sm-12 form-group btn-submit"> <button id="btnSaveContact" type="submit" class="common-btn" data-loading-text="Please wait...">Send Message</button></div>
+                                            <div class="col-sm-12 form-group btn-submit"> <input type="submit" id="btnSaveContact" class="common-btn" data-loading-text="Please wait..." value="Send Message"></div>
                                            
 
                                         </form>
@@ -161,6 +161,22 @@
 
 <script>
 
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
+
+    function isValidEmailAddress(emailAddress) {
+        debugger;
+        var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+        return pattern.test(emailAddress);
+    }
+
+
+
+
     $(function () {
         $("#btnSaveContact").click(function () {
             debugger
@@ -173,8 +189,22 @@
                 swal("Warning", "Please enter email :)", "error");
                 return false;
             }
+            if ($("#OfficialEmail").val()!= "") {
+                if (!isValidEmailAddress($("#OfficialEmail").val())) {
+                    debugger
+                    swal("Warning", "Invalid email address :)", "error");
+                    return false;
+                }
+                else
+                {
+                   
+                }
+            }
+           
+
+
             if ($("#Mobile").val() == "") {
-                swal("Warning", "Please enter mobile number", "error");
+                swal("Warning", "Please enter mobile number :)", "error");
                 return false;
             }
 
@@ -196,7 +226,7 @@
                     debugger
                     if (data.data == "Success") {
                         //alert("Data has been added successfully.");
-                        swal("Thank you!", "Data has been added successfully.", "success");
+                        swal("Thank you!", "We will get back to you shortly.", "success");
                         $("#Name").val('');
                         $("#OfficialEmail").val('');
                         $("#Mobile").val('');
@@ -207,7 +237,7 @@
 
                     }
                     else {
-                        swal("Thank you!", "We will get back to you shortly.", "success");
+                        alert("Error while inserting data");
                     }
                 },
                 error: function () {
@@ -252,3 +282,7 @@
       
     });
 </script>
+
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>

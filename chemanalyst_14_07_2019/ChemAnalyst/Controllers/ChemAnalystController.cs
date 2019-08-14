@@ -1,4 +1,5 @@
-﻿using ChemAnalyst.DAL;
+﻿using ChemAnalyst.Common;
+using ChemAnalyst.DAL;
 using ChemAnalyst.Models;
 using ChemAnalyst.ViewModel;
 using System;
@@ -99,6 +100,44 @@ namespace ChemAnalyst.Controllers
 
             return Json(new { result = result, JsonRequestBehavior.AllowGet });
         }
+
+        public ActionResult ForgotPassword(ContactUs lead)
+        {
+            return View();
+
+        }
+
+        [HttpPost]
+        public ActionResult ForgotPassword(string Username)
+        {
+            try
+            {
+                CustomerDataStore ObjUser = new CustomerDataStore();
+                SA_Customer loginUser = ObjUser.GetCustomerByEmail(Username);
+                if (loginUser==null)
+                {
+                    TempData["ErrorMessage"] = "User does not exist.";
+                    return View();
+                }
+                //string strEncryptedCurr = (Helpers.Encrypt(CurPassword));
+                string strDecryptedCurr = (Helpers.Decrypt(loginUser.UserPassword));
+
+               
+                string EmailBody = SubscriptionDAL.GetHtml("ContactUs.html");
+                EmailBody = EmailBody.Replace("#Password", strDecryptedCurr);
+
+                SubscriptionDAL.SendMail("Chem Analyst", "info@chemanalyst", Username, "CONTACT US", EmailBody, "mrnickolasjames@gmail.com");
+                TempData["ErrorMessage"] = "Password sent on your email address.";
+                return View();
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Error" + ex.ToString();
+                return View();
+            }
+        }
+
+
 
         public ActionResult AdvisoryList()
         {
@@ -691,7 +730,7 @@ namespace ChemAnalyst.Controllers
         public JsonResult GetState(int Country)
         {
             ChemAnalystContext _context1 = new ChemAnalystContext();
-            var cat = (from coun in _context1.SA_States where coun.CountryId== Country select new SelectListItem { Text = coun.State, Value = coun.Id.ToString() }).OrderBy(w => w.Value).Distinct().AsEnumerable();
+            var cat = (from coun in _context1.SA_States where coun.CountryId == Country select new SelectListItem { Text = coun.State, Value = coun.Id.ToString() }).OrderBy(w => w.Value).Distinct().AsEnumerable();
 
             return Json(cat);
 

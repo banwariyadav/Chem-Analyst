@@ -190,7 +190,7 @@
                                                 <option value="2019">2019</option>
                                                 <option value="2020">2020</option>
                                             </select>*@
-                                        @Html.DropDownListFor(m => m.FirstOrDefault().FromYear, ChemAnalyst.DAL.ProductDataStore.GetUniqueYears(), "Select to", new { @class = "btn btn-primary width100", @id = "ddlToYear", @name = "ddlToYear" })
+                                        @Html.DropDownListFor(m => m.FirstOrDefault().ToYear, ChemAnalyst.DAL.ProductDataStore.GetUniqueYears(), "Select to", new { @class = "btn btn-primary width100", @id = "ddlToYear", @name = "ddlToYear" })
                                     </div>
                                     <div class="col-md-4 mt12" style="display:none">
                                         <p>
@@ -396,7 +396,7 @@
                                                         <th>Year</th>
                                                         @foreach (string column in ((List<ChemAnalyst.Models.SA_MarketbyDemandsupply>)ViewBag.R).Select(x => x.DemandSupply).Distinct())// Model.Select(x => x.StackedDimensionOne).ToList())
                                                         {
-
+                                                          
                                                             <th>@column</th>
                                                         }
                                                     </tr>
@@ -408,8 +408,14 @@
                                                             <td>@count</td>
                                                             @foreach (string column in ((List<ChemAnalyst.Models.SA_MarketbyDemandsupply>)ViewBag.R).Select(x => x.DemandSupply).Distinct())// Model.Select(x => x.StackedDimensionOne).ToList())
                                                             {
-                                                                <td>@(((List<ChemAnalyst.Models.SA_MarketbyDemandsupply>)ViewBag.R).Where(x => x.DemandSupply == column && x.year == count).Sum(x => x.count))</td>
-
+                                                                if (column.Contains("Y-O-Y"))
+                                                                {
+                                                                <td>@(((List<ChemAnalyst.Models.SA_MarketbyDemandsupply>)ViewBag.R).Where(x => x.DemandSupply == column && x.year == count).Sum(x => x.count)) %</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>@(((List<ChemAnalyst.Models.SA_MarketbyDemandsupply>)ViewBag.R).Where(x => x.DemandSupply == column && x.year == count).Sum(x => x.count))</td>
+                                                                }
                                                             }
                                                         </tr>
                                                     }
@@ -754,39 +760,53 @@
 
         }
 
-        $("body").on("change", "#category", function () {
-            var CatId=$(category).find("option:selected").val();
+        $(document).ready(function(event) {
+            $('#countrylist').change(function(e){
+                // put code here
+            }).change();
 
-            var ddlCustomers = $("#ddlProduct");
-            //  var ddlCompare = $("#example-getting-started");
-            // example-getting-started
-            ddlCustomers.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
-            $.ajax({
-                type: "POST",
-                url: "../ChemicalPricing/GetProductName",
-                data: "{ CatId:"+ CatId +"}" ,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                async: false,
-                success: function (response) {
-                    ddlCustomers.empty().append('<option selected="selected" value=""> select Product</option>');
-                    //ddlCompare.empty().append('<option selected="selected" value="0"> select Product</option>');
 
-                    $.each(response, function () {
-                        ddlCustomers.append($("<option></option>").val(this['Value']).html(this['Text']));
-                        // ddlCompare.append($("<option  ></option>").val(this['Value']).html(this['Text']));
+            $('#category').change(function(e){
 
-                    });
-                    $("#example-getting-started").multiselect();
-                    // alert("category call");
-                },
-                failure: function (response) {
-                    // alert(response.responseText);
-                },
-                error: function (response) {
-                    // alert(response.responseText);
-                }
-            });
+                // alert("hiiii");
+                debugger
+                var CatId=$(category).find("option:selected").val();
+
+                var ddlCustomers = $("#ddlProduct");
+                //  var ddlCompare = $("#example-getting-started");
+                // example-getting-started
+                ddlCustomers.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
+                $.ajax({
+                    type: "POST",
+                    url: "../MarketAnalysis/GetProductName",
+                    data: "{ CatId:"+ CatId +"}" ,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: false,
+                    success: function (response) {
+                        ddlCustomers.empty().append('<option selected="selected" value=""> select Product</option>');
+                        //ddlCompare.empty().append('<option selected="selected" value="0"> select Product</option>');
+
+                        $.each(response, function () {
+                            ddlCustomers.append($("<option></option>").val(this['Value']).html(this['Text']));
+                            // ddlCompare.append($("<option  ></option>").val(this['Value']).html(this['Text']));
+
+                        });
+                        var Product = @Html.Raw(Product);
+                        $('#ddlProduct').val(Product);
+                        UpdateYear();
+
+                        // alert("category call");
+                    },
+                    failure: function (response) {
+                        // alert(response.responseText);
+                    },
+                    error: function (response) {
+                        // alert(response.responseText);
+                    }
+                });
+            }).change();
+
         });
 
         $("body").on("change", "#ddlRange", function () {
@@ -845,7 +865,49 @@
             }
         });
 
+        function UpdateYear()
+        {
+            //alert("UpdateYear");
+            debugger
+            var rangeId= @Html.Raw(range);
 
+            var ddlFyear = $("#ddlFyear");
+            var ddlToYear = $("#ddlToYear");
+            //  var ddlCompare = $("#example-getting-started");
+            // example-getting-started
+            ddlFyear.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
+            ddlToYear.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
+            $.ajax({
+                type: "POST",
+                url: "../MarketAnalysis/GetUniqueYears",
+                //data: "{ rangeId:"+ rangeId +"}" ,
+                data: JSON.stringify({'rangeId':rangeId}),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (response) {
+                    debugger
+                    ddlFyear.empty().append('<option selected="selected" value=""> Select from</option>');
+                    ddlToYear.empty().append('<option selected="selected" value=""> Select to</option>');
+                    $.each(response, function () {
+                        ddlFyear.append($("<option></option>").val(this['Value']).html(this['Text']));
+                        ddlToYear.append($("<option></option>").val(this['Value']).html(this['Text']));
+
+                    });
+
+                    $('#ddlFyear').val('@(ViewBag.Fy== null?"": ViewBag.Fy)');
+                    $('#ddlToYear').val('@(ViewBag.Ty==null?"": ViewBag.Ty)');
+                    //$("#example-getting-started").multiselect();
+                    // alert("category call");
+                },
+                failure: function (response) {
+                    // alert(response.responseText);
+                },
+                error: function (response) {
+                    // alert(response.responseText);
+                }
+            });
+        }
 
         function Drowchart2(id, d) {
             var XLabels = @Html.Raw(XLabels);

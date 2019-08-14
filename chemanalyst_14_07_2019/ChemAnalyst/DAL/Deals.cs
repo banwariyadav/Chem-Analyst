@@ -29,11 +29,22 @@ namespace ChemAnalyst.DAL
         public List<SA_Deals> GetCustDealsList(int id)
         {
 
-            var result = (from m in _context.SA_Deals
-                          join n in _context.CustProduct on
-                          m.Product equals n.ProdId
-                          where n.CustId == id && m.status == 1
-                          select (m)).ToList();
+            var result = (from n in _context.SA_Deals
+                          join r in _context.SA_DealsAndProductRelation on
+                         n.id equals r.SA_DealID into np
+                          from npresult in np.DefaultIfEmpty()
+
+                          join p in _context.CustProduct
+                          on npresult.SA_ProductId equals p.ProdId
+                          where p.CustId == id && n.status == 1
+
+                          select (n)).Distinct().ToList();
+
+            //var result = (from m in _context.SA_Deals
+            //              join n in _context.CustProduct on
+            //              m.Product equals n.ProdId
+            //              where n.CustId == id && m.status == 1
+            //              select (m)).ToList();
             return result;
 
         }

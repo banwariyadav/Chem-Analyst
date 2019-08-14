@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no" />
-    <title>Chem Analyst - Add New Category </title>
+    <title>Chem Analyst</title>
     <link rel="stylesheet" href="~/css/bootstrap-admin.css" type="text/css" />
-    <link rel="stylesheet" href="~/css/style.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/style2.css" type="text/css" />
     <link rel="stylesheet" href="~/css/build.css" type="text/css" />
     <link href="~/css/font-awesome.min.css" rel="stylesheet" />
-    @*<script src="~/js/jquery.js"></script>*@
+    <script src="~/js/jquery.js"></script>
     <script src="~/js/bootstrap.min.js"></script>
    
     <style>
@@ -82,116 +82,116 @@
     </section>
     @*@{
         List<ChemAnalyst.Models.CustWiseAccess> objAccess = (List<ChemAnalyst.Models.CustWiseAccess>)@Session["Access"];*@
-        <div class="side-wrapper">
+    <div class="side-wrapper">
 
-            <ul>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-tachometer"></i>Dashboard
-                    </a>
-                </li>
+        <ul>
+            <li>
+                <a href="#">
+                    <i class="fa fa-tachometer"></i>Dashboard
+                </a>
+            </li>
 
-                <li>
-                    <a href="~/ChemicalPricing/ChecmPriceChartuser">
-                        <i class="fa fa-tachometer"></i>Chemical Pricing
-                    </a>
-                </li>
+            <li>
+                <a href="~/ChemicalPricing/ChecmPriceChartuser">
+                    <i class="fa fa-tachometer"></i>Chemical Pricing
+                </a>
+            </li>
 
-                <li>
-                    <a href="~/MarketAnalysis/MarketAnalysisChartUser">
-                        <i class="fa fa-tachometer"></i>Market Analysis
-                    </a>
-                </li>
+            <li>
+                <a href="~/MarketAnalysis/MarketAnalysisChartUser">
+                    <i class="fa fa-tachometer"></i>Market Analysis
+                </a>
+            </li>
 
-                <li>
-                    <a href="@Url.Action("CustCompaniesList","Login")">
-                        <i class="fa fa-tachometer"></i> Company Profile
-                    </a>
-
-                </li>
-
-                <li>
-                    <a href="@Url.Action("CustIndustryList","Login")">
-                        <i class="fa fa-tachometer"></i>Industry Report
-                    </a>
-                </li>
-
-                <li>
-                    <a href="~/NewsAndDeals/NewsHome">
-                        <i class="fa fa-tachometer"></i>News
-                    </a>
-                </li>
-
-                <li>
-                    <a href="~/NewsAndDeals/DealsHome">
-                        <i class="fa fa-tachometer"></i>Deals
-                    </a>
-                </li>
-
-            </ul>
-        </div>
-
-            @*<ul>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-tachometer"></i>Dashboard
-                    </a>
-                </li>
-                @if ((objAccess.Where(page => page.Pageid == 1).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
-                {
-                    <li>
-                        <a href="~/ChemicalPricing/ChecmPriceChartuser">
-                            <i class="fa fa-tachometer"></i>Chemical Pricing
-                        </a>
-                    </li>
-                }
-                @if ((objAccess.Where(page => page.Pageid == 2).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
-                {
-                    <li>
-                        <a href="~/MarketAnalysis/MarketAnalysisChartUser">
-                            <i class="fa fa-tachometer"></i>Market Analysis
-                        </a>
-                    </li>
-                }*@
-                @*OROGINALY  PAGE ID WAS 3, I HAVE CHANGED IT*@
-                @*@if ((objAccess.Where(page => page.Pageid == 3).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
-    {
-        //HERE I HAVE ADDED THE LINK, PASS LEAD_MASTER ID FROM HERE
-        <li>
+            <li>
                 <a href="@Url.Action("CustCompaniesList","Login")">
                     <i class="fa fa-tachometer"></i> Company Profile
                 </a>
 
             </li>
-                }
-               @if ((objAccess.Where(page => page.Pageid == 4).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
-                {
-                    <li>
-                        <a href="@Url.Action("CustIndustryList","Login")">
-                            <i class="fa fa-tachometer"></i>Industry Report
-                        </a>
-                    </li>
-                }
-                @if ((objAccess.Where(page => page.Pageid == 5).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
-                {
-                    <li>
-                        <a href="~/NewsAndDeals/NewsHome">
-                            <i class="fa fa-tachometer"></i>News
-                        </a>
-                    </li>
-                }
-                @if ((objAccess.Where(page => page.Pageid == 6).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
-                {
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-tachometer"></i>Deals
-                        </a>
-                    </li>
-                }
 
-            </ul>
-        </div>
-    }*@
+            <li>
+                <a href="@Url.Action("CustIndustryList","Login")">
+                    <i class="fa fa-tachometer"></i>Industry Report
+                </a>
+            </li>
+
+            <li>
+                <a href="~/NewsAndDeals/NewsHome">
+                    <i class="fa fa-tachometer"></i>News
+                </a>
+            </li>
+
+            <li>
+                <a href="~/NewsAndDeals/DealsHome">
+                    <i class="fa fa-tachometer"></i>Deals
+                </a>
+            </li>
+
+        </ul>
+    </div>
+
+    @*<ul>
+        <li>
+            <a href="#">
+                <i class="fa fa-tachometer"></i>Dashboard
+            </a>
+        </li>
+        @if ((objAccess.Where(page => page.Pageid == 1).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+        {
+            <li>
+                <a href="~/ChemicalPricing/ChecmPriceChartuser">
+                    <i class="fa fa-tachometer"></i>Chemical Pricing
+                </a>
+            </li>
+        }
+        @if ((objAccess.Where(page => page.Pageid == 2).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+        {
+            <li>
+                <a href="~/MarketAnalysis/MarketAnalysisChartUser">
+                    <i class="fa fa-tachometer"></i>Market Analysis
+                </a>
+            </li>
+        }*@
+    @*OROGINALY  PAGE ID WAS 3, I HAVE CHANGED IT*@
+    @*@if ((objAccess.Where(page => page.Pageid == 3).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+        {
+            //HERE I HAVE ADDED THE LINK, PASS LEAD_MASTER ID FROM HERE
+            <li>
+                    <a href="@Url.Action("CustCompaniesList","Login")">
+                        <i class="fa fa-tachometer"></i> Company Profile
+                    </a>
+
+                </li>
+                    }
+                   @if ((objAccess.Where(page => page.Pageid == 4).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+                    {
+                        <li>
+                            <a href="@Url.Action("CustIndustryList","Login")">
+                                <i class="fa fa-tachometer"></i>Industry Report
+                            </a>
+                        </li>
+                    }
+                    @if ((objAccess.Where(page => page.Pageid == 5).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+                    {
+                        <li>
+                            <a href="~/NewsAndDeals/NewsHome">
+                                <i class="fa fa-tachometer"></i>News
+                            </a>
+                        </li>
+                    }
+                    @if ((objAccess.Where(page => page.Pageid == 6).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+                    {
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-tachometer"></i>Deals
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+            </div>
+        }*@
     <div class="right-contant-bar">
         @RenderBody()
     </div>
@@ -207,185 +207,186 @@
     @RenderSection("scripts", required: false)
     @RenderSection("script", required: false)
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-   
-    
+
+
 
     @*<script>
-        var MONTHS = ['2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019'];
-        var config = {
-            type: 'line',
-            type: 'line',
-            type: 'line',
-            type: 'line',
-            type: 'line',
-            type: 'line',
-            type: 'line',
-            data: {
-                labels: ['2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019'],
-                datasets: [{
-                    label: 'Blown Film Grade',
-                    backgroundColor: window.chartColors.red,
-                    borderColor: window.chartColors.red,
-                    data: [
-                        [1000],
-                        [1010],
-                        [1030],
-                        [1230],
-                        [1540],
-                        [1790],
-                        [1830],
-                        [2280],
-                        [2630],
-                        [2830],
-                        [2930],
-                        [3030],
-                        [3160],
-                        [4430],
-                        [5970],
-                        [6230],
-                        [7360],
-                        [8830],
-                        [9000],
-                        [10000]
-                    ],
-                    fill: false,
-                }, {
-                    label: 'Extrusion Coating',
-                    fill: false,
-                    backgroundColor: window.chartColors.blue,
-                    borderColor: window.chartColors.blue,
-                    data: [
-                        [8000],
-                        [11030],
-                        [11030],
-                        [11230],
-                        [11540],
-                        [11790],
-                        [11830],
-                        [12280],
-                        [12630],
-                        [12830],
-                        [12930],
-                        [13030],
-                        [13160],
-                        [14430],
-                        [15970],
-                        [16230],
-                        [17360],
-                        [18930],
-                        [19000],
-                        [20000]
-                    ],
-                }]
-            },
-            options: {
-                responsive: true,
-                title: {
-                    display: true,
-                    text: 'Chemical Analysis Chart'
-                },
-                tooltips: {
-                    mode: 'index',
-                    intersect: false,
-                },
-                hover: {
-                    mode: 'nearest',
-                    intersect: true
-                },
-                scales: {
-                    xAxes: [{
-                        display: true,
-                        scaleLabel: {
-                            display: false,
-                            labelString: 'Month'
-                        }
-                    }],
-                    yAxes: [{
-                        display: true,
-                        scaleLabel: {
-                            display: false,
-                            labelString: 'Value'
-                        }
+            var MONTHS = ['2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019'];
+            var config = {
+                type: 'line',
+                type: 'line',
+                type: 'line',
+                type: 'line',
+                type: 'line',
+                type: 'line',
+                type: 'line',
+                data: {
+                    labels: ['2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019'],
+                    datasets: [{
+                        label: 'Blown Film Grade',
+                        backgroundColor: window.chartColors.red,
+                        borderColor: window.chartColors.red,
+                        data: [
+                            [1000],
+                            [1010],
+                            [1030],
+                            [1230],
+                            [1540],
+                            [1790],
+                            [1830],
+                            [2280],
+                            [2630],
+                            [2830],
+                            [2930],
+                            [3030],
+                            [3160],
+                            [4430],
+                            [5970],
+                            [6230],
+                            [7360],
+                            [8830],
+                            [9000],
+                            [10000]
+                        ],
+                        fill: false,
+                    }, {
+                        label: 'Extrusion Coating',
+                        fill: false,
+                        backgroundColor: window.chartColors.blue,
+                        borderColor: window.chartColors.blue,
+                        data: [
+                            [8000],
+                            [11030],
+                            [11030],
+                            [11230],
+                            [11540],
+                            [11790],
+                            [11830],
+                            [12280],
+                            [12630],
+                            [12830],
+                            [12930],
+                            [13030],
+                            [13160],
+                            [14430],
+                            [15970],
+                            [16230],
+                            [17360],
+                            [18930],
+                            [19000],
+                            [20000]
+                        ],
                     }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Chemical Analysis Chart'
+                    },
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    hover: {
+                        mode: 'nearest',
+                        intersect: true
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Month'
+                            }
+                        }],
+                        yAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            }
+                        }]
+                    }
                 }
-            }
-        };
-
-        window.onload = function () {
-            var ctx = document.getElementById('canvas').getContext('2d');
-            window.myLine = new Chart(ctx, config);
-        };
-
-        document.getElementById('randomizeData').addEventListener('click', function () {
-            config.data.datasets.forEach(function (dataset) {
-                dataset.data = dataset.data.map(function () {
-                    return randomScalingFactor();
-                });
-
-            });
-
-            window.myLine.update();
-        });
-
-        var colorNames = Object.keys(window.chartColors);
-        document.getElementById('addDataset').addEventListener('click', function () {
-            var colorName = colorNames[config.data.datasets.length % colorNames.length];
-            var newColor = window.chartColors[colorName];
-            var newDataset = {
-                label: 'Dataset ' + config.data.datasets.length,
-                backgroundColor: newColor,
-                borderColor: newColor,
-                data: [],
-                fill: false
             };
 
-            for (var index = 0; index < config.data.labels.length; ++index) {
-                newDataset.data.push(randomScalingFactor());
-            }
+            window.onload = function () {
+                var ctx = document.getElementById('canvas').getContext('2d');
+                window.myLine = new Chart(ctx, config);
+            };
 
-            config.data.datasets.push(newDataset);
-            window.myLine.update();
-        });
-
-        document.getElementById('addData').addEventListener('click', function () {
-            if (config.data.datasets.length > 0) {
-                var month = MONTHS[config.data.labels.length % MONTHS.length];
-                config.data.labels.push(month);
-
+            document.getElementById('randomizeData').addEventListener('click', function () {
                 config.data.datasets.forEach(function (dataset) {
-                    dataset.data.push(randomScalingFactor());
+                    dataset.data = dataset.data.map(function () {
+                        return randomScalingFactor();
+                    });
+
                 });
 
                 window.myLine.update();
-            }
-        });
-
-        document.getElementById('removeDataset').addEventListener('click', function () {
-            config.data.datasets.splice(0, 1);
-            window.myLine.update();
-        });
-
-        document.getElementById('removeData').addEventListener('click', function () {
-            config.data.labels.splice(-1, 1); // remove the label first
-
-            config.data.datasets.forEach(function (dataset) {
-                dataset.data.pop();
             });
 
+            var colorNames = Object.keys(window.chartColors);
+            document.getElementById('addDataset').addEventListener('click', function () {
+                var colorName = colorNames[config.data.datasets.length % colorNames.length];
+                var newColor = window.chartColors[colorName];
+                var newDataset = {
+                    label: 'Dataset ' + config.data.datasets.length,
+                    backgroundColor: newColor,
+                    borderColor: newColor,
+                    data: [],
+                    fill: false
+                };
 
-            window.myLine.update();
-        });
-    </script>*@
+                for (var index = 0; index < config.data.labels.length; ++index) {
+                    newDataset.data.push(randomScalingFactor());
+                }
+
+                config.data.datasets.push(newDataset);
+                window.myLine.update();
+            });
+
+            document.getElementById('addData').addEventListener('click', function () {
+                if (config.data.datasets.length > 0) {
+                    var month = MONTHS[config.data.labels.length % MONTHS.length];
+                    config.data.labels.push(month);
+
+                    config.data.datasets.forEach(function (dataset) {
+                        dataset.data.push(randomScalingFactor());
+                    });
+
+                    window.myLine.update();
+                }
+            });
+
+            document.getElementById('removeDataset').addEventListener('click', function () {
+                config.data.datasets.splice(0, 1);
+                window.myLine.update();
+            });
+
+            document.getElementById('removeData').addEventListener('click', function () {
+                config.data.labels.splice(-1, 1); // remove the label first
+
+                config.data.datasets.forEach(function (dataset) {
+                    dataset.data.pop();
+                });
+
+
+                window.myLine.update();
+            });
+        </script>*@
 
 
     @*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
 
     <script>
         $(function () {
 
-           $( "#datepicker" ).datepicker({dateFormat:"yy/mm/dd"}).datepicker("setDate",new Date());
+            $("#datepicker").datepicker({ dateFormat: "yy/mm/dd" }).datepicker("setDate", new Date());
         });
     </script>
+    <script src="~/js/responsive.js"></script>
 </body>
 </html>

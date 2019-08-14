@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no" />
     <title>Chem Analyst - Add New Category </title>
     <link rel="stylesheet" href="~/css/bootstrap-admin.css" type="text/css" />
-    <link rel="stylesheet" href="~/css/style.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/style2.css" type="text/css" />
     <link rel="stylesheet" href="~/css/build.css" type="text/css" />
     <link href="~/css/font-awesome.min.css" rel="stylesheet" />
     @*<script src="~/js/jquery.js"></script>*@
@@ -82,116 +82,116 @@
     </section>
     @*@{
         List<ChemAnalyst.Models.CustWiseAccess> objAccess = (List<ChemAnalyst.Models.CustWiseAccess>)@Session["Access"];*@
-        <div class="side-wrapper">
+    <div class="side-wrapper">
 
-            <ul>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-tachometer"></i>Dashboard
-                    </a>
-                </li>
+        <ul>
+            <li>
+                <a href="#">
+                    <i class="fa fa-tachometer"></i>Dashboard
+                </a>
+            </li>
 
-                <li>
-                    <a href="~/ChemicalPricing/ChecmPriceChartuser">
-                        <i class="fa fa-tachometer"></i>Chemical Pricing
-                    </a>
-                </li>
+            <li>
+                <a href="~/ChemicalPricing/ChecmPriceChartuser">
+                    <i class="fa fa-tachometer"></i>Chemical Pricing
+                </a>
+            </li>
 
-                <li>
-                    <a href="~/MarketAnalysis/MarketAnalysisChartUser">
-                        <i class="fa fa-tachometer"></i>Market Analysis
-                    </a>
-                </li>
+            <li>
+                <a href="~/MarketAnalysis/MarketAnalysisChartUser">
+                    <i class="fa fa-tachometer"></i>Market Analysis
+                </a>
+            </li>
 
-                <li>
-                    <a href="@Url.Action("CustCompaniesList","Login")">
-                        <i class="fa fa-tachometer"></i> Company Profile
-                    </a>
-
-                </li>
-
-                <li>
-                    <a href="@Url.Action("CustIndustryList","Login")">
-                        <i class="fa fa-tachometer"></i>Industry Report
-                    </a>
-                </li>
-
-                <li>
-                    <a href="~/NewsAndDeals/NewsHome">
-                        <i class="fa fa-tachometer"></i>News
-                    </a>
-                </li>
-
-                <li>
-                    <a href="~/NewsAndDeals/DealsHome">
-                        <i class="fa fa-tachometer"></i>Deals
-                    </a>
-                </li>
-
-            </ul>
-        </div>
-
-            @*<ul>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-tachometer"></i>Dashboard
-                    </a>
-                </li>
-                @if ((objAccess.Where(page => page.Pageid == 1).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
-                {
-                    <li>
-                        <a href="~/ChemicalPricing/ChecmPriceChartuser">
-                            <i class="fa fa-tachometer"></i>Chemical Pricing
-                        </a>
-                    </li>
-                }
-                @if ((objAccess.Where(page => page.Pageid == 2).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
-                {
-                    <li>
-                        <a href="~/MarketAnalysis/MarketAnalysisChartUser">
-                            <i class="fa fa-tachometer"></i>Market Analysis
-                        </a>
-                    </li>
-                }*@
-                @*OROGINALY  PAGE ID WAS 3, I HAVE CHANGED IT*@
-                @*@if ((objAccess.Where(page => page.Pageid == 3).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
-    {
-        //HERE I HAVE ADDED THE LINK, PASS LEAD_MASTER ID FROM HERE
-        <li>
+            <li>
                 <a href="@Url.Action("CustCompaniesList","Login")">
                     <i class="fa fa-tachometer"></i> Company Profile
                 </a>
 
             </li>
-                }
-               @if ((objAccess.Where(page => page.Pageid == 4).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
-                {
-                    <li>
-                        <a href="@Url.Action("CustIndustryList","Login")">
-                            <i class="fa fa-tachometer"></i>Industry Report
-                        </a>
-                    </li>
-                }
-                @if ((objAccess.Where(page => page.Pageid == 5).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
-                {
-                    <li>
-                        <a href="~/NewsAndDeals/NewsHome">
-                            <i class="fa fa-tachometer"></i>News
-                        </a>
-                    </li>
-                }
-                @if ((objAccess.Where(page => page.Pageid == 6).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
-                {
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-tachometer"></i>Deals
-                        </a>
-                    </li>
-                }
 
-            </ul>
-        </div>
-    }*@
+            <li>
+                <a href="@Url.Action("CustIndustryList","Login")">
+                    <i class="fa fa-tachometer"></i>Industry Report
+                </a>
+            </li>
+
+            <li>
+                <a href="~/NewsAndDeals/NewsHome">
+                    <i class="fa fa-tachometer"></i>News
+                </a>
+            </li>
+
+            <li>
+                <a href="~/NewsAndDeals/DealsHome">
+                    <i class="fa fa-tachometer"></i>Deals
+                </a>
+            </li>
+
+        </ul>
+    </div>
+
+    @*<ul>
+        <li>
+            <a href="#">
+                <i class="fa fa-tachometer"></i>Dashboard
+            </a>
+        </li>
+        @if ((objAccess.Where(page => page.Pageid == 1).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+        {
+            <li>
+                <a href="~/ChemicalPricing/ChecmPriceChartuser">
+                    <i class="fa fa-tachometer"></i>Chemical Pricing
+                </a>
+            </li>
+        }
+        @if ((objAccess.Where(page => page.Pageid == 2).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+        {
+            <li>
+                <a href="~/MarketAnalysis/MarketAnalysisChartUser">
+                    <i class="fa fa-tachometer"></i>Market Analysis
+                </a>
+            </li>
+        }*@
+    @*OROGINALY  PAGE ID WAS 3, I HAVE CHANGED IT*@
+    @*@if ((objAccess.Where(page => page.Pageid == 3).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+        {
+            //HERE I HAVE ADDED THE LINK, PASS LEAD_MASTER ID FROM HERE
+            <li>
+                    <a href="@Url.Action("CustCompaniesList","Login")">
+                        <i class="fa fa-tachometer"></i> Company Profile
+                    </a>
+
+                </li>
+                    }
+                   @if ((objAccess.Where(page => page.Pageid == 4).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+                    {
+                        <li>
+                            <a href="@Url.Action("CustIndustryList","Login")">
+                                <i class="fa fa-tachometer"></i>Industry Report
+                            </a>
+                        </li>
+                    }
+                    @if ((objAccess.Where(page => page.Pageid == 5).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+                    {
+                        <li>
+                            <a href="~/NewsAndDeals/NewsHome">
+                                <i class="fa fa-tachometer"></i>News
+                            </a>
+                        </li>
+                    }
+                    @if ((objAccess.Where(page => page.Pageid == 6).Count() > 0) && (Session["UserRole"].ToString().ToUpper() == "CUSTOMER"))
+                    {
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-tachometer"></i>Deals
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+            </div>
+        }*@
     <div class="right-contant-bar">
         @RenderBody()
     </div>
@@ -207,8 +207,8 @@
     @RenderSection("scripts", required: false)
     @RenderSection("script", required: false)
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-   
-    
+
+
 
     <script>
         var MONTHS = ['2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019'];
@@ -379,13 +379,14 @@
 
 
     @*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
 
     <script>
         $(function () {
 
-           $( "#datepicker" ).datepicker({dateFormat:"yy/mm/dd"}).datepicker("setDate",new Date());
+            $("#datepicker").datepicker({ dateFormat: "yy/mm/dd" }).datepicker("setDate", new Date());
         });
     </script>
+    
 </body>
 </html>

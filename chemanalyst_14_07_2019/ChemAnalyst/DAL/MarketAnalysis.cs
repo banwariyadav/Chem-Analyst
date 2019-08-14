@@ -546,57 +546,7 @@ namespace ChemAnalyst.DAL
             return returnpro;
         }
 
-        public List<SA_MarketbyLoc> GetLocationWiseProductList(string ProductId, string FromYear, string ToYear)
-        {
-            int id = 0;
-            int fyear = Convert.ToInt16(FromYear);
-            int tyear = Convert.ToInt16(ToYear);
-            if (ProductId != null)
-            {
-                id = int.Parse(ProductId);
-
-
-            }
-            else
-            {
-
-                id = (from m in _context.SA_MarketbyLoc
-                      join n in _context.SA_Product on
-                      m.Product equals n.id
-                      select (n.id)).FirstOrDefault();
-
-
-            }
-            var results = (from ssi in _context.SA_MarketbyLoc.AsEnumerable()
-                           where ssi.Product == id
-                             &&(fyear == 0 ||(int.Parse(ssi.year)) >= fyear)
-                            &&(tyear == 0 ||(int.Parse(ssi.year)) <= tyear)
-                           group ssi by new { ssi.States, ssi.year } into g
-                           select new SA_MarketbyLoc
-                           {
-                               Location = g.Key.States,
-                               year = g.Key.year,
-                               Discription = g.FirstOrDefault().Discription,
-                               Product = g.FirstOrDefault().Product,
-                               count = g.Sum(c => c.count)
-
-
-                           }
-).ToList();
-            return results;
-            //return _context.SA_MarketbyLoc.Where(Year => Year.Product == id).ToList().GroupBy(x=> new { x.States,x.year,x.Company }).Select(x=> new SA_MarketbyLoc {
-            //    Location = x.FirstOrDefault().States,
-            //    year = x.FirstOrDefault().year,
-            //    Discription = x.FirstOrDefault().Discription,
-            //    Product = x.FirstOrDefault().Product,
-            //    count = x.Sum(c=>c.count) 
-
-
-
-            //}).ToList();
-
-
-        }
+     
 
         public List<SA_MarketbyLoc> GetLocationWiseProductListReport(string ProductId, string FromYear, string ToYear)
         {
@@ -1456,23 +1406,90 @@ namespace ChemAnalyst.DAL
             return returnpro;
         }
 
-        public List<SA_MarketbyCompanySharetonnes> GetCompanySharetonnesWiseProductList(string ProductId)
+        public List<SA_MarketbyLoc> GetLocationWiseProductList(string ProductId, string FromYear, string ToYear)
         {
+            int id = 0;
+            int fyear = Convert.ToInt16(FromYear);
+            int tyear = Convert.ToInt16(ToYear);
             if (ProductId != null)
             {
-                int id = int.Parse(ProductId);
+                id = int.Parse(ProductId);
 
-                return _context.SA_MarketbyCompanySharetonnes.Where(Year => Year.Product == id).ToList();
+
             }
             else
             {
-                int uniqueCategories = (from m in _context.SA_MarketbyCompanySharetonnes
+
+                id = (from m in _context.SA_MarketbyLoc
+                      join n in _context.SA_Product on
+                      m.Product equals n.id
+                      select (n.id)).FirstOrDefault();
+
+
+            }
+            var results = (from ssi in _context.SA_MarketbyLoc.AsEnumerable()
+                           where ssi.Product == id
+                             && (fyear == 0 || (int.Parse(ssi.year)) >= fyear)
+                            && (tyear == 0 || (int.Parse(ssi.year)) <= tyear)
+                           group ssi by new { ssi.States, ssi.year } into g
+                           select new SA_MarketbyLoc
+                           {
+                               Location = g.Key.States,
+                               year = g.Key.year,
+                               Discription = g.FirstOrDefault().Discription,
+                               Product = g.FirstOrDefault().Product,
+                               count = g.Sum(c => c.count)
+
+
+                           }
+).ToList();
+            return results;
+            //return _context.SA_MarketbyLoc.Where(Year => Year.Product == id).ToList().GroupBy(x=> new { x.States,x.year,x.Company }).Select(x=> new SA_MarketbyLoc {
+            //    Location = x.FirstOrDefault().States,
+            //    year = x.FirstOrDefault().year,
+            //    Discription = x.FirstOrDefault().Discription,
+            //    Product = x.FirstOrDefault().Product,
+            //    count = x.Sum(c=>c.count) 
+
+
+
+            //}).ToList();
+
+
+        }
+        public List<SA_MarketbyCompanySharetonnes> GetCompanySharetonnesWiseProductList(string ProductId, string FromYear, string ToYear)
+        {
+            int id = 0;
+            int fyear = Convert.ToInt16(FromYear);
+            int tyear = Convert.ToInt16(ToYear);
+            if (ProductId != null)
+            {
+                id = int.Parse(ProductId);
+            }
+            else
+            {
+                id = (from m in _context.SA_MarketbyCompanySharetonnes
                                         join n in _context.SA_Product on
                                         m.Product equals n.id
                                         select (n.id)).FirstOrDefault();
-
-                return _context.SA_MarketbyCompanySharetonnes.Where(Year => Year.Product == uniqueCategories).ToList();
             }
+
+            var results = (from ssi in _context.SA_MarketbyCompanySharetonnes.AsEnumerable()
+                           where ssi.Product == id
+                             && (fyear == 0 || (int.Parse(ssi.year)) >= fyear)
+                            && (tyear == 0 || (int.Parse(ssi.year)) <= tyear)
+                           group ssi by new { ssi.Company, ssi.year } into g
+                           select new SA_MarketbyCompanySharetonnes
+                           {
+                               Company = g.Key.Company,
+                               year = g.Key.year,
+                               Discription = g.FirstOrDefault().Discription,
+                               Product = g.FirstOrDefault().Product,
+                               count = g.Sum(c => c.count)
+
+
+                           }).ToList();
+            return results;
 
 
         }

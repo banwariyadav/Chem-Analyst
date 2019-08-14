@@ -27,7 +27,7 @@
     <title>Chem Analyst </title>
     <link href="~/css/oswald-font.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="~/css/style.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/style2.css" type="text/css" />
     <link href="~/css/font-awesome.min.css" rel="stylesheet">
     <link href="~/css/oswald-font.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/bootstrap.min.css">
@@ -37,7 +37,6 @@
     <link rel="stylesheet" href="~/css/owl.carousel.min.css">
     <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
     @*<link rel="stylesheet" href="~/css/custom.css" type="text/css" />*@
-    <link href="~/css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/bootstrap-multiselect.css">
 
     <style>
@@ -496,7 +495,7 @@
     </script>
     <script>
         function SubmitForm() {
-
+            debugger;
             var Product = @Html.Raw(Product);
             var ChartType = @Html.Raw(ChartType);
             var range = @Html.Raw(range);
@@ -515,6 +514,7 @@
 
         function ResetForm()
         {
+            debugger;
             var Product = @Html.Raw(Product);
             var ChartType = @Html.Raw(ChartType);
             var range = @Html.Raw(range);
@@ -684,6 +684,7 @@
 
 
         function setdtval(){
+            debugger;
             $(".lgndchk").hide();
             $('input[name="hiddenLegends"]').val("");
             if($("#ddlRange").val() =="Quarterly"  || $("#ddlRange").val()   ==  "Weekly"){
@@ -692,7 +693,7 @@
             }else{
                 $(".dtcol").show();
                 $(".yrcol").hide();
-                resetdates()
+               // resetdates()
             }
 
             if($("#ddlRange").val() =="Quarterly"){

@@ -199,6 +199,21 @@ a, span {
 	color: #ffffff;
 	cursor: pointer;
 }
+@media only screen and (max-width:500px) {
+    .common-btn {
+        border: 2px solid #7db11a;
+        text-align: center;
+        padding: 12px 20px;
+        background: #7db11a;
+        text-transform: uppercase;
+        font-size: 10px;
+        font-weight: 700;
+        font-family: "Roboto Condensed", sans-serif;
+        display: inline-block;
+        color: #ffffff;
+        cursor: pointer;
+    }
+}
 .common-btn:hover {
 	background: #3368c6;
 	border-color: #3368c6;
