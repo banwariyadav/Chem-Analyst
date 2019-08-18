@@ -76,8 +76,8 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    @*<link rel="stylesheet" href="~/css/custom.css" type="text/css" />*@
-    <link rel="stylesheet" href="~/css/style2.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/custom.css" type="text/css" />
+    
     <style>
         .rangeSlider .slidecontainer {
             width: 100%;
@@ -610,7 +610,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                                                         }
 
                                                     }
-                                                    <p><i class="fa fa-clock-o"></i>@news.CreatedTime.ToString("MMM/yyyy")</p>
+                                                    <p id="time"><i class="fa fa-clock-o"></i>@news.CreatedTime.ToString("MMM/yyyy")</p>
                                                 </div>
                                             </a>
                                         </div>
@@ -655,26 +655,24 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
     <div class="modal" id="myModal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-body">
+                <div class="modal-body" style="padding:0rem;">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="login-pic">
                                 <div class="freeSub">
-                                    <h2>Get Chemical Pricing in few-clicks.</h2>
+
                                     <a href="@Url.Action("FreeTrail", "ChemAnalyst")" class="btn btn-yellow">Start your Free Trail today.</a>
-                                    <a href="@Url.Action("Index", "ChemAnalyst")" class="btn btn-green">Go to Home.</a>
+                                    <a href="~/ChemicalPricing/ChecmPriceYearlyChart?Customer=False" class="btn btn-yellow">Go Back.</a>
                                     <a href="@Url.Action("FreeTrail", "ChemAnalyst")" class="text-center">Click here to subscribe free trial to enjoy our benefits!</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 
 
     <footer>
@@ -1482,7 +1480,6 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
 
         }
     </script>
-    <link rel="stylesheet" href="~/css/style2.css" type="text/css" />
-    <script src="~/js/responsive.js"></script>
+   
 
 </html>

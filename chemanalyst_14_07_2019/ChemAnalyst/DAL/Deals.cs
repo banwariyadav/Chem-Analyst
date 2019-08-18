@@ -107,6 +107,7 @@ namespace ChemAnalyst.DAL
             EditDeals.MetaTitle = Deals.MetaTitle;
             EditDeals.Keywords = Deals.Keywords;
             EditDeals.Product = Deals.Product;
+            EditDeals.CreatedTime = Deals.CreatedTime;
             if(Deals.DealsImg!=null)
             {
                 EditDeals.DealsImg = Deals.DealsImg;

@@ -45,6 +45,7 @@ namespace ChemAnalyst.DAL
             EditNews.IsDelete = News.IsDelete;
             EditNews.Product = News.Product;
             EditNews.ImgPath = News.ImgPath;
+            EditNews.CreatedTime = News.CreatedTime;
 
             _context.Entry(EditNews).State = EntityState.Modified;
             int x = _context.SaveChanges();
@@ -62,7 +63,7 @@ namespace ChemAnalyst.DAL
         {
             News.IsActive = true;
             News.IsDelete = false;
-            News.CreatedTime = DateTime.Now;
+            News.CreatedTime = News.CreatedTime!=null? News.CreatedTime: DateTime.Now;
 
             _context.SA_Commentary.Add(News);
             int x = await _context.SaveChangesAsync();

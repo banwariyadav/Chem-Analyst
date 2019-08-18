@@ -88,6 +88,12 @@
 
                         </div>
 
+                        <div class="col-md-4 col-lg-12 form-group">
+                            @Html.TextBoxFor(model => model.CreatedTime, new { @class = "form-control", @rows = 4, @placeholder = "Commentary date " })
+
+
+                        </div>
+
                         <div class="col-sm-6 col-lg-12">
                             <div class="form-group">
 
@@ -118,9 +124,17 @@
 
 </div>
 
+<link rel="stylesheet" type="text/css" href="~/css/jquery.datetimepicker.css"/ >
 
+<script src="~/js/jquery.datetimepicker.full.min.js"></script>
 
 <script type="text/javascript">
+    $(function () {
+        //$("#CreatedTime").val('');
+        jQuery('#CreatedTime').datetimepicker();
+
+    });
+
     $(function () {
         $('#Desc').ckeditor({
             toolbar: 'Full',

@@ -129,6 +129,7 @@ namespace ChemAnalyst.DAL
             EditNews.Keywords = News.Keywords;
             EditNews.MetaTitle = News.MetaTitle;
             EditNews.Product = News.Product;
+            EditNews.CreatedTime = News.CreatedTime;
             if (News.NewsImg != null)
             {
                 EditNews.NewsImg = News.NewsImg;

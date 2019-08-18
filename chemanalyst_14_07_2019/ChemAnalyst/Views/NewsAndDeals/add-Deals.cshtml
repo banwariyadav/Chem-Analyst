@@ -117,7 +117,11 @@
 
 
                         </div>
+                        <div class="col-md-4 col-lg-12 form-group">
+                            @Html.TextBoxFor(model => model.CreatedTime, new { @class = "form-control", @rows = 4, @placeholder = "Deal date " })
 
+
+                        </div>
 
 
 
@@ -160,7 +164,18 @@
 
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
 
+<link rel="stylesheet" type="text/css" href="~/css/jquery.datetimepicker.css"/ >
+
+<script src="~/js/jquery.datetimepicker.full.min.js"></script>
+
+
 <script type="text/javascript">
+
+    $(function () {
+        jQuery('#CreatedTime').datetimepicker();
+
+    });
+
     $(function () {
         $('#Desc').ckeditor({
             toolbar: 'Full',

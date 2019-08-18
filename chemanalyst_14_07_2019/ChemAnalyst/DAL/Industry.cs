@@ -50,7 +50,7 @@ namespace ChemAnalyst.DAL
             EditNews.Product = News.Product;
             EditNews.CategoryID = News.CategoryID;
             EditNews.CountryID = News.CountryID;
-
+            EditNews.CreatedTime = News.CreatedTime;
             _context.Entry(EditNews).State = EntityState.Modified;
             int x = _context.SaveChanges();
             return x == 0 ? false : true;
@@ -65,7 +65,7 @@ namespace ChemAnalyst.DAL
         }
         public async Task<bool> AddIndustry(SA_Industry News)
         {
-            News.CreatedTime = DateTime.Now;
+            News.CreatedTime = News.CreatedTime!=null? News.CreatedTime.Value: DateTime.Now;
 
             _context.SA_Industry.Add(News);
             int x = await _context.SaveChangesAsync();

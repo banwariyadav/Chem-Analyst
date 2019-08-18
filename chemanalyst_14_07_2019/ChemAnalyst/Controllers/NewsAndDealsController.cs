@@ -68,7 +68,7 @@ namespace ChemAnalyst.Controllers
             }
             UserNews.status = 1;
             UserNews.CreatedBy = Session["User"].ToString();
-            UserNews.CreatedTime = DateTime.Now;
+            UserNews.CreatedTime = UserNews.CreatedTime!=null? UserNews.CreatedTime: DateTime.Now;
             NewsDataStore Obj = new NewsDataStore();
             if (UserNews.id == 0)
             {
@@ -124,7 +124,7 @@ namespace ChemAnalyst.Controllers
             objSaCatV.MetaTitle = obj.MetaTitle;
             objSaCatV.ProductList = productList;
             objSaCatV.Product = obj.Product.ToString();
-
+            objSaCatV.CreatedTime = obj.CreatedTime;
             ViewBag.NewsProducts = Obj.GetNewsProduct(id);
 
             return View("add-News", objSaCatV);
@@ -194,7 +194,7 @@ namespace ChemAnalyst.Controllers
             }
             UserDeals.status = 1;
             UserDeals.CreatedBy = Session["User"].ToString();
-            UserDeals.CreatedTime = DateTime.Now;
+            UserDeals.CreatedTime = UserDeals.CreatedTime!=null? UserDeals.CreatedTime.Value: DateTime.Now;
             DealsDataStore Obj = new DealsDataStore();
             if (UserDeals.id == 0)
             {
@@ -255,7 +255,7 @@ namespace ChemAnalyst.Controllers
             objSaCatV.ProductList = productList;
             ViewBag.DealProducts = Obj.GetDealsProduct(id);
             objSaCatV.Product = obj.Product.ToString();
-
+            objSaCatV.CreatedTime = obj.CreatedTime;
 
             return View("add-Deals", objSaCatV);
         }

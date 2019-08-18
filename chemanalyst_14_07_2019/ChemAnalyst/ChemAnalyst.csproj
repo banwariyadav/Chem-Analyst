@@ -175,6 +175,11 @@
     <Content Include="ckeditor\styles.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\fonts\fontawesome-webfont\fontawesome-webfont.svg" />
+    <Content Include="Content\fonts\fontawesome-webfont\fontawesome-webfont\FontAwesome\fontawesome-webfont.woff2\res\images\loadingAnim.gif" />
+    <Content Include="Content\fonts\fontawesome-webfont\fontawesome-webfont\FontAwesome\fontawesome-webfont.woff2\res\scripts\jquery-1.3.2.min.js" />
+    <Content Include="Content\fonts\fontawesome-webfont\fontawesome-webfont\FontAwesome\fontawesome-webfont.woff2\res\scripts\jquery.blockUI.js" />
+    <Content Include="Content\fonts\fontawesome-webfont\fontawesome-webfont\FontAwesome\fontawesome-webfont.woff2\res\WebForm1.aspx" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Site.css" />
     <Content Include="css\animate.css" />
@@ -190,6 +195,7 @@
     <Content Include="css\oswald-font.css" />
     <Content Include="css\owl.carousel.min.css" />
     <Content Include="css\owl.theme.default.min.css" />
+    <Content Include="css\slider\obj\suit\binn\images\WebForm2.aspx" />
     <Content Include="css\slider\owl.carousel.css" />
     <Content Include="css\slider\owl.carousel.js" />
     <Content Include="css\slider\owl.theme.css" />
@@ -350,6 +356,11 @@
     <Content Include="ChemPricingImportfile\Weekly_Form_ sulphuric acid.xlsx" />
     <Content Include="ChemPricingImportfile\Weekly_Price_ sulphuric acid.xlsx" />
     <Content Include="ChemPricingImportfile\Yearly_Sulphuric Acid Price.xlsx" />
+    <Content Include="Content\fonts\fontawesome-webfont\fontawesome-webfont.eot" />
+    <Content Include="Content\fonts\fontawesome-webfont\fontawesome-webfont.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont\fontawesome-webfont.woff" />
+    <Content Include="Content\fonts\fontawesome-webfont\fontawesome-webfont.woff2" />
+    <Content Include="Content\fonts\fontawesome-webfont\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\Analyst.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
@@ -520,6 +531,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Common\Helpers.cs" />
+    <Compile Include="Content\fonts\fontawesome-webfont\fontawesome-webfont\FontAwesome\fontawesome-webfont.woff2\res\WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Content\fonts\fontawesome-webfont\fontawesome-webfont\FontAwesome\fontawesome-webfont.woff2\res\WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AdvisorySolutionsController.cs" />
     <Compile Include="Controllers\ChemAnalystController.cs" />
@@ -544,6 +562,13 @@
     <Compile Include="Controllers\SubsManagementController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\WorldController.cs" />
+    <Compile Include="css\slider\obj\suit\binn\images\WebForm2.aspx.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="css\slider\obj\suit\binn\images\WebForm2.aspx.designer.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
+    </Compile>
     <Compile Include="DAL\Advisory.cs" />
     <Compile Include="DAL\ChemContent.cs" />
     <Compile Include="DAL\ChemicalPricing.cs" />
@@ -734,6 +759,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="bin\" />
+    <Folder Include="css\slider\obj\suit\binn\scripts\" />
     <Folder Include="ExcelFiles\" />
     <Folder Include="ProductImages\" />
   </ItemGroup>
