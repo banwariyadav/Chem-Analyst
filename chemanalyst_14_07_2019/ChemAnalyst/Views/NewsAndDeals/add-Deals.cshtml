@@ -19,7 +19,7 @@
 
 
                 <div class="change">
-                    <img src="~/images/dealss.png" alt="" style="width:95px; height:95px"/>
+                    <img src="~/images/dealss.png" title="@Model.DealsImg" alt="@Model.DealsImg" style="width:95px; height:95px"/>
                     <p>Add New Deals</p>
                 </div>
 
@@ -95,7 +95,7 @@
 
                         <div class="col-md-4 col-lg-12 form-group">
                             @*<textarea rows="4" class="form-control" placeholder="Meta Title"></textarea>*@
-                            @Html.TextBoxFor(model => model.URL, new { @class = "form-control", @placeholder = "Custom URL"})
+                            @Html.TextBoxFor(model => model.URL, new { @class = "form-control", @placeholder = "Custom URL", @required = "required" })
 
 
                         </div>

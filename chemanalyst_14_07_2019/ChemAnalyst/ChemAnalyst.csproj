@@ -749,6 +749,7 @@
     <Content Include="Views\Shared\_LayoutCustomer_company.cshtml" />
     <Content Include="Views\Shared\_LayoutCustomer-market-analysis.cshtml" />
     <Content Include="Views\ChemAnalyst\ForgotPassword.cshtml" />
+    <Content Include="Views\Admin\CreateLead.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -647,5 +647,13 @@ namespace ChemAnalyst.Controllers
         }
         #endregion
 
+
+        public ActionResult CreateLead()
+        {
+            return View();
+        }
+
+
+
     }
 }

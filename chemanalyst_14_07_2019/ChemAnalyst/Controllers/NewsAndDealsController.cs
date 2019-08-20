@@ -125,6 +125,7 @@ namespace ChemAnalyst.Controllers
             objSaCatV.ProductList = productList;
             objSaCatV.Product = obj.Product.ToString();
             objSaCatV.CreatedTime = obj.CreatedTime;
+            objSaCatV.NewsImg = obj.NewsImg;
             ViewBag.NewsProducts = Obj.GetNewsProduct(id);
 
             return View("add-News", objSaCatV);
@@ -256,7 +257,7 @@ namespace ChemAnalyst.Controllers
             ViewBag.DealProducts = Obj.GetDealsProduct(id);
             objSaCatV.Product = obj.Product.ToString();
             objSaCatV.CreatedTime = obj.CreatedTime;
-
+            objSaCatV.DealsImg = obj.DealsImg;
             return View("add-Deals", objSaCatV);
         }
         public ActionResult DeleteDeals(int id)

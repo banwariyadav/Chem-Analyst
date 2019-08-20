@@ -1,0 +1,401 @@
+﻿
+@{
+    ViewBag.Title = "CreateLead";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="update-profile-wrapper">
+
+    <h3><a href="@Url.Action("LeadManagement","SubsManagement")" class="btn btn-info"><i class="fa fa-list"></i> Lead Management</a></h3>
+
+    <div class="white-wrapper">
+
+        <div class="row">
+            <div class="col-md-9">
+                <div class="filter-form-checkbox-btn">
+                    <p>Free Trail we give you 24 hours free access to our website. Just full the registeration form  and our team will actiate your access. What you get</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="filter-chk-list">
+                                <label class="c-lbl">
+                                    Daily/Monthly/Yearly Price Update
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="filter-chk-list">
+                                <label class="c-lbl">
+                                    Complete Product Analysis
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="filter-chk-list">
+                                <label class="c-lbl">
+                                    Company Profile of Leading Companies
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="filter-chk-list">
+                                <label class="c-lbl">
+                                    Major development and top deaiss
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="static-desc contact-blue-box mt-0">
+                    <div id="quotationForm" class="eq-form mt-0">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input id="txtName" name="form_name" class="form-control" type="text" placeholder="Name" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input id="txtCorpEmail" name="form_email" class="inputtype form-control required email" type="email" placeholder="Corporate Email " required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input id="txtOrganisation" name="form_phone" class="inputtype form-control required" type="text" placeholder="Company / Organisation" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.DropDownList("txtCountry", ChemAnalyst.DAL.ProductDataStore.GetCountry(), "Select Country", new { @class = "form-control", @name = "txtCountry", @style = "color: #fff; background:#4b80e0" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.DropDownList("txtState", ChemAnalyst.DAL.ProductDataStore.GetState(), "Select State", new { @class = "form-control", @name = "txtState", @style = "color: #fff; background:#4b80e0" })
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input id="txtPhone" onkeypress="return isNumberKey(event)" name="form_phone" class="inputtype form-control required" type="text" placeholder="Phone" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input id="txtAreaInterest" name="form_phone" class="inputtype form-control required" type="text" placeholder="Area of Interest" aria-required="true">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input id="txtUserType" name="form_user" class="inputtype form-control required" type="text" placeholder="User Type" aria-required="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input id="txtSubject" name="subject" class="inputtype form-control required" type="text" placeholder="Subject" aria-required="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="txtQuery" name="form_message" class="inputtype form-control required" rows="5" placeholder="Query" aria-required="true"></textarea>
+                        </div>
+                        <div class="form-group mt30">
+                            <input name="form_botcheck" class="form-control" type="hidden" value="">
+                            <button id="btnSave" type="submit" class="btn btn-success" data-loading-text="Please wait...">Submit</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="../js/popper.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+        $("body").on("change", "#txtCountry", function () {
+            debugger
+            var country = $(txtCountry).find("option:selected").val();
+
+            var state = $("#txtState");
+            state.empty().append('<option selected="selected" value="" disabled = "disabled">Loading.....</option>');
+            $.ajax({
+                type: "POST",
+                url: "../ChemAnalyst/GetState",
+                data: JSON.stringify({ 'country': country }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (response) {
+                    debugger
+                    state.empty().append('<option selected="selected" value=""> Select State</option>');
+                    $.each(response, function () {
+                        state.append($("<option></option>").val(this['Value']).html(this['Text']));
+                    });
+                },
+                failure: function (response) {
+                    // alert(response.responseText);
+                },
+                error: function (response) {
+                    // alert(response.responseText);
+                }
+            });
+
+
+        });
+
+        $(document).on('click', '#btnSave', function (e) {
+
+        });
+
+
+
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            return true;
+        }
+
+        function isValidEmailAddress(emailAddress) {
+            debugger;
+            var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+            return pattern.test(emailAddress);
+        }
+
+
+         $(function () {
+        $("#btnSave").click(function () {
+            var freeTrail = {};
+            debugger
+            if ($("#txtName").val() == "") {
+                swal("Warning", "Please enter name :)", "error");
+                return false;
+            }
+            if ($("#txtCorpEmail").val() == "") {
+                swal("Warning", "Please enter email :)", "error");
+                return false;
+            }
+            if ($("#txtCorpEmail").val() != "") {
+                if (!isValidEmailAddress($("#txtCorpEmail").val())) {
+                    debugger
+                    swal("Warning", "Invalid email address :)", "error");
+                    return false;
+                }
+                else {
+
+                }
+            }
+
+            if ($("#txtOrganisation").val() == "") {
+                swal("Warning", "Please enter organisation :)", "error");
+                return false;
+            }
+            //if ($("#txtCountry").val() == "") {
+            //    swal("Warning", "Please enter country :)", "error");
+            //    return false;
+            //}
+            //if ($("#txtState").val() == "") {
+            //    swal("Warning", "Please enter state :)", "error");
+            //    return false;
+            //}
+            if ($("#txtPhone").val() == "") {
+                swal("Warning", "Please enter phone number :)", "error");
+                return false;
+            }
+            if ($("#txtAreaInterest").val() == "") {
+                swal("Warning", "Please enter area of interest :)", "error");
+                return false;
+            }
+            if ($("#txtUserType").val() == "") {
+                swal("Warning", "Please enter user type :)", "error");
+                return false;
+            }
+            if ($("#txtSubject").val() == "") {
+                swal("Warning", "Please enter subject :)", "error");
+                return false;
+            }
+            if ($("#txtQuery").val() == "") {
+                swal("Warning", "Please enter query :)", "error");
+                return false;
+            }
+
+            freeTrail.Name = $("#txtName").val();
+            freeTrail.CorpEmail = $("#txtCorpEmail").val();
+            freeTrail.Organisation = $("#txtOrganisation").val();
+            freeTrail.Country = $("#txtCountry").val();
+            freeTrail.State = $("#txtState").val();
+            freeTrail.Phone = $("#txtPhone").val();
+            freeTrail.InterestArea = $("#txtAreaInterest").val();
+            freeTrail.UserType = $("#txtUserType").val();
+            freeTrail.Subject = $("#txtSubject").val();
+            freeTrail.Query = $("#txtQuery").val();
+
+            $.ajax({
+                type: "POST",
+                url: "../ChemAnalyst/SaveFreeTrialAsync",
+                data:  freeTrail,
+                success: function (data) {
+                    if (data && data.result) {
+                        //alert("Data has been added successfully.");
+                        swal("Thank you!", "Your Query has been submitted successfully", "success");
+                        $("#txtName").val('');
+                        $("#txtCorpEmail").val('');
+                        $("#txtOrganisation").val('');
+                        $("#txtCountry").val('');
+                        $("#txtState").val('');
+                        $("#txtPhone").val();
+                        $("#txtAreaInterest").val('');
+                        $("#txtUserType").val('');
+                        $("#txtSubject").val('');
+                        $("#txtQuery").val('');
+                    }
+                    else {
+                        alert("Error while inserting data");
+                    }
+                },
+                error: function () {
+                    alert("Error while inserting data");
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+<style>
+  .filter-checkbox-btn {
+	background: #eee;
+	padding: 15px;
+	border-radius: 5px;
+	margin-bottom: 15px;
+}
+.filter-checkbox-btn ul {
+	padding: 0;
+	margin: 0;
+}
+.filter-checkbox-btn li {
+	list-style: none;
+	display: inline-block;
+}
+.filter-checkbox-btn li a {
+	background: #555;
+	padding: 8px 15px;
+	color: #fff;
+	border-radius: 5px;
+	font-size: 13px;
+}
+.filter-checkbox-btn li a i {
+	margin-left: 5px;
+}
+.filter-chart-type {
+	margin-bottom: 30px;
+	margin-top: 20px;
+}
+.filter-chart-type p {
+	font-weight: bold;
+	font-size: 16px;
+	margin-bottom: 10px;
+}
+.filter-chart-type .dropdown {
+	width: 100%;
+}
+.filter-chart-type .dropdown .btn {
+	width: 100%;
+	text-align: left;
+}
+.filter-chart-type .dropdown-menu {
+	width: 100%;
+	background: #edf9ff;
+}
+.static-desc.contact-blue-box.mt-0 {
+	/*border: 20px solid #3368c6;*/
+	padding: 10px 30px;
+}
+.filter-form-checkbox-btn {
+	background: #eee;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    margin-left: 30px;
+    margin-top: 30px;
+    margin-right: 30px;
+}
+.c-lbl {
+	position: relative;
+	padding-left: 40px;
+	margin-bottom: 20px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.c-lbl input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+}
+/* Create a custom checkbox */
+.checkmark {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 25px;
+	width: 25px;
+	background-color: #ccc;
+}
+/* On mouse-over, add a grey background color */
+.c-lbl:hover input ~ .checkmark {
+	background-color: #aaa;
+}
+/* When the checkbox is checked, add a blue background */
+.c-lbl input:checked ~ .checkmark {
+	background-color: #2196F3;
+}
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+/* Show the checkmark when checked */
+.c-lbl input:checked ~ .checkmark:after {
+	display: block;
+}
+/* Style the checkmark/indicator */
+.c-lbl .checkmark:after {
+	left: 9px;
+	top: 3px;
+	width: 8px;
+	height: 14px;
+	border: solid white;
+	border-width: 0 3px 3px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+.mt-0, .my-0 {
+    margin-top: 0!important;
+}
+</style>

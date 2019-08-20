@@ -595,7 +595,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                         <aside>
                             <div class="side-news-feed" style="height: 500px">
                                 <h3><i class="fa fa-bell-o"></i> News</h3>
-                                <marquee behavior="scroll" direction="up" style="height: 400px;" onmouseover="stop()" onmouseout="start()">
+                                <marquee scrollamount="2" behavior="scroll" direction="up" style="height: 400px;" onmouseover="stop()" onmouseout="start()">
                                     @foreach (var news in Model.Select(x => x.NewsDetailsViewModel.NewsList).FirstOrDefault())
                                     {
                                         <div class="news-feed-col">
@@ -620,7 +620,7 @@ Model.FirstOrDefault(c => c.StackedDimensionOne == s + " " + x).LstData.FirstOrD
                             </div>
                             <div class="side-news-feed mt-4" style="height: 500px;">
                                 <h3><i class="fa fa-thumbs-up"></i> Top Deals</h3>
-                                <marquee behavior="scroll" direction="up" style="height: 450px;" scrollamount="3" onmouseover="stop()" onmouseout="start()">
+                                <marquee behavior="scroll" direction="up" style="height: 450px;" scrollamount="2" onmouseover="stop()" onmouseout="start()">
                                     @foreach (var item in Model.Select(x => x.NewsDetailsViewModel.DealList).FirstOrDefault())
                                     {
                                         <div class="news-feed-col">

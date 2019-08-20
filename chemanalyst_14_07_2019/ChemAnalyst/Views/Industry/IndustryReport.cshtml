@@ -157,8 +157,8 @@
                         @foreach (var ind in Model.Industry)
                         {
                             <div class="industry-text">
-                                <h3>@ChemAnalyst.DAL.ProductDataStore.GetCategory(ind.CategoryID) | @ind.CreatedTime.Value.ToString("MMM yyyy") </h3>
-                                <h3>@ind.Title </h3>
+                                <h1 style="color:#3368c6">@ChemAnalyst.DAL.ProductDataStore.GetCategory(ind.CategoryID) | @ind.CreatedTime.Value.ToString("MMM yyyy") </h1>
+                                <h1 style="color:#3368c6">@ind.Title </h1>
                                 <p>Format: @Html.Raw(WebUtility.HtmlDecode(@ind.format)) </p>
                                 @*<p>Pages: @ind.Pages</p>*@
                                 <p>Pages: @Html.Raw(WebUtility.HtmlDecode(@ind.Pages))</p>

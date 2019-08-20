@@ -61,7 +61,7 @@
 
                                             <div class="blog-detail-summary">
 
-                                                <h3>@Model.News.NewsName</h3>
+                                                <h1>@Model.News.NewsName</h1>
 
 
 
@@ -80,7 +80,7 @@
 
                                 <div class="blog-detail-summary">
 
-                                    <h3>@Model.News.NewsName</h3>
+                                    <h1>@Model.News.NewsName</h1>
 
 
 
@@ -115,7 +115,7 @@
                                         <div class="side-news-feed">
 
                                             <h3><i class="fa fa-bell-o"></i> News</h3>
-                                            <marquee behavior="scroll" direction="up" style="height: 400px;" onmouseover="stop()" onmouseout="start()">
+                                            <marquee scrollamount="2" behavior="scroll" direction="up" style="height: 400px;" onmouseover="stop()" onmouseout="start()">
                                                 @foreach (var news in Model.NewsList)
                                                 {
                                                     <div class="news-feed-col">
