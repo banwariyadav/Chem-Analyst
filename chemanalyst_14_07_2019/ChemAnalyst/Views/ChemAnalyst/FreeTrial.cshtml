@@ -99,12 +99,14 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <input id="txtAreaInterest" name="form_phone" class="inputtype form-control required" type="text" placeholder="Area of Interest" aria-required="true">
+                                        @*<input id="txtAreaInterest" name="form_phone" class="inputtype form-control required" type="text" placeholder="Area of Interest" aria-required="true">*@
+                                        @Html.DropDownList("txtAreaInterest", ChemAnalyst.DAL.ProductDataStore.GetArea(), "Select Area of Interest", new { @class = "form-control", @name = "txtAreaInterest", @style = "color: #fff; background:#4b80e0" })
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <input id="txtUserType" name="form_user" class="inputtype form-control required" type="text" placeholder="User Type" aria-required="true">
+                                        @*<input id="txtUserType" name="form_user" class="inputtype form-control required" type="text" placeholder="User Type" aria-required="true">*@
+                                        @Html.DropDownList("txtUserType", ChemAnalyst.DAL.ProductDataStore.GetUserType(), "Select User Type", new { @class = "form-control", @name = "txtUserType", @style = "color: #fff; background:#4b80e0" })
                                     </div>
                                 </div>
                             </div>

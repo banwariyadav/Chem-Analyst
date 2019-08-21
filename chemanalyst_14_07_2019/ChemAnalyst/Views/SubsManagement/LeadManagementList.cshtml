@@ -12,6 +12,9 @@
 
     <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+
+   
+
     <script type="text/javascript">
         $(document).ready(function () {
             function convertJsonDateToShortDate(data) {
@@ -35,7 +38,7 @@
                         "visible": false
                     }
                 ],
-                "order": [[0, 'desc' ]],
+                "order": [[0, 'desc']],
                 "columns": [
 
 
@@ -78,7 +81,12 @@
                       {
                           data: null, render: function (data, type, row) {
                               //return '<a href="/Admin/DeleteUser/' + row.id + '"><i class="fa fa-trash-o fa-lg"></i></a>';
-                              return '<a class="label label-info" href="../SubsManagement/ViewDetails/' + row.Id + '"> VIEW DETAILS</a>';
+                              if (row.Status == "New") {
+                                  return '<a class="label label-info" href="../SubsManagement/ViewDetails/' + row.Id + '"> VIEW DETAILS</a> &nbsp;&nbsp  <a style="cursor: pointer;" href="#" onclick="DeleteLead(' + row.Id + ')" class="label label-danger"><i style="cursor: pointer;" class="fa fa-plus"></i> Delete  </a> ';
+                              }
+                              else {
+                                  return '<a class="label label-info" href="../SubsManagement/ViewDetails/' + row.Id + '"> VIEW DETAILS</a> &nbsp;&nbsp  <a style="cursor: pointer;background: #ccc;" href="#" class="label label-secondary"><i style="cursor: pointer;" class="fa fa-plus"></i> Delete </a> ';
+                              }
                           }
                       },
                     {
@@ -93,11 +101,10 @@
                                     if (row.Status == "New") {
                                         return '<a style="cursor: pointer;background: #ccc;" href="#" class="label label-secondary"><i style="cursor: pointer;" class="fa fa-plus"></i> ADD  </a>';
                                     }
-                                    else
-                                    {
+                                    else {
                                         return '<a style="cursor: pointer;" href="../Subscription/AddPackage/' + row.Id + '" class="label label-primary"><i style="cursor: pointer;" class="fa fa-plus"></i> ADD  </a>';
                                     }
-                                   
+
                                 }
 
                             }
@@ -112,7 +119,54 @@
                 ]
             });
         });
+
+        function DeleteLead(leadId) {
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this lead!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+.then((willDelete) => {
+    if (willDelete) {
+        $.ajax({
+            type: "POST",
+            url: 'DeleteLead?leadId=' + leadId,
+            success: function (data) {
+                debugger
+                if (data.data == "Success") {
+                    //alert("Data has been added successfully.");
+                    // swal("Thank you!", "Lead deleted successfully.", "success");
+                    swal("Thank you! Lead deleted successfully!", {
+                        icon: "success",
+
+                    }).then(function Reload() {
+                        window.location.reload();
+                    });
+                   
+                }
+                else {
+                    alert("Error while inserting data");
+                }
+            },
+            error: function () {
+                alert("Error while inserting data");
+            }
+        });
+
+       
+    } else {
+        swal("Your lead is safe!");
+    }
+});
+
+           
+
+        }
     </script>
+
+
 </head>
 
 
@@ -151,3 +205,4 @@
     </div>
 </div>
 
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>

@@ -68,7 +68,7 @@
                                 </select>
                                 <div class="overSelect"></div>
                             </div>
-                            <div id="checkboxes" style="display: block;margin-top: 15px;height: 150px;overflow: scroll;border-style:groove;padding:15px;">
+                            <div id="checkboxes" style="display: block;margin-top: 15px;height: 150px;overflow: scroll;border-style:groove;padding:15px; padding-top:5px">
                             </div>
                         </div>
                     </div>
@@ -98,6 +98,10 @@
     <script src="~/js/jquery.datetimepicker.full.min.js"></script>
 
     <script type="text/javascript">
+
+
+
+
         $(function () {
             jQuery('#FromDatepicker').datetimepicker();
             jQuery('#ToDatepicker').datetimepicker();           
@@ -109,6 +113,22 @@
     </script>
 
     <script>
+
+        function selectProductAll() {
+           // alert("selectProductAll");
+            $('#checkboxes input:checkbox').each(function () {
+                debugger;
+                if ($(this).prop("checked")) {
+                    $(this).prop('checked', false);
+                }
+                else
+                {
+                    $(this).prop('checked', true);
+                }
+                
+            });
+        }
+
         var expanded = false;
         var productList = [];
         var moduleList = [];
@@ -160,9 +180,18 @@
                 success: function (result) {
                     var checkboxes = document.getElementById("checkboxes");
                     for (var i = 0; i < result.data.length; i++) {
-                        var node = document.createElement('div');
-                        node.innerHTML = '<label id="' + result.data[i].id + '"><input name ="productList" onchange="selectProduct(this);" type="checkbox"  id="' + result.data[i].id + '"/>' + result.data[i].ProductName + '</label>';
-                        document.getElementById('checkboxes').appendChild(node);
+                        if (i==0) {
+                            var node = document.createElement('div');
+                            node.innerHTML = '<label id="lblAllSelect"><input name ="productList" onchange="selectProductAll(this);" type="checkbox"  id="chkAllSelect"/>Select All</label>';
+                            document.getElementById('checkboxes').appendChild(node);
+                        }
+                        else
+                        {
+                            var node = document.createElement('div');
+                            node.innerHTML = '<label id="' + result.data[i].id + '"><input name ="productList" onchange="selectProduct(this);" type="checkbox"  id="' + result.data[i].id + '"/>' + result.data[i].ProductName + '</label>';
+                            document.getElementById('checkboxes').appendChild(node);
+                        }
+                       
                     }
                 },
                 error: function (msg) {

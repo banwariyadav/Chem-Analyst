@@ -42,7 +42,7 @@
 
                         <div class="col-md-4 col-lg-12 form-group">
                             @*<textarea rows="10" class="form-control" placeholder="Description"></textarea>*@
-                            @Html.TextAreaFor(model => model.AdvisoryDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Description (100)* " , minheight="100", required = "required" })
+                            @Html.TextAreaFor(model => model.AdvisoryDiscription, new { @class = "form-control", @rows = 4, @placeholder = "Description (100)* " , minheight="100" })
 
 
                         </div>
@@ -66,7 +66,7 @@
 
                         <div class="col-md-4 col-lg-12 form-group">
                             <label style="font-weight:normal">Advisory Content</label>
-                            @Html.TextAreaFor(model => model.AdsContent, new { @class = "form-control", @rows = 200, @placeholder = "Advisory Content * ", id = "AdvisoryContent", required = "required" })
+                            @Html.TextAreaFor(model => model.AdsContent, new { @class = "form-control", @rows = 200, @placeholder = "Advisory Content * ", id = "AdvisoryContent" })
                         </div>
                         <script>
 

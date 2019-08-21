@@ -3,6 +3,7 @@ using ChemAnalyst.Models;
 using ChemAnalyst.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -49,7 +50,7 @@ namespace ChemAnalyst.Controllers
                 }
                 else
                 {
-                    item.AssignTo = ObjUser.GetUserByid(Convert.ToInt32(item.AssignTo)) != null? ObjUser.GetUserByid(Convert.ToInt32(item.AssignTo)).Fname : "NA";
+                    item.AssignTo = ObjUser.GetUserByid(Convert.ToInt32(item.AssignTo)) != null ? ObjUser.GetUserByid(Convert.ToInt32(item.AssignTo)).Fname : "NA";
                 }
             }
             return Json(new { data = leadList }, JsonRequestBehavior.AllowGet);
@@ -67,11 +68,11 @@ namespace ChemAnalyst.Controllers
 
             objLeadModel.UserList = ObjLead.GetUserList();
 
-            objLeadModel.hdId =Convert.ToString(Id);
-           
+            objLeadModel.hdId = Convert.ToString(Id);
+
             objLeadModel.LeadMaster = new Lead_Master();
             objLeadModel.LeadMaster = ObjLead.GetLeadList().Where(x => x.Id == Id).FirstOrDefault();
-            if (objLeadModel.LeadMaster.AssignTo == "NA"|| objLeadModel.LeadMaster.AssignTo==null)
+            if (objLeadModel.LeadMaster.AssignTo == "NA" || objLeadModel.LeadMaster.AssignTo == null)
                 objLeadModel.LeadMaster.AssignTo = "---";
             return View("ViewLeadDetails", objLeadModel);
         }
@@ -103,11 +104,11 @@ namespace ChemAnalyst.Controllers
 
             //}
 
-          
+
 
             objLeadModel.SubscriptionList = lstSubscription.ToList();
 
-          
+
 
             return View("ViewAllSubscriptions", objLeadModel);
         }
@@ -115,7 +116,7 @@ namespace ChemAnalyst.Controllers
         public ActionResult AssignLeadDetails(LeadViewModel model)
         {
             int id = Convert.ToInt32(model.hdId);
-            Lead_Master lm= new Lead_Master();
+            Lead_Master lm = new Lead_Master();
             lm = ObjLead.GetLeadList().Where(x => x.Id == id).FirstOrDefault();
             lm.Status = model.LeadMaster.Status;
             lm.AssignTo = model.LeadMaster.AssignTo;
@@ -134,16 +135,16 @@ namespace ChemAnalyst.Controllers
         public JsonResult ShowSubscriptionList()
         {
             string loggeduser = Session["User"].ToString().Trim();
-            string item= Session["LoginUser"].ToString();
+            string item = Session["LoginUser"].ToString();
             List<SubscriptionViewModel> SubscriptionList;
             if (Session["UserRole"].ToString() == "Admin")
             {
-            //SubscriptionList = ObjLead.SubscriptionListforadmin(loggeduser);
+                //SubscriptionList = ObjLead.SubscriptionListforadmin(loggeduser);
                 SubscriptionList = ObjLead.SubscriptionListforAdminNew(loggeduser);
             }
             else
             {
-              SubscriptionList = ObjLead.SubscriptionList(item);
+                SubscriptionList = ObjLead.SubscriptionList(item);
             }
             // return View("Subscription-list", SubscriptionListList);
             return Json(new { data = SubscriptionList }, JsonRequestBehavior.AllowGet);
@@ -152,8 +153,8 @@ namespace ChemAnalyst.Controllers
         [HttpPost]
         public JsonResult SendNotification(int LeadId)
         {
-            
-             ChemAnalystContext _context = new ChemAnalystContext();
+
+            ChemAnalystContext _context = new ChemAnalystContext();
 
             var email = _context.Lead_Master.Where(w => w.Id == LeadId).FirstOrDefault().CorpEmail;
 
@@ -187,5 +188,27 @@ namespace ChemAnalyst.Controllers
 
             return Json(new { data = "Success" }, JsonRequestBehavior.AllowGet);
         }
+
+
+        [HttpPost]
+        public JsonResult DeleteLead(int leadId)
+        {
+            bool result = false;
+            try
+            {
+                Lead_Master lead = _contextDb.Lead_Master.Where(News => News.Id == leadId).FirstOrDefault();
+                _contextDb.Entry(lead).State = EntityState.Deleted;
+                _contextDb.SaveChanges();
+
+                return Json(new { data = "Success" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { data = "fail" }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new { result = result, JsonRequestBehavior.AllowGet });
+        }
+
     }
 }

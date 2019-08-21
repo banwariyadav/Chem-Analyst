@@ -24,11 +24,11 @@ namespace ChemAnalyst
 
         void Application_Error(object sender, EventArgs e)
         {
-            Exception ex = this.Server.GetLastError().GetBaseException();
-           // MyEventLog.LogException(ex); //Log the error in the Event Log!
-                                         //
-            FormsAuthentication.SignOut();
-            this.Response.Redirect("~/Login/index");//Here you can change with your URL!
+           // Exception ex = this.Server.GetLastError().GetBaseException();
+           //// MyEventLog.LogException(ex); //Log the error in the Event Log!
+           //                              //
+           // FormsAuthentication.SignOut();
+           // this.Response.Redirect("~/Login/index");//Here you can change with your URL!
         }
     }
 }

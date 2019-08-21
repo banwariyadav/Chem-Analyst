@@ -205,6 +205,24 @@ namespace ChemAnalyst.DAL
             return cat;
         }
 
+        public static List<SelectListItem> GetUserType()
+        {
+            List<SelectListItem> cat = new List<SelectListItem>();
+            cat.Add(new SelectListItem { Text = "Normal", Value = "Normal" });
+            cat.Add(new SelectListItem { Text = "Admin", Value = "Admin" });
+            cat.Add(new SelectListItem { Text = "Sales", Value = "Sales" });
+            return cat;
+        }
+
+        public static List<SelectListItem> GetArea()
+        {
+            List<SelectListItem> cat = new List<SelectListItem>();
+            cat.Add(new SelectListItem { Text = "IT", Value = "IT" });
+            cat.Add(new SelectListItem { Text = "HR", Value = "HR" });
+            cat.Add(new SelectListItem { Text = "CS", Value = "CS" });
+            return cat;
+        }
+
 
         public static IEnumerable<SelectListItem> GetUniqueYears()
         {
